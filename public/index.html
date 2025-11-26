@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ICD-10-CM 2025 AI SaaS</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f5f8; color: #222; }
+    header { background: #1b4b66; color: #fff; padding: 1rem 2rem; }
+    main { max-width: 900px; margin: 2rem auto; background: #fff; padding: 1.5rem; border-radius: 12px; box-shadow: 0 6px 24px rgba(0,0,0,0.08); }
+    h1 { margin: 0; }
+    label { display: block; margin-top: 1rem; font-weight: 600; }
+    input, textarea, button { width: 100%; padding: 0.75rem; margin-top: 0.5rem; border-radius: 8px; border: 1px solid #cfd8e3; }
+    button { background: #1b4b66; color: #fff; border: none; cursor: pointer; font-weight: 600; }
+    button:hover { background: #15384c; }
+    #chat-log { margin-top: 1rem; border: 1px solid #cfd8e3; padding: 1rem; border-radius: 8px; height: 250px; overflow-y: auto; background: #fafbfc; }
+    .message { margin-bottom: 0.75rem; }
+    .message strong { color: #1b4b66; }
+    .status { margin-top: 0.5rem; font-size: 0.9rem; color: #444; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>ICD-10-CM 2025 AI SaaS</h1>
+    <p>Upload a PDF and chat with it. 24h free trial, then $9/month.</p>
+  </header>
+  <main>
+    <label>User ID (kept in-memory):</label>
+    <input id="user-id" placeholder="demo-user" />
+
+    <label>Upload ICD-10-CM 2025 PDF</label>
+    <input type="file" id="pdf-file" accept="application/pdf" />
+    <button id="upload-btn">Upload</button>
+    <div class="status" id="upload-status"></div>
+
+    <label>Your question</label>
+    <textarea id="question" rows="3" placeholder="Ask about diagnoses codes, descriptions, etc."></textarea>
+    <button id="ask-btn">Ask</button>
+
+    <div id="chat-log"></div>
+  </main>
+
+  <script>
+    const uploadBtn = document.getElementById('upload-btn');
+    const askBtn = document.getElementById('ask-btn');
+    const chatLog = document.getElementById('chat-log');
+    const uploadStatus = document.getElementById('upload-status');
+    let documentId = null;
+
+    function appendMessage(sender, text) {
+      const div = document.createElement('div');
+      div.className = 'message';
+      div.innerHTML = `<strong>${sender}:</strong> ${text}`;
+      chatLog.appendChild(div);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    async function uploadPdf() {
+      const userId = document.getElementById('user-id').value || 'demo-user';
+      const file = document.getElementById('pdf-file').files[0];
+      if (!file) {
+        alert('Select a PDF first');
+        return;
+      }
+      const form = new FormData();
+      form.append('file', file);
+      uploadStatus.textContent = 'Uploading...';
+      try {
+        const response = await fetch('/upload', {
+          method: 'POST',
+          headers: { 'X-User-Id': userId },
+          body: form,
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Upload failed');
+        documentId = data.documentId;
+        uploadStatus.textContent = `Uploaded ${data.fileName}. ${data.chunks} chunks created.`;
+      } catch (err) {
+        uploadStatus.textContent = err.message;
+      }
+    }
+
+    async function askQuestion() {
+      const userId = document.getElementById('user-id').value || 'demo-user';
+      const message = document.getElementById('question').value;
+      if (!documentId) {
+        alert('Upload a PDF first.');
+        return;
+      }
+      if (!message.trim()) return;
+      appendMessage('You', message);
+      try {
+        const response = await fetch('/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-User-Id': userId,
+          },
+          body: JSON.stringify({ documentId, message }),
+        });
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Chat failed');
+        appendMessage('AI', data.answer);
+      } catch (err) {
+        appendMessage('System', err.message);
+      }
+    }
+
+    uploadBtn.addEventListener('click', uploadPdf);
+    askBtn.addEventListener('click', askQuestion);
+  </script>
+</body>
+</html>
