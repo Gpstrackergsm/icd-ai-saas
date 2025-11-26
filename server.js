@@ -5,6 +5,7 @@ const multer = require('multer');
 const pdfParse = require('pdf-parse');
 const Stripe = require('stripe');
 const path = require('path');
+const Fuse = require('./local-fuse');
 
 dotenv.config();
 
@@ -22,7 +23,7 @@ const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SEC
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const userStore = new Map();
-// Map<userId, { chunks: Array<{ id, text, tokens }> }>
+// Map<userId, { chunks: Array<{ id, text }>, searchIndex?: Fuse }>
 const userIndexes = new Map();
 
 function ensureUser(req) {
@@ -96,23 +97,12 @@ function splitIntoChunks(text, minSize = 800, maxSize = 1200) {
   return chunks;
 }
 
-function scoreChunk(questionTokens, chunk) {
-  const chunkTokenSet = new Set(chunk.tokens);
-  const uniqueQuestionTokens = Array.from(new Set(questionTokens));
-  let score = 0;
-
-  for (const token of uniqueQuestionTokens) {
-    if (chunkTokenSet.has(token)) {
-      score += 1;
-    }
-  }
-
-  const rawQuestion = questionTokens.join(' ');
-  if (rawQuestion && chunk.text.toLowerCase().includes(rawQuestion)) {
-    score += Math.max(2, Math.ceil(uniqueQuestionTokens.length / 2));
-  }
-
-  return score;
+function buildLocalSearch(chunks) {
+  return new Fuse(chunks, {
+    includeScore: true,
+    threshold: 0.45,
+    keys: ['text'],
+  });
 }
 
 app.post('/upload-pdf', requireAccess, upload.single('file'), async (req, res) => {
@@ -140,10 +130,10 @@ app.post('/upload-pdf', requireAccess, upload.single('file'), async (req, res) =
       .map((chunkText, idx) => ({
         id: idx,
         text: chunkText,
-        tokens: normalizeTokens(chunkText),
       }));
 
-    userIndexes.set(user.id, { chunks });
+    const searchIndex = buildLocalSearch(chunks);
+    userIndexes.set(user.id, { chunks, searchIndex });
 
     res.json({
       message: 'PDF processed successfully',
@@ -173,14 +163,19 @@ app.post('/chat', requireAccess, async (req, res) => {
       return res.status(400).json({ error: 'Question cannot be empty.' });
     }
 
-    const scored = index.chunks
-      .map((chunk) => ({
-        ...chunk,
-        score: scoreChunk(questionTokens, chunk),
-      }))
-      .filter((item) => item.score > 0)
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 3);
+    const fuseIndex = index.searchIndex || buildLocalSearch(index.chunks);
+    if (!index.searchIndex) {
+      userIndexes.set(userId, { ...index, searchIndex: fuseIndex });
+    }
+
+    const scored = fuseIndex
+      .search(question)
+      .slice(0, 3)
+      .map((result, idx) => ({
+        ...result.item,
+        score: typeof result.score === 'number' ? Number((1 - result.score).toFixed(3)) : 0,
+        rank: idx + 1,
+      }));
 
     if (scored.length === 0) {
       return res.json({
@@ -189,14 +184,14 @@ app.post('/chat', requireAccess, async (req, res) => {
       });
     }
 
-    const snippets = scored.map((item, idx) => {
+    const snippets = scored.map((item) => {
       let text = item.text.trim();
       if (text.length > 500) {
         text = `${text.slice(0, 500)}…`;
       }
       return {
         id: item.id,
-        label: `Snippet #${idx + 1}`,
+        label: `Snippet #${item.rank}`,
         text,
         score: item.score,
       };
@@ -212,6 +207,39 @@ app.post('/chat', requireAccess, async (req, res) => {
     console.error('Chat error', error);
     res.status(500).json({ error: 'Failed to complete chat request', details: error.message });
   }
+});
+
+app.get('/test-search', requireAccess, (req, res) => {
+  const user = ensureUser(req);
+  if (!user) {
+    return res.status(400).json({ error: 'userId is required via X-User-Id header or request body' });
+  }
+
+  const query = (req.query.q || '').toString();
+  if (!query.trim()) {
+    return res.status(400).json({ error: 'q query parameter is required' });
+  }
+
+  const index = userIndexes.get(user.id);
+  if (!index || !index.chunks || index.chunks.length === 0) {
+    return res.status(400).json({ error: 'No PDF uploaded for this user. Upload your ICD-10-CM PDF first.' });
+  }
+
+  const fuseIndex = index.searchIndex || buildLocalSearch(index.chunks);
+  if (!index.searchIndex) {
+    userIndexes.set(user.id, { ...index, searchIndex: fuseIndex });
+  }
+
+  const results = fuseIndex
+    .search(query)
+    .slice(0, 10)
+    .map((entry) => ({
+      id: entry.item.id,
+      text: entry.item.text,
+      score: entry.score,
+    }));
+
+  res.json({ query, results });
 });
 
 app.get('/trial-status', (req, res) => {
