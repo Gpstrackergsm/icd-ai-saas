@@ -3,8 +3,6 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const multer = require('multer');
 const pdfParse = require('pdf-parse');
-const { v4: uuidv4 } = require('uuid');
-const { OpenAI } = require('openai');
 const Stripe = require('stripe');
 const path = require('path');
 
@@ -20,12 +18,12 @@ const upload = multer({
   limits: { fileSize: 15 * 1024 * 1024 },
 });
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 const stripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY) : null;
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const userStore = new Map();
-const documents = new Map();
+// Map<userId, { chunks: Array<{ id, text, tokens }> }>
+const userIndexes = new Map();
 
 function ensureUser(req) {
   const userId = req.headers['x-user-id'] || req.body.userId || req.query.userId;
@@ -48,34 +46,82 @@ function requireAccess(req, res, next) {
   next();
 }
 
-async function embedText(text) {
-  const response = await openai.embeddings.create({
-    model: 'text-embedding-3-small',
-    input: text,
-  });
-  return response.data[0].embedding;
+function normalizeTokens(text) {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9\s.]/g, ' ')
+    .split(/\s+/)
+    .filter(Boolean);
 }
 
-function cosineSimilarity(a, b) {
-  const dot = a.reduce((sum, val, idx) => sum + val * b[idx], 0);
-  const magA = Math.sqrt(a.reduce((sum, val) => sum + val * val, 0));
-  const magB = Math.sqrt(b.reduce((sum, val) => sum + val * val, 0));
-  return dot / (magA * magB);
-}
+function splitIntoChunks(text, minSize = 800, maxSize = 1200) {
+  const segments = text
+    .replace(/\r/g, '')
+    .split(/\n{2,}|\n/)
+    .map((s) => s.trim())
+    .filter(Boolean);
 
-function chunkText(text, chunkSize = 800, overlap = 200) {
   const chunks = [];
-  let start = 0;
-  while (start < text.length) {
-    const end = Math.min(text.length, start + chunkSize);
-    chunks.push(text.slice(start, end));
-    start += chunkSize - overlap;
+  let current = '';
+
+  const pushChunk = (chunkText) => {
+    const trimmed = chunkText.trim();
+    if (trimmed) chunks.push(trimmed);
+  };
+
+  for (const segment of segments) {
+    const candidate = (current ? `${current} ${segment}` : segment).trim();
+    if (candidate.length <= maxSize) {
+      current = candidate;
+      continue;
+    }
+
+    if (current.length >= minSize) {
+      pushChunk(current);
+      current = segment;
+    } else {
+      current = candidate;
+    }
+
+    while (current.length > maxSize) {
+      pushChunk(current.slice(0, maxSize));
+      current = current.slice(maxSize);
+    }
   }
+
+  if (current) {
+    pushChunk(current);
+  }
+
   return chunks;
 }
 
-app.post('/upload', requireAccess, upload.single('file'), async (req, res) => {
+function scoreChunk(questionTokens, chunk) {
+  const chunkTokenSet = new Set(chunk.tokens);
+  const uniqueQuestionTokens = Array.from(new Set(questionTokens));
+  let score = 0;
+
+  for (const token of uniqueQuestionTokens) {
+    if (chunkTokenSet.has(token)) {
+      score += 1;
+    }
+  }
+
+  const rawQuestion = questionTokens.join(' ');
+  if (rawQuestion && chunk.text.toLowerCase().includes(rawQuestion)) {
+    score += Math.max(2, Math.ceil(uniqueQuestionTokens.length / 2));
+  }
+
+  return score;
+}
+
+app.post('/upload-pdf', requireAccess, upload.single('file'), async (req, res) => {
   try {
+    const user = ensureUser(req);
+    if (!user) {
+      return res.status(400).json({ error: 'userId is required via X-User-Id header or request body' });
+    }
+
     if (!req.file) {
       return res.status(400).json({ error: 'No file uploaded' });
     }
@@ -89,20 +135,19 @@ app.post('/upload', requireAccess, upload.single('file'), async (req, res) => {
       return res.status(400).json({ error: 'Could not extract text from PDF' });
     }
 
-    const docId = uuidv4();
-    const chunks = chunkText(text);
-    const embeddings = [];
+    const chunks = splitIntoChunks(text)
+      .filter(Boolean)
+      .map((chunkText, idx) => ({
+        id: idx,
+        text: chunkText,
+        tokens: normalizeTokens(chunkText),
+      }));
 
-    for (const chunk of chunks) {
-      const embedding = await embedText(chunk);
-      embeddings.push({ id: uuidv4(), text: chunk, embedding });
-    }
-
-    documents.set(docId, { fileName: req.file.originalname, embeddings });
+    userIndexes.set(user.id, { chunks });
 
     res.json({
-      documentId: docId,
-      chunks: embeddings.length,
+      message: 'PDF processed successfully',
+      chunks: chunks.length,
       fileName: req.file.originalname,
     });
   } catch (error) {
@@ -113,40 +158,56 @@ app.post('/upload', requireAccess, upload.single('file'), async (req, res) => {
 
 app.post('/chat', requireAccess, async (req, res) => {
   try {
-    const { documentId, message } = req.body;
-    if (!documentId || !message) {
-      return res.status(400).json({ error: 'documentId and message are required' });
-    }
-    const doc = documents.get(documentId);
-    if (!doc) {
-      return res.status(404).json({ error: 'Document not found. Upload a PDF first.' });
+    const { userId, question } = req.body;
+    if (!userId || !question) {
+      return res.status(400).json({ error: 'userId and question are required' });
     }
 
-    const queryEmbedding = await embedText(message);
-    const ranked = doc.embeddings
-      .map((item) => ({
-        ...item,
-        score: cosineSimilarity(queryEmbedding, item.embedding),
+    const index = userIndexes.get(userId);
+    if (!index || !index.chunks || index.chunks.length === 0) {
+      return res.status(400).json({ error: 'No PDF uploaded for this user. Upload your ICD-10-CM PDF first.' });
+    }
+
+    const questionTokens = normalizeTokens(question);
+    if (questionTokens.length === 0) {
+      return res.status(400).json({ error: 'Question cannot be empty.' });
+    }
+
+    const scored = index.chunks
+      .map((chunk) => ({
+        ...chunk,
+        score: scoreChunk(questionTokens, chunk),
       }))
+      .filter((item) => item.score > 0)
       .sort((a, b) => b.score - a.score)
-      .slice(0, 4);
+      .slice(0, 3);
 
-    const context = ranked.map((r) => r.text).join('\n---\n');
+    if (scored.length === 0) {
+      return res.json({
+        answer: "I couldn't find anything relevant. Try searching by diagnosis name or code.",
+        snippets: [],
+      });
+    }
 
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: [
-        {
-          role: 'system',
-          content:
-            'You are a helpful assistant that answers questions using the provided ICD-10-CM 2025 context. If the answer is not in the context, say you do not have enough information.',
-        },
-        { role: 'user', content: `Context:\n${context}\n\nQuestion: ${message}` },
-      ],
-      temperature: 0.2,
+    const snippets = scored.map((item, idx) => {
+      let text = item.text.trim();
+      if (text.length > 500) {
+        text = `${text.slice(0, 500)}…`;
+      }
+      return {
+        id: item.id,
+        label: `Snippet #${idx + 1}`,
+        text,
+        score: item.score,
+      };
     });
 
-    res.json({ answer: completion.choices[0].message.content, references: ranked.map((r) => r.id) });
+    const answerLines = [
+      'Here are the most relevant ICD-10-CM snippets I found:',
+      ...snippets.map((s) => `${s.label}: ${s.text}`),
+    ];
+
+    res.json({ answer: answerLines.join('\n\n'), snippets });
   } catch (error) {
     console.error('Chat error', error);
     res.status(500).json({ error: 'Failed to complete chat request', details: error.message });
