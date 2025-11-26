@@ -4,41 +4,175 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ICD-10-CM 2025 AI SaaS</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f5f8; color: #222; }
-    header { background: #1b4b66; color: #fff; padding: 1rem 2rem; }
-    main { max-width: 900px; margin: 2rem auto; background: #fff; padding: 1.5rem; border-radius: 12px; box-shadow: 0 6px 24px rgba(0,0,0,0.08); }
-    h1 { margin: 0; }
-    label { display: block; margin-top: 1rem; font-weight: 600; }
-    input, textarea, button { width: 100%; padding: 0.75rem; margin-top: 0.5rem; border-radius: 8px; border: 1px solid #cfd8e3; }
-    button { background: #1b4b66; color: #fff; border: none; cursor: pointer; font-weight: 600; }
-    button:hover { background: #15384c; }
-    #chat-log { margin-top: 1rem; border: 1px solid #cfd8e3; padding: 1rem; border-radius: 8px; height: 250px; overflow-y: auto; background: #fafbfc; }
-    .message { margin-bottom: 0.75rem; }
-    .message strong { color: #1b4b66; }
-    .status { margin-top: 0.5rem; font-size: 0.9rem; color: #444; }
-  </style>
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <header>
-    <h1>ICD-10-CM 2025 AI SaaS</h1>
-    <p>Upload a PDF and chat with it. 24h free trial, then $9/month.</p>
+  <header class="navbar">
+    <div class="nav-brand">ICD AI SaaS</div>
+    <nav class="nav-links">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#app" class="nav-cta">Try it</a>
+    </nav>
   </header>
-  <main>
-    <label>User ID (kept in-memory):</label>
-    <input id="user-id" placeholder="demo-user" />
 
-    <label>Upload ICD-10-CM 2025 PDF</label>
-    <input type="file" id="pdf-file" accept="application/pdf" />
-    <button id="upload-btn">Upload</button>
-    <div class="status" id="upload-status"></div>
+  <section class="hero" id="top">
+    <div class="hero-content">
+      <p class="eyebrow">For US clinicians, coders, and billing teams</p>
+      <h1>Search ICD-10-CM 2025 in seconds, not hours.</h1>
+      <p class="subhead">Upload the official ICD-10-CM 2025 PDF once and chat with it using AI. 24-hour free trial, then just $9/month.</p>
+      <div class="hero-actions">
+        <a href="#app" class="btn primary">Start free 24-hour trial</a>
+        <a href="#how" class="btn ghost">See how it works</a>
+      </div>
+      <div class="hero-meta">No installs. Runs in your browser. Keep your coding team fast and accurate.</div>
+    </div>
+    <div class="hero-card">
+      <h3>Why teams use ICD AI SaaS</h3>
+      <ul>
+        <li>Instant ICD-10 search over thousands of pages</li>
+        <li>AI explanations you can share with staff or patients</li>
+        <li>Built for coders, clinicians, and billing teams</li>
+        <li>Browser-based — no software to install</li>
+      </ul>
+    </div>
+  </section>
 
-    <label>Your question</label>
-    <textarea id="question" rows="3" placeholder="Ask about diagnoses codes, descriptions, etc."></textarea>
-    <button id="ask-btn">Ask</button>
+  <section class="section" id="features">
+    <div class="section-heading">
+      <p class="eyebrow">Benefits</p>
+      <h2>Keep your revenue cycle moving with AI-assisted ICD search.</h2>
+      <p class="section-sub">Upload once, ask anything about ICD-10-CM 2025, and get clear answers with cited context.</p>
+    </div>
+    <div class="feature-grid">
+      <div class="card feature-card">
+        <h3>Instant answers</h3>
+        <p>Search across thousands of pages without flipping through PDFs or bookmarks.</p>
+      </div>
+      <div class="card feature-card">
+        <h3>Explainable AI</h3>
+        <p>Get responses grounded in the ICD-10-CM 2025 text so you can verify every code.</p>
+      </div>
+      <div class="card feature-card">
+        <h3>Made for teams</h3>
+        <p>Perfect for coders, clinicians, and billing staff who need fast, accurate guidance.</p>
+      </div>
+      <div class="card feature-card">
+        <h3>Zero installs</h3>
+        <p>Runs in your browser with a clean, secure upload and chat experience.</p>
+      </div>
+    </div>
+  </section>
 
-    <div id="chat-log"></div>
-  </main>
+  <section class="section how" id="how">
+    <div class="section-heading">
+      <p class="eyebrow">How it works</p>
+      <h2>From upload to answer in three simple steps.</h2>
+    </div>
+    <div class="steps">
+      <div class="card step">
+        <div class="step-number">1</div>
+        <h3>Upload once</h3>
+        <p>Import the official ICD-10-CM 2025 PDF. We process and embed it for lightning-fast lookup.</p>
+      </div>
+      <div class="card step">
+        <div class="step-number">2</div>
+        <h3>Ask naturally</h3>
+        <p>Type any question — specific codes, differences between terms, or clarifications.</p>
+      </div>
+      <div class="card step">
+        <div class="step-number">3</div>
+        <h3>Get AI answers</h3>
+        <p>Receive concise, grounded responses with references back to the source text.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pricing" id="pricing">
+    <div class="card pricing-card">
+      <p class="eyebrow">Pricing</p>
+      <h2>Simple pricing</h2>
+      <p class="price">Try it free for 24 hours, then just <strong>$9/month</strong>.</p>
+      <p class="muted">Cancel anytime. No long-term contracts.</p>
+      <a href="#app" class="btn primary">Start free 24-hour trial</a>
+    </div>
+  </section>
+
+  <section class="section faq" id="faq">
+    <div class="section-heading">
+      <p class="eyebrow">FAQ</p>
+      <h2>Answers to common questions.</h2>
+    </div>
+    <div class="faq-grid">
+      <div class="card faq-item">
+        <h3>Is this official coding advice?</h3>
+        <p>No. This is an AI assistant to speed up lookup. Always verify guidance and use your clinical judgment.</p>
+      </div>
+      <div class="card faq-item">
+        <h3>Is my PDF stored permanently?</h3>
+        <p>Uploads are kept in memory for your session and cleared when the server restarts. No long-term storage.</p>
+      </div>
+      <div class="card faq-item">
+        <h3>Can I use this for patients' PHI?</h3>
+        <p>Do not upload protected health information. Use sample or de-identified documents only.</p>
+      </div>
+      <div class="card faq-item">
+        <h3>Do I need special software?</h3>
+        <p>No installs required. Use any modern browser on desktop or mobile.</p>
+      </div>
+      <div class="card faq-item">
+        <h3>How does the free trial work?</h3>
+        <p>You get 24 hours of access tracked per user ID. After that, subscribe for $9/month to keep using it.</p>
+      </div>
+      <div class="card faq-item">
+        <h3>Can my team try it together?</h3>
+        <p>Yes. Each teammate can start their own 24-hour trial and upgrade when ready.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section app" id="app">
+    <div class="section-heading">
+      <p class="eyebrow">Try it now</p>
+      <h2>Try ICD AI SaaS</h2>
+      <p class="section-sub">Upload your ICD-10-CM 2025 PDF and ask a question.</p>
+    </div>
+    <div class="card app-card">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="user-id">User ID (kept in-memory)</label>
+          <input id="user-id" placeholder="demo-user" />
+        </div>
+        <div class="form-group">
+          <label for="pdf-file">Upload ICD-10-CM 2025 PDF</label>
+          <input type="file" id="pdf-file" accept="application/pdf" />
+          <button id="upload-btn" class="btn primary full">Upload</button>
+          <div class="status" id="upload-status"></div>
+        </div>
+        <div class="form-group">
+          <label for="question">Your question</label>
+          <textarea id="question" rows="3" placeholder="Ask about diagnosis codes, descriptions, or differences."></textarea>
+          <button id="ask-btn" class="btn secondary full">Ask</button>
+        </div>
+      </div>
+      <div class="chat-wrapper">
+        <div id="chat-log" class="chat-log"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="nav-brand">ICD AI SaaS</div>
+      <div class="footer-links">
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#app">Try it</a>
+      </div>
+      <div class="footer-meta">Built for US doctors, clinics, and coding teams.</div>
+    </div>
+  </footer>
 
   <script>
     const uploadBtn = document.getElementById('upload-btn');

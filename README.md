@@ -1,6 +1,10 @@
 # ICD AI SaaS
 
-This project is a lightweight SaaS demo that lets users upload the **ICD-10-CM 2025** PDF and chat with it using OpenAI. It includes a 24-hour free trial, a $9/month subscription tier, and Stripe integration hooks.
+ICD AI SaaS is a browser-based assistant for US clinicians, coders, and billing teams. Upload the official **ICD-10-CM 2025** PDF once and get instant, AI-assisted answers to code lookups, clarifications, and comparisons.
+
+The experience feels like chatting with your coding manual: grounded responses reference the source text so you can trust every answer. Teams can try it free for 24 hours and keep moving with a simple $9/month subscription.
+
+Built as a lightweight SaaS demo, it runs on Node.js + Express with OpenAI embeddings, a minimal HTML frontend, and optional Stripe hooks for billing.
 
 ## Features
 - Express backend with upload and chat endpoints
@@ -9,7 +13,7 @@ This project is a lightweight SaaS demo that lets users upload the **ICD-10-CM 2
 - In-memory 24h trial tracking with optional Stripe checkout
 - Minimal HTML frontend for uploading and chatting
 
-## Getting started
+## How to run locally
 1. **Install dependencies**
    ```bash
    npm install
@@ -28,10 +32,10 @@ This project is a lightweight SaaS demo that lets users upload the **ICD-10-CM 2
    ```bash
    npm start
    ```
-4. **Use the app**
-   - Visit `http://localhost:3000` to open the frontend.
+4. **Open the app**
+   - Visit `http://localhost:3000` to load the landing page and app widget.
    - Enter a user ID (used for trial tracking) and upload your ICD-10-CM 2025 PDF.
-   - Ask questions in the chat box.
+   - Ask questions in the chat box and review AI responses.
 
 ## API overview
 - `POST /upload` – multipart/form-data with `file` (PDF). Requires `X-User-Id` header. Returns a `documentId`.
