@@ -1,35 +1,32 @@
 const { metrics } = require("../lib/db");
 
-function authorize(req) {
-  const adminPassword = process.env.ADMIN_PASSWORD;
-  const header = req.headers.authorization;
-
-  if (!adminPassword || !header || !header.startsWith("Basic ")) {
-    return false;
-  }
-
-  const base64Credentials = header.slice("Basic ".length).trim();
-  const decoded = Buffer.from(base64Credentials, "base64").toString("utf8");
-  const separatorIndex = decoded.indexOf(":");
-
-  if (separatorIndex === -1) {
-    return false;
-  }
-
-  const username = decoded.slice(0, separatorIndex);
-  const password = decoded.slice(separatorIndex + 1);
-
-  return Boolean(username) && password === adminPassword;
-}
-
 const renderRow = (label, value) => `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;">
   <strong>${label}</strong><span>${value}</span>
 </div>`;
 
 export default function handler(req, res) {
-  if (!authorize(req)) {
+  if (!process.env.ADMIN_PASSWORD) {
+    throw new Error("ADMIN_PASSWORD is not set");
+  }
+
+  const auth = req.headers.authorization;
+
+  if (!auth || !auth.startsWith("Basic ")) {
+    res.statusCode = 401;
     res.setHeader("WWW-Authenticate", 'Basic realm="Admin Area"');
-    return res.status(401).send("Unauthorized");
+    res.end("Authentication required");
+    return;
+  }
+
+  const base64 = auth.split(" ")[1];
+  const decoded = Buffer.from(base64, "base64").toString();
+  const [username, password] = decoded.split(":");
+
+  if (!password || password !== process.env.ADMIN_PASSWORD) {
+    res.statusCode = 401;
+    res.setHeader("WWW-Authenticate", 'Basic realm="Admin Area"');
+    res.end("Invalid credentials");
+    return;
   }
 
   const activeSubscribers = metrics.activeSubscribers();
