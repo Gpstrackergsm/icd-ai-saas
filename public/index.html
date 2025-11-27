@@ -146,7 +146,7 @@
         </div>
         <div class="form-group">
           <button id="search-btn" class="btn primary full">Search ICD</button>
-          <div class="status" id="search-status">Enter a diagnosis name or code to begin.</div>
+          <div class="status" id="search-status"></div>
         </div>
         <div class="form-group">
           <p class="muted">Examples: E11.9 (Type 2 diabetes), J18.9 (Pneumonia), I10 (Hypertension), F32.9 (Major depressive disorder).</p>
@@ -176,9 +176,9 @@
     const searchStatus = document.getElementById('search-status');
     const resultsList = document.getElementById('search-results');
 
-    function setStatus(text, isError = false) {
-      searchStatus.textContent = text;
-      searchStatus.className = isError ? 'status error' : 'status';
+    function clearStatus() {
+      searchStatus.textContent = '';
+      searchStatus.className = 'status';
     }
 
     function escapeHtml(text) {
@@ -190,144 +190,64 @@
         .replace(/'/g, '&#039;');
     }
 
-    function normalizeTerm(value) {
-      return (value || '').toString().trim().toLowerCase();
-    }
-
-    function getMatchRank(entry, normalizedTerm) {
-      const code = normalizeTerm(entry.code);
-      const description = normalizeTerm(entry.description);
-      const chapter = normalizeTerm(entry.chapter);
-
-      if (code === normalizedTerm) return 0; // Exact code match
-      if (code.includes(normalizedTerm) || description.includes(normalizedTerm) || chapter.includes(normalizedTerm)) return 1; // Keyword match
-      return 2; // Alphabetical fallback
-    }
-
-    function sortEntries(entries, term) {
-      const normalizedTerm = normalizeTerm(term);
-      const copy = Array.isArray(entries) ? [...entries] : [];
-
-      return copy.sort((a, b) => {
-        const rankA = getMatchRank(a, normalizedTerm);
-        const rankB = getMatchRank(b, normalizedTerm);
-
-        if (rankA !== rankB) return rankA - rankB;
-
-        const alphaA = `${a.code || ''} ${a.description || ''}`.toLowerCase();
-        const alphaB = `${b.code || ''} ${b.description || ''}`.toLowerCase();
-        return alphaA.localeCompare(alphaB);
-      });
-    }
-
-    function buildDisplayGroups(terms, groupedResults = {}) {
-      const seenCodes = new Set();
-      const groups = terms.map((term) => {
-        const entries = sortEntries(groupedResults?.[term], term);
-        const uniqueEntries = entries.filter((entry) => {
-          const code = normalizeTerm(entry.code);
-          if (!code || seenCodes.has(code)) return false;
-          seenCodes.add(code);
-          return true;
-        });
-
-        return { term, entries: uniqueEntries };
-      });
-
-      return { groups, totalUnique: seenCodes.size };
-    }
-
-    function renderResults(query, groupedResults = {}, meta = {}) {
+    function renderResults(query, results = []) {
       resultsList.innerHTML = '';
 
       if (!query.trim()) {
-        resultsList.innerHTML = '<div class="muted">Enter a code or diagnosis name to search the ICD index.</div>';
-        return { totalUnique: 0, termCount: 0 };
+        return 0;
       }
 
-      const terms = meta?.terms?.length ? meta.terms : Object.keys(groupedResults || {});
-      const isMultiple = Boolean(meta?.multiple || terms.length > 1);
+      const seenCodes = new Set();
 
-      if (!terms.length) {
-        resultsList.innerHTML = `<div class="message error">Smart Search: No results found for "${escapeHtml(query)}". Try another diagnosis name or code, e.g. "J18.9" or "pneumonia".</div>`;
-        return { totalUnique: 0, termCount: 0 };
-      }
+      results.forEach((entry) => {
+        if (!entry || typeof entry !== 'object') return;
 
-      if (isMultiple) {
-        const multiMessage = document.createElement('div');
-        multiMessage.className = 'message';
-        multiMessage.textContent = 'Multiple search detected';
-        resultsList.appendChild(multiMessage);
-      }
+        const code = (entry.code ?? '').toString().trim();
+        const description = (entry.description ?? '').toString().trim();
+        const chapter = (entry.chapter ?? '').toString().trim();
+        const normalizedCode = code.toLowerCase();
 
-      const { groups, totalUnique } = buildDisplayGroups(terms, groupedResults);
+        if (!code || seenCodes.has(normalizedCode)) return;
 
-      groups.forEach(({ term, entries }) => {
-        const group = document.createElement('div');
-        group.className = 'result-group';
+        seenCodes.add(normalizedCode);
 
-        const heading = document.createElement('div');
-        heading.className = 'result-term';
-        heading.textContent = term || '(blank)';
-        group.appendChild(heading);
+        const item = document.createElement('div');
+        item.className = 'result-item';
+        item.innerHTML = `
+          <div class="result-code">${escapeHtml(code)}</div>
+          <div class="result-description">${escapeHtml(description)}</div>
+          <div class="result-chapter">${escapeHtml(chapter)}</div>
+        `;
 
-        if (!entries.length) {
-          const empty = document.createElement('div');
-          empty.className = 'muted';
-          empty.textContent = 'No results for this term';
-          group.appendChild(empty);
-        } else {
-          entries.forEach((entry) => {
-            const item = document.createElement('div');
-            item.className = 'result-item';
-            item.innerHTML = `
-              <div class="result-code">${escapeHtml(entry.code || '')}</div>
-              <div class="result-description">${escapeHtml(entry.description || '')}</div>
-              <div class="result-chapter">${escapeHtml(entry.chapter || '')}</div>
-            `;
-            group.appendChild(item);
-          });
-        }
-
-        resultsList.appendChild(group);
+        resultsList.appendChild(item);
       });
 
-      return { totalUnique, termCount: terms.length };
+      return seenCodes.size;
     }
 
     async function runSearch() {
       const query = searchInput.value || '';
+
       if (!query.trim()) {
-        setStatus('Enter a diagnosis name or ICD code to search.', true);
-        renderResults('', {});
+        clearStatus();
+        renderResults('', []);
         return;
       }
 
-      setStatus('Searching...');
+      clearStatus();
       searchBtn.disabled = true;
+
       try {
         const response = await fetch(`/search?q=${encodeURIComponent(query)}`);
         const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'Search failed');
-        const groupedResults = data.results || {};
-        const meta = data.meta || {};
-        const summary = renderResults(query, groupedResults, meta);
-        const termCount = summary.termCount || meta.terms?.length || Object.keys(groupedResults).length || 0;
-        const totalMatches = summary.totalUnique ?? Object.values(groupedResults).reduce(
-          (sum, entries) => sum + (Array.isArray(entries) ? entries.length : 0),
-          0
-        );
 
-        if (meta.multiple || termCount > 1) {
-          setStatus(
-            `Multiple search detected. Showing ${totalMatches} result(s) across ${termCount} term(s).`
-          );
-        } else {
-          setStatus(totalMatches ? `Showing ${totalMatches} result(s).` : 'No results found.');
-        }
+        if (!response.ok) throw new Error(data.error || 'Search failed');
+
+        const results = Array.isArray(data.results) ? data.results : [];
+        renderResults(query, results);
       } catch (error) {
-        setStatus(error.message || 'Search failed', true);
-        renderResults(query, {});
+        console.error('Search failed:', error);
+        renderResults(query, []);
       } finally {
         searchBtn.disabled = false;
       }
