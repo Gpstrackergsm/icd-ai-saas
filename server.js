@@ -19,8 +19,28 @@ app.get('/search', (req, res) => {
     return res.json({ results: {}, meta: { multiple: false, terms: [] } });
   }
 
+  const seenCodes = new Set();
+  const termDuplicates = {};
+
   const groupedResults = terms.reduce((acc, term) => {
-    acc[term] = searchIcd(term);
+    const entries = searchIcd(term);
+    const duplicates = [];
+
+    entries.forEach((entry) => {
+      const code = (entry.code || '').toString().trim().toLowerCase();
+      if (!code) return;
+      if (seenCodes.has(code)) {
+        duplicates.push(code);
+      } else {
+        seenCodes.add(code);
+      }
+    });
+
+    if (duplicates.length) {
+      termDuplicates[term] = duplicates;
+    }
+
+    acc[term] = entries;
     return acc;
   }, {});
 
@@ -29,6 +49,7 @@ app.get('/search', (req, res) => {
     meta: {
       multiple: terms.length > 1,
       terms,
+      duplicates: termDuplicates,
     },
   });
 });
