@@ -1,0 +1,22 @@
+[
+  {
+    "code": "E11.9",
+    "description": "Type 2 diabetes mellitus without complications",
+    "chapter": "Endocrine, nutritional and metabolic diseases"
+  },
+  {
+    "code": "J18.9",
+    "description": "Pneumonia, unspecified organism",
+    "chapter": "Diseases of the respiratory system"
+  },
+  {
+    "code": "I10",
+    "description": "Essential (primary) hypertension",
+    "chapter": "Diseases of the circulatory system"
+  },
+  {
+    "code": "F32.9",
+    "description": "Major depressive disorder, single episode, unspecified",
+    "chapter": "Mental, Behavioral and Neurodevelopmental disorders"
+  }
+]
