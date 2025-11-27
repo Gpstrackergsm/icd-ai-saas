@@ -168,6 +168,7 @@
           <div class="form-group">
             <button id="search-btn" class="btn button-primary full">Search ICD Now</button>
             <div class="status" id="search-status"></div>
+            <div class="remaining-counter" id="remaining-counter"></div>
           </div>
           <div class="form-group">
             <p class="muted">Try real terms — results appear instantly.</p>
@@ -175,6 +176,15 @@
         </div>
         <div class="chat-wrapper">
           <div id="search-results" class="results-list"></div>
+        </div>
+        <div id="limit-overlay" class="limit-overlay" aria-hidden="true">
+          <div class="limit-modal">
+            <div class="limit-icon" aria-hidden="true">🚫</div>
+            <h3>Free Trial Limit Reached</h3>
+            <p class="limit-lead">You’ve used your 10 free searches.</p>
+            <p class="muted">Start your subscription to continue searching ICD-10-CM instantly.</p>
+            <a href="#pricing" class="btn button-primary" id="subscription-cta">Start Subscription</a>
+          </div>
         </div>
       </div>
     </section>
@@ -254,10 +264,60 @@
     const searchInput = document.getElementById('search-query');
     const searchStatus = document.getElementById('search-status');
     const resultsList = document.getElementById('search-results');
+    const remainingCounter = document.getElementById('remaining-counter');
+    const limitOverlay = document.getElementById('limit-overlay');
+
+    const MAX_SEARCHES = 10;
+    const STORAGE_KEY = 'icdSearchCount';
+    const unlimitedSearches = new URLSearchParams(window.location.search).get('unlimited') === 'true';
 
     function clearStatus() {
       searchStatus.textContent = '';
       searchStatus.className = 'status';
+    }
+
+    function readSearchCount() {
+      if (unlimitedSearches) return 0;
+      const stored = localStorage.getItem(STORAGE_KEY);
+      const parsed = parseInt(stored, 10);
+      return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+    }
+
+    function saveSearchCount(count) {
+      if (unlimitedSearches) return;
+      localStorage.setItem(STORAGE_KEY, String(count));
+    }
+
+    function updateRemainingCounter() {
+      if (!remainingCounter) return;
+      if (unlimitedSearches) {
+        remainingCounter.textContent = 'Unlimited searches enabled for this session.';
+        remainingCounter.classList.add('muted');
+        return;
+      }
+
+      const used = readSearchCount();
+      const remaining = Math.max(0, MAX_SEARCHES - used);
+      remainingCounter.textContent = `Free searches remaining: ${remaining} / ${MAX_SEARCHES}`;
+      remainingCounter.classList.toggle('limit-reached', remaining === 0);
+    }
+
+    function isSearchBlocked() {
+      if (unlimitedSearches) return false;
+      return readSearchCount() >= MAX_SEARCHES;
+    }
+
+    function setBlockedState(blocked) {
+      searchBtn.disabled = blocked;
+      searchInput.disabled = blocked;
+      if (blocked) {
+        resultsList.innerHTML = '';
+        limitOverlay?.classList.add('visible');
+        limitOverlay?.setAttribute('aria-hidden', 'false');
+      } else {
+        limitOverlay?.classList.remove('visible');
+        limitOverlay?.setAttribute('aria-hidden', 'true');
+      }
     }
 
     function escapeHtml(text) {
@@ -334,11 +394,22 @@
     async function runSearch() {
       const query = searchInput.value || '';
 
+      if (isSearchBlocked()) {
+        setBlockedState(true);
+        updateRemainingCounter();
+        return;
+      }
+
       if (!query.trim()) {
         clearStatus();
         renderResults('', []);
         return;
       }
+
+      const currentCount = readSearchCount();
+      const updatedCount = currentCount + 1;
+      saveSearchCount(updatedCount);
+      updateRemainingCounter();
 
       clearStatus();
       searchBtn.disabled = true;
@@ -358,11 +429,18 @@
         renderResults(query, []);
       } finally {
         searchBtn.disabled = false;
+        if (isSearchBlocked()) {
+          setBlockedState(true);
+        }
       }
     }
 
     window.addEventListener('load', () => {
       searchInput?.focus();
+      updateRemainingCounter();
+      if (isSearchBlocked()) {
+        setBlockedState(true);
+      }
     });
 
     searchBtn.addEventListener('click', runSearch);
