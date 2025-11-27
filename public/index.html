@@ -190,7 +190,7 @@
         .replace(/'/g, '&#039;');
     }
 
-    function renderResults(query, results) {
+    function renderResults(query, groupedResults = {}, meta = {}) {
       resultsList.innerHTML = '';
 
       if (!query.trim()) {
@@ -198,20 +198,51 @@
         return;
       }
 
-      if (!results.length) {
+      const terms = meta?.terms?.length ? meta.terms : Object.keys(groupedResults || {});
+      const isMultiple = Boolean(meta?.multiple || terms.length > 1);
+
+      if (!terms.length) {
         resultsList.innerHTML = `<div class="message error">Smart Search: No results found for "${escapeHtml(query)}". Try another diagnosis name or code, e.g. "J18.9" or "pneumonia".</div>`;
         return;
       }
 
-      results.slice(0, 50).forEach((entry) => {
-        const item = document.createElement('div');
-        item.className = 'result-item';
-        item.innerHTML = `
-          <div class="result-code">${escapeHtml(entry.code || '')}</div>
-          <div class="result-description">${escapeHtml(entry.description || '')}</div>
-          <div class="result-chapter">${escapeHtml(entry.chapter || '')}</div>
-        `;
-        resultsList.appendChild(item);
+      if (isMultiple) {
+        const multiMessage = document.createElement('div');
+        multiMessage.className = 'message';
+        multiMessage.textContent = 'Multiple search detected';
+        resultsList.appendChild(multiMessage);
+      }
+
+      terms.forEach((term) => {
+        const group = document.createElement('div');
+        group.className = 'result-group';
+
+        const heading = document.createElement('div');
+        heading.className = 'result-term';
+        heading.textContent = term || '(blank)';
+        group.appendChild(heading);
+
+        const entries = Array.isArray(groupedResults?.[term]) ? groupedResults[term] : [];
+
+        if (!entries.length) {
+          const empty = document.createElement('div');
+          empty.className = 'muted';
+          empty.textContent = 'No results for this term';
+          group.appendChild(empty);
+        } else {
+          entries.forEach((entry) => {
+            const item = document.createElement('div');
+            item.className = 'result-item';
+            item.innerHTML = `
+              <div class="result-code">${escapeHtml(entry.code || '')}</div>
+              <div class="result-description">${escapeHtml(entry.description || '')}</div>
+              <div class="result-chapter">${escapeHtml(entry.chapter || '')}</div>
+            `;
+            group.appendChild(item);
+          });
+        }
+
+        resultsList.appendChild(group);
       });
     }
 
@@ -219,7 +250,7 @@
       const query = searchInput.value || '';
       if (!query.trim()) {
         setStatus('Enter a diagnosis name or ICD code to search.', true);
-        renderResults('', []);
+        renderResults('', {});
         return;
       }
 
@@ -229,11 +260,26 @@
         const response = await fetch(`/search?q=${encodeURIComponent(query)}`);
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Search failed');
-        renderResults(query, data.results || []);
-        setStatus(data.results?.length ? `Showing ${data.results.length} result(s).` : 'No results found.');
+        const groupedResults = data.results || {};
+        const meta = data.meta || {};
+        renderResults(query, groupedResults, meta);
+
+        const termCount = meta.terms?.length || Object.keys(groupedResults).length || 0;
+        const totalMatches = Object.values(groupedResults).reduce(
+          (sum, entries) => sum + (Array.isArray(entries) ? entries.length : 0),
+          0
+        );
+
+        if (meta.multiple || termCount > 1) {
+          setStatus(
+            `Multiple search detected. Showing ${totalMatches} result(s) across ${termCount} term(s).`
+          );
+        } else {
+          setStatus(totalMatches ? `Showing ${totalMatches} result(s).` : 'No results found.');
+        }
       } catch (error) {
         setStatus(error.message || 'Search failed', true);
-        renderResults(query, []);
+        renderResults(query, {});
       } finally {
         searchBtn.disabled = false;
       }

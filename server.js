@@ -9,9 +9,28 @@ app.use(express.json({ limit: '2mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/search', (req, res) => {
-  const query = req.query.q || '';
-  const results = searchIcd(query);
-  res.json({ results });
+  const rawQuery = req.query.q || '';
+  const terms = rawQuery
+    .split(',')
+    .map((term) => term.trim())
+    .filter(Boolean);
+
+  if (!terms.length) {
+    return res.json({ results: {}, meta: { multiple: false, terms: [] } });
+  }
+
+  const groupedResults = terms.reduce((acc, term) => {
+    acc[term] = searchIcd(term);
+    return acc;
+  }, {});
+
+  res.json({
+    results: groupedResults,
+    meta: {
+      multiple: terms.length > 1,
+      terms,
+    },
+  });
 });
 
 app.get('/health', (req, res) => {
