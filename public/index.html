@@ -16,7 +16,7 @@
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
     </nav>
-    <a href="#app" class="btn button-primary nav-button">Use ICD Smart Search</a>
+    <a href="#app" class="btn button-primary nav-button">Get Your Code Now</a>
   </header>
 
   <main>
@@ -32,7 +32,7 @@
           <li>Save hours every week on coding and verification</li>
         </ul>
         <div class="hero-actions">
-          <a href="#app" class="btn button-primary">Use ICD Smart Search</a>
+          <a href="#app" class="btn button-primary">Get Your Code Now</a>
           <div class="trial-stack">
             <a href="#pricing" class="btn button-outline">Try it Free for 24 Hours</a>
             <p class="muted trial-note">No credit card. Live access expires automatically.</p>
@@ -178,12 +178,12 @@
           <div id="search-results" class="results-list"></div>
         </div>
         <div id="limit-overlay" class="limit-overlay" aria-hidden="true">
-          <div class="limit-modal">
+          <div class="limit-modal" role="dialog" aria-modal="true" aria-labelledby="limit-title">
             <div class="limit-icon" aria-hidden="true">🚫</div>
-            <h3>Free Trial Limit Reached</h3>
-            <p class="limit-lead">You’ve used your 10 free searches.</p>
-            <p class="muted">Start your subscription to continue searching ICD-10-CM instantly.</p>
-            <a href="#pricing" class="btn button-primary" id="subscription-cta">Start Subscription</a>
+            <h3 id="limit-title">Upgrade to Continue</h3>
+            <p class="limit-lead">You've reached the free limit.</p>
+            <p class="muted">Unlock unlimited ICD searches for $9/month.</p>
+            <button class="btn button-primary" id="subscription-cta">Subscribe Now</button>
           </div>
         </div>
       </div>
@@ -194,6 +194,7 @@
         <p class="eyebrow">Proof</p>
         <h2>Used by clinics, coders, and billing teams worldwide.</h2>
         <p class="muted trust-note">5,000+ searches completed this week</p>
+        <p class="muted trust-note">Over 5,000+ searches completed this week</p>
       </div>
       <div class="cards-grid">
         <div class="card testimonial">
@@ -256,7 +257,7 @@
         <a href="#">Contact</a>
       </div>
     </div>
-    <p class="footer-disclaimer">ICD Smart Search is for coding reference and administrative use only. It does not provide medical diagnosis or treatment advice.</p>
+    <p class="footer-disclaimer">ICD Smart Search is for coding reference &amp; administrative use only. It does not provide medical diagnosis or treatment advice.</p>
   </footer>
 
   <script>
@@ -266,10 +267,32 @@
     const resultsList = document.getElementById('search-results');
     const remainingCounter = document.getElementById('remaining-counter');
     const limitOverlay = document.getElementById('limit-overlay');
+    const subscriptionCta = document.getElementById('subscription-cta');
 
     const MAX_SEARCHES = 10;
     const STORAGE_KEY = 'icdSearchCount';
-    const unlimitedSearches = new URLSearchParams(window.location.search).get('unlimited') === 'true';
+    const SUBSCRIPTION_KEY = 'icd_subscribed';
+    const STRIPE_LINK = 'https://buy.stripe.com/00w4gycvoc0ObN95pMgnK01';
+
+    function isSubscribed() {
+      return localStorage.getItem(SUBSCRIPTION_KEY) === 'true';
+    }
+
+    function markSubscribed() {
+      localStorage.setItem(SUBSCRIPTION_KEY, 'true');
+      localStorage.removeItem(STORAGE_KEY);
+    }
+
+    function handleStripeSuccess() {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('success') === 'true') {
+        markSubscribed();
+        params.delete('success');
+        const newQuery = params.toString();
+        const newUrl = `${window.location.pathname}${newQuery ? `?${newQuery}` : ''}${window.location.hash}`;
+        window.history.replaceState({}, '', newUrl);
+      }
+    }
 
     function clearStatus() {
       searchStatus.textContent = '';
@@ -277,22 +300,23 @@
     }
 
     function readSearchCount() {
-      if (unlimitedSearches) return 0;
+      if (isSubscribed()) return 0;
       const stored = localStorage.getItem(STORAGE_KEY);
       const parsed = parseInt(stored, 10);
       return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
     }
 
     function saveSearchCount(count) {
-      if (unlimitedSearches) return;
+      if (isSubscribed()) return;
       localStorage.setItem(STORAGE_KEY, String(count));
     }
 
     function updateRemainingCounter() {
       if (!remainingCounter) return;
-      if (unlimitedSearches) {
-        remainingCounter.textContent = 'Unlimited searches enabled for this session.';
+      if (isSubscribed()) {
+        remainingCounter.textContent = 'Unlimited searches are unlocked.';
         remainingCounter.classList.add('muted');
+        remainingCounter.classList.remove('limit-reached');
         return;
       }
 
@@ -303,7 +327,7 @@
     }
 
     function isSearchBlocked() {
-      if (unlimitedSearches) return false;
+      if (isSubscribed()) return false;
       return readSearchCount() >= MAX_SEARCHES;
     }
 
@@ -406,10 +430,12 @@
         return;
       }
 
-      const currentCount = readSearchCount();
-      const updatedCount = currentCount + 1;
-      saveSearchCount(updatedCount);
-      updateRemainingCounter();
+      if (!isSubscribed()) {
+        const currentCount = readSearchCount();
+        const updatedCount = currentCount + 1;
+        saveSearchCount(updatedCount);
+        updateRemainingCounter();
+      }
 
       clearStatus();
       searchBtn.disabled = true;
@@ -436,11 +462,16 @@
     }
 
     window.addEventListener('load', () => {
+      handleStripeSuccess();
       searchInput?.focus();
       updateRemainingCounter();
       if (isSearchBlocked()) {
         setBlockedState(true);
       }
+    });
+
+    subscriptionCta?.addEventListener('click', () => {
+      window.location.href = STRIPE_LINK;
     });
 
     searchBtn.addEventListener('click', runSearch);
