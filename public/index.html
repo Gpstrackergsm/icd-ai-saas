@@ -190,12 +190,59 @@
         .replace(/'/g, '&#039;');
     }
 
+    function normalizeTerm(value) {
+      return (value || '').toString().trim().toLowerCase();
+    }
+
+    function getMatchRank(entry, normalizedTerm) {
+      const code = normalizeTerm(entry.code);
+      const description = normalizeTerm(entry.description);
+      const chapter = normalizeTerm(entry.chapter);
+
+      if (code === normalizedTerm) return 0; // Exact code match
+      if (code.includes(normalizedTerm) || description.includes(normalizedTerm) || chapter.includes(normalizedTerm)) return 1; // Keyword match
+      return 2; // Alphabetical fallback
+    }
+
+    function sortEntries(entries, term) {
+      const normalizedTerm = normalizeTerm(term);
+      const copy = Array.isArray(entries) ? [...entries] : [];
+
+      return copy.sort((a, b) => {
+        const rankA = getMatchRank(a, normalizedTerm);
+        const rankB = getMatchRank(b, normalizedTerm);
+
+        if (rankA !== rankB) return rankA - rankB;
+
+        const alphaA = `${a.code || ''} ${a.description || ''}`.toLowerCase();
+        const alphaB = `${b.code || ''} ${b.description || ''}`.toLowerCase();
+        return alphaA.localeCompare(alphaB);
+      });
+    }
+
+    function buildDisplayGroups(terms, groupedResults = {}) {
+      const seenCodes = new Set();
+      const groups = terms.map((term) => {
+        const entries = sortEntries(groupedResults?.[term], term);
+        const uniqueEntries = entries.filter((entry) => {
+          const code = normalizeTerm(entry.code);
+          if (!code || seenCodes.has(code)) return false;
+          seenCodes.add(code);
+          return true;
+        });
+
+        return { term, entries: uniqueEntries };
+      });
+
+      return { groups, totalUnique: seenCodes.size };
+    }
+
     function renderResults(query, groupedResults = {}, meta = {}) {
       resultsList.innerHTML = '';
 
       if (!query.trim()) {
         resultsList.innerHTML = '<div class="muted">Enter a code or diagnosis name to search the ICD index.</div>';
-        return;
+        return { totalUnique: 0, termCount: 0 };
       }
 
       const terms = meta?.terms?.length ? meta.terms : Object.keys(groupedResults || {});
@@ -203,7 +250,7 @@
 
       if (!terms.length) {
         resultsList.innerHTML = `<div class="message error">Smart Search: No results found for "${escapeHtml(query)}". Try another diagnosis name or code, e.g. "J18.9" or "pneumonia".</div>`;
-        return;
+        return { totalUnique: 0, termCount: 0 };
       }
 
       if (isMultiple) {
@@ -213,7 +260,9 @@
         resultsList.appendChild(multiMessage);
       }
 
-      terms.forEach((term) => {
+      const { groups, totalUnique } = buildDisplayGroups(terms, groupedResults);
+
+      groups.forEach(({ term, entries }) => {
         const group = document.createElement('div');
         group.className = 'result-group';
 
@@ -221,8 +270,6 @@
         heading.className = 'result-term';
         heading.textContent = term || '(blank)';
         group.appendChild(heading);
-
-        const entries = Array.isArray(groupedResults?.[term]) ? groupedResults[term] : [];
 
         if (!entries.length) {
           const empty = document.createElement('div');
@@ -244,6 +291,8 @@
 
         resultsList.appendChild(group);
       });
+
+      return { totalUnique, termCount: terms.length };
     }
 
     async function runSearch() {
@@ -262,10 +311,9 @@
         if (!response.ok) throw new Error(data.error || 'Search failed');
         const groupedResults = data.results || {};
         const meta = data.meta || {};
-        renderResults(query, groupedResults, meta);
-
-        const termCount = meta.terms?.length || Object.keys(groupedResults).length || 0;
-        const totalMatches = Object.values(groupedResults).reduce(
+        const summary = renderResults(query, groupedResults, meta);
+        const termCount = summary.termCount || meta.terms?.length || Object.keys(groupedResults).length || 0;
+        const totalMatches = summary.totalUnique ?? Object.values(groupedResults).reduce(
           (sum, entries) => sum + (Array.isArray(entries) ? entries.length : 0),
           0
         );
