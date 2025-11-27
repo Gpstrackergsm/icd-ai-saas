@@ -16,33 +16,35 @@ app.get('/search', (req, res) => {
     .filter(Boolean);
 
   if (!terms.length) {
-    return res.json({ results: {}, meta: { multiple: false, terms: [] } });
+    return res.json({ results: [], meta: { terms: [], totalUnique: 0 } });
   }
 
   const seenCodes = new Set();
+  const uniqueResults = [];
 
-  const groupedResults = terms.reduce((acc, term) => {
-    const entries = searchIcd(term);
+  terms.forEach((term) => {
+    const entries = Array.isArray(searchIcd(term)) ? searchIcd(term) : [];
 
-    const uniqueEntries = entries.filter((entry) => {
-      const code = (entry.code || '').toString().trim().toLowerCase();
-      if (!code) return false;
-      if (seenCodes.has(code)) return false;
-      seenCodes.add(code);
-      return true;
+    entries.forEach((entry) => {
+      if (!entry || typeof entry !== 'object') return;
+
+      const code = (entry.code ?? '').toString().trim();
+      const description = (entry.description ?? '').toString().trim();
+      const chapter = (entry.chapter ?? '').toString().trim();
+      const normalizedCode = code.toLowerCase();
+
+      if (!code || !description || seenCodes.has(normalizedCode)) return;
+
+      seenCodes.add(normalizedCode);
+      uniqueResults.push({ code, description, chapter });
     });
-
-    acc[term] = uniqueEntries;
-    return acc;
-  }, {});
+  });
 
   res.json({
-    results: groupedResults,
+    results: uniqueResults,
     meta: {
-      multiple: terms.length > 1,
       terms,
-      duplicates: {},
-      totalUnique: seenCodes.size,
+      totalUnique: uniqueResults.length,
     },
   });
 });
