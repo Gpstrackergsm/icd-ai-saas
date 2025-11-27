@@ -23,7 +23,13 @@ ICD Smart Search is a browser-first, commercial-grade landing page and instant I
 ## API overview
 - `GET /api/search?q=term` – Returns ICD-10-CM code matches with descriptions and chapters.
 - `GET /api` – Health/status check for deployments.
+- `POST /api/webhooks/stripe` – Stripe webhook endpoint for subscription lifecycle events.
+- `GET /api/check-access?email=` – Server-side subscription validation used by the client.
 
 ## Notes
 - Searches stay on the device; no file uploads or external APIs are used.
 - Designed for Vercel serverless deployment with static frontend assets in `public/`.
+
+## Environment variables
+- `STRIPE_SECRET_KEY` – Required for server-side Stripe operations.
+- `STRIPE_WEBHOOK_SECRET` – Used to verify webhook signatures from Stripe.

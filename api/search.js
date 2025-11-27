@@ -1,6 +1,6 @@
 const { searchIcd } = require("../icd-search");
-const { verifySubscription, extractEmail } = require("../middleware/verifySubscription");
-const { recordVisit, getVisit, logUsage } = require("../lib/db");
+const { extractEmail } = require("../middleware/verifySubscription");
+const { recordVisit, getVisit, logUsage, getUserByEmail, normalizeStatus } = require("../lib/db");
 
 const MAX_FREE_SEARCHES = 10;
 const rateLimitWindowMs = 60 * 1000;
@@ -11,6 +11,25 @@ const getIp = (req) =>
   req.headers["x-forwarded-for"]?.toString().split(",")[0].trim() ||
   req.connection?.remoteAddress ||
   "unknown";
+
+const parseCookies = (req) => {
+  const header = req.headers?.cookie;
+  if (!header) return {};
+  return header.split(";").reduce((acc, part) => {
+    const [key, ...rest] = part.trim().split("=");
+    if (!key) return acc;
+    acc[key] = decodeURIComponent(rest.join("="));
+    return acc;
+  }, {});
+};
+
+const resolveSubscriptionState = (email) => {
+  const user = email ? getUserByEmail(email) : null;
+  const now = Math.floor(Date.now() / 1000);
+  const status = normalizeStatus(user?.subscription_status);
+  const active = Boolean(status === "ACTIVE" && (!user?.current_period_end || user.current_period_end > now));
+  return { active, status: status || "NONE", user };
+};
 
 const checkRateLimit = (identifier) => {
   const now = Date.now();
@@ -50,21 +69,30 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Missing query" });
   }
 
+  const cookies = parseCookies(req);
+  let visitorId = cookies["visitor_id"];
+  if (!visitorId) {
+    visitorId = `v_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+    res.setHeader("Set-Cookie", `visitor_id=${visitorId}; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax`);
+  }
+
   let isSubscribed = false;
   let user;
   if (email) {
-    const verification = await verifySubscription(req, { status: () => ({ json: () => {} }) });
-    if (verification?.allowed) {
+    const state = resolveSubscriptionState(email);
+    if (state.active) {
       isSubscribed = true;
-      user = verification.user;
+      user = state.user;
     }
   }
 
-  const identifier = email || ip;
+  const identifier = email || visitorId || ip;
   if (!isSubscribed) {
     const visit = getVisit(identifier);
     if (visit && visit.search_count >= MAX_FREE_SEARCHES) {
-      return res.status(402).json({ locked: true, redirect: "https://buy.stripe.com/00w4gycvoc0ObN95pMgnK01" });
+      return res
+        .status(402)
+        .json({ locked: true, redirect: "https://buy.stripe.com/00w4gycvoc0ObN95pMgnK01" });
     }
     recordVisit(identifier);
   }
@@ -102,6 +130,7 @@ export default async function handler(req, res) {
     meta: {
       terms,
       subscriber: isSubscribed,
+      status: isSubscribed ? "ACTIVE" : resolveSubscriptionState(email).status,
     },
   });
 }

@@ -397,6 +397,14 @@
       clearStatus();
       searchBtn.disabled = true;
 
+      if (email) {
+        const validation = await checkServerAccess(email);
+        if (validation && validation.blocked) {
+          searchBtn.disabled = false;
+          return;
+        }
+      }
+
       try {
         const response = await fetch(
           `/api/search?q=${encodeURIComponent(query)}`,
@@ -441,7 +449,40 @@
       searchInput?.focus();
       updateRemainingCounter();
       setBlockedState(false);
+      hydrateEmailFromUrl();
     });
+
+    async function checkServerAccess(email) {
+      try {
+        const response = await fetch(`/api/check-access?email=${encodeURIComponent(email)}`);
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || 'Unable to verify subscription.');
+        }
+        if (data.active) {
+          updateRemainingCounter('Subscription validated server-side. Unlimited searches unlocked.');
+          return { active: true };
+        }
+        setBlockedState(true, STRIPE_LINK);
+        searchStatus.textContent = 'Subscription required. Please complete payment to continue.';
+        searchStatus.className = 'status error';
+        return { active: false, blocked: true };
+      } catch (error) {
+        console.error('Access check failed', error);
+        searchStatus.textContent = error.message || 'Unable to verify access.';
+        searchStatus.className = 'status error';
+        return { active: false, blocked: true };
+      }
+    }
+
+    function hydrateEmailFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const email = params.get('email');
+      if (email && emailInput) {
+        emailInput.value = email;
+        checkServerAccess(email);
+      }
+    }
 
     subscriptionCta?.addEventListener('click', () => {
       window.location.href = STRIPE_LINK;

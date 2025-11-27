@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Success — ICD Smart Search</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .success-wrapper { max-width: 720px; margin: 80px auto; padding: 32px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);} 
+    .success-wrapper h1 { margin-bottom: 8px; }
+    .muted { color: #666; }
+    .status { margin-top: 16px; padding: 14px; border-radius: 10px; }
+    .status.success { background: #e6f7ec; color: #0f5132; }
+    .status.error { background: #fdecea; color: #7f1d1d; }
+    .cta { margin-top: 24px; display: inline-flex; align-items: center; gap: 8px; }
+  </style>
+</head>
+<body>
+  <div class="success-wrapper">
+    <h1>Subscription Activated</h1>
+    <p class="muted">We are confirming your payment and unlocking unlimited ICD searches.</p>
+    <div id="status" class="status"></div>
+    <a id="back-link" class="btn button-primary cta" href="/">Go to the demo</a>
+  </div>
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="nav-brand">© 2025 ICD Smart Search. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <p class="footer-disclaimer">ICD Smart Search is for coding reference &amp; administrative use only. It does not provide medical diagnosis or treatment advice.</p>
+  </footer>
+  <script>
+    const statusBox = document.getElementById('status');
+    const backLink = document.getElementById('back-link');
+
+    function setStatus(text, ok = false) {
+      statusBox.textContent = text;
+      statusBox.className = ok ? 'status success' : 'status error';
+    }
+
+    function redirectToDemo(email) {
+      const target = email ? `/?email=${encodeURIComponent(email)}` : '/';
+      setTimeout(() => {
+        window.location.href = target;
+      }, 2000);
+    }
+
+    async function confirmAccess() {
+      const params = new URLSearchParams(window.location.search);
+      const sessionId = params.get('session_id');
+      if (!sessionId) {
+        setStatus('Missing Stripe session. Please return to the app.', false);
+        return;
+      }
+
+      try {
+        const response = await fetch(`/api/success?session_id=${encodeURIComponent(sessionId)}`);
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || 'Unable to confirm subscription.');
+        }
+        setStatus('Subscription verified. Redirecting you to the demo…', true);
+        if (data.email) {
+          backLink.href = `/?email=${encodeURIComponent(data.email)}`;
+        }
+        redirectToDemo(data.email);
+      } catch (error) {
+        console.error(error);
+        setStatus(error.message || 'Unable to confirm payment. Contact support if this persists.');
+      }
+    }
+
+    window.addEventListener('load', confirmAccess);
+  </script>
+</body>
+</html>
