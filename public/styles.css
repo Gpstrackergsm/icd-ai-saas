@@ -78,6 +78,32 @@ main { display: flex; flex-direction: column; gap: 1.5rem; }
 }
 .cards-grid.three-up { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 
+.before-after-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+.simple-list {
+  list-style: none;
+  padding-left: 1rem;
+  display: grid;
+  gap: 0.55rem;
+}
+.simple-list li { position: relative; }
+.simple-list li::before {
+  content: '•';
+  position: absolute;
+  left: -0.75rem;
+  color: var(--brand);
+  font-weight: 800;
+}
+.highlight-card {
+  border-color: #cde4f8;
+  background: linear-gradient(135deg, #f6fbff, #eef5ff);
+  box-shadow: var(--shadow);
+}
+
 .card {
   background: var(--card);
   border: 1px solid var(--border);
