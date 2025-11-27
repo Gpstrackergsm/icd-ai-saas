@@ -51,15 +51,26 @@ main { display: flex; flex-direction: column; gap: 1.5rem; }
   gap: 2rem;
   align-items: center;
 }
-.hero-copy h1 { font-size: 2.6rem; margin: 0.2rem 0 0.6rem; line-height: 1.2; }
-.subhead { font-size: 1.05rem; color: var(--muted); margin: 0.3rem 0 1.1rem; }
-.hero-bullets { padding-left: 1.1rem; margin: 0 0 1.2rem; color: var(--text); }
+.hero-copy h1 { font-size: 2.8rem; margin: 0.2rem 0 0.6rem; line-height: 1.2; }
+.subhead { font-size: 1.1rem; color: var(--muted); margin: 0.3rem 0 1.1rem; }
+.hero-bullets { padding-left: 1.1rem; margin: 0 0 1.2rem; color: var(--text); font-weight: 600; }
 .hero-bullets li { margin-bottom: 0.45rem; }
 .hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; margin: 1rem 0; }
 .hero-meta { color: var(--muted); font-weight: 600; }
 .hero-highlight { box-shadow: var(--shadow); }
 .hero-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.75rem; margin-top: 1.2rem; }
 .stat-number { font-weight: 800; font-size: 1.1rem; color: var(--brand-dark); }
+
+.security-banner {
+  max-width: 1150px;
+  margin: 0 auto;
+  padding: 0.9rem 1.2rem;
+  background: #e8f5ed;
+  border: 1px solid #c2e3d0;
+  color: #1a5c36;
+  font-weight: 700;
+  border-radius: 12px;
+}
 
 .section {
   max-width: 1150px;
@@ -79,8 +90,8 @@ main { display: flex; flex-direction: column; gap: 1.5rem; }
 .cards-grid.three-up { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 
 .social-proof { text-align: center; }
-.social-proof-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-top: 1.2rem; }
-.badge { background: #e8f2fb; color: var(--brand-dark); border: 1px solid #c3d7eb; padding: 0.65rem 1rem; border-radius: 999px; font-weight: 700; }
+.value-bullets { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.75rem; margin-top: 1.4rem; }
+.value-bullet { background: #e8f2fb; border: 1px solid #c3d7eb; padding: 1rem 1.1rem; border-radius: 12px; font-weight: 700; color: var(--brand-dark); box-shadow: 0 8px 18px rgba(0,0,0,0.04); }
 
 .before-after-grid {
   display: grid;
@@ -148,12 +159,14 @@ input,
 textarea,
 button {
   width: 100%;
-  padding: 0.75rem;
-  border-radius: 10px;
+  padding: 0.85rem;
+  border-radius: 12px;
   border: 1px solid var(--border);
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-family: inherit;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.03);
 }
+.form-group input { font-weight: 700; }
 .form-group .status { margin-top: 0.4rem; color: var(--muted); font-size: 0.95rem; }
 .chat-wrapper { background: #f8fbff; border: 1px solid var(--border); border-radius: 12px; padding: 1rem; min-height: 260px; }
 .results-list { display: flex; flex-direction: column; gap: 0.9rem; min-height: 260px; }
@@ -162,10 +175,12 @@ button {
 .result-description { margin-top: 0.15rem; font-weight: 600; }
 .result-chapter { margin-top: 0.35rem; color: var(--muted); font-size: 0.95rem; }
 
+.testimonials .testimonial-name { margin-top: 0.6rem; font-weight: 800; color: var(--brand-dark); }
+
 .pricing { display: flex; justify-content: center; }
 .pricing-box { text-align: center; max-width: 480px; margin: 0 auto; box-shadow: var(--shadow); }
 .price-line { display: flex; align-items: baseline; justify-content: center; gap: 0.4rem; margin: 0.6rem 0; }
-.price-amount { font-size: 2.4rem; font-weight: 900; color: var(--brand-dark); }
+.price-amount { font-size: 2.6rem; font-weight: 900; color: var(--brand-dark); }
 .price-details { font-weight: 700; color: var(--muted); }
 .pricing-list { list-style: none; padding: 0; margin: 1rem 0 1.2rem; display: grid; gap: 0.45rem; color: var(--text); }
 
@@ -198,15 +213,9 @@ button {
 .status.error { color: #b3261e; }
 .muted { color: var(--muted); }
 
-@media (max-width: 1024px) {
-  .hero { grid-template-columns: 1fr; padding-top: 2.5rem; }
+@media (max-width: 900px) {
+  .hero { grid-template-columns: 1fr; padding-top: 2rem; }
   .app-card { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 720px) {
-  .navbar { flex-wrap: wrap; gap: 0.6rem; }
+  .navbar { flex-wrap: wrap; gap: 0.8rem; }
   .nav-links { flex-wrap: wrap; justify-content: center; }
-  .nav-button { width: 100%; text-align: center; justify-content: center; }
-  .hero { padding: 2.5rem 1.25rem 1rem; }
-  .section { padding: 2.2rem 1.25rem; }
 }
