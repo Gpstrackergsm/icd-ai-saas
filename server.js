@@ -20,27 +20,19 @@ app.get('/search', (req, res) => {
   }
 
   const seenCodes = new Set();
-  const termDuplicates = {};
 
   const groupedResults = terms.reduce((acc, term) => {
     const entries = searchIcd(term);
-    const duplicates = [];
 
-    entries.forEach((entry) => {
+    const uniqueEntries = entries.filter((entry) => {
       const code = (entry.code || '').toString().trim().toLowerCase();
-      if (!code) return;
-      if (seenCodes.has(code)) {
-        duplicates.push(code);
-      } else {
-        seenCodes.add(code);
-      }
+      if (!code) return false;
+      if (seenCodes.has(code)) return false;
+      seenCodes.add(code);
+      return true;
     });
 
-    if (duplicates.length) {
-      termDuplicates[term] = duplicates;
-    }
-
-    acc[term] = entries;
+    acc[term] = uniqueEntries;
     return acc;
   }, {});
 
@@ -49,7 +41,8 @@ app.get('/search', (req, res) => {
     meta: {
       multiple: terms.length > 1,
       terms,
-      duplicates: termDuplicates,
+      duplicates: {},
+      totalUnique: seenCodes.size,
     },
   });
 });
