@@ -166,6 +166,11 @@
             <input id="search-query" placeholder="Search diagnosis or code (e.g. diabetes, pneumonia, F32.9)" autofocus />
           </div>
           <div class="form-group">
+            <label for="user-email">Subscription email (used for server-side validation)</label>
+            <input id="user-email" type="email" placeholder="you@example.com" />
+            <p class="muted">We verify access by email—no local storage or cookies.</p>
+          </div>
+          <div class="form-group">
             <button id="search-btn" class="btn button-primary full">Search ICD Now</button>
             <div class="status" id="search-status"></div>
             <div class="remaining-counter" id="remaining-counter"></div>
@@ -263,58 +268,17 @@
   <script>
     const searchBtn = document.getElementById('search-btn');
     const searchInput = document.getElementById('search-query');
+    const emailInput = document.getElementById('user-email');
     const searchStatus = document.getElementById('search-status');
     const resultsList = document.getElementById('search-results');
     const remainingCounter = document.getElementById('remaining-counter');
     const limitOverlay = document.getElementById('limit-overlay');
     const subscriptionCta = document.getElementById('subscription-cta');
 
-    const MAX_SEARCHES = 10;
-    const STORAGE_KEY = 'icdSearchCount';
-    const SUBSCRIPTION_KEY = 'icd_subscribed';
     const STRIPE_LINK = 'https://buy.stripe.com/00w4gycvoc0ObN95pMgnK01';
 
-    function isSubscribed() {
-      return localStorage.getItem(SUBSCRIPTION_KEY) === 'true';
-    }
-
-    function markSubscribed() {
-      localStorage.setItem(SUBSCRIPTION_KEY, 'true');
-      localStorage.removeItem(STORAGE_KEY);
-    }
-
-    function unlockSubscriptionUi() {
-      setBlockedState(false);
-      searchBtn.disabled = false;
-      searchInput.disabled = false;
-      limitOverlay?.classList.remove('visible');
-      limitOverlay?.setAttribute('aria-hidden', 'true');
-      if (limitOverlay) {
-        limitOverlay.style.display = 'none';
-      }
-      if (subscriptionCta) {
-        subscriptionCta.style.display = 'none';
-      }
-    }
-
-    function showSubscriptionSuccess() {
-      if (!searchStatus) return;
-      searchStatus.textContent = 'Subscription activated ✅';
-      searchStatus.className = 'status success';
-    }
-
-    function handleStripeSuccess() {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get('success') === 'true') {
-        markSubscribed();
-        unlockSubscriptionUi();
-        updateRemainingCounter();
-        showSubscriptionSuccess();
-        params.delete('success');
-        const newQuery = params.toString();
-        const newUrl = `${window.location.pathname}${newQuery ? `?${newQuery}` : ''}${window.location.hash}`;
-        window.history.replaceState({}, '', newUrl);
-      }
+    function userEmail() {
+      return (emailInput?.value || '').trim();
     }
 
     function clearStatus() {
@@ -322,48 +286,30 @@
       searchStatus.className = 'status';
     }
 
-    function readSearchCount() {
-      if (isSubscribed()) return 0;
-      const stored = localStorage.getItem(STORAGE_KEY);
-      const parsed = parseInt(stored, 10);
-      return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
-    }
-
-    function saveSearchCount(count) {
-      if (isSubscribed()) return;
-      localStorage.setItem(STORAGE_KEY, String(count));
-    }
-
-    function updateRemainingCounter() {
+    function updateRemainingCounter(message) {
       if (!remainingCounter) return;
-      if (isSubscribed()) {
-        remainingCounter.textContent = 'Unlimited searches are unlocked.';
-        remainingCounter.classList.add('muted');
-        remainingCounter.classList.remove('limit-reached');
-        return;
-      }
-
-      const used = readSearchCount();
-      const remaining = Math.max(0, MAX_SEARCHES - used);
-      remainingCounter.textContent = `Free searches remaining: ${remaining} / ${MAX_SEARCHES}`;
-      remainingCounter.classList.toggle('limit-reached', remaining === 0);
+      remainingCounter.textContent = message || '10 free searches per visitor. Add your subscription email to unlock unlimited access.';
     }
 
-    function isSearchBlocked() {
-      if (isSubscribed()) return false;
-      return readSearchCount() >= MAX_SEARCHES;
-    }
-
-    function setBlockedState(blocked) {
+    function setBlockedState(blocked, redirect) {
       searchBtn.disabled = blocked;
       searchInput.disabled = blocked;
       if (blocked) {
         resultsList.innerHTML = '';
         limitOverlay?.classList.add('visible');
         limitOverlay?.setAttribute('aria-hidden', 'false');
+        if (subscriptionCta) {
+          subscriptionCta.style.display = 'inline-flex';
+          subscriptionCta.onclick = () => {
+            window.location.href = redirect || STRIPE_LINK;
+          };
+        }
       } else {
         limitOverlay?.classList.remove('visible');
         limitOverlay?.setAttribute('aria-hidden', 'true');
+        if (subscriptionCta) {
+          subscriptionCta.style.display = 'inline-flex';
+        }
       }
     }
 
@@ -440,12 +386,7 @@
 
     async function runSearch() {
       const query = searchInput.value || '';
-
-      if (isSearchBlocked()) {
-        setBlockedState(true);
-        updateRemainingCounter();
-        return;
-      }
+      const email = userEmail();
 
       if (!query.trim()) {
         clearStatus();
@@ -453,47 +394,53 @@
         return;
       }
 
-      if (!isSubscribed()) {
-        const currentCount = readSearchCount();
-        const updatedCount = currentCount + 1;
-        saveSearchCount(updatedCount);
-        updateRemainingCounter();
-      }
-
       clearStatus();
       searchBtn.disabled = true;
 
       try {
         const response = await fetch(
-          `/api/search?q=${encodeURIComponent(query)}`
+          `/api/search?q=${encodeURIComponent(query)}`,
+          {
+            headers: email ? { 'x-user-email': email } : undefined,
+          }
         );
         const data = await response.json();
+
+        if (response.status === 402 && data.locked) {
+          setBlockedState(true, data.redirect);
+          updateRemainingCounter('Free limit reached. Purchase to continue.');
+          searchStatus.textContent = 'Subscription required to continue searching.';
+          searchStatus.className = 'status error';
+          return;
+        }
+
+        if (response.status === 401 || response.status === 403) {
+          setBlockedState(true, data.redirect);
+          updateRemainingCounter('Subscription required. Add your email and retry.');
+          searchStatus.textContent = data.error || 'Subscription required';
+          searchStatus.className = 'status error';
+          return;
+        }
 
         if (!response.ok) throw new Error(data.error || 'Search failed');
 
         const groups = Array.isArray(data.results) ? data.results : [];
         renderResults(query, groups);
+        updateRemainingCounter(data.meta?.subscriber ? 'Subscription validated server-side.' : 'Free tier in use. Limit 10 searches.');
       } catch (error) {
         console.error('Search failed:', error);
         renderResults(query, []);
+        searchStatus.textContent = 'Search failed. Please try again.';
+        searchStatus.className = 'status error';
       } finally {
         searchBtn.disabled = false;
-        if (isSearchBlocked()) {
-          setBlockedState(true);
-        }
       }
     }
 
     window.addEventListener('load', () => {
-      handleStripeSuccess();
-      if (isSubscribed()) {
-        unlockSubscriptionUi();
-      }
       searchInput?.focus();
       updateRemainingCounter();
-      if (isSearchBlocked()) {
-        setBlockedState(true);
-      }
+      setBlockedState(false);
     });
 
     subscriptionCta?.addEventListener('click', () => {

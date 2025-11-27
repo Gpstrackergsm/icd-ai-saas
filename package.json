@@ -7,5 +7,9 @@
     "dev": "nodemon server.js",
     "test": "echo \"No tests specified\" && exit 0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "raw-body": "^2.5.2",
+    "stripe": "^17.5.0"
+  }
 }

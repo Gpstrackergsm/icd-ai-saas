@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Welcome — ICD Smart Search</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .welcome { max-width: 720px; margin: 80px auto; padding: 32px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);} 
+    .welcome h1 { margin-bottom: 8px; }
+    .muted { color: #666; }
+    .status { margin-top: 12px; padding: 12px; border-radius: 8px; }
+    .status.success { background: #e6f7ec; color: #0f5132; }
+    .status.error { background: #fdecea; color: #7f1d1d; }
+    .input-row { margin-top: 16px; display: flex; gap: 8px; }
+    .input-row input { flex: 1; padding: 10px 12px; border: 1px solid #ddd; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <div class="welcome">
+    <h1>Thank you for subscribing!</h1>
+    <p class="muted">We are confirming your Stripe subscription and unlocking unlimited ICD searches.</p>
+
+    <div class="input-row">
+      <input id="welcome-email" type="email" placeholder="Enter your subscription email" />
+      <button id="welcome-confirm" class="btn button-primary">Confirm access</button>
+    </div>
+    <div class="status" id="welcome-status"></div>
+    <p class="muted">After confirmation, return to the search page and keep the same email to validate every request.</p>
+    <p><a href="/">Back to search</a></p>
+  </div>
+
+  <script>
+    const statusBox = document.getElementById('welcome-status');
+    const emailInput = document.getElementById('welcome-email');
+    const confirmBtn = document.getElementById('welcome-confirm');
+
+    function setStatus(text, ok = false) {
+      statusBox.textContent = text;
+      statusBox.className = ok ? 'status success' : 'status error';
+    }
+
+    async function verify() {
+      const email = (emailInput.value || '').trim();
+      if (!email) {
+        setStatus('Please enter the email used at checkout.');
+        return;
+      }
+      try {
+        const response = await fetch('/api/user', {
+          headers: {
+            'x-user-email': email,
+          },
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || 'Subscription not active yet.');
+        }
+        setStatus('Subscription verified. You now have unlimited access.', true);
+      } catch (error) {
+        setStatus(error.message || 'Unable to verify subscription.');
+      }
+    }
+
+    function hydrateFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+      const email = params.get('email');
+      if (email) {
+        emailInput.value = email;
+        verify();
+      }
+    }
+
+    confirmBtn.addEventListener('click', verify);
+    window.addEventListener('load', hydrateFromUrl);
+  </script>
+</body>
+</html>
