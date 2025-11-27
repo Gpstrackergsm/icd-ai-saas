@@ -220,16 +220,10 @@
       });
     }
 
-    function buildDisplayGroups(terms, groupedResults = {}, duplicateMap = {}) {
+    function buildDisplayGroups(terms, groupedResults = {}) {
       const seenCodes = new Set();
       const groups = terms.map((term) => {
         const entries = sortEntries(groupedResults?.[term], term);
-        const originalCount = Array.isArray(entries) ? entries.length : 0;
-        const duplicatesForTerm = new Set(
-          (duplicateMap?.[term] || [])
-            .map((code) => normalizeTerm(code))
-            .filter(Boolean)
-        );
         const uniqueEntries = entries.filter((entry) => {
           const code = normalizeTerm(entry.code);
           if (!code || seenCodes.has(code)) return false;
@@ -237,10 +231,7 @@
           return true;
         });
 
-        const duplicatesOnly =
-          !uniqueEntries.length && (duplicatesForTerm.size > 0 || originalCount > 0);
-
-        return { term, entries: uniqueEntries, duplicatesOnly };
+        return { term, entries: uniqueEntries };
       });
 
       return { groups, totalUnique: seenCodes.size };
@@ -269,9 +260,9 @@
         resultsList.appendChild(multiMessage);
       }
 
-      const { groups, totalUnique } = buildDisplayGroups(terms, groupedResults, meta?.duplicates || {});
+      const { groups, totalUnique } = buildDisplayGroups(terms, groupedResults);
 
-      groups.forEach(({ term, entries, duplicatesOnly }) => {
+      groups.forEach(({ term, entries }) => {
         const group = document.createElement('div');
         group.className = 'result-group';
 
@@ -281,15 +272,6 @@
         group.appendChild(heading);
 
         if (!entries.length) {
-          if (duplicatesOnly) {
-            const duplicateNote = document.createElement('div');
-            duplicateNote.className = 'muted';
-            duplicateNote.textContent = 'Already shown above';
-            group.appendChild(duplicateNote);
-            resultsList.appendChild(group);
-            return;
-          }
-
           const empty = document.createElement('div');
           empty.className = 'muted';
           empty.textContent = 'No results for this term';
