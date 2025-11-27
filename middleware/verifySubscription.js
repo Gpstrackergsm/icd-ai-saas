@@ -16,7 +16,12 @@ async function verifySubscription(req, res) {
 
   const user = getUserByEmail(email);
   const now = Math.floor(Date.now() / 1000);
-  if (user && user.subscription_status === "active" && (!user.current_period_end || user.current_period_end > now)) {
+  const isActive =
+    user &&
+    user.subscription_status === "ACTIVE" &&
+    (!user.current_period_end || user.current_period_end > now);
+
+  if (isActive) {
     return { allowed: true, user, email };
   }
 
