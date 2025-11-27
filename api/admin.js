@@ -1,8 +1,25 @@
 const { metrics } = require("../lib/db");
 
 function authorize(req) {
-  const provided = req.headers["x-admin-password"] || req.query?.password;
-  return process.env.ADMIN_PASSWORD && provided === process.env.ADMIN_PASSWORD;
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  const header = req.headers.authorization;
+
+  if (!adminPassword || !header || !header.startsWith("Basic ")) {
+    return false;
+  }
+
+  const base64Credentials = header.slice("Basic ".length).trim();
+  const decoded = Buffer.from(base64Credentials, "base64").toString("utf8");
+  const separatorIndex = decoded.indexOf(":");
+
+  if (separatorIndex === -1) {
+    return false;
+  }
+
+  const username = decoded.slice(0, separatorIndex);
+  const password = decoded.slice(separatorIndex + 1);
+
+  return Boolean(username) && password === adminPassword;
 }
 
 const renderRow = (label, value) => `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;">
@@ -11,7 +28,7 @@ const renderRow = (label, value) => `<div style="display:flex;justify-content:sp
 
 export default function handler(req, res) {
   if (!authorize(req)) {
-    res.setHeader("WWW-Authenticate", "Basic realm=admin");
+    res.setHeader("WWW-Authenticate", 'Basic realm="Admin Area"');
     return res.status(401).send("Unauthorized");
   }
 
