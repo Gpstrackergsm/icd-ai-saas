@@ -16,14 +16,15 @@ export default function handler(req, res) {
   }
 
   const activeSubscribers = metrics.activeSubscribers();
-  const newSubscriptionsToday = metrics.newSubscriptionsToday();
-  const searchesToday = metrics.searchesToday();
+  const totalUsers = metrics.totalUsers();
+  const totalSearches = metrics.totalSearches();
+  const searchesToday = metrics.dailySearches();
+  const trials = metrics.trials();
+  const conversionRatio = metrics.conversionRate();
   const failedPayments = metrics.failedPayments();
   const mrrCents = metrics.mrr();
   const recentPayments = metrics.recentPayments();
   const users = metrics.users();
-  const visitors = metrics.visitorsCount();
-  const conversionRatio = visitors ? activeSubscribers / visitors : 0;
 
   const paymentsHtml = recentPayments
     .map(
@@ -45,11 +46,13 @@ export default function handler(req, res) {
     <h1>Admin Dashboard</h1>
     <section>
       ${renderRow("Active subscribers", activeSubscribers)}
-      ${renderRow("New subscriptions today", newSubscriptionsToday)}
+      ${renderRow("Total users", totalUsers)}
+      ${renderRow("Total searches", totalSearches)}
       ${renderRow("Searches today", searchesToday)}
+      ${renderRow("Trial users", trials)}
+      ${renderRow("Conversion %", `${(conversionRatio * 100).toFixed(2)}%`)}
       ${renderRow("Failed payments", failedPayments)}
       ${renderRow("MRR", `$${(mrrCents / 100).toFixed(2)}`)}
-      ${renderRow("Conversion ratio", `${(conversionRatio * 100).toFixed(2)}%`)}
     </section>
     <section>
       <h2>Recent payments</h2>

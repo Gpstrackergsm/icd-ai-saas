@@ -1,14 +1,10 @@
-const { getUserByEmail, normalizeStatus } = require("../lib/db");
 const { extractEmail } = require("../middleware/verifySubscription");
+const { subscriptionState } = require("../lib/db");
 
 const resolveState = (email) => {
-  const user = email ? getUserByEmail(email) : null;
-  const now = Math.floor(Date.now() / 1000);
-  const status = normalizeStatus(user?.subscription_status);
-  const active = Boolean(status === "ACTIVE" && (!user?.current_period_end || user.current_period_end > now));
-  const state = status || "NONE";
-  const allowed = active;
-  return { active, status: state, allowed };
+  const state = subscriptionState(email);
+  const status = state.isActive ? "ACTIVE" : "INACTIVE";
+  return { active: state.isActive, status, allowed: state.isActive };
 };
 
 export default function handler(req, res) {
