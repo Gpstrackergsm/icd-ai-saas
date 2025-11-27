@@ -283,10 +283,33 @@
       localStorage.removeItem(STORAGE_KEY);
     }
 
+    function unlockSubscriptionUi() {
+      setBlockedState(false);
+      searchBtn.disabled = false;
+      searchInput.disabled = false;
+      limitOverlay?.classList.remove('visible');
+      limitOverlay?.setAttribute('aria-hidden', 'true');
+      if (limitOverlay) {
+        limitOverlay.style.display = 'none';
+      }
+      if (subscriptionCta) {
+        subscriptionCta.style.display = 'none';
+      }
+    }
+
+    function showSubscriptionSuccess() {
+      if (!searchStatus) return;
+      searchStatus.textContent = 'Subscription activated ✅';
+      searchStatus.className = 'status success';
+    }
+
     function handleStripeSuccess() {
       const params = new URLSearchParams(window.location.search);
       if (params.get('success') === 'true') {
         markSubscribed();
+        unlockSubscriptionUi();
+        updateRemainingCounter();
+        showSubscriptionSuccess();
         params.delete('success');
         const newQuery = params.toString();
         const newUrl = `${window.location.pathname}${newQuery ? `?${newQuery}` : ''}${window.location.hash}`;
@@ -463,6 +486,9 @@
 
     window.addEventListener('load', () => {
       handleStripeSuccess();
+      if (isSubscribed()) {
+        unlockSubscriptionUi();
+      }
       searchInput?.focus();
       updateRemainingCounter();
       if (isSearchBlocked()) {

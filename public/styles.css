@@ -172,6 +172,7 @@ button {
 }
 .form-group input { font-weight: 700; }
 .form-group .status { margin-top: 0.4rem; color: var(--muted); font-size: 0.95rem; }
+.status.success { color: #0f9d58; }
 .remaining-counter { margin-top: 0.3rem; font-size: 0.95rem; color: var(--muted); font-weight: 700; }
 .remaining-counter.limit-reached { color: #b3261e; }
 .chat-wrapper { background: #f8fbff; border: 1px solid var(--border); border-radius: 12px; padding: 1rem; min-height: 260px; }
