@@ -78,6 +78,10 @@ main { display: flex; flex-direction: column; gap: 1.5rem; }
 }
 .cards-grid.three-up { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
 
+.social-proof { text-align: center; }
+.social-proof-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; margin-top: 1.2rem; }
+.badge { background: #e8f2fb; color: var(--brand-dark); border: 1px solid #c3d7eb; padding: 0.65rem 1rem; border-radius: 999px; font-weight: 700; }
+
 .before-after-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
