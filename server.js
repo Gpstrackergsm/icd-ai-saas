@@ -1,7 +1,17 @@
+const fs = require("fs");
+const path = require("path");
+
+console.log("CWD:", process.cwd());
+console.log("Files in root:", fs.readdirSync(process.cwd()));
+console.log("Data folder exists:", fs.existsSync(path.join(process.cwd(), "data")));
+console.log("Public folder exists:", fs.existsSync(path.join(process.cwd(), "public")));
+
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
-const { icdIndex, searchIcd } = require('./icd-search');
+const { icdIndex, searchIcd, icdDataPath } = require('./icd-search');
+
+console.log('ICD data path:', icdDataPath);
+console.log('ICD data exists:', fs.existsSync(icdDataPath));
 
 const app = express();
 app.use(cors());
