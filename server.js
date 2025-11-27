@@ -1,10 +1,25 @@
 const fs = require("fs");
 const path = require("path");
 
+console.log("=== DEBUG BOOT ===");
 console.log("CWD:", process.cwd());
-console.log("Files in root:", fs.readdirSync(process.cwd()));
-console.log("Data folder exists:", fs.existsSync(path.join(process.cwd(), "data")));
-console.log("Public folder exists:", fs.existsSync(path.join(process.cwd(), "public")));
+console.log("DIR CONTENT:", fs.readdirSync(process.cwd()));
+
+const dataPath = path.join(process.cwd(), "data");
+const publicPath = path.join(process.cwd(), "public");
+
+console.log("data exists:", fs.existsSync(dataPath));
+console.log("public exists:", fs.existsSync(publicPath));
+
+if (fs.existsSync(dataPath)) {
+  console.log("data files:", fs.readdirSync(dataPath));
+}
+
+if (fs.existsSync(publicPath)) {
+  console.log("public files:", fs.readdirSync(publicPath));
+}
+
+console.log("=== END DEBUG ===");
 
 const express = require('express');
 const cors = require('cors');
