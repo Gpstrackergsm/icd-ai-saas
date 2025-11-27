@@ -136,28 +136,24 @@
     <div class="section-heading">
       <p class="eyebrow">Try it now</p>
       <h2>Try ICD Smart Search</h2>
-      <p class="section-sub">Upload your ICD-10-CM 2025 PDF and search with natural language questions.</p>
+      <p class="section-sub">Search ICD codes and descriptions instantly using the built-in, offline index.</p>
     </div>
     <div class="card app-card">
       <div class="form-grid">
         <div class="form-group">
-          <label for="user-id">User ID (kept in-memory)</label>
-          <input id="user-id" placeholder="demo-user" />
+          <label for="search-query">Smart Search</label>
+          <input id="search-query" placeholder="Try \"E11.9\", \"pneumonia\", or \"mental disorders\"" />
         </div>
         <div class="form-group">
-          <label for="pdf-file">Upload ICD-10-CM 2025 PDF</label>
-          <input type="file" id="pdf-file" accept="application/pdf" />
-          <button id="upload-btn" class="btn primary full">Upload</button>
-          <div class="status" id="upload-status"></div>
+          <button id="search-btn" class="btn primary full">Search ICD</button>
+          <div class="status" id="search-status">Enter a diagnosis name or code to begin.</div>
         </div>
         <div class="form-group">
-          <label for="question">Your question</label>
-          <textarea id="question" rows="3" placeholder="Ask about diagnosis codes, descriptions, or differences."></textarea>
-          <button id="ask-btn" class="btn secondary full">Ask</button>
+          <p class="muted">Examples: E11.9 (Type 2 diabetes), J18.9 (Pneumonia), I10 (Hypertension), F32.9 (Major depressive disorder).</p>
         </div>
       </div>
       <div class="chat-wrapper">
-        <div id="chat-log" class="chat-log"></div>
+        <div id="search-results" class="results-list"></div>
       </div>
     </div>
   </section>
@@ -175,81 +171,81 @@
   </footer>
 
   <script>
-    const uploadBtn = document.getElementById('upload-btn');
-    const askBtn = document.getElementById('ask-btn');
-    const chatLog = document.getElementById('chat-log');
-    const uploadStatus = document.getElementById('upload-status');
-    let hasIndex = false;
+    const searchBtn = document.getElementById('search-btn');
+    const searchInput = document.getElementById('search-query');
+    const searchStatus = document.getElementById('search-status');
+    const resultsList = document.getElementById('search-results');
 
-    function appendMessage(sender, text, type = 'normal') {
-      const div = document.createElement('div');
-      div.className = type === 'error' ? 'message error' : 'message';
-      const safeText = (text || '').replace(/\n/g, '<br>');
-      div.innerHTML = `<strong>${sender}:</strong> ${safeText}`;
-      chatLog.appendChild(div);
-      chatLog.scrollTop = chatLog.scrollHeight;
+    function setStatus(text, isError = false) {
+      searchStatus.textContent = text;
+      searchStatus.className = isError ? 'status error' : 'status';
     }
 
-    function setUploadStatus(text, isError = false) {
-      uploadStatus.textContent = text;
-      uploadStatus.className = isError ? 'status error' : 'status';
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
 
-    async function uploadPdf() {
-      const userId = document.getElementById('user-id').value || 'demo-user';
-      const file = document.getElementById('pdf-file').files[0];
-      if (!file) {
-        setUploadStatus('Select a PDF first.', true);
+    function renderResults(query, results) {
+      resultsList.innerHTML = '';
+
+      if (!query.trim()) {
+        resultsList.innerHTML = '<div class="muted">Enter a code or diagnosis name to search the ICD index.</div>';
         return;
       }
-      const form = new FormData();
-      form.append('file', file);
-      setUploadStatus('Uploading...');
-      try {
-        const response = await fetch('/upload-pdf', {
-          method: 'POST',
-          headers: { 'X-User-Id': userId },
-          body: form,
-        });
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'Upload failed');
-        hasIndex = true;
-        setUploadStatus(`Uploaded ${data.fileName}. ${data.chunks} chunks created.`);
-      } catch (err) {
-        hasIndex = false;
-        setUploadStatus(err.message, true);
-        appendMessage('System', err.message, 'error');
-      }
-    }
 
-    async function askQuestion() {
-      const userId = document.getElementById('user-id').value || 'demo-user';
-      const message = document.getElementById('question').value;
-      if (!hasIndex) {
-        appendMessage('System', 'Upload your ICD-10-CM PDF before searching.', 'error');
+      if (!results.length) {
+        resultsList.innerHTML = `<div class="message error">Smart Search: No results found for "${escapeHtml(query)}". Try another diagnosis name or code, e.g. "J18.9" or "pneumonia".</div>`;
         return;
       }
-      if (!message.trim()) return;
-      appendMessage('You', message);
+
+      results.slice(0, 50).forEach((entry) => {
+        const item = document.createElement('div');
+        item.className = 'result-item';
+        item.innerHTML = `
+          <div class="result-code">${escapeHtml(entry.code || '')}</div>
+          <div class="result-description">${escapeHtml(entry.description || '')}</div>
+          <div class="result-chapter">${escapeHtml(entry.chapter || '')}</div>
+        `;
+        resultsList.appendChild(item);
+      });
+    }
+
+    async function runSearch() {
+      const query = searchInput.value || '';
+      if (!query.trim()) {
+        setStatus('Enter a diagnosis name or ICD code to search.', true);
+        renderResults('', []);
+        return;
+      }
+
+      setStatus('Searching...');
+      searchBtn.disabled = true;
       try {
-        const response = await fetch('/chat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-User-Id': userId,
-          },
-          body: JSON.stringify({ userId, question: message }),
-        });
+        const response = await fetch(`/search?q=${encodeURIComponent(query)}`);
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || 'Search failed');
-        appendMessage('Smart Search', data.answer);
-      } catch (err) {
-        appendMessage('System', err.message, 'error');
+        renderResults(query, data.results || []);
+        setStatus(data.results?.length ? `Showing ${data.results.length} result(s).` : 'No results found.');
+      } catch (error) {
+        setStatus(error.message || 'Search failed', true);
+        renderResults(query, []);
+      } finally {
+        searchBtn.disabled = false;
       }
     }
 
-    uploadBtn.addEventListener('click', uploadPdf);
-    askBtn.addEventListener('click', askQuestion);
+    searchBtn.addEventListener('click', runSearch);
+    searchInput.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        runSearch();
+      }
+    });
   </script>
 </body>
 </html>

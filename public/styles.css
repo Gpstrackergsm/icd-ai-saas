@@ -139,6 +139,12 @@ button {
   padding: 0.75rem;
 }
 
+.results-list { display: flex; flex-direction: column; gap: 0.9rem; min-height: 260px; }
+.result-item { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 0.85rem; box-shadow: 0 4px 14px rgba(0,0,0,0.04); }
+.result-code { font-size: 1.2rem; font-weight: 800; color: var(--brand-dark); letter-spacing: 0.5px; }
+.result-description { margin-top: 0.15rem; font-weight: 600; }
+.result-chapter { margin-top: 0.35rem; color: var(--muted); font-size: 0.95rem; }
+
 .status.error { color: #b3261e; }
 
 .card {
