@@ -35,11 +35,12 @@
           <a href="#app" class="btn button-primary">Use ICD Smart Search</a>
           <div class="trial-stack">
             <a href="#pricing" class="btn button-outline">Try it Free for 24 Hours</a>
-            <p class="muted trial-note">No credit card required. Live access expires automatically.</p>
+            <p class="muted trial-note">No credit card. Live access expires automatically.</p>
           </div>
         </div>
-        <div class="trust-metric">Over 5,000+ searches completed this week</div>
+        <div class="trust-metric">5,000+ searches completed this week</div>
         <p class="hero-meta">Trusted by coding, billing, and clinical teams who want speed without extra steps.</p>
+        <p class="authority-note">All results are grounded in the official ICD-10-CM 2025 publication.</p>
       </div>
       <div class="hero-highlight card">
         <p class="eyebrow">Confidence for every claim</p>
@@ -182,6 +183,7 @@
       <div class="section-heading">
         <p class="eyebrow">Proof</p>
         <h2>Used by clinics, coders, and billing teams worldwide.</h2>
+        <p class="muted trust-note">5,000+ searches completed this week</p>
       </div>
       <div class="cards-grid">
         <div class="card testimonial">
@@ -227,6 +229,10 @@
           <h3>Is this official?</h3>
           <p class="muted">Yes. All results are grounded in the official ICD-10-CM 2025 publication.</p>
         </div>
+        <div class="card faq-item">
+          <h3>Does it handle partial terms?</h3>
+          <p class="muted">Yes. Type fragments or comma-separated terms and get grouped results instantly.</p>
+        </div>
       </div>
     </section>
   </main>
@@ -263,39 +269,66 @@
         .replace(/'/g, '&#039;');
     }
 
-    function renderResults(query, results = []) {
+    function renderResults(query, groups = []) {
       resultsList.innerHTML = '';
 
       if (!query.trim()) {
         return 0;
       }
 
-      const seenCodes = new Set();
+      const groupsArray = Array.isArray(groups) ? groups : [];
 
-      results.forEach((entry) => {
-        if (!entry || typeof entry !== 'object') return;
+      groupsArray.forEach((group) => {
+        if (!group || typeof group !== 'object') return;
 
-        const code = (entry.code ?? '').toString().trim();
-        const description = (entry.description ?? '').toString().trim();
-        const chapter = (entry.chapter ?? '').toString().trim();
-        const normalizedCode = code.toLowerCase();
+        const term = (group.term ?? '').toString().trim();
+        const items = Array.isArray(group.results) ? group.results : [];
 
-        if (!code || seenCodes.has(normalizedCode)) return;
+        if (!term) return;
 
-        seenCodes.add(normalizedCode);
+        const groupBlock = document.createElement('div');
+        groupBlock.className = 'result-group';
 
-        const item = document.createElement('div');
-        item.className = 'result-item';
-        item.innerHTML = `
-          <div class="result-code">${escapeHtml(code)}</div>
-          <div class="result-description">${escapeHtml(description)}</div>
-          <div class="result-chapter">${escapeHtml(chapter)}</div>
-        `;
+        const groupTitle = document.createElement('div');
+        groupTitle.className = 'result-term';
+        groupTitle.textContent = `Results for “${term}”`;
 
-        resultsList.appendChild(item);
+        const groupItems = document.createElement('div');
+        groupItems.className = 'result-items';
+
+        if (items.length === 0) {
+          const empty = document.createElement('div');
+          empty.className = 'muted no-results';
+          empty.textContent = 'No matches found.';
+          groupItems.appendChild(empty);
+        } else {
+          items.forEach((entry) => {
+            if (!entry || typeof entry !== 'object') return;
+
+            const code = (entry.code ?? '').toString().trim();
+            const description = (entry.description ?? '').toString().trim();
+            const chapter = (entry.chapter ?? '').toString().trim();
+
+            if (!code) return;
+
+            const item = document.createElement('div');
+            item.className = 'result-item';
+            item.innerHTML = `
+              <div class="result-code">${escapeHtml(code)}</div>
+              <div class="result-description">${escapeHtml(description)}</div>
+              <div class="result-chapter">${escapeHtml(chapter)}</div>
+            `;
+
+            groupItems.appendChild(item);
+          });
+        }
+
+        groupBlock.appendChild(groupTitle);
+        groupBlock.appendChild(groupItems);
+        resultsList.appendChild(groupBlock);
       });
 
-      return seenCodes.size;
+      return groupsArray.length;
     }
 
     async function runSearch() {
@@ -318,8 +351,8 @@
 
         if (!response.ok) throw new Error(data.error || 'Search failed');
 
-        const results = Array.isArray(data.results) ? data.results : [];
-        renderResults(query, results);
+        const groups = Array.isArray(data.results) ? data.results : [];
+        renderResults(query, groups);
       } catch (error) {
         console.error('Search failed:', error);
         renderResults(query, []);
