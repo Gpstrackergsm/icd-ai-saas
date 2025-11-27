@@ -1,4 +1,4 @@
-const { getUserByEmail } = require("../lib/db");
+const { subscriptionState } = require("../lib/db");
 
 const extractEmail = (req) => {
   const headerEmail = req.headers["x-user-email"] || req.headers["x-user"];
@@ -14,15 +14,11 @@ async function verifySubscription(req, res) {
     return { allowed: false };
   }
 
-  const user = getUserByEmail(email);
-  const now = Math.floor(Date.now() / 1000);
-  const isActive =
-    user &&
-    user.subscription_status === "ACTIVE" &&
-    (!user.current_period_end || user.current_period_end > now);
+  const state = subscriptionState(email);
+  const isActive = state.isActive;
 
   if (isActive) {
-    return { allowed: true, user, email };
+    return { allowed: true, subscription: state.record, email };
   }
 
   res.status(403).json({ error: "Subscription required" });

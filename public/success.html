@@ -58,7 +58,7 @@
       }
 
       try {
-        const response = await fetch(`/api/success?session_id=${encodeURIComponent(sessionId)}`);
+        const response = await fetch(`/stripe/verify-session?session_id=${encodeURIComponent(sessionId)}`);
         const data = await response.json();
         if (!response.ok) {
           throw new Error(data.error || 'Unable to confirm subscription.');

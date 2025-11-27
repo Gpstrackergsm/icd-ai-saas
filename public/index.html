@@ -414,10 +414,10 @@
         );
         const data = await response.json();
 
-        if (response.status === 402 && data.locked) {
-          setBlockedState(true, data.redirect);
-          updateRemainingCounter('Free limit reached. Purchase to continue.');
-          searchStatus.textContent = 'Subscription required to continue searching.';
+        if (response.status === 402 && (data.locked || data.error === 'subscription_required')) {
+          setBlockedState(true, data.redirect || STRIPE_LINK);
+          updateRemainingCounter('Subscribe to continue — you’ve used your free searches.');
+          searchStatus.textContent = data.message || 'Subscribe to continue — you’ve used your free searches.';
           searchStatus.className = 'status error';
           return;
         }

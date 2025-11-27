@@ -1,6 +1,6 @@
 const { searchIcd } = require("../icd-search");
 const { extractEmail } = require("../middleware/verifySubscription");
-const { recordVisit, getVisit, logUsage, getUserByEmail, normalizeStatus } = require("../lib/db");
+const { logUsage, recordSearchUsage, getSearchUsage, subscriptionState } = require("../lib/db");
 
 const MAX_FREE_SEARCHES = 10;
 const rateLimitWindowMs = 60 * 1000;
@@ -24,11 +24,9 @@ const parseCookies = (req) => {
 };
 
 const resolveSubscriptionState = (email) => {
-  const user = email ? getUserByEmail(email) : null;
-  const now = Math.floor(Date.now() / 1000);
-  const status = normalizeStatus(user?.subscription_status);
-  const active = Boolean(status === "ACTIVE" && (!user?.current_period_end || user.current_period_end > now));
-  return { active, status: status || "NONE", user };
+  const state = subscriptionState(email);
+  const status = state.record?.isActive ? "ACTIVE" : "INACTIVE";
+  return { active: state.isActive, status, record: state.record };
 };
 
 const checkRateLimit = (identifier) => {
@@ -77,24 +75,24 @@ export default async function handler(req, res) {
   }
 
   let isSubscribed = false;
-  let user;
+  let subscription;
   if (email) {
     const state = resolveSubscriptionState(email);
     if (state.active) {
       isSubscribed = true;
-      user = state.user;
+      subscription = state.record;
     }
   }
 
   const identifier = email || visitorId || ip;
   if (!isSubscribed) {
-    const visit = getVisit(identifier);
-    if (visit && visit.search_count >= MAX_FREE_SEARCHES) {
+    const usage = getSearchUsage(identifier);
+    if (usage && usage.count >= MAX_FREE_SEARCHES) {
       return res
         .status(402)
-        .json({ locked: true, redirect: "https://buy.stripe.com/00w4gycvoc0ObN95pMgnK01" });
+        .json({ error: "subscription_required", message: "Subscribe to continue — you’ve used your free searches." });
     }
-    recordVisit(identifier);
+    recordSearchUsage(identifier);
   }
 
   const groupedResults = terms.map((term) => {
@@ -123,7 +121,7 @@ export default async function handler(req, res) {
     };
   });
 
-  logUsage({ email, userId: user?.id, ip });
+  logUsage({ email, userId: subscription?.user_id, ip });
 
   res.json({
     results: groupedResults,
