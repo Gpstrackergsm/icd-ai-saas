@@ -1,5 +1,7 @@
 {
   "rewrites": [
-    { "source": "/admin", "destination": "/api/admin" }
+    { "source": "/admin", "destination": "/api/admin" },
+    { "source": "/stripe/webhook", "destination": "/api/stripe/webhook" },
+    { "source": "/stripe/verify-session", "destination": "/api/stripe/verify-session" }
   ]
 }
