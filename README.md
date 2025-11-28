@@ -35,3 +35,17 @@ ICD Smart Search is a browser-first, commercial-grade landing page and instant I
 - `STRIPE_WEBHOOK_SECRET` – Used to verify webhook signatures from Stripe.
 - `ADMIN_USER` (or `ADMIN_USERNAME`) – Username for the protected admin dashboard and stats endpoints.
 - `ADMIN_PASS` (or `ADMIN_PASSWORD`) – Password for the protected admin dashboard and stats endpoints.
+- `BASE_URL` – Public base URL used for redirects and webhook validation.
+- `SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` – SMTP credentials for transactional emails.
+
+## Subscription setup
+1. Copy `.env.example` to `.env` and add your LIVE Stripe keys, webhook secret, SMTP credentials, and `BASE_URL`.
+2. Configure your Stripe webhook endpoint to `https://<your-domain>/api/router?action=webhook` and subscribe to:
+   - `checkout.session.completed`
+   - `invoice.paid`
+   - `invoice.payment_failed`
+   - `customer.subscription.created`
+   - `customer.subscription.updated`
+   - `customer.subscription.deleted`
+3. Use the live price ID `price_1SYBdVBJD92CE7dk5CUQbatL` for every checkout session.
+4. Ensure SMTP is configured to send activation, failure, and cancellation emails.
