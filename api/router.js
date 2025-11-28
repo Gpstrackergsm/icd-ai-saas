@@ -691,6 +691,15 @@ const registerHandler = async (req, res) => {
     return res.status(500).json({ error: "Stripe is not configured" });
   }
 
+  if (!process.env.STRIPE_SECRET_KEY.startsWith("sk_live_")) {
+    return res
+      .status(500)
+      .json({
+        error:
+          "Live Stripe secret key is required for this price. Please set STRIPE_SECRET_KEY to your live mode key.",
+      });
+  }
+
   const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(12));
 
   const user = upsertUser({
