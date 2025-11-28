@@ -28,6 +28,7 @@ const subscriptionStatusFromStripe = (subscription) => {
   if (!subscription) return null;
   if (subscription.status === "canceled") return "CANCELED";
   if (subscription.status === "past_due" || subscription.status === "unpaid") return "PAST_DUE";
+  if (subscription.status === "incomplete" || subscription.status === "incomplete_expired") return "PAST_DUE";
   return normalizeStatus(subscription.status);
 };
 
@@ -150,7 +151,8 @@ async function handler(req, res) {
         }
         break;
       }
-      case "invoice.payment_succeeded": {
+      case "invoice.payment_succeeded":
+      case "invoice.paid": {
         const invoice = event.data.object;
         const customerId = invoice.customer;
         const email = invoice.customer_email;
@@ -166,6 +168,7 @@ async function handler(req, res) {
             email,
             subscriptionStatus: "ACTIVE",
             currentPeriodEnd,
+            lastPaymentDate: paidAt,
           });
           recordSubscription({
             userId: user.id,
@@ -183,6 +186,44 @@ async function handler(req, res) {
             amountPaid: invoice.amount_paid,
             currency: invoice.currency,
             status: "succeeded",
+            paidAt,
+          });
+        }
+        break;
+      }
+      case "invoice.payment_failed": {
+        const invoice = event.data.object;
+        const customerId = invoice.customer;
+        const email = invoice.customer_email;
+        const subscriptionId = invoice.subscription;
+        const priceId = invoice.lines?.data?.[0]?.price?.id;
+        const paidAt = invoice.status_transitions?.paid_at || invoice.created;
+        const currentPeriodEnd = invoice.lines?.data?.[0]?.period?.end || null;
+        console.log("[STRIPE EVENT]", type, customerId, subscriptionId, email, "failed");
+        if (customerId || email) {
+          const user = upsertUser({
+            stripeCustomerId: customerId,
+            email,
+            subscriptionStatus: "PAST_DUE",
+            currentPeriodEnd,
+            lastPaymentDate: paidAt,
+          });
+          recordSubscription({
+            userId: user.id,
+            email: user.email,
+            stripeCustomerId: customerId,
+            stripeSubscriptionId: subscriptionId,
+            status: "PAST_DUE",
+            priceId,
+            lastPaymentDate: paidAt,
+          });
+          setSubscriptionStatus(user.email, "PAST_DUE", currentPeriodEnd, customerId, subscriptionId, paidAt);
+          recordPayment({
+            invoiceId: invoice.id,
+            customerId,
+            amountPaid: invoice.amount_paid,
+            currency: invoice.currency,
+            status: "failed",
             paidAt,
           });
         }

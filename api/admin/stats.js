@@ -1,10 +1,11 @@
-const { metrics } = require("../../lib/db");
+const { loadMetrics } = require("../../lib/metrics");
 
 function authorize(req) {
-  const adminPassword = process.env.ADMIN_PASSWORD;
+  const adminUser = process.env.ADMIN_USER;
+  const adminPass = process.env.ADMIN_PASS;
   const header = req.headers.authorization;
 
-  if (!adminPassword || !header || !header.startsWith("Basic ")) {
+  if (!adminUser || !adminPass || !header || !header.startsWith("Basic ")) {
     return false;
   }
 
@@ -19,30 +20,25 @@ function authorize(req) {
   const username = decoded.slice(0, separatorIndex);
   const password = decoded.slice(separatorIndex + 1);
 
-  return Boolean(username) && password === adminPassword;
+  return Boolean(username) && password === adminPass && username === adminUser;
 }
 
-export default function handler(req, res) {
+export default async function handler(req, res) {
   if (!authorize(req)) {
     res.setHeader("WWW-Authenticate", 'Basic realm="Admin Area"');
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  const active_subscribers = metrics.activeSubscribers();
-  const total_users = metrics.totalUsers();
-  const total_searches = metrics.totalSearches();
-  const daily_searches = metrics.dailySearches();
-  const trials = metrics.trials();
-  const conversion_rate = metrics.conversionRate();
-  const recent_payments = metrics.recentPayments();
+  const metrics = await loadMetrics();
 
   res.json({
-    active_subscribers,
-    total_users,
-    total_searches,
-    daily_searches,
-    trials,
-    conversion_rate,
-    recent_payments,
+    active_subscribers: metrics.activeSubscribers,
+    total_users: metrics.totalUsers,
+    total_searches: metrics.totalSearches,
+    daily_searches: metrics.searchesToday,
+    conversion_rate: metrics.conversionRatio,
+    recent_payments: metrics.recentPayments,
+    failed_payments: metrics.failedPayments,
+    mrr_cents: metrics.mrrCents,
   });
 }

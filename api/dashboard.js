@@ -1,11 +1,12 @@
 const { verifySubscription } = require("../middleware/verifySubscription");
-const { metrics } = require("../lib/db");
+const { loadMetrics } = require("../lib/metrics");
 
 function authorizeAdmin(req) {
-  const adminPassword = process.env.ADMIN_PASSWORD;
+  const adminUser = process.env.ADMIN_USER;
+  const adminPass = process.env.ADMIN_PASS;
   const header = req.headers.authorization;
 
-  if (!adminPassword || !header || !header.startsWith("Basic ")) {
+  if (!adminUser || !adminPass || !header || !header.startsWith("Basic ")) {
     return false;
   }
 
@@ -20,7 +21,7 @@ function authorizeAdmin(req) {
   const username = decoded.slice(0, separatorIndex);
   const password = decoded.slice(separatorIndex + 1);
 
-  return Boolean(username) && password === adminPassword;
+  return Boolean(username) && username === adminUser && password === adminPass;
 }
 
 export default async function handler(req, res) {
@@ -30,24 +31,16 @@ export default async function handler(req, res) {
     if (!verification.allowed) return;
   }
 
-  const activeSubscribers = metrics.activeSubscribers();
-  const newSubscriptionsToday = metrics.newSubscriptionsToday();
-  const searchesToday = metrics.searchesToday();
-  const failedPayments = metrics.failedPayments();
-  const mrrCents = metrics.mrr();
-  const recentPayments = metrics.recentPayments();
-  const users = metrics.users();
-  const visitors = metrics.visitorsCount();
-  const conversionRatio = visitors ? activeSubscribers / visitors : 0;
+  const metrics = await loadMetrics();
 
   res.json({
-    activeSubscribers,
-    newSubscriptionsToday,
-    searchesToday,
-    failedPayments,
-    mrrCents,
-    recentPayments,
-    users,
-    conversionRatio,
+    activeSubscribers: metrics.activeSubscribers,
+    searchesToday: metrics.searchesToday,
+    failedPayments: metrics.failedPayments,
+    mrrCents: metrics.mrrCents,
+    recentPayments: metrics.recentPayments,
+    users: metrics.users,
+    conversionRatio: metrics.conversionRatio,
+    totalUsers: metrics.totalUsers,
   });
 }
