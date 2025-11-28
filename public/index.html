@@ -407,7 +407,7 @@
 
       try {
         const response = await fetch(
-          `/api/search?q=${encodeURIComponent(query)}`,
+          `/api/router?action=search&q=${encodeURIComponent(query)}`,
           {
             headers: email ? { 'x-user-email': email } : undefined,
           }
@@ -454,7 +454,7 @@
 
     async function checkServerAccess(email) {
       try {
-        const response = await fetch(`/api/check-access?email=${encodeURIComponent(email)}`);
+        const response = await fetch(`/api/router?action=check-access&email=${encodeURIComponent(email)}`);
         const data = await response.json();
         if (!response.ok) {
           throw new Error(data.error || 'Unable to verify subscription.');

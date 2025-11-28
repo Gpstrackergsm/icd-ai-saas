@@ -1,7 +1,7 @@
 {
   "rewrites": [
-    { "source": "/admin", "destination": "/api/admin" },
-    { "source": "/stripe/webhook", "destination": "/api/stripe/webhook" },
-    { "source": "/stripe/verify-session", "destination": "/api/stripe/verify-session" }
+    { "source": "/admin", "destination": "/api/router?action=admin" },
+    { "source": "/stripe/webhook", "destination": "/api/router?action=webhook" },
+    { "source": "/stripe/verify-session", "destination": "/api/router?action=verify" }
   ]
 }

@@ -21,10 +21,10 @@ ICD Smart Search is a browser-first, commercial-grade landing page and instant I
    - Start typing diagnoses or codes to see instant ICD-10-CM results.
 
 ## API overview
-- `GET /api/search?q=term` – Returns ICD-10-CM code matches with descriptions and chapters.
-- `GET /api` – Health/status check for deployments.
-- `POST /api/webhooks/stripe` – Stripe webhook endpoint for subscription lifecycle events.
-- `GET /api/check-access?email=` – Server-side subscription validation used by the client.
+- `GET /api/router?action=search&q=term` – Returns ICD-10-CM code matches with descriptions and chapters.
+- `GET /api/router?action=index` – Health/status check for deployments.
+- `POST /api/router?action=webhook` – Stripe webhook endpoint for subscription lifecycle events.
+- `GET /api/router?action=check-access&email=` – Server-side subscription validation used by the client.
 
 ## Notes
 - Searches stay on the device; no file uploads or external APIs are used.
