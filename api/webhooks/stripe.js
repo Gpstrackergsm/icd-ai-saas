@@ -16,7 +16,15 @@ export const config = {
   },
 };
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
+const isProd = process.env.NODE_ENV === "production";
+const stripeSecretKey = isProd
+  ? process.env.STRIPE_SECRET_KEY_LIVE || process.env.STRIPE_SECRET_KEY
+  : process.env.STRIPE_SECRET_KEY_TEST || process.env.STRIPE_SECRET_KEY;
+const webhookSecret = isProd
+  ? process.env.STRIPE_WEBHOOK_SECRET_LIVE || process.env.STRIPE_WEBHOOK_SECRET
+  : process.env.STRIPE_WEBHOOK_SECRET_TEST || process.env.STRIPE_WEBHOOK_SECRET;
+
+const stripe = new Stripe(stripeSecretKey || "", {
   apiVersion: "2024-06-20",
 });
 
@@ -26,10 +34,10 @@ async function buffer(readable) {
 
 const subscriptionStatusFromStripe = (subscription) => {
   if (!subscription) return null;
-  if (subscription.status === "canceled") return "CANCELED";
-  if (subscription.status === "past_due" || subscription.status === "unpaid") return "PAST_DUE";
-  if (subscription.status === "incomplete" || subscription.status === "incomplete_expired") return "PAST_DUE";
-  return normalizeStatus(subscription.status);
+  const value = normalizeStatus(subscription.status);
+  if (value === "CANCELED") return "canceled";
+  if (value === "PAST_DUE") return "past_due";
+  return (value || "").toLowerCase();
 };
 
 const activateUserFromSession = async (session) => {
@@ -40,12 +48,12 @@ const activateUserFromSession = async (session) => {
     session?.metadata?.price_id || session?.line_items?.[0]?.price?.id || session?.metadata?.priceId;
 
   let currentPeriodEnd = null;
-  let subscriptionStatus = "ACTIVE";
+  let subscriptionStatus = "active";
 
   if (subscriptionId) {
     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
     currentPeriodEnd = subscription?.current_period_end || null;
-    subscriptionStatus = subscriptionStatusFromStripe(subscription) || "ACTIVE";
+    subscriptionStatus = subscriptionStatusFromStripe(subscription) || "active";
   }
 
   if (email || customerId) {
@@ -53,6 +61,8 @@ const activateUserFromSession = async (session) => {
       email,
       stripeCustomerId: customerId,
       subscriptionStatus,
+      plan: "monthly",
+      trial: false,
       currentPeriodEnd,
     });
     if (subscriptionId) {
@@ -65,7 +75,14 @@ const activateUserFromSession = async (session) => {
         priceId,
         lastPaymentDate: currentPeriodEnd,
       });
-      setSubscriptionStatus(user.email, subscriptionStatus, currentPeriodEnd, customerId, subscriptionId, currentPeriodEnd);
+      setSubscriptionStatus(
+        user.email,
+        subscriptionStatus,
+        currentPeriodEnd,
+        customerId,
+        subscriptionId,
+        currentPeriodEnd
+      );
     }
   }
 };
@@ -77,9 +94,11 @@ async function handler(req, res) {
   }
 
   const sig = req.headers["stripe-signature"];
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
   if (!sig || !webhookSecret) {
-    console.error("[STRIPE EVENT] missing signature header");
+    console.error("[STRIPE EVENT] missing signature header or secret", {
+      hasSignature: Boolean(sig),
+      hasSecret: Boolean(webhookSecret),
+    });
     return res.status(400).end("Webhook signature missing");
   }
 
@@ -88,7 +107,7 @@ async function handler(req, res) {
     const buf = await buffer(req);
     event = stripe.webhooks.constructEvent(buf, sig, webhookSecret);
   } catch (err) {
-    console.error("Webhook signature verification failed", err.message);
+    console.error("Webhook signature verification failed", err?.message || err);
     return res.status(400).end("Invalid signature");
   }
 
@@ -101,33 +120,37 @@ async function handler(req, res) {
     switch (type) {
       case "checkout.session.completed": {
         const session = event.data.object;
-        console.log(
-          "[STRIPE EVENT]",
-          type,
-          session.customer,
-          session.subscription,
-          session.customer_details?.email || session.customer_email,
-          "active"
-        );
+        console.log("[STRIPE EVENT]", type, {
+          customer: session.customer,
+          subscription: session.subscription,
+          email: session.customer_details?.email || session.customer_email,
+          status: "active",
+        });
         await activateUserFromSession(session);
         break;
       }
-      case "customer.subscription.updated":
-      case "customer.subscription.deleted": {
+      case "customer.subscription.updated": {
         const subscription = event.data.object;
         const status = subscriptionStatusFromStripe(subscription);
         const customerId = subscription.customer;
         const priceId = subscription.items?.data?.[0]?.price?.id;
         const currentPeriodEnd = subscription.current_period_end;
         const email = subscription.customer_email;
-        const isActive = status === "ACTIVE";
-        console.log("[STRIPE EVENT]", type, customerId, subscription.id, email, status);
+        const isActive = status === "active";
+        console.log("[STRIPE EVENT]", type, {
+          customer: customerId,
+          subscription: subscription.id,
+          email,
+          status,
+        });
         if (customerId || email) {
           const user = upsertUser({
             stripeCustomerId: customerId,
             email,
             subscriptionStatus: status,
             currentPeriodEnd,
+            plan: "monthly",
+            trial: false,
           });
           if (user) {
             setSubscriptionStatus(
@@ -143,7 +166,7 @@ async function handler(req, res) {
               email: user.email,
               stripeCustomerId: customerId,
               stripeSubscriptionId: subscription.id,
-              status: isActive ? "ACTIVE" : status,
+              status: isActive ? "active" : status,
               priceId,
               lastPaymentDate: subscription.current_period_end,
             });
@@ -161,25 +184,32 @@ async function handler(req, res) {
         const paidAt = invoice.status_transitions?.paid_at || invoice.created;
         const currentPeriodEnd = invoice.lines?.data?.[0]?.period?.end || null;
 
-        console.log("[STRIPE EVENT]", type, customerId, subscriptionId, email, "succeeded");
+        console.log("[STRIPE EVENT]", type, {
+          customer: customerId,
+          subscription: subscriptionId,
+          email,
+          status: "active",
+        });
         if (customerId || email) {
           const user = upsertUser({
             stripeCustomerId: customerId,
             email,
-            subscriptionStatus: "ACTIVE",
+            subscriptionStatus: "active",
             currentPeriodEnd,
             lastPaymentDate: paidAt,
+            plan: "monthly",
+            trial: false,
           });
           recordSubscription({
             userId: user.id,
             email: user.email,
             stripeCustomerId: customerId,
             stripeSubscriptionId: subscriptionId,
-            status: "ACTIVE",
+            status: "active",
             priceId,
             lastPaymentDate: paidAt,
           });
-          setSubscriptionStatus(user.email, "ACTIVE", currentPeriodEnd, customerId, subscriptionId, paidAt);
+          setSubscriptionStatus(user.email, "active", currentPeriodEnd, customerId, subscriptionId, paidAt);
           recordPayment({
             invoiceId: invoice.id,
             customerId,
@@ -199,25 +229,32 @@ async function handler(req, res) {
         const priceId = invoice.lines?.data?.[0]?.price?.id;
         const paidAt = invoice.status_transitions?.paid_at || invoice.created;
         const currentPeriodEnd = invoice.lines?.data?.[0]?.period?.end || null;
-        console.log("[STRIPE EVENT]", type, customerId, subscriptionId, email, "failed");
+        console.log("[STRIPE EVENT]", type, {
+          customer: customerId,
+          subscription: subscriptionId,
+          email,
+          status: "past_due",
+        });
         if (customerId || email) {
           const user = upsertUser({
             stripeCustomerId: customerId,
             email,
-            subscriptionStatus: "PAST_DUE",
+            subscriptionStatus: "past_due",
             currentPeriodEnd,
             lastPaymentDate: paidAt,
+            plan: "monthly",
+            trial: false,
           });
           recordSubscription({
             userId: user.id,
             email: user.email,
             stripeCustomerId: customerId,
             stripeSubscriptionId: subscriptionId,
-            status: "PAST_DUE",
+            status: "past_due",
             priceId,
             lastPaymentDate: paidAt,
           });
-          setSubscriptionStatus(user.email, "PAST_DUE", currentPeriodEnd, customerId, subscriptionId, paidAt);
+          setSubscriptionStatus(user.email, "past_due", currentPeriodEnd, customerId, subscriptionId, paidAt);
           recordPayment({
             invoiceId: invoice.id,
             customerId,
@@ -226,6 +263,28 @@ async function handler(req, res) {
             status: "failed",
             paidAt,
           });
+        }
+        break;
+      }
+      case "customer.subscription.deleted": {
+        const subscription = event.data.object;
+        const customerId = subscription.customer;
+        const email = subscription.customer_email;
+        console.log("[STRIPE EVENT]", type, {
+          customer: customerId,
+          subscription: subscription.id,
+          email,
+          status: "canceled",
+        });
+        if (customerId || email) {
+          const user = upsertUser({
+            stripeCustomerId: customerId,
+            email,
+            subscriptionStatus: "canceled",
+            plan: "monthly",
+            trial: false,
+          });
+          setSubscriptionStatus(user.email, "canceled", subscription.current_period_end, customerId, subscription.id, null);
         }
         break;
       }

@@ -30,6 +30,7 @@ export default async function handler(req, res) {
     recentPayments,
     users,
     conversionRatio,
+    trials,
   } = metrics;
 
   const paymentsHtml = recentPayments
@@ -58,6 +59,7 @@ export default async function handler(req, res) {
       ${renderRow("Conversion %", `${(conversionRatio * 100).toFixed(2)}%`)}
       ${renderRow("Failed payments", failedPayments)}
       ${renderRow("MRR", `$${(mrrCents / 100).toFixed(2)}`)}
+      ${renderRow("Trials", trials)}
     </section>
     <section>
       <h2>Recent payments</h2>

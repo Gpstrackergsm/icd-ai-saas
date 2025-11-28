@@ -1,19 +1,19 @@
 import Stripe from "stripe";
-import {
-  recordSubscription,
-  setSubscriptionStatus,
-  upsertUser,
-  normalizeStatus,
-} from "../../lib/db";
+import { recordSubscription, setSubscriptionStatus, upsertUser, normalizeStatus } from "../../lib/db";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
+const isProd = process.env.NODE_ENV === "production";
+const stripeSecretKey = isProd
+  ? process.env.STRIPE_SECRET_KEY_LIVE || process.env.STRIPE_SECRET_KEY
+  : process.env.STRIPE_SECRET_KEY_TEST || process.env.STRIPE_SECRET_KEY;
+
+const stripe = new Stripe(stripeSecretKey || "", {
   apiVersion: "2024-06-20",
 });
 
 const subscriptionStatusFromStripe = (subscription) => {
   if (!subscription) return "INACTIVE";
   const normalized = normalizeStatus(subscription.status) || "INACTIVE";
-  return normalized;
+  return normalized.toLowerCase();
 };
 
 export const verifySession = async (sessionId) => {
@@ -27,12 +27,12 @@ export const verifySession = async (sessionId) => {
   const priceId = session?.line_items?.data?.[0]?.price?.id;
 
   let currentPeriodEnd = null;
-  let subscriptionStatus = "ACTIVE";
+  let subscriptionStatus = "active";
 
   if (subscriptionId) {
     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
     currentPeriodEnd = subscription?.current_period_end || null;
-    subscriptionStatus = subscriptionStatusFromStripe(subscription) || "ACTIVE";
+    subscriptionStatus = subscriptionStatusFromStripe(subscription) || "active";
   }
 
   if (email || customerId) {
@@ -40,6 +40,8 @@ export const verifySession = async (sessionId) => {
       email,
       stripeCustomerId: customerId,
       subscriptionStatus,
+      plan: "monthly",
+      trial: false,
       currentPeriodEnd,
     });
 
@@ -57,7 +59,7 @@ export const verifySession = async (sessionId) => {
     }
   }
 
-  return { email, active: subscriptionStatus === "ACTIVE" };
+  return { email, active: subscriptionStatus === "active" };
 };
 
 export default async function handler(req, res) {
