@@ -667,7 +667,7 @@ const successHandler = async (req, res) => {
       }
       res.writeHead(302, { Location: "/dashboard" });
     } else {
-      res.writeHead(302, { Location: "/pricing" });
+      res.writeHead(302, { Location: "/payment-failed" });
     }
     res.end();
   } catch (error) {
@@ -726,7 +726,17 @@ const registerHandler = async (req, res) => {
   setSessionCookie(res, session.id);
 
   try {
-    const origin = determineOrigin(req);
+    const baseUrl = process.env.BASE_URL;
+
+    if (!baseUrl) {
+      return res.status(500).json({ error: "BASE_URL is not configured" });
+    }
+
+    const successUrl = `${baseUrl}/api/stripe/success?session_id={CHECKOUT_SESSION_ID}`;
+    const cancelUrl = `${baseUrl}/pricing`;
+
+    console.log("Stripe success_url:", successUrl);
+    console.log("Stripe cancel_url:", cancelUrl);
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       customer_email: email,
@@ -741,8 +751,8 @@ const registerHandler = async (req, res) => {
           quantity: 1,
         },
       ],
-      success_url: `${origin}/api/stripe/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/pricing?email=${encodeURIComponent(email)}`,
+      success_url: successUrl,
+      cancel_url: cancelUrl,
     });
 
     res.status(200).json({ url: session.url });
