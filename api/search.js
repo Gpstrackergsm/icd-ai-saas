@@ -9,9 +9,36 @@ const rateLimitWindowMs = 60 * 1000;
 const maxRequestsPerWindow = 30;
 const rateLimiters = new Map();
 
-const dbPath = path.join(process.cwd(), "users.json");
+const primaryDbPath = path.join(process.cwd(), "users.json");
+const fallbackDbPath = path.join("/tmp", "users.json");
+
+const determineDbPath = () => {
+  if (fs.existsSync(primaryDbPath)) return primaryDbPath;
+  if (fs.existsSync(fallbackDbPath)) return fallbackDbPath;
+
+  try {
+    fs.mkdirSync(path.dirname(primaryDbPath), { recursive: true });
+    fs.accessSync(path.dirname(primaryDbPath), fs.constants.W_OK);
+    return primaryDbPath;
+  } catch (primaryError) {
+    try {
+      fs.mkdirSync(path.dirname(fallbackDbPath), { recursive: true });
+      fs.accessSync(path.dirname(fallbackDbPath), fs.constants.W_OK);
+      return fallbackDbPath;
+    } catch (fallbackError) {
+      console.error("Unable to resolve writable path for users.json", {
+        primaryError,
+        fallbackError,
+      });
+      return primaryDbPath;
+    }
+  }
+};
+
+let dbPath = determineDbPath();
 
 const loadUsers = () => {
+  dbPath = determineDbPath();
   if (!fs.existsSync(dbPath)) return {};
   try {
     return JSON.parse(fs.readFileSync(dbPath, "utf8"));
@@ -22,7 +49,18 @@ const loadUsers = () => {
 };
 
 const saveUsers = (users) => {
-  fs.writeFileSync(dbPath, JSON.stringify(users, null, 2));
+  const targetPaths = [dbPath, dbPath === fallbackDbPath ? primaryDbPath : fallbackDbPath];
+
+  for (const targetPath of targetPaths) {
+    if (!targetPath) continue;
+    try {
+      fs.writeFileSync(targetPath, JSON.stringify(users, null, 2));
+      dbPath = targetPath;
+      return;
+    } catch (err) {
+      console.error(`Failed to persist users.json at ${targetPath}`, err);
+    }
+  }
 };
 
 const getIp = (req) =>
