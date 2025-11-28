@@ -33,5 +33,5 @@ ICD Smart Search is a browser-first, commercial-grade landing page and instant I
 ## Environment variables
 - `STRIPE_SECRET_KEY` – Required for server-side Stripe operations.
 - `STRIPE_WEBHOOK_SECRET` – Used to verify webhook signatures from Stripe.
-- `ADMIN_USER` – Username for the protected admin dashboard and stats endpoints.
-- `ADMIN_PASS` – Password for the protected admin dashboard and stats endpoints.
+- `ADMIN_USER` (or `ADMIN_USERNAME`) – Username for the protected admin dashboard and stats endpoints.
+- `ADMIN_PASS` (or `ADMIN_PASSWORD`) – Password for the protected admin dashboard and stats endpoints.
