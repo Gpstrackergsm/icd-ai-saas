@@ -32,27 +32,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
   apiVersion: "2024-06-20",
 });
 
-const defaultPriceId = process.env.STRIPE_PRICE_ID || null;
+const PRICE_ID = "price_1SYBdVBJD92CE7dk5CUQbatL";
 const appBaseUrl = process.env.APP_URL || "http://localhost:3000";
-
-let cachedPriceId = defaultPriceId;
-
-const resolvePriceId = async () => {
-  if (cachedPriceId) return cachedPriceId;
-
-  try {
-    const prices = await stripe.prices.list({ active: true, limit: 10 });
-    const recurring = prices.data.find((price) => price.active && price.type === "recurring");
-    if (recurring) {
-      cachedPriceId = recurring.id;
-      return cachedPriceId;
-    }
-  } catch (error) {
-    console.error("Failed to resolve Stripe price", error?.message || error);
-  }
-
-  return null;
-};
 
 const rateLimitWindowMs = 60 * 1000;
 const maxRequestsPerWindow = 30;
@@ -630,7 +611,10 @@ const registerHandler = async (req, res) => {
   const email = (req.body?.email || "").toString().trim().toLowerCase();
   const password = (req.body?.password || "").toString();
   const requestedPrice = req.body?.priceId?.toString();
-  const priceId = requestedPrice || (await resolvePriceId());
+
+  if (requestedPrice && requestedPrice !== PRICE_ID) {
+    return res.status(400).json({ error: "Invalid Stripe price" });
+  }
 
   if (!email || !password) {
     return res.status(400).json({ error: "Email and password are required" });
@@ -642,13 +626,6 @@ const registerHandler = async (req, res) => {
 
   if (!process.env.STRIPE_SECRET_KEY) {
     return res.status(500).json({ error: "Stripe is not configured" });
-  }
-
-  if (!priceId) {
-    return res.status(500).json({
-      error: "Subscription price is not configured",
-      detail: "Set STRIPE_PRICE_ID or ensure an active recurring price exists in Stripe.",
-    });
   }
 
   const passwordHash = crypto.createHash("sha256").update(password).digest("hex");
@@ -668,11 +645,11 @@ const registerHandler = async (req, res) => {
       metadata: {
         email,
         user_id: user?.id,
-        price_id: priceId,
+        price_id: PRICE_ID,
       },
       line_items: [
         {
-          price: priceId,
+          price: PRICE_ID,
           quantity: 1,
         },
       ],
