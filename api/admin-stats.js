@@ -1,5 +1,5 @@
-const { loadMetrics } = require("../../lib/metrics");
-const { validateAdminAuth } = require("../../lib/admin-auth");
+import { loadMetrics } from "../lib/metrics";
+import { validateAdminAuth } from "../lib/admin-auth";
 
 export default async function handler(req, res) {
   const isAuthorized = validateAdminAuth(req, res);
@@ -11,11 +11,10 @@ export default async function handler(req, res) {
     active_subscribers: metrics.activeSubscribers,
     total_users: metrics.totalUsers,
     total_searches: metrics.totalSearches,
-    daily_searches: metrics.searchesToday,
-    conversion_rate: metrics.conversionRatio,
-    recent_payments: metrics.recentPayments,
+    searches_today: metrics.searchesToday,
     failed_payments: metrics.failedPayments,
     mrr_cents: metrics.mrrCents,
     trials: metrics.trials,
+    recent_payments: metrics.recentPayments,
   });
 }

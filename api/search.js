@@ -1,94 +1,19 @@
-const fs = require("fs");
-const path = require("path");
 const { searchIcd } = require("../icd-search");
 const { extractEmail } = require("../middleware/verifySubscription");
-const { logUsage, subscriptionState } = require("../lib/db");
+const {
+  logUsage,
+  getUserByEmail,
+  recordSearchUsage,
+  incrementUserSearchCount,
+  disableTrialForUser,
+} = require("../lib/db");
 
-const MAX_FREE_SEARCHES = 10;
 const rateLimitWindowMs = 60 * 1000;
 const maxRequestsPerWindow = 30;
 const rateLimiters = new Map();
 
-const primaryDbPath = path.join(process.cwd(), "users.json");
-const fallbackDbPath = path.join("/tmp", "users.json");
-let memoryUsers = {};
-
-const determineDbPath = () => {
-  if (fs.existsSync(primaryDbPath)) return primaryDbPath;
-  if (fs.existsSync(fallbackDbPath)) return fallbackDbPath;
-
-  try {
-    fs.mkdirSync(path.dirname(primaryDbPath), { recursive: true });
-    fs.accessSync(path.dirname(primaryDbPath), fs.constants.W_OK);
-    return primaryDbPath;
-  } catch (primaryError) {
-    try {
-      fs.mkdirSync(path.dirname(fallbackDbPath), { recursive: true });
-      fs.accessSync(path.dirname(fallbackDbPath), fs.constants.W_OK);
-      return fallbackDbPath;
-    } catch (fallbackError) {
-      console.error("Unable to resolve writable path for users.json", {
-        primaryError,
-        fallbackError,
-      });
-      return primaryDbPath;
-    }
-  }
-};
-
-let dbPath = determineDbPath();
-
-const loadUsers = () => {
-  dbPath = determineDbPath();
-  if (!fs.existsSync(dbPath)) return { ...memoryUsers };
-  try {
-    const data = JSON.parse(fs.readFileSync(dbPath, "utf8"));
-    memoryUsers = { ...data };
-    return data;
-  } catch (err) {
-    console.error("Failed to parse users database", err);
-    return { ...memoryUsers };
-  }
-};
-
-const saveUsers = (users) => {
-  memoryUsers = { ...users };
-  const targetPaths = [dbPath, dbPath === fallbackDbPath ? primaryDbPath : fallbackDbPath];
-
-  for (const targetPath of targetPaths) {
-    if (!targetPath) continue;
-    try {
-      fs.mkdirSync(path.dirname(targetPath), { recursive: true });
-      fs.writeFileSync(targetPath, JSON.stringify(users, null, 2));
-      dbPath = targetPath;
-      return;
-    } catch (err) {
-      console.error(`Failed to persist users.json at ${targetPath}`, err);
-    }
-  }
-};
-
 const getIp = (req) =>
-  req.headers["x-forwarded-for"]?.toString().split(",")[0].trim() ||
-  req.connection?.remoteAddress ||
-  "unknown";
-
-const parseCookies = (req) => {
-  const header = req.headers?.cookie;
-  if (!header) return {};
-  return header.split(";").reduce((acc, part) => {
-    const [key, ...rest] = part.trim().split("=");
-    if (!key) return acc;
-    acc[key] = decodeURIComponent(rest.join("="));
-    return acc;
-  }, {});
-};
-
-const resolveSubscriptionState = (email) => {
-  const state = subscriptionState(email);
-  const status = state.record?.isActive ? "ACTIVE" : "INACTIVE";
-  return { active: state.isActive, status, record: state.record };
-};
+  req.headers["x-forwarded-for"]?.toString().split(",")[0].trim() || req.connection?.remoteAddress || "unknown";
 
 const checkRateLimit = (identifier) => {
   const now = Date.now();
@@ -117,12 +42,6 @@ export default async function handler(req, res) {
   }
 
   const q = (req.query?.q || "").toString();
-  const email = extractEmail(req);
-
-  const users = loadUsers();
-  const user = users[ip] || { searches: 0, subscription: "free" };
-  users[ip] = user;
-
   const terms = q
     .split(",")
     .map((term) => term.trim())
@@ -132,34 +51,30 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: "Missing query" });
   }
 
-  const cookies = parseCookies(req);
-  let visitorId = cookies["visitor_id"];
-  if (!visitorId) {
-    visitorId = `v_${Date.now()}_${Math.random().toString(16).slice(2)}`;
-    res.setHeader("Set-Cookie", `visitor_id=${visitorId}; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax`);
+  const email = extractEmail(req);
+  if (!email) {
+    return res.status(401).json({ error: "Authentication required" });
   }
 
-  let isSubscribed = false;
-  let subscription;
-  if (email) {
-    const state = resolveSubscriptionState(email);
-    if (state.active) {
-      isSubscribed = true;
-      subscription = state.record;
+  const user = getUserByEmail(email);
+  if (!user) {
+    return res.status(401).json({ error: "User session required" });
+  }
+
+  const subscriptionStatus = (user.subscription_status || "").toLowerCase();
+  const isActive = subscriptionStatus === "active";
+  const isTrial = Boolean(user.trial);
+  const searchCount = user.search_count || 0;
+
+  if (!isActive) {
+    if (isTrial) {
+      if (searchCount >= 10) {
+        disableTrialForUser(email);
+        return res.status(403).json({ message: "Trial limit reached. Please subscribe." });
+      }
+    } else {
+      return res.status(403).json({ error: "Subscription required" });
     }
-  }
-
-  user.subscription = isSubscribed ? "active" : user.subscription || "free";
-
-  const hasActiveSubscription = isSubscribed || user.subscription === "active";
-  const subscriptionStatus = hasActiveSubscription
-    ? "ACTIVE"
-    : resolveSubscriptionState(email).status;
-
-  if (!hasActiveSubscription && user.searches >= MAX_FREE_SEARCHES) {
-    console.log(`Search limit reached for IP ${ip}`);
-    saveUsers(users);
-    return res.status(403).json({ message: "Please subscribe to continue" });
   }
 
   const groupedResults = terms.map((term) => {
@@ -188,20 +103,20 @@ export default async function handler(req, res) {
     };
   });
 
-  if (!hasActiveSubscription) {
-    user.searches += 1;
+  if (isTrial) {
+    incrementUserSearchCount(email);
   }
 
-  saveUsers(users);
-
-  logUsage({ email, userId: subscription?.user_id, ip });
+  recordSearchUsage(email);
+  logUsage({ email, userId: user.id, ip });
 
   res.json({
     results: groupedResults,
     meta: {
       terms,
-      subscriber: hasActiveSubscription,
-      status: subscriptionStatus,
+      subscriber: isActive,
+      status: subscriptionStatus || (isTrial ? "trial" : "inactive"),
+      search_count: isTrial ? searchCount + 1 : searchCount,
     },
   });
 }
