@@ -10,7 +10,7 @@ const extractEmail = (req) => {
 async function verifySubscription(req, res) {
   const email = extractEmail(req);
   if (!email) {
-    res.status(401).json({ error: "Subscription required" });
+    res.status(401).json({ error: "Account required", redirect: "/#signup" });
     return { allowed: false };
   }
 
@@ -22,7 +22,7 @@ async function verifySubscription(req, res) {
     return { allowed: true, subscription: state.record, email };
   }
 
-  res.status(403).json({ error: "Subscription required" });
+  res.status(402).json({ error: "Subscription required", redirect: "/#signup" });
   return { allowed: false };
 }
 

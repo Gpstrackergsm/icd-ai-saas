@@ -1,5 +1,6 @@
 import fs from "fs";
 import path from "path";
+import crypto from "crypto";
 import Stripe from "stripe";
 import getRawBody from "raw-body";
 import nodemailer from "nodemailer";
@@ -31,7 +32,9 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
   apiVersion: "2024-06-20",
 });
 
-const MAX_FREE_SEARCHES = 10;
+const defaultPriceId = process.env.STRIPE_PRICE_ID || "price_1SYBdVBJD92CE7dk5CUQbatL";
+const appBaseUrl = process.env.APP_URL || "http://localhost:3000";
+
 const rateLimitWindowMs = 60 * 1000;
 const maxRequestsPerWindow = 30;
 const rateLimiters = new Map();
@@ -222,11 +225,11 @@ const searchHandler = async (req, res) => {
   }
 
   const q = (req.query?.q || "").toString();
-  const email = extractEmailMiddleware(req);
+  const verification = await verifySubscription(req, res);
+  if (!verification.allowed) return;
 
-  const users = loadUsers();
-  const user = users[ip] || { searches: 0, subscription: "free" };
-  users[ip] = user;
+  const email = verification.email;
+  const subscription = verification.subscription;
 
   const terms = q
     .split(",")
@@ -237,33 +240,7 @@ const searchHandler = async (req, res) => {
     return res.status(400).json({ error: "Missing query" });
   }
 
-  const cookies = parseCookies(req);
-  let visitorId = cookies["visitor_id"];
-  if (!visitorId) {
-    visitorId = `v_${Date.now()}_${Math.random().toString(16).slice(2)}`;
-    res.setHeader("Set-Cookie", `visitor_id=${visitorId}; Path=/; Max-Age=86400; HttpOnly; SameSite=Lax`);
-  }
-
-  let isSubscribed = false;
-  let subscription;
-  if (email) {
-    const state = resolveSubscriptionState(email);
-    if (state.active) {
-      isSubscribed = true;
-      subscription = state.record;
-    }
-  }
-
-  user.subscription = isSubscribed ? "active" : user.subscription || "free";
-
-  const hasActiveSubscription = isSubscribed || user.subscription === "active";
-  const subscriptionStatus = hasActiveSubscription ? "ACTIVE" : resolveSubscriptionState(email).status;
-
-  if (!hasActiveSubscription && user.searches >= MAX_FREE_SEARCHES) {
-    console.log(`Search limit reached for IP ${ip}`);
-    saveUsers(users);
-    return res.status(403).json({ message: "Please subscribe to continue" });
-  }
+  const subscriptionStatus = subscription?.isActive ? "ACTIVE" : resolveSubscriptionState(email).status;
 
   const groupedResults = terms.map((term) => {
     const entries = Array.isArray(searchIcd(term)) ? searchIcd(term) : [];
@@ -291,19 +268,13 @@ const searchHandler = async (req, res) => {
     };
   });
 
-  if (!hasActiveSubscription) {
-    user.searches += 1;
-  }
-
-  saveUsers(users);
-
   logUsage({ email, userId: subscription?.user_id, ip });
 
   res.json({
     results: groupedResults,
     meta: {
       terms,
-      subscriber: hasActiveSubscription,
+      subscriber: true,
       status: subscriptionStatus,
     },
   });
@@ -629,6 +600,66 @@ const successHandler = async (req, res) => {
   }
 };
 
+const registerHandler = async (req, res) => {
+  if (req.method !== "POST") {
+    res.setHeader("Allow", "POST");
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  await parseJsonBody(req);
+
+  const email = (req.body?.email || "").toString().trim().toLowerCase();
+  const password = (req.body?.password || "").toString();
+  const priceId = (req.body?.priceId || defaultPriceId).toString();
+
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email and password are required" });
+  }
+
+  if (password.length < 8) {
+    return res.status(400).json({ error: "Password must be at least 8 characters" });
+  }
+
+  if (!process.env.STRIPE_SECRET_KEY) {
+    return res.status(500).json({ error: "Stripe is not configured" });
+  }
+
+  const passwordHash = crypto.createHash("sha256").update(password).digest("hex");
+
+  const user = upsertUser({
+    email,
+    subscriptionStatus: "INACTIVE",
+    plan: "pending",
+    passwordHash,
+  });
+
+  try {
+    const origin = req.headers?.origin || appBaseUrl;
+    const session = await stripe.checkout.sessions.create({
+      mode: "subscription",
+      customer_email: email,
+      metadata: {
+        email,
+        user_id: user?.id,
+        price_id: priceId,
+      },
+      line_items: [
+        {
+          price: priceId,
+          quantity: 1,
+        },
+      ],
+      success_url: `${origin}/welcome.html?session_id={CHECKOUT_SESSION_ID}&email=${encodeURIComponent(email)}`,
+      cancel_url: `${origin}/?signup=1&email=${encodeURIComponent(email)}`,
+    });
+
+    res.status(200).json({ url: session.url });
+  } catch (error) {
+    console.error("Failed to create checkout session", error?.message || error);
+    res.status(500).json({ error: "Unable to start checkout" });
+  }
+};
+
 const checkAccessHandler = async (req, res) => {
   if (req.method === "POST") {
     await parseJsonBody(req);
@@ -638,16 +669,18 @@ const checkAccessHandler = async (req, res) => {
   const email = emailFromQuery || (req.method === "POST" ? req.body?.email?.toString().toLowerCase() : null);
 
   if (!email) {
-    return res.status(400).json({ active: false, status: "NONE", error: "Email required" });
+    return res.status(401).json({ active: false, status: "NONE", error: "Email required", redirect: "/#signup" });
   }
 
-  const state = (() => {
-    const subscription = subscriptionState(email);
-    const status = subscription.isActive ? "ACTIVE" : "INACTIVE";
-    return { active: subscription.isActive, status, allowed: subscription.isActive };
-  })();
+  const subscription = subscriptionState(email);
+  const status = subscription.isActive ? "ACTIVE" : "INACTIVE";
+  const response = { active: subscription.isActive, status, allowed: subscription.isActive, redirect: "/#signup" };
 
-  res.status(200).json(state);
+  if (!subscription.isActive) {
+    return res.status(402).json(response);
+  }
+
+  res.status(200).json(response);
 };
 
 const usageHandler = async (req, res) => {
@@ -806,6 +839,7 @@ const handlers = {
   dashboard: dashboardHandler,
   user: userHandler,
   "check-access": checkAccessHandler,
+  register: registerHandler,
   index: statusHandler,
 };
 
