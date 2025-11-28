@@ -1,38 +1,13 @@
 const { loadMetrics } = require("../lib/metrics");
+const { validateAdminAuth } = require("../lib/admin-auth");
 
 const renderRow = (label, value) => `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;">
   <strong>${label}</strong><span>${value}</span>
 </div>`;
 
 export default async function handler(req, res) {
-  const adminUser = process.env.ADMIN_USER;
-  const adminPass = process.env.ADMIN_PASS;
-  if (!adminUser || !adminPass) {
-    res.statusCode = 503;
-    res.setHeader("Content-Type", "text/plain");
-    res.end("Admin credentials are not configured. Set ADMIN_USER and ADMIN_PASS environment variables.");
-    return;
-  }
-
-  const auth = req.headers.authorization;
-
-  if (!auth || !auth.startsWith("Basic ")) {
-    res.statusCode = 401;
-    res.setHeader("WWW-Authenticate", 'Basic realm="Admin Area"');
-    res.end("Authentication required");
-    return;
-  }
-
-  const base64 = auth.split(" ")[1];
-  const decoded = Buffer.from(base64, "base64").toString();
-  const [username, password] = decoded.split(":");
-
-  if (!password || password !== adminPass || username !== adminUser) {
-    res.statusCode = 401;
-    res.setHeader("WWW-Authenticate", 'Basic realm="Admin Area"');
-    res.end("Invalid credentials");
-    return;
-  }
+  const isAuthorized = validateAdminAuth(req, res);
+  if (!isAuthorized) return;
 
   let metrics;
   try {
