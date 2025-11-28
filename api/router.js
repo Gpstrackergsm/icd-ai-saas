@@ -32,7 +32,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
   apiVersion: "2024-06-20",
 });
 
-const defaultPriceId = process.env.STRIPE_PRICE_ID || "price_1SYBdVBJD92CE7dk5CUQbatL";
+const defaultPriceId = process.env.STRIPE_PRICE_ID || null;
 const appBaseUrl = process.env.APP_URL || "http://localhost:3000";
 
 const rateLimitWindowMs = 60 * 1000;
@@ -610,7 +610,7 @@ const registerHandler = async (req, res) => {
 
   const email = (req.body?.email || "").toString().trim().toLowerCase();
   const password = (req.body?.password || "").toString();
-  const priceId = (req.body?.priceId || defaultPriceId).toString();
+  const priceId = (req.body?.priceId || defaultPriceId)?.toString();
 
   if (!email || !password) {
     return res.status(400).json({ error: "Email and password are required" });
@@ -622,6 +622,10 @@ const registerHandler = async (req, res) => {
 
   if (!process.env.STRIPE_SECRET_KEY) {
     return res.status(500).json({ error: "Stripe is not configured" });
+  }
+
+  if (!priceId) {
+    return res.status(500).json({ error: "Subscription price is not configured" });
   }
 
   const passwordHash = crypto.createHash("sha256").update(password).digest("hex");
@@ -655,8 +659,9 @@ const registerHandler = async (req, res) => {
 
     res.status(200).json({ url: session.url });
   } catch (error) {
-    console.error("Failed to create checkout session", error?.message || error);
-    res.status(500).json({ error: "Unable to start checkout" });
+    const message = error?.message || "Unable to start checkout";
+    console.error("Failed to create checkout session", message);
+    res.status(500).json({ error: message });
   }
 };
 
