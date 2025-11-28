@@ -39,6 +39,19 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
 const PRICE_ID = "price_1SYBdVBJD92CE7dk5CUQbatL";
 const appBaseUrl = process.env.BASE_URL || process.env.APP_URL || "http://localhost:3000";
 
+const determineOrigin = (req) => {
+  const headerOrigin = req.headers?.origin;
+  if (headerOrigin) return headerOrigin;
+
+  const host = req.headers?.host;
+  if (host) {
+    const protocol = host.includes("localhost") || host.startsWith("127.") ? "http" : "https";
+    return `${protocol}://${host}`;
+  }
+
+  return appBaseUrl;
+};
+
 const rateLimitWindowMs = 60 * 1000;
 const maxRequestsPerWindow = 30;
 const rateLimiters = new Map();
@@ -713,7 +726,7 @@ const registerHandler = async (req, res) => {
   setSessionCookie(res, session.id);
 
   try {
-    const origin = req.headers?.origin || appBaseUrl;
+    const origin = determineOrigin(req);
     const session = await stripe.checkout.sessions.create({
       mode: "subscription",
       customer_email: email,
@@ -728,7 +741,7 @@ const registerHandler = async (req, res) => {
           quantity: 1,
         },
       ],
-      success_url: `${origin}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${origin}/api/stripe/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/pricing?email=${encodeURIComponent(email)}`,
     });
 

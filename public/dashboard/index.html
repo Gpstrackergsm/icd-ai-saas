@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — ICD Smart Search</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .dashboard-wrapper { max-width: 900px; margin: 60px auto; padding: 32px; background: #fff; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+    .status-pill { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; font-weight: 600; }
+    .status-pill.active { background: #e6f7ec; color: #0f5132; }
+    .muted { color: #666; }
+    .meta { margin-top: 16px; }
+    .actions { margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .error { background: #fdecea; color: #7f1d1d; padding: 12px; border-radius: 10px; margin-top: 12px; }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-brand">ICD Smart Search</div>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/api/router?action=logout">Logout</a>
+    </nav>
+  </header>
+
+  <main>
+    <div class="dashboard-wrapper">
+      <p class="eyebrow">Account</p>
+      <h1>Your Dashboard</h1>
+      <div id="status-pill" class="status-pill">Checking subscription…</div>
+      <p id="subtitle" class="muted"></p>
+      <div id="meta" class="meta muted"></div>
+      <div id="error" class="error" style="display:none"></div>
+      <div class="actions">
+        <a class="btn button-primary" href="/">Go to Smart Search</a>
+        <a class="btn button-outline" href="/welcome">View onboarding</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="nav-brand">© 2025 ICD Smart Search. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <p class="footer-disclaimer">ICD Smart Search is for coding reference &amp; administrative use only. It does not provide medical diagnosis or treatment advice.</p>
+  </footer>
+
+  <script>
+    const statusPill = document.getElementById('status-pill');
+    const subtitle = document.getElementById('subtitle');
+    const meta = document.getElementById('meta');
+    const errorBox = document.getElementById('error');
+
+    function setError(message, redirect) {
+      errorBox.textContent = message;
+      errorBox.style.display = 'block';
+      if (redirect) {
+        setTimeout(() => {
+          window.location.href = redirect;
+        }, 1500);
+      }
+    }
+
+    function setActiveState(data) {
+      statusPill.classList.add('active');
+      statusPill.textContent = 'Subscription Active';
+      const expiresAt = data.current_period_end
+        ? new Date(data.current_period_end * 1000).toLocaleString()
+        : null;
+      subtitle.textContent = data.email ? `Signed in as ${data.email}` : '';
+      meta.textContent = expiresAt ? `Renews on ${expiresAt}` : 'Your subscription is unlocked.';
+    }
+
+    async function checkAccess() {
+      try {
+        const response = await fetch('/api/router?action=user', {
+          credentials: 'include',
+        });
+        const data = await response.json();
+
+        if (!response.ok) {
+          const target = response.status === 401 || response.status === 402 ? '/pricing' : '/payment-failed';
+          setError(data.error || 'Subscription required', target);
+          return;
+        }
+
+        setActiveState(data);
+      } catch (error) {
+        console.error(error);
+        setError('Unable to load your subscription. Please try again.', '/error');
+      }
+    }
+
+    window.addEventListener('load', checkAccess);
+  </script>
+</body>
+</html>

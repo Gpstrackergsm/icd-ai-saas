@@ -2,6 +2,9 @@
   "rewrites": [
     { "source": "/admin", "destination": "/api/router?action=admin" },
     { "source": "/stripe/webhook", "destination": "/api/router?action=webhook" },
-    { "source": "/stripe/verify-session", "destination": "/api/router?action=verify" }
+    { "source": "/stripe/verify-session", "destination": "/api/router?action=verify" },
+    { "source": "/dashboard", "destination": "/dashboard/index.html" },
+    { "source": "/payment-failed", "destination": "/payment-failed/index.html" },
+    { "source": "/error", "destination": "/error/index.html" }
   ]
 }
