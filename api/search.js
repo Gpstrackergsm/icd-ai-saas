@@ -1,11 +1,72 @@
+const fs = require("fs");
+const path = require("path");
 const { searchIcd } = require("../icd-search");
 const { extractEmail } = require("../middleware/verifySubscription");
-const { logUsage, recordSearchUsage, getSearchUsage, subscriptionState } = require("../lib/db");
+const { logUsage, subscriptionState } = require("../lib/db");
 
 const MAX_FREE_SEARCHES = 10;
 const rateLimitWindowMs = 60 * 1000;
 const maxRequestsPerWindow = 30;
 const rateLimiters = new Map();
+
+const primaryDbPath = path.join(process.cwd(), "users.json");
+const fallbackDbPath = path.join("/tmp", "users.json");
+let memoryUsers = {};
+
+const determineDbPath = () => {
+  if (fs.existsSync(primaryDbPath)) return primaryDbPath;
+  if (fs.existsSync(fallbackDbPath)) return fallbackDbPath;
+
+  try {
+    fs.mkdirSync(path.dirname(primaryDbPath), { recursive: true });
+    fs.accessSync(path.dirname(primaryDbPath), fs.constants.W_OK);
+    return primaryDbPath;
+  } catch (primaryError) {
+    try {
+      fs.mkdirSync(path.dirname(fallbackDbPath), { recursive: true });
+      fs.accessSync(path.dirname(fallbackDbPath), fs.constants.W_OK);
+      return fallbackDbPath;
+    } catch (fallbackError) {
+      console.error("Unable to resolve writable path for users.json", {
+        primaryError,
+        fallbackError,
+      });
+      return primaryDbPath;
+    }
+  }
+};
+
+let dbPath = determineDbPath();
+
+const loadUsers = () => {
+  dbPath = determineDbPath();
+  if (!fs.existsSync(dbPath)) return { ...memoryUsers };
+  try {
+    const data = JSON.parse(fs.readFileSync(dbPath, "utf8"));
+    memoryUsers = { ...data };
+    return data;
+  } catch (err) {
+    console.error("Failed to parse users database", err);
+    return { ...memoryUsers };
+  }
+};
+
+const saveUsers = (users) => {
+  memoryUsers = { ...users };
+  const targetPaths = [dbPath, dbPath === fallbackDbPath ? primaryDbPath : fallbackDbPath];
+
+  for (const targetPath of targetPaths) {
+    if (!targetPath) continue;
+    try {
+      fs.mkdirSync(path.dirname(targetPath), { recursive: true });
+      fs.writeFileSync(targetPath, JSON.stringify(users, null, 2));
+      dbPath = targetPath;
+      return;
+    } catch (err) {
+      console.error(`Failed to persist users.json at ${targetPath}`, err);
+    }
+  }
+};
 
 const getIp = (req) =>
   req.headers["x-forwarded-for"]?.toString().split(",")[0].trim() ||
@@ -58,6 +119,10 @@ export default async function handler(req, res) {
   const q = (req.query?.q || "").toString();
   const email = extractEmail(req);
 
+  const users = loadUsers();
+  const user = users[ip] || { searches: 0, subscription: "free" };
+  users[ip] = user;
+
   const terms = q
     .split(",")
     .map((term) => term.trim())
@@ -84,15 +149,17 @@ export default async function handler(req, res) {
     }
   }
 
-  const identifier = email || visitorId || ip;
-  if (!isSubscribed) {
-    const usage = getSearchUsage(identifier);
-    if (usage && usage.count >= MAX_FREE_SEARCHES) {
-      return res
-        .status(402)
-        .json({ error: "subscription_required", message: "Subscribe to continue — you’ve used your free searches." });
-    }
-    recordSearchUsage(identifier);
+  user.subscription = isSubscribed ? "active" : user.subscription || "free";
+
+  const hasActiveSubscription = isSubscribed || user.subscription === "active";
+  const subscriptionStatus = hasActiveSubscription
+    ? "ACTIVE"
+    : resolveSubscriptionState(email).status;
+
+  if (!hasActiveSubscription && user.searches >= MAX_FREE_SEARCHES) {
+    console.log(`Search limit reached for IP ${ip}`);
+    saveUsers(users);
+    return res.status(403).json({ message: "Please subscribe to continue" });
   }
 
   const groupedResults = terms.map((term) => {
@@ -121,14 +188,20 @@ export default async function handler(req, res) {
     };
   });
 
+  if (!hasActiveSubscription) {
+    user.searches += 1;
+  }
+
+  saveUsers(users);
+
   logUsage({ email, userId: subscription?.user_id, ip });
 
   res.json({
     results: groupedResults,
     meta: {
       terms,
-      subscriber: isSubscribed,
-      status: isSubscribed ? "ACTIVE" : resolveSubscriptionState(email).status,
+      subscriber: hasActiveSubscription,
+      status: subscriptionStatus,
     },
   });
 }
