@@ -1,4 +1,4 @@
-const { subscriptionState } = require("../lib/db");
+const { subscriptionState, getUserByEmail } = require("../lib/db");
 
 const extractEmail = (req) => {
   const headerEmail = req.headers["x-user-email"] || req.headers["x-user"];
@@ -15,7 +15,8 @@ async function verifySubscription(req, res) {
   }
 
   const state = subscriptionState(email);
-  const isActive = state.isActive;
+  const user = getUserByEmail(email);
+  const isActive = state.isActive || (user?.subscription_status || "").toUpperCase() === "ACTIVE";
 
   if (isActive) {
     return { allowed: true, subscription: state.record, email };
