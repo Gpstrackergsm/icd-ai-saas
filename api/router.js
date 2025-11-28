@@ -667,7 +667,7 @@ const successHandler = async (req, res) => {
       }
       res.writeHead(302, { Location: "/dashboard" });
     } else {
-      res.writeHead(302, { Location: "/pricing" });
+      res.writeHead(302, { Location: "/payment-failed" });
     }
     res.end();
   } catch (error) {
@@ -742,7 +742,7 @@ const registerHandler = async (req, res) => {
         },
       ],
       success_url: `${origin}/api/stripe/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/pricing?email=${encodeURIComponent(email)}`,
+      cancel_url: `${origin}/pricing`,
     });
 
     res.status(200).json({ url: session.url });
