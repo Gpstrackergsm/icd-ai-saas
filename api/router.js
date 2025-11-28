@@ -5,10 +5,14 @@ import Stripe from "stripe";
 import getRawBody from "raw-body";
 import nodemailer from "nodemailer";
 import { searchIcd } from "../icd-search";
+import bcrypt from "../lib/bcryptjs.js";
 import { verifySubscription, extractEmail as extractEmailMiddleware } from "../middleware/verifySubscription";
 import {
   db,
   getUserByEmail,
+  createSession,
+  getSession,
+  deleteSession,
   hasProcessedEvent,
   logUsage,
   normalizeStatus,
@@ -33,7 +37,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
 });
 
 const PRICE_ID = "price_1SYBdVBJD92CE7dk5CUQbatL";
-const appBaseUrl = process.env.APP_URL || "http://localhost:3000";
+const appBaseUrl = process.env.BASE_URL || process.env.APP_URL || "http://localhost:3000";
 
 const rateLimitWindowMs = 60 * 1000;
 const maxRequestsPerWindow = 30;
@@ -112,6 +116,13 @@ const parseCookies = (req) => {
     acc[key] = decodeURIComponent(rest.join("="));
     return acc;
   }, {});
+};
+
+const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7;
+
+const setSessionCookie = (res, token, ttlSeconds = SESSION_TTL_SECONDS) => {
+  const cookie = [`session_token=${encodeURIComponent(token)}`, `Max-Age=${ttlSeconds}`, "Path=/", "HttpOnly", "SameSite=Lax"];
+  res.setHeader("Set-Cookie", cookie.join("; "));
 };
 
 const resolveSubscriptionState = (email) => {
@@ -193,6 +204,15 @@ const sendPaymentFailedEmail = async (email) => {
     to: email,
     subject: "Payment failed for your ICD Smart Search subscription",
     text: "Your recent payment failed and your account has been disabled. Please update your payment method to regain access.",
+  });
+};
+
+const sendSubscriptionCanceledEmail = async (email) => {
+  if (!email) return;
+  await sendEmail({
+    to: email,
+    subject: "Your ICD Smart Search subscription has been canceled",
+    text: "We've received a cancellation for your subscription. Access has been disabled. If this was a mistake, you can subscribe again anytime.",
   });
 };
 
@@ -426,6 +446,10 @@ const stripeWebhookHandler = async (req, res) => {
           });
           if (normalizedStatus === "ACTIVE") {
             await sendSubscriptionActivatedEmail(email || undefined);
+          } else if (normalizedStatus === "CANCELED") {
+            await sendSubscriptionCanceledEmail(email || undefined);
+          } else if (normalizedStatus === "PAST_DUE") {
+            await sendPaymentFailedEmail(email || undefined);
           }
         }
         break;
@@ -445,6 +469,39 @@ const stripeWebhookHandler = async (req, res) => {
             lastPaymentDate: subscription.current_period_end,
             plan: null,
           });
+          await sendSubscriptionCanceledEmail(email || undefined);
+        }
+        break;
+      }
+      case "invoice.paid": {
+        const invoice = event.data.object;
+        const customerId = invoice.customer;
+        const email = invoice.customer_email;
+        const subscriptionId = invoice.subscription;
+        const priceId = invoice.lines?.data?.[0]?.price?.id;
+        const paidAt = invoice.status_transitions?.paid_at || invoice.created;
+        const currentPeriodEnd = invoice.lines?.data?.[0]?.period?.end || null;
+        console.log("[STRIPE EVENT]", type, customerId, subscriptionId, email, "paid");
+        if (customerId || email) {
+          const user = applySubscriptionStatus({
+            email,
+            customerId,
+            subscriptionId,
+            status: "ACTIVE",
+            priceId,
+            currentPeriodEnd,
+            lastPaymentDate: paidAt,
+            plan: "paid",
+          });
+          recordPayment({
+            invoiceId: invoice.id,
+            customerId,
+            amountPaid: invoice.amount_paid,
+            currency: invoice.currency,
+            status: "paid",
+            paidAt,
+          });
+          await sendSubscriptionActivatedEmail(user?.email || email || undefined);
         }
         break;
       }
@@ -588,7 +645,13 @@ const successHandler = async (req, res) => {
       session.subscription?.status === "active";
 
     if (isPaid) {
-      await verifySession(sessionId.toString());
+      const details = await verifySession(sessionId.toString());
+      const email = details?.email;
+      const user = email ? getUserByEmail(email) : null;
+      if (user?.email) {
+        const issued = createSession({ userId: user.id, email: user.email });
+        setSessionCookie(res, issued.id);
+      }
       res.writeHead(302, { Location: "/dashboard" });
     } else {
       res.writeHead(302, { Location: "/pricing" });
@@ -628,7 +691,7 @@ const registerHandler = async (req, res) => {
     return res.status(500).json({ error: "Stripe is not configured" });
   }
 
-  const passwordHash = crypto.createHash("sha256").update(password).digest("hex");
+  const passwordHash = bcrypt.hashSync(password, bcrypt.genSaltSync(12));
 
   const user = upsertUser({
     email,
@@ -636,6 +699,9 @@ const registerHandler = async (req, res) => {
     plan: "pending",
     passwordHash,
   });
+
+  const session = createSession({ userId: user.id, email: user.email });
+  setSessionCookie(res, session.id);
 
   try {
     const origin = req.headers?.origin || appBaseUrl;
@@ -653,8 +719,8 @@ const registerHandler = async (req, res) => {
           quantity: 1,
         },
       ],
-      success_url: `${origin}/welcome.html?session_id={CHECKOUT_SESSION_ID}&email=${encodeURIComponent(email)}`,
-      cancel_url: `${origin}/?signup=1&email=${encodeURIComponent(email)}`,
+      success_url: `${origin}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${origin}/pricing?email=${encodeURIComponent(email)}`,
     });
 
     res.status(200).json({ url: session.url });
@@ -663,6 +729,48 @@ const registerHandler = async (req, res) => {
     console.error("Failed to create checkout session", message);
     res.status(500).json({ error: message });
   }
+};
+
+const loginHandler = async (req, res) => {
+  if (req.method !== "POST") {
+    res.setHeader("Allow", "POST");
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  await parseJsonBody(req);
+  const email = (req.body?.email || "").toString().trim().toLowerCase();
+  const password = (req.body?.password || "").toString();
+
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email and password are required" });
+  }
+
+  const user = getUserByEmail(email);
+  if (!user || !user.password_hash || !bcrypt.compareSync(password, user.password_hash)) {
+    return res.status(401).json({ error: "Invalid credentials" });
+  }
+
+  const session = createSession({ userId: user.id, email: user.email });
+  setSessionCookie(res, session.id);
+
+  const state = subscriptionState(email);
+  const isActive = state.isActive || (user.subscription_status || "").toUpperCase() === "ACTIVE";
+
+  if (!isActive) {
+    return res.status(402).json({ error: "Subscription required", session_token: session.id });
+  }
+
+  res.status(200).json({ message: "Logged in", session_token: session.id });
+};
+
+const logoutHandler = async (req, res) => {
+  const cookies = parseCookies(req);
+  const token = cookies.session_token || req.headers["x-session-token"];
+  if (token) {
+    deleteSession(token.toString());
+  }
+  res.setHeader("Set-Cookie", "session_token=; Max-Age=0; Path=/; HttpOnly; SameSite=Lax");
+  res.status(200).json({ message: "Logged out" });
 };
 
 const checkAccessHandler = async (req, res) => {
@@ -845,6 +953,8 @@ const handlers = {
   user: userHandler,
   "check-access": checkAccessHandler,
   register: registerHandler,
+  login: loginHandler,
+  logout: logoutHandler,
   index: statusHandler,
 };
 
