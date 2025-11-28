@@ -153,6 +153,31 @@
       </div>
     </section>
 
+    <section class="section" id="signup">
+      <div class="section-heading">
+        <p class="eyebrow">Create your account</p>
+        <h2>Register before checkout</h2>
+        <p class="section-sub">Use your email to create an account, set a password, and continue to secure Stripe checkout.</p>
+      </div>
+      <div class="card signup-card">
+        <form class="form-grid" id="signup-form">
+          <div class="form-group">
+            <label for="signup-email">Email address</label>
+            <input id="signup-email" type="email" placeholder="you@example.com" required />
+          </div>
+          <div class="form-group">
+            <label for="signup-password">Password</label>
+            <input id="signup-password" type="password" placeholder="At least 8 characters" minlength="8" required />
+            <p class="muted">Use this email on every search request to validate your subscription.</p>
+          </div>
+          <div class="form-group">
+            <button id="signup-btn" class="btn button-primary full" type="submit">Create account &amp; continue to Stripe</button>
+            <div class="status" id="signup-status"></div>
+          </div>
+        </form>
+      </div>
+    </section>
+
     <section class="section app" id="app">
       <div class="section-heading">
         <p class="eyebrow">Demo</p>
@@ -185,10 +210,10 @@
         <div id="limit-overlay" class="limit-overlay" aria-hidden="true">
           <div class="limit-modal" role="dialog" aria-modal="true" aria-labelledby="limit-title">
             <div class="limit-icon" aria-hidden="true">🚫</div>
-            <h3 id="limit-title">Upgrade to Continue</h3>
-            <p class="limit-lead">You've reached the free limit.</p>
-            <p class="muted">Unlock unlimited ICD searches for $9/month.</p>
-            <button class="btn button-primary" id="subscription-cta">Subscribe Now</button>
+            <h3 id="limit-title">Subscription Required</h3>
+            <p class="limit-lead">Create an account to continue.</p>
+            <p class="muted">Register first, then complete checkout to unlock unlimited ICD searches.</p>
+            <button class="btn button-primary" id="subscription-cta">Go to Signup</button>
           </div>
         </div>
       </div>
@@ -269,16 +294,18 @@
     const searchBtn = document.getElementById('search-btn');
     const searchInput = document.getElementById('search-query');
     const emailInput = document.getElementById('user-email');
+    const signupEmail = document.getElementById('signup-email');
+    const signupPassword = document.getElementById('signup-password');
+    const signupBtn = document.getElementById('signup-btn');
+    const signupStatus = document.getElementById('signup-status');
     const searchStatus = document.getElementById('search-status');
     const resultsList = document.getElementById('search-results');
     const remainingCounter = document.getElementById('remaining-counter');
     const limitOverlay = document.getElementById('limit-overlay');
     const subscriptionCta = document.getElementById('subscription-cta');
 
-    const STRIPE_LINK = 'https://buy.stripe.com/00w4gycvoc0ObN95pMgnK01';
-
     function userEmail() {
-      return (emailInput?.value || '').trim();
+      return (emailInput?.value || signupEmail?.value || '').trim();
     }
 
     function clearStatus() {
@@ -288,7 +315,7 @@
 
     function updateRemainingCounter(message) {
       if (!remainingCounter) return;
-      remainingCounter.textContent = message || '10 free searches per visitor. Add your subscription email to unlock unlimited access.';
+      remainingCounter.textContent = message || 'Active subscription required for ICD Smart Search.';
     }
 
     function setBlockedState(blocked, redirect) {
@@ -301,7 +328,7 @@
         if (subscriptionCta) {
           subscriptionCta.style.display = 'inline-flex';
           subscriptionCta.onclick = () => {
-            window.location.href = redirect || STRIPE_LINK;
+            window.location.href = redirect || '/#signup';
           };
         }
       } else {
@@ -310,6 +337,53 @@
         if (subscriptionCta) {
           subscriptionCta.style.display = 'inline-flex';
         }
+      }
+    }
+
+    function setSignupMessage(message, ok = false) {
+      if (!signupStatus) return;
+      signupStatus.textContent = message || '';
+      signupStatus.className = ok ? 'status success' : 'status error';
+    }
+
+    async function startSignup(event) {
+      event?.preventDefault();
+      const email = (signupEmail?.value || '').trim();
+      const password = (signupPassword?.value || '').trim();
+
+      if (!email || !password) {
+        setSignupMessage('Please add email and password to continue.');
+        return;
+      }
+
+      if (password.length < 8) {
+        setSignupMessage('Password must be at least 8 characters.');
+        return;
+      }
+
+      signupBtn.disabled = true;
+      setSignupMessage('Creating your account and preparing checkout...', true);
+
+      try {
+        const response = await fetch('/api/router?action=register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await response.json();
+        if (!response.ok || !data.url) {
+          throw new Error(data.error || 'Unable to start checkout.');
+        }
+        if (emailInput) emailInput.value = email;
+        setSignupMessage('Redirecting you to Stripe...', true);
+        window.location.href = data.url;
+      } catch (error) {
+        console.error('Signup failed', error);
+        setSignupMessage(error.message || 'Unable to start checkout.');
+      } finally {
+        signupBtn.disabled = false;
       }
     }
 
@@ -394,15 +468,20 @@
         return;
       }
 
+      if (!email) {
+        searchStatus.textContent = 'Please create an account and enter your email to search.';
+        searchStatus.className = 'status error';
+        setBlockedState(true, '/#signup');
+        return;
+      }
+
       clearStatus();
       searchBtn.disabled = true;
 
-      if (email) {
-        const validation = await checkServerAccess(email);
-        if (validation && validation.blocked) {
-          searchBtn.disabled = false;
-          return;
-        }
+      const validation = await checkServerAccess(email);
+      if (validation && !validation.active) {
+        searchBtn.disabled = false;
+        return;
       }
 
       try {
@@ -456,15 +535,24 @@
       try {
         const response = await fetch(`/api/router?action=check-access&email=${encodeURIComponent(email)}`);
         const data = await response.json();
-        if (!response.ok) {
-          throw new Error(data.error || 'Unable to verify subscription.');
+        if (response.status === 401) {
+          setBlockedState(true, '/#signup');
+          searchStatus.textContent = 'Create an account to continue.';
+          searchStatus.className = 'status error';
+          return { active: false, blocked: true };
+        }
+        if (response.status === 402 || !response.ok) {
+          setBlockedState(true, data.redirect || '/#signup');
+          searchStatus.textContent = data.error || 'Subscription required. Please complete payment to continue.';
+          searchStatus.className = 'status error';
+          return { active: false, blocked: true };
         }
         if (data.active) {
           updateRemainingCounter('Subscription validated server-side. Unlimited searches unlocked.');
           return { active: true };
         }
-        setBlockedState(true, STRIPE_LINK);
-        searchStatus.textContent = 'Subscription required. Please complete payment to continue.';
+        setBlockedState(true, data.redirect || '/#signup');
+        searchStatus.textContent = data.error || 'Subscription required. Please complete payment to continue.';
         searchStatus.className = 'status error';
         return { active: false, blocked: true };
       } catch (error) {
@@ -480,12 +568,13 @@
       const email = params.get('email');
       if (email && emailInput) {
         emailInput.value = email;
+        if (signupEmail) signupEmail.value = email;
         checkServerAccess(email);
       }
     }
 
     subscriptionCta?.addEventListener('click', () => {
-      window.location.href = STRIPE_LINK;
+      window.location.href = '/#signup';
     });
 
     searchBtn.addEventListener('click', runSearch);
@@ -493,6 +582,15 @@
       if (event.key === 'Enter') {
         event.preventDefault();
         runSearch();
+      }
+    });
+
+    document.getElementById('signup-form')?.addEventListener('submit', startSignup);
+    signupBtn?.addEventListener('click', startSignup);
+    signupPassword?.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        startSignup(event);
       }
     });
   </script>
