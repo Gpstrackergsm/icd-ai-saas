@@ -1,11 +1,29 @@
+const fs = require("fs");
+const path = require("path");
 const { searchIcd } = require("../icd-search");
 const { extractEmail } = require("../middleware/verifySubscription");
-const { logUsage, recordSearchUsage, getSearchUsage, subscriptionState } = require("../lib/db");
+const { logUsage, subscriptionState } = require("../lib/db");
 
 const MAX_FREE_SEARCHES = 10;
 const rateLimitWindowMs = 60 * 1000;
 const maxRequestsPerWindow = 30;
 const rateLimiters = new Map();
+
+const dbPath = path.join(process.cwd(), "users.json");
+
+const loadUsers = () => {
+  if (!fs.existsSync(dbPath)) return {};
+  try {
+    return JSON.parse(fs.readFileSync(dbPath, "utf8"));
+  } catch (err) {
+    console.error("Failed to parse users database", err);
+    return {};
+  }
+};
+
+const saveUsers = (users) => {
+  fs.writeFileSync(dbPath, JSON.stringify(users, null, 2));
+};
 
 const getIp = (req) =>
   req.headers["x-forwarded-for"]?.toString().split(",")[0].trim() ||
@@ -58,6 +76,10 @@ export default async function handler(req, res) {
   const q = (req.query?.q || "").toString();
   const email = extractEmail(req);
 
+  const users = loadUsers();
+  const user = users[ip] || { searches: 0, subscription: "free" };
+  users[ip] = user;
+
   const terms = q
     .split(",")
     .map((term) => term.trim())
@@ -84,15 +106,12 @@ export default async function handler(req, res) {
     }
   }
 
-  const identifier = email || visitorId || ip;
-  if (!isSubscribed) {
-    const usage = getSearchUsage(identifier);
-    if (usage && usage.count >= MAX_FREE_SEARCHES) {
-      return res
-        .status(402)
-        .json({ error: "subscription_required", message: "Subscribe to continue — you’ve used your free searches." });
-    }
-    recordSearchUsage(identifier);
+  user.subscription = isSubscribed ? "active" : user.subscription || "free";
+
+  if (!isSubscribed && user.searches >= MAX_FREE_SEARCHES) {
+    console.log(`Search limit reached for IP ${ip}`);
+    saveUsers(users);
+    return res.status(403).json({ message: "Please subscribe to continue" });
   }
 
   const groupedResults = terms.map((term) => {
@@ -120,6 +139,12 @@ export default async function handler(req, res) {
       total: cleaned.length,
     };
   });
+
+  if (!isSubscribed) {
+    user.searches += 1;
+  }
+
+  saveUsers(users);
 
   logUsage({ email, userId: subscription?.user_id, ip });
 
