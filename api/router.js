@@ -728,7 +728,7 @@ const registerHandler = async (req, res) => {
           quantity: 1,
         },
       ],
-      success_url: `${origin}/dashboard?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${origin}/api/stripe/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${origin}/pricing?email=${encodeURIComponent(email)}`,
     });
 
