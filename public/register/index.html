@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Create your ICD Smart Search account</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-brand">ICD Smart Search</div>
+    <nav class="nav-links">
+      <a href="/">Home</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/dashboard">Dashboard</a>
+    </nav>
+    <a href="/pricing" class="btn button-primary nav-button">Back to Pricing</a>
+  </header>
+
+  <main>
+    <section class="hero" id="register">
+      <div class="hero-copy">
+        <p class="eyebrow">ICD-10-CM 2025</p>
+        <h1>Create your ICD Smart Search account</h1>
+        <p class="subhead">Subscribe for $9/month to unlock unlimited, instant ICD-10-CM answers with server-side validation.</p>
+        <div class="card signup-card">
+          <form class="form-grid" id="register-form">
+            <div class="form-group">
+              <label for="register-email">Email address</label>
+              <input id="register-email" type="email" placeholder="you@example.com" required />
+            </div>
+            <div class="form-group">
+              <label for="register-password">Password</label>
+              <input id="register-password" type="password" placeholder="At least 8 characters" minlength="8" required />
+              <p class="muted">Use this email on every search request to validate your subscription.</p>
+            </div>
+            <div class="form-group">
+              <button id="register-btn" class="btn button-primary full" type="submit">Subscribe Now</button>
+              <div class="status" id="register-status"></div>
+            </div>
+          </form>
+        </div>
+        <div class="hero-stats">
+          <div class="stat">
+            <div class="stat-number">$9</div>
+            <p class="muted">Per user / month</p>
+          </div>
+          <div class="stat">
+            <div class="stat-number">Unlimited</div>
+            <p class="muted">ICD Smart Search lookups</p>
+          </div>
+          <div class="stat">
+            <div class="stat-number">Secure</div>
+            <p class="muted">No patient data leaves your device</p>
+          </div>
+        </div>
+      </div>
+      <div class="hero-highlight card">
+        <p class="eyebrow">What happens next</p>
+        <h3>Complete checkout in minutes</h3>
+        <ul class="muted simple-list">
+          <li>Create your account with email and password</li>
+          <li>Securely complete Stripe checkout for $9/month</li>
+          <li>Get redirected to your dashboard with instant access</li>
+        </ul>
+        <p class="hero-meta">Questions? Visit <a href="/pricing#faq">pricing FAQs</a> or start over from the <a href="/">home page</a>.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="nav-brand">© 2025 ICD Smart Search. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="/pricing#faq">FAQ</a>
+        <a href="/pricing">Pricing</a>
+        <a href="/">Home</a>
+      </div>
+    </div>
+    <p class="footer-disclaimer">ICD Smart Search is for coding reference &amp; administrative use only. It does not provide medical diagnosis or treatment advice.</p>
+  </footer>
+
+  <script>
+    const registerForm = document.getElementById('register-form');
+    const emailInput = document.getElementById('register-email');
+    const passwordInput = document.getElementById('register-password');
+    const submitBtn = document.getElementById('register-btn');
+    const statusEl = document.getElementById('register-status');
+    const PRICE_ID = 'price_1SYBdVBJD92CE7dk5CUQbatL';
+
+    function setStatus(message, ok = false) {
+      statusEl.textContent = message || '';
+      statusEl.className = ok ? 'status success' : 'status error';
+    }
+
+    async function handleRegister(event) {
+      event?.preventDefault();
+      const email = (emailInput?.value || '').trim();
+      const password = (passwordInput?.value || '').trim();
+
+      if (!email || !password) {
+        setStatus('Please add email and password to continue.');
+        return;
+      }
+
+      if (password.length < 8) {
+        setStatus('Password must be at least 8 characters.');
+        return;
+      }
+
+      submitBtn.disabled = true;
+      setStatus('Creating your account and preparing checkout...', true);
+
+      try {
+        const response = await fetch('/api/router?action=register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ email, password, priceId: PRICE_ID }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.error || 'Unable to start checkout');
+        }
+
+        if (data.url) {
+          window.location.href = data.url;
+          return;
+        }
+
+        setStatus('Account created. Redirecting to checkout...', true);
+      } catch (error) {
+        setStatus(error.message || 'Unable to register. Please try again.');
+      } finally {
+        submitBtn.disabled = false;
+      }
+    }
+
+    registerForm?.addEventListener('submit', handleRegister);
+    submitBtn?.addEventListener('click', handleRegister);
+    passwordInput?.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        handleRegister(event);
+      }
+    });
+  </script>
+</body>
+</html>
