@@ -11,6 +11,7 @@ const rateLimiters = new Map();
 
 const primaryDbPath = path.join(process.cwd(), "users.json");
 const fallbackDbPath = path.join("/tmp", "users.json");
+let memoryUsers = {};
 
 const determineDbPath = () => {
   if (fs.existsSync(primaryDbPath)) return primaryDbPath;
@@ -39,21 +40,25 @@ let dbPath = determineDbPath();
 
 const loadUsers = () => {
   dbPath = determineDbPath();
-  if (!fs.existsSync(dbPath)) return {};
+  if (!fs.existsSync(dbPath)) return { ...memoryUsers };
   try {
-    return JSON.parse(fs.readFileSync(dbPath, "utf8"));
+    const data = JSON.parse(fs.readFileSync(dbPath, "utf8"));
+    memoryUsers = { ...data };
+    return data;
   } catch (err) {
     console.error("Failed to parse users database", err);
-    return {};
+    return { ...memoryUsers };
   }
 };
 
 const saveUsers = (users) => {
+  memoryUsers = { ...users };
   const targetPaths = [dbPath, dbPath === fallbackDbPath ? primaryDbPath : fallbackDbPath];
 
   for (const targetPath of targetPaths) {
     if (!targetPath) continue;
     try {
+      fs.mkdirSync(path.dirname(targetPath), { recursive: true });
       fs.writeFileSync(targetPath, JSON.stringify(users, null, 2));
       dbPath = targetPath;
       return;
@@ -146,7 +151,12 @@ export default async function handler(req, res) {
 
   user.subscription = isSubscribed ? "active" : user.subscription || "free";
 
-  if (!isSubscribed && user.searches >= MAX_FREE_SEARCHES) {
+  const hasActiveSubscription = isSubscribed || user.subscription === "active";
+  const subscriptionStatus = hasActiveSubscription
+    ? "ACTIVE"
+    : resolveSubscriptionState(email).status;
+
+  if (!hasActiveSubscription && user.searches >= MAX_FREE_SEARCHES) {
     console.log(`Search limit reached for IP ${ip}`);
     saveUsers(users);
     return res.status(403).json({ message: "Please subscribe to continue" });
@@ -178,7 +188,7 @@ export default async function handler(req, res) {
     };
   });
 
-  if (!isSubscribed) {
+  if (!hasActiveSubscription) {
     user.searches += 1;
   }
 
@@ -190,8 +200,8 @@ export default async function handler(req, res) {
     results: groupedResults,
     meta: {
       terms,
-      subscriber: isSubscribed,
-      status: isSubscribed ? "ACTIVE" : resolveSubscriptionState(email).status,
+      subscriber: hasActiveSubscription,
+      status: subscriptionStatus,
     },
   });
 }
