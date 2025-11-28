@@ -1,12 +1,14 @@
-const { metrics } = require("../lib/db");
+const { loadMetrics } = require("../lib/metrics");
 
 const renderRow = (label, value) => `<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;">
   <strong>${label}</strong><span>${value}</span>
 </div>`;
 
-export default function handler(req, res) {
-  if (!process.env.ADMIN_PASSWORD) {
-    throw new Error("ADMIN_PASSWORD is not set");
+export default async function handler(req, res) {
+  const adminUser = process.env.ADMIN_USER;
+  const adminPass = process.env.ADMIN_PASS;
+  if (!adminUser || !adminPass) {
+    throw new Error("ADMIN_USER and ADMIN_PASS must be set");
   }
 
   const auth = req.headers.authorization;
@@ -22,23 +24,24 @@ export default function handler(req, res) {
   const decoded = Buffer.from(base64, "base64").toString();
   const [username, password] = decoded.split(":");
 
-  if (!password || password !== process.env.ADMIN_PASSWORD) {
+  if (!password || password !== adminPass || username !== adminUser) {
     res.statusCode = 401;
     res.setHeader("WWW-Authenticate", 'Basic realm="Admin Area"');
     res.end("Invalid credentials");
     return;
   }
 
-  const activeSubscribers = metrics.activeSubscribers();
-  const totalUsers = metrics.totalUsers();
-  const totalSearches = metrics.totalSearches();
-  const searchesToday = metrics.dailySearches();
-  const trials = metrics.trials();
-  const conversionRatio = metrics.conversionRate();
-  const failedPayments = metrics.failedPayments();
-  const mrrCents = metrics.mrr();
-  const recentPayments = metrics.recentPayments();
-  const users = metrics.users();
+  const {
+    activeSubscribers,
+    totalUsers,
+    totalSearches,
+    searchesToday,
+    failedPayments,
+    mrrCents,
+    recentPayments,
+    users,
+    conversionRatio,
+  } = await loadMetrics();
 
   const paymentsHtml = recentPayments
     .map(
@@ -63,7 +66,6 @@ export default function handler(req, res) {
       ${renderRow("Total users", totalUsers)}
       ${renderRow("Total searches", totalSearches)}
       ${renderRow("Searches today", searchesToday)}
-      ${renderRow("Trial users", trials)}
       ${renderRow("Conversion %", `${(conversionRatio * 100).toFixed(2)}%`)}
       ${renderRow("Failed payments", failedPayments)}
       ${renderRow("MRR", `$${(mrrCents / 100).toFixed(2)}`)}
