@@ -35,6 +35,25 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
 const defaultPriceId = process.env.STRIPE_PRICE_ID || null;
 const appBaseUrl = process.env.APP_URL || "http://localhost:3000";
 
+let cachedPriceId = defaultPriceId;
+
+const resolvePriceId = async () => {
+  if (cachedPriceId) return cachedPriceId;
+
+  try {
+    const prices = await stripe.prices.list({ active: true, limit: 10 });
+    const recurring = prices.data.find((price) => price.active && price.type === "recurring");
+    if (recurring) {
+      cachedPriceId = recurring.id;
+      return cachedPriceId;
+    }
+  } catch (error) {
+    console.error("Failed to resolve Stripe price", error?.message || error);
+  }
+
+  return null;
+};
+
 const rateLimitWindowMs = 60 * 1000;
 const maxRequestsPerWindow = 30;
 const rateLimiters = new Map();
@@ -610,7 +629,8 @@ const registerHandler = async (req, res) => {
 
   const email = (req.body?.email || "").toString().trim().toLowerCase();
   const password = (req.body?.password || "").toString();
-  const priceId = (req.body?.priceId || defaultPriceId)?.toString();
+  const requestedPrice = req.body?.priceId?.toString();
+  const priceId = requestedPrice || (await resolvePriceId());
 
   if (!email || !password) {
     return res.status(400).json({ error: "Email and password are required" });
@@ -625,7 +645,10 @@ const registerHandler = async (req, res) => {
   }
 
   if (!priceId) {
-    return res.status(500).json({ error: "Subscription price is not configured" });
+    return res.status(500).json({
+      error: "Subscription price is not configured",
+      detail: "Set STRIPE_PRICE_ID or ensure an active recurring price exists in Stripe.",
+    });
   }
 
   const passwordHash = crypto.createHash("sha256").update(password).digest("hex");
