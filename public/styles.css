@@ -257,6 +257,30 @@ button {
 .status.error { color: #b3261e; }
 .muted { color: var(--muted); }
 
+/* Signup */
+.signup-card {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.signup-card .status {
+  margin-top: 8px;
+}
+
+.signup-card .status.success {
+  color: #0f5132;
+  background: #e6f7ec;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.signup-card .status.error {
+  color: #7f1d1d;
+  background: #fdecea;
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
 @media (max-width: 900px) {
   .hero { grid-template-columns: 1fr; padding-top: 2rem; }
   .app-card { grid-template-columns: 1fr; }
