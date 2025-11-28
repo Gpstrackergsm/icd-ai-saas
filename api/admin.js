@@ -8,7 +8,10 @@ export default async function handler(req, res) {
   const adminUser = process.env.ADMIN_USER;
   const adminPass = process.env.ADMIN_PASS;
   if (!adminUser || !adminPass) {
-    throw new Error("ADMIN_USER and ADMIN_PASS must be set");
+    res.statusCode = 503;
+    res.setHeader("Content-Type", "text/plain");
+    res.end("Admin credentials are not configured. Set ADMIN_USER and ADMIN_PASS environment variables.");
+    return;
   }
 
   const auth = req.headers.authorization;
@@ -31,6 +34,17 @@ export default async function handler(req, res) {
     return;
   }
 
+  let metrics;
+  try {
+    metrics = await loadMetrics();
+  } catch (error) {
+    console.error("Failed to load admin metrics", error?.message || error);
+    res.statusCode = 500;
+    res.setHeader("Content-Type", "text/plain");
+    res.end("Unable to load metrics. Check server logs for details.");
+    return;
+  }
+
   const {
     activeSubscribers,
     totalUsers,
@@ -41,7 +55,7 @@ export default async function handler(req, res) {
     recentPayments,
     users,
     conversionRatio,
-  } = await loadMetrics();
+  } = metrics;
 
   const paymentsHtml = recentPayments
     .map(
