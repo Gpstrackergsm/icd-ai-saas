@@ -7,11 +7,24 @@ import {
   upsertUser,
 } from "../../lib/db";
 
-const stripeSecretKey = process.env.STRIPE_SECRET_KEY || "";
+const { BASE_URL, STRIPE_SECRET_KEY, NODE_ENV } = process.env;
+
+if (!BASE_URL) {
+  throw new Error("BASE_URL is required for Stripe success handling");
+}
+if (!STRIPE_SECRET_KEY) {
+  throw new Error("STRIPE_SECRET_KEY must be configured");
+}
+if (NODE_ENV === "production" && !STRIPE_SECRET_KEY.startsWith("sk_live_")) {
+  throw new Error("Live Stripe secret key is required in production");
+}
+
+const stripeSecretKey = STRIPE_SECRET_KEY;
 const stripe = new Stripe(stripeSecretKey, { apiVersion: "2024-06-20" });
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7;
 
 const setSessionCookie = (res, token, ttlSeconds = SESSION_TTL_SECONDS) => {
+  const secure = BASE_URL.startsWith("https://");
   const cookie = [
     `session_token=${encodeURIComponent(token)}`,
     `Max-Age=${ttlSeconds}`,
@@ -19,6 +32,7 @@ const setSessionCookie = (res, token, ttlSeconds = SESSION_TTL_SECONDS) => {
     "HttpOnly",
     "SameSite=Lax",
   ];
+  if (secure) cookie.push("Secure");
   res.setHeader("Set-Cookie", cookie.join("; "));
 };
 
@@ -40,6 +54,11 @@ export default async function handler(req, res) {
     return;
   }
 
+  if (!sessionId.startsWith("cs_")) {
+    redirect(res, "/error");
+    return;
+  }
+
   if (!stripeSecretKey || stripeSecretKey.startsWith("sk_test_")) {
     console.error("Stripe secret key is missing or not a live key");
     redirect(res, "/error");
@@ -47,6 +66,7 @@ export default async function handler(req, res) {
   }
 
   try {
+    console.log("STRIPE SUCCESS:", sessionId);
     const session = await stripe.checkout.sessions.retrieve(sessionId, {
       expand: ["subscription", "line_items"],
     });
@@ -115,9 +135,12 @@ export default async function handler(req, res) {
     if (user?.id) {
       const issuedSession = createSession({ userId: user.id, email: user.email });
       setSessionCookie(res, issuedSession.id);
+      console.log("COOKIE ISSUED:", user.id);
     }
 
-    redirect(res, "/dashboard");
+    const redirectUrl = "/dashboard";
+    console.log("REDIRECT TARGET:", redirectUrl);
+    redirect(res, redirectUrl);
   } catch (error) {
     console.error("Stripe success handler failed", error);
     redirect(res, "/error");
