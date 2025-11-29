@@ -32,12 +32,30 @@ export const config = {
   },
 };
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
+const { BASE_URL, STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET, NODE_ENV, STRIPE_PRICE_ID } = process.env;
+
+if (!BASE_URL) {
+  throw new Error("BASE_URL is required for Stripe flows");
+}
+if (!STRIPE_SECRET_KEY) {
+  throw new Error("STRIPE_SECRET_KEY must be configured");
+}
+if (NODE_ENV === "production" && !STRIPE_SECRET_KEY.startsWith("sk_live_")) {
+  throw new Error("Live Stripe secret key is required in production");
+}
+if (!STRIPE_WEBHOOK_SECRET) {
+  throw new Error("STRIPE_WEBHOOK_SECRET must be configured");
+}
+
+const stripe = new Stripe(STRIPE_SECRET_KEY, {
   apiVersion: "2024-06-20",
 });
 
-const PRICE_ID = "price_1SYBdVBJD92CE7dk5CUQbatL";
-const appBaseUrl = process.env.BASE_URL || process.env.APP_URL || "http://localhost:3000";
+const PRICE_ID = STRIPE_PRICE_ID || "price_1SYBdVBJD92CE7dk5CUQbatL";
+if (!PRICE_ID.startsWith("price_") || PRICE_ID.toLowerCase().includes("test")) {
+  throw new Error("A live Stripe price ID is required (STRIPE_PRICE_ID)");
+}
+const appBaseUrl = BASE_URL;
 
 const determineOrigin = (req) => {
   const headerOrigin = req.headers?.origin;
@@ -134,7 +152,15 @@ const parseCookies = (req) => {
 const SESSION_TTL_SECONDS = 60 * 60 * 24 * 7;
 
 const setSessionCookie = (res, token, ttlSeconds = SESSION_TTL_SECONDS) => {
-  const cookie = [`session_token=${encodeURIComponent(token)}`, `Max-Age=${ttlSeconds}`, "Path=/", "HttpOnly", "SameSite=Lax"];
+  const secure = appBaseUrl.startsWith("https://");
+  const cookie = [
+    `session_token=${encodeURIComponent(token)}`,
+    `Max-Age=${ttlSeconds}`,
+    "Path=/",
+    "HttpOnly",
+    "SameSite=Lax",
+  ];
+  if (secure) cookie.push("Secure");
   res.setHeader("Set-Cookie", cookie.join("; "));
 };
 
@@ -320,7 +346,7 @@ const stripeWebhookHandler = async (req, res) => {
   }
 
   const sig = req.headers["stripe-signature"];
-  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  const webhookSecret = STRIPE_WEBHOOK_SECRET;
   if (!sig || !webhookSecret) {
     console.error("[STRIPE EVENT] missing signature header");
     return res.status(400).end("Webhook signature missing");
@@ -647,32 +673,45 @@ const successHandler = async (req, res) => {
 
   const sessionId = req.query?.session_id;
   if (!sessionId) {
-    return res.status(400).json({ error: "Missing session_id" });
+    res.writeHead(302, { Location: "/error" });
+    return res.end();
+  }
+  const checkoutSessionId = sessionId.toString();
+  if (!checkoutSessionId.startsWith("cs_")) {
+    res.writeHead(302, { Location: "/error" });
+    return res.end();
   }
 
   try {
-    const session = await stripe.checkout.sessions.retrieve(sessionId.toString(), { expand: ["subscription"] });
+    console.log("STRIPE SUCCESS:", checkoutSessionId);
+    const session = await stripe.checkout.sessions.retrieve(checkoutSessionId, { expand: ["subscription"] });
     const isPaid =
       session.payment_status === "paid" ||
       session.status === "complete" ||
       session.subscription?.status === "active";
 
     if (isPaid) {
-      const details = await verifySession(sessionId.toString());
+      const details = await verifySession(checkoutSessionId);
       const email = details?.email;
       const user = email ? getUserByEmail(email) : null;
       if (user?.email) {
         const issued = createSession({ userId: user.id, email: user.email });
         setSessionCookie(res, issued.id);
+        console.log("COOKIE ISSUED:", user.id);
       }
-      res.writeHead(302, { Location: "/dashboard" });
+      const redirectUrl = "/dashboard";
+      console.log("REDIRECT TARGET:", redirectUrl);
+      res.writeHead(302, { Location: redirectUrl });
     } else {
-      res.writeHead(302, { Location: "/payment-failed" });
+      const redirectUrl = "/payment-failed";
+      console.log("REDIRECT TARGET:", redirectUrl);
+      res.writeHead(302, { Location: redirectUrl });
     }
     res.end();
   } catch (error) {
     console.error("Failed to confirm success session", error);
-    res.status(500).json({ error: "Unable to confirm session" });
+    res.writeHead(302, { Location: "/error" });
+    res.end();
   }
 };
 
@@ -700,11 +739,11 @@ const registerHandler = async (req, res) => {
     return res.status(400).json({ error: "Password must be at least 8 characters" });
   }
 
-  if (!process.env.STRIPE_SECRET_KEY) {
+  if (!STRIPE_SECRET_KEY) {
     return res.status(500).json({ error: "Stripe is not configured" });
   }
 
-  if (!process.env.STRIPE_SECRET_KEY.startsWith("sk_live_")) {
+  if (!STRIPE_SECRET_KEY.startsWith("sk_live_")) {
     return res
       .status(500)
       .json({
@@ -726,14 +765,14 @@ const registerHandler = async (req, res) => {
   setSessionCookie(res, session.id);
 
   try {
-    const baseUrl = process.env.BASE_URL;
+    const baseUrl = BASE_URL;
 
     if (!baseUrl) {
       return res.status(500).json({ error: "BASE_URL is not configured" });
     }
 
     const successUrl = `${baseUrl}/api/stripe/success?session_id={CHECKOUT_SESSION_ID}`;
-    const cancelUrl = `${baseUrl}/pricing`;
+    const cancelUrl = `${baseUrl}/payment-failed`;
 
     console.log("Stripe success_url:", successUrl);
     console.log("Stripe cancel_url:", cancelUrl);

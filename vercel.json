@@ -3,7 +3,9 @@
     { "source": "/admin", "destination": "/api/router?action=admin" },
     { "source": "/stripe/webhook", "destination": "/api/router?action=webhook" },
     { "source": "/stripe/verify-session", "destination": "/api/router?action=verify" },
+    { "source": "/api/stripe/success", "destination": "/api/stripe/success" },
     { "source": "/dashboard", "destination": "/dashboard/index.html" },
+    { "source": "/pricing", "destination": "/pricing/index.html" },
     { "source": "/payment-failed", "destination": "/payment-failed/index.html" },
     { "source": "/register", "destination": "/register/index.html" },
     { "source": "/error", "destination": "/error/index.html" }
