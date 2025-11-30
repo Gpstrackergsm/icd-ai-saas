@@ -32,7 +32,13 @@
   {
     "code": "J44.1",
     "description": "Chronic obstructive pulmonary disease with (acute) exacerbation",
-    "synonyms": ["COPD exacerbation", "acute COPD", "obstructive lung disease flare"]
+    "desc": "Chronic obstructive pulmonary disease with (acute) exacerbation",
+    "synonyms": [
+      "copd exacerbation",
+      "acute copd",
+      "copd with flare up",
+      "chronic obstructive lung disease with acute exacerbation"
+    ]
   },
   {
     "code": "J45.909",

@@ -16,6 +16,31 @@ function normalize(text = '') {
   return text.toString().toLowerCase().trim();
 }
 
+const synonymDictionary = {
+  copd: 'chronic obstructive pulmonary disease',
+  exacerbation: 'acute exacerbation',
+  'heart attack': 'myocardial infarction',
+  'high blood pressure': 'hypertension',
+  'diabetes type 2': 'type 2 diabetes mellitus',
+  ckd: 'chronic kidney disease',
+  'depression recurrent': 'major depressive disorder recurrent',
+  nstemi: 'non st elevation myocardial infarction',
+};
+
+function applyNormalization(text = '') {
+  let normalized = normalize(text);
+
+  Object.entries(synonymDictionary).forEach(([term, canonical]) => {
+    if (term === 'exacerbation' && normalized.includes('acute exacerbation')) {
+      return;
+    }
+    const pattern = new RegExp(`\\b${term.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}\\b`, 'g');
+    normalized = normalized.replace(pattern, canonical);
+  });
+
+  return normalized;
+}
+
 function parseBody(req) {
   return new Promise((resolve, reject) => {
     let body = '';
@@ -61,16 +86,53 @@ module.exports = async function handler(req, res) {
     return;
   }
 
-  const results = records.filter((entry) => {
-    const codeMatch = entry.code && normalize(entry.code).startsWith(query);
-    const descMatch = entry.description
-      ? normalize(entry.description).includes(query)
-      : false;
-    const synonymMatch = Array.isArray(entry.synonyms)
-      ? entry.synonyms.some((syn) => normalize(syn).includes(query))
-      : false;
-    return codeMatch || descMatch || synonymMatch;
-  });
+  const normalizedQuery = applyNormalization(query);
+  const tokens = normalizedQuery.split(/\s+/).filter(Boolean);
+  const rawTokens = query.split(/\s+/).filter(Boolean);
+
+  const hasCopdExacerbation =
+    rawTokens.includes('copd') && rawTokens.includes('exacerbation');
+
+  const scored = records
+    .map((entry) => {
+      const entryCode = normalize(entry.code || '');
+      const entryDescription = normalize(entry.description || entry.desc || '');
+      const entrySynonyms = Array.isArray(entry.synonyms)
+        ? entry.synonyms.map((syn) => applyNormalization(syn))
+        : [];
+
+      const codeExact = entryCode === normalizedQuery;
+      const synonymExact = entrySynonyms.some((syn) => syn === normalizedQuery);
+
+      const tokensInDescription = tokens.length
+        ? tokens.every((token) => entryDescription.includes(token))
+        : false;
+
+      const partialCoverage = tokens.length
+        ? tokens.filter((token) => entryDescription.includes(token)).length / tokens.length
+        : 0;
+
+      const synonymMatch = entrySynonyms.some(
+        (syn) => syn.includes(normalizedQuery) || normalizedQuery.includes(syn)
+      );
+
+      const combinationRule =
+        hasCopdExacerbation && entryCode === 'j44.1' ? true : false;
+
+      let score = 0;
+
+      if (codeExact) score = 100;
+      else if (synonymExact) score = 90;
+      else if (combinationRule) score = 80;
+      else if (tokensInDescription || entryDescription.includes(normalizedQuery)) score = 70;
+      else if (partialCoverage >= 0.6 || synonymMatch) score = 60;
+
+      return score > 0 ? { entry, score } : null;
+    })
+    .filter(Boolean)
+    .sort((a, b) => b.score - a.score || (a.entry.code || '').localeCompare(b.entry.code || ''));
+
+  const results = scored.map((item) => item.entry);
 
   res.setHeader('Content-Type', 'application/json');
   res.status(200).json({ results });
