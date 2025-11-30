@@ -33,8 +33,10 @@ const CKD_STAGE_MAP = {
   1: 'N18.1',
   2: 'N18.2',
   3: 'N18.3',
+  '3b': 'N18.32',
   4: 'N18.4',
   5: 'N18.5',
+  esrd: 'N18.6',
 };
 
 function normalize(text = '') {
@@ -75,6 +77,38 @@ function applyNormalization(text = '') {
   });
 
   return normalized;
+}
+
+function extractCkdStageCode(normalizedQuery = '') {
+  if (/\besrd\b/.test(normalizedQuery) || normalizedQuery.includes('end stage renal disease')) {
+    return CKD_STAGE_MAP.esrd;
+  }
+
+  const stageMatch = normalizedQuery.match(/(?:ckd\s*)?stage\s*(\d(?:b)?)/);
+  const stageKey = stageMatch?.[1]?.toLowerCase();
+
+  if (!stageKey) return null;
+
+  return CKD_STAGE_MAP[stageKey] || null;
+}
+
+function appendCkdStageForHypertensive(results = [], normalizedQuery = '') {
+  const hasHypertensiveHeartDisease = results.some((entry) =>
+    /^I13\./i.test(entry.code || '')
+  );
+
+  if (!hasHypertensiveHeartDisease) return results;
+
+  const stageCode = extractCkdStageCode(normalizedQuery);
+  if (!stageCode) return results;
+
+  const hasStageCode = results.some(
+    (entry) => (entry.code || '').toUpperCase() === stageCode
+  );
+
+  if (hasStageCode) return results;
+
+  return [...results, { code: stageCode }];
 }
 
 function detectMetastasis(rawQuery = '', normalizedQuery = '') {
@@ -147,9 +181,7 @@ function detectHypertensiveHeartCkd(normalizedQuery = '') {
   const baseCode = hasHeartFailure ? 'I13.0' : 'I13.10';
   const results = [{ code: baseCode }];
 
-  const stageMatch = normalizedQuery.match(/ckd\s*stage\s*(\d+)/);
-  const stageNumber = stageMatch ? stageMatch[1] : null;
-  const stageCode = stageNumber && CKD_STAGE_MAP[stageNumber];
+  const stageCode = extractCkdStageCode(normalizedQuery);
   if (stageCode) {
     results.push({ code: stageCode });
   }
@@ -234,7 +266,11 @@ module.exports = async function handler(req, res) {
 
   const hypertensiveHeartCkd = detectHypertensiveHeartCkd(normalizedQuery);
   if (hypertensiveHeartCkd.detected) {
-    const cleanedHypertensiveResults = cleanICDCodes(hypertensiveHeartCkd.results);
+    const hypertensiveWithStage = appendCkdStageForHypertensive(
+      hypertensiveHeartCkd.results,
+      normalizedQuery
+    );
+    const cleanedHypertensiveResults = cleanICDCodes(hypertensiveWithStage);
     if (normalizedQuery === 'hypertensive heart and chronic kidney disease with heart failure and ckd stage 4') {
       const codes = cleanedHypertensiveResults.map((r) => r.code);
       if (!(codes[0] === 'I13.0' && codes[1] === 'N18.4')) {
@@ -323,7 +359,11 @@ module.exports = async function handler(req, res) {
 
   const results = scored.map((item) => item.entry);
 
-  const cleanedResults = cleanICDCodes(results);
+  let cleanedResults = cleanICDCodes(results);
+
+  cleanedResults = cleanICDCodes(
+    appendCkdStageForHypertensive(cleanedResults, normalizedQuery)
+  );
 
   if (normalizedQuery === 'type 2 diabetes with ckd stage 4') {
     const codes = cleanedResults.map((r) => r.code);
