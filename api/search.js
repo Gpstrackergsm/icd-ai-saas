@@ -29,6 +29,14 @@ const SECONDARY_MAP = {
   'lymph node': 'C77.9',
 };
 
+const CKD_STAGE_MAP = {
+  1: 'N18.1',
+  2: 'N18.2',
+  3: 'N18.3',
+  4: 'N18.4',
+  5: 'N18.5',
+};
+
 function normalize(text = '') {
   return text.toString().toLowerCase().trim();
 }
@@ -119,6 +127,36 @@ function detectMetastasis(rawQuery = '', normalizedQuery = '') {
   return { detected: true, results: [] };
 }
 
+function detectHypertensiveHeartCkd(normalizedQuery = '') {
+  const hasHypertension = normalizedQuery.includes('hypertensive') || normalizedQuery.includes('hypertension');
+  const hasHeart = normalizedQuery.includes('heart');
+  const hasKidney =
+    normalizedQuery.includes('kidney') ||
+    normalizedQuery.includes('ckd') ||
+    normalizedQuery.includes('chronic kidney disease');
+
+  if (!(hasHypertension && hasHeart && hasKidney)) {
+    return { detected: false, results: [] };
+  }
+
+  const hasHeartFailure =
+    normalizedQuery.includes('heart failure') ||
+    normalizedQuery.includes('cardiac failure') ||
+    normalizedQuery.split(/\s+/).includes('hf');
+
+  const baseCode = hasHeartFailure ? 'I13.0' : 'I13.10';
+  const results = [{ code: baseCode }];
+
+  const stageMatch = normalizedQuery.match(/ckd\s*stage\s*(\d+)/);
+  const stageNumber = stageMatch ? stageMatch[1] : null;
+  const stageCode = stageNumber && CKD_STAGE_MAP[stageNumber];
+  if (stageCode) {
+    results.push({ code: stageCode });
+  }
+
+  return { detected: true, results };
+}
+
 function parseBody(req) {
   return new Promise((resolve, reject) => {
     let body = '';
@@ -193,6 +231,20 @@ module.exports = async function handler(req, res) {
   }
 
   const normalizedQuery = applyNormalization(query);
+
+  const hypertensiveHeartCkd = detectHypertensiveHeartCkd(normalizedQuery);
+  if (hypertensiveHeartCkd.detected) {
+    const cleanedHypertensiveResults = cleanICDCodes(hypertensiveHeartCkd.results);
+    if (normalizedQuery === 'hypertensive heart and chronic kidney disease with heart failure and ckd stage 4') {
+      const codes = cleanedHypertensiveResults.map((r) => r.code);
+      if (!(codes[0] === 'I13.0' && codes[1] === 'N18.4')) {
+        console.warn('Inline test failed for hypertensive heart and CKD stage 4 with HF query');
+      }
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json({ results: cleanedHypertensiveResults });
+    return;
+  }
 
   const metastasis = detectMetastasis(query, normalizedQuery);
   if (metastasis.detected) {
