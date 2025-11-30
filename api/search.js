@@ -72,7 +72,7 @@ function applyNormalization(text = '') {
 function detectMetastasis(rawQuery = '', normalizedQuery = '') {
   const metastasisKeywords = ['secondary', 'metastasis', 'metastatic', 'mets', 'spread to'];
   const hasMetastasis = metastasisKeywords.some((keyword) => normalizedQuery.includes(keyword));
-  if (!hasMetastasis) return null;
+  if (!hasMetastasis) return { detected: false, results: [] };
 
   const organNames = Array.from(
     new Set([...Object.keys(SECONDARY_MAP), ...Object.keys(PRIMARY_MAP)])
@@ -108,13 +108,15 @@ function detectMetastasis(rawQuery = '', normalizedQuery = '') {
   const primaryCode = primarySite ? PRIMARY_MAP[primarySite] : null;
 
   if (secondaryCode && primaryCode) {
-    return [
-      { code: secondaryCode, description: `Secondary malignant neoplasm of ${secondarySite}` },
-      { code: primaryCode, description: `Primary malignant neoplasm of ${primarySite}` },
-    ];
+    return {
+      detected: true,
+      results: [secondaryCode, primaryCode],
+      secondarySite,
+      primarySite,
+    };
   }
 
-  return null;
+  return { detected: true, results: [] };
 }
 
 function parseBody(req) {
@@ -192,10 +194,27 @@ module.exports = async function handler(req, res) {
 
   const normalizedQuery = applyNormalization(query);
 
-  const metastasisResults = detectMetastasis(query, normalizedQuery);
-  if (metastasisResults) {
+  const metastasis = detectMetastasis(query, normalizedQuery);
+  if (metastasis.detected) {
+    const metastasisResults = Array.isArray(metastasis.results)
+      ? metastasis.results.map((code, index) => {
+          if (index === 0 && metastasis.secondarySite) {
+            return {
+              code,
+              description: `Secondary malignant neoplasm of ${metastasis.secondarySite}`,
+            };
+          }
+          if (index === 1 && metastasis.primarySite) {
+            return {
+              code,
+              description: `Primary malignant neoplasm of ${metastasis.primarySite}`,
+            };
+          }
+          return { code };
+        })
+      : [];
     const cleanedMetastasisResults = cleanICDCodes(metastasisResults);
-    if (normalizedQuery === 'secondary liver cancer from colon') {
+    if (query === 'secondary liver cancer from colon') {
       const codes = cleanedMetastasisResults.map((r) => r.code);
       if (!(codes[0] === 'C78.7' && codes[1] === 'C18.9')) {
         console.warn('Inline test failed for secondary liver cancer from colon query');
