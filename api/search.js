@@ -12,6 +12,23 @@ function loadData() {
   return cachedData;
 }
 
+const PRIMARY_MAP = {
+  colon: 'C18.9',
+  breast: 'C50.919',
+  lung: 'C34.90',
+  pancreas: 'C25.9',
+  prostate: 'C61',
+  stomach: 'C16.9',
+};
+
+const SECONDARY_MAP = {
+  liver: 'C78.7',
+  brain: 'C79.31',
+  bone: 'C79.51',
+  lung: 'C78.00',
+  'lymph node': 'C77.9',
+};
+
 function normalize(text = '') {
   return text.toString().toLowerCase().trim();
 }
@@ -25,7 +42,18 @@ const synonymDictionary = {
   ckd: 'chronic kidney disease',
   'depression recurrent': 'major depressive disorder recurrent',
   nstemi: 'non st elevation myocardial infarction',
+  'secondary cancer': 'metastasis',
+  metastatic: 'secondary malignant neoplasm',
+  from: 'primary',
+  'due to': 'primary',
+  of: 'primary',
+  'colon cancer': 'malignant neoplasm of colon',
+  'liver cancer': 'malignant neoplasm of liver',
 };
+
+function escapeRegExp(string = '') {
+  return string.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&');
+}
 
 function applyNormalization(text = '') {
   let normalized = normalize(text);
@@ -34,11 +62,59 @@ function applyNormalization(text = '') {
     if (term === 'exacerbation' && normalized.includes('acute exacerbation')) {
       return;
     }
-    const pattern = new RegExp(`\\b${term.replace(/[.*+?^${}()|[\\]\\]/g, '\\$&')}\\b`, 'g');
+    const pattern = new RegExp(`\\b${escapeRegExp(term)}\\b`, 'g');
     normalized = normalized.replace(pattern, canonical);
   });
 
   return normalized;
+}
+
+function detectMetastasis(rawQuery = '', normalizedQuery = '') {
+  const metastasisKeywords = ['secondary', 'metastasis', 'metastatic', 'mets', 'spread to'];
+  const hasMetastasis = metastasisKeywords.some((keyword) => normalizedQuery.includes(keyword));
+  if (!hasMetastasis) return null;
+
+  const organNames = Array.from(
+    new Set([...Object.keys(SECONDARY_MAP), ...Object.keys(PRIMARY_MAP)])
+  );
+
+  const organMatches = organNames
+    .map((organ) => {
+      const pattern = new RegExp(`\\b${escapeRegExp(organ)}\\b`);
+      const index = normalizedQuery.search(pattern);
+      if (index === -1) return null;
+      return { organ, index };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.index - b.index);
+
+  const secondarySite = organMatches[0]?.organ;
+
+  let primarySite = null;
+  organNames.some((organ) => {
+    const pattern = new RegExp(`\\b(from|due to|of|primary)\\s+${escapeRegExp(organ)}\\b`);
+    if (pattern.test(rawQuery)) {
+      primarySite = organ;
+      return true;
+    }
+    return false;
+  });
+
+  if (!primarySite && organMatches.length > 1) {
+    primarySite = organMatches.find((match) => match.organ !== secondarySite)?.organ;
+  }
+
+  const secondaryCode = secondarySite ? SECONDARY_MAP[secondarySite] : null;
+  const primaryCode = primarySite ? PRIMARY_MAP[primarySite] : null;
+
+  if (secondaryCode && primaryCode) {
+    return [
+      { code: secondaryCode, description: `Secondary malignant neoplasm of ${secondarySite}` },
+      { code: primaryCode, description: `Primary malignant neoplasm of ${primarySite}` },
+    ];
+  }
+
+  return null;
 }
 
 function parseBody(req) {
@@ -115,6 +191,20 @@ module.exports = async function handler(req, res) {
   }
 
   const normalizedQuery = applyNormalization(query);
+
+  const metastasisResults = detectMetastasis(query, normalizedQuery);
+  if (metastasisResults) {
+    const cleanedMetastasisResults = cleanICDCodes(metastasisResults);
+    if (normalizedQuery === 'secondary liver cancer from colon') {
+      const codes = cleanedMetastasisResults.map((r) => r.code);
+      if (!(codes[0] === 'C78.7' && codes[1] === 'C18.9')) {
+        console.warn('Inline test failed for secondary liver cancer from colon query');
+      }
+    }
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json({ results: cleanedMetastasisResults });
+    return;
+  }
   const tokens = normalizedQuery.split(/\s+/).filter(Boolean);
   const rawTokens = query.split(/\s+/).filter(Boolean);
 
