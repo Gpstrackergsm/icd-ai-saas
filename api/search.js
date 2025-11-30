@@ -58,6 +58,34 @@ function parseBody(req) {
   });
 }
 
+function cleanICDCodes(codes = []) {
+  const seen = new Set();
+  const unique = codes.reduce((acc, entry) => {
+    const code = (entry.code || '').toUpperCase();
+    if (!code || seen.has(code)) return acc;
+    seen.add(code);
+    acc.push({ ...entry, code });
+    return acc;
+  }, []);
+
+  const hasDiabeticKidneyDisease = unique.some((entry) =>
+    /^E(10|11|13)\.2\d/i.test(entry.code || '')
+  );
+  const hasCkdStage = unique.some((entry) => /^N18\.[1-6]/i.test(entry.code || ''));
+
+  const filtered = unique.filter((entry) => {
+    if (hasDiabeticKidneyDisease && /^E(10|11|13)\.9$/i.test(entry.code || '')) {
+      return false;
+    }
+    if (hasCkdStage && /^N18\.9$/i.test(entry.code || '')) {
+      return false;
+    }
+    return true;
+  });
+
+  return filtered;
+}
+
 module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
@@ -134,6 +162,15 @@ module.exports = async function handler(req, res) {
 
   const results = scored.map((item) => item.entry);
 
+  const cleanedResults = cleanICDCodes(results);
+
+  if (normalizedQuery === 'type 2 diabetes with ckd stage 4') {
+    const codes = cleanedResults.map((r) => r.code);
+    if (!(codes.length === 2 && codes.includes('E11.22') && codes.includes('N18.4'))) {
+      console.warn('Inline test failed for diabetes with CKD stage 4 query');
+    }
+  }
+
   res.setHeader('Content-Type', 'application/json');
-  res.status(200).json({ results });
+  res.status(200).json({ results: cleanedResults });
 };
