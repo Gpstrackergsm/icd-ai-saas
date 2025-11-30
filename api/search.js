@@ -234,32 +234,14 @@ function cleanICDCodes(codes = []) {
   return filtered;
 }
 
-module.exports = async function handler(req, res) {
-  if (req.method !== 'POST') {
-    res.status(405).json({ error: 'Method not allowed' });
-    return;
-  }
+function limitResults(results = []) {
+  return results.slice(0, 10);
+}
 
-  let body;
-  try {
-    body = req.body ?? (await parseBody(req));
-  } catch (err) {
-    res.status(400).json({ error: 'Invalid JSON body' });
-    return;
-  }
-
-  const query = normalize(body.query || '');
+function searchSingle(rawQuery = '', records = []) {
+  const query = normalize(rawQuery || '');
   if (!query) {
-    res.status(400).json({ error: 'Query is required' });
-    return;
-  }
-
-  let records;
-  try {
-    records = loadData();
-  } catch (err) {
-    res.status(500).json({ error: 'Failed to load ICD data' });
-    return;
+    return { results: [] };
   }
 
   const normalizedQuery = applyNormalization(query);
@@ -270,16 +252,21 @@ module.exports = async function handler(req, res) {
       hypertensiveHeartCkd.results,
       normalizedQuery
     );
-    const cleanedHypertensiveResults = cleanICDCodes(hypertensiveWithStage);
-    if (normalizedQuery === 'hypertensive heart and chronic kidney disease with heart failure and ckd stage 4') {
+    const cleanedHypertensiveResults = limitResults(
+      cleanICDCodes(hypertensiveWithStage)
+    );
+    if (
+      normalizedQuery ===
+      'hypertensive heart and chronic kidney disease with heart failure and ckd stage 4'
+    ) {
       const codes = cleanedHypertensiveResults.map((r) => r.code);
       if (!(codes[0] === 'I13.0' && codes[1] === 'N18.4')) {
-        console.warn('Inline test failed for hypertensive heart and CKD stage 4 with HF query');
+        console.warn(
+          'Inline test failed for hypertensive heart and CKD stage 4 with HF query'
+        );
       }
     }
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json({ results: cleanedHypertensiveResults });
-    return;
+    return { results: cleanedHypertensiveResults };
   }
 
   const metastasis = detectMetastasis(query, normalizedQuery);
@@ -301,17 +288,16 @@ module.exports = async function handler(req, res) {
           return { code };
         })
       : [];
-    const cleanedMetastasisResults = cleanICDCodes(metastasisResults);
+    const cleanedMetastasisResults = limitResults(cleanICDCodes(metastasisResults));
     if (query === 'secondary liver cancer from colon') {
       const codes = cleanedMetastasisResults.map((r) => r.code);
       if (!(codes[0] === 'C78.7' && codes[1] === 'C18.9')) {
         console.warn('Inline test failed for secondary liver cancer from colon query');
       }
     }
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json({ results: cleanedMetastasisResults });
-    return;
+    return { results: cleanedMetastasisResults };
   }
+
   const tokens = normalizedQuery.split(/\s+/).filter(Boolean);
   const rawTokens = query.split(/\s+/).filter(Boolean);
 
@@ -355,7 +341,10 @@ module.exports = async function handler(req, res) {
       return score > 0 ? { entry, score } : null;
     })
     .filter(Boolean)
-    .sort((a, b) => b.score - a.score || (a.entry.code || '').localeCompare(b.entry.code || ''));
+    .sort(
+      (a, b) =>
+        b.score - a.score || (a.entry.code || '').localeCompare(b.entry.code || '')
+    );
 
   const results = scored.map((item) => item.entry);
 
@@ -372,6 +361,68 @@ module.exports = async function handler(req, res) {
     }
   }
 
+  return { results: limitResults(cleanedResults) };
+}
+
+module.exports = async function handler(req, res) {
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: 'Method not allowed' });
+    return;
+  }
+
+  let body;
+  try {
+    body = req.body ?? (await parseBody(req));
+  } catch (err) {
+    res.status(400).json({ error: 'Invalid JSON body' });
+    return;
+  }
+
+  const rawQuery = (body.query || '').toString();
+  const query = normalize(rawQuery);
+  if (!query) {
+    res.status(400).json({ error: 'Query is required' });
+    return;
+  }
+
+  let records;
+  try {
+    records = loadData();
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to load ICD data' });
+    return;
+  }
+
+  const lines = rawQuery
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean);
+
+  const numberedPattern = /^([0-9]+)\s*[)\.\-]\s*(.+)$/;
+  const numberedItems = lines
+    .map((line) => {
+      const match = line.match(numberedPattern);
+      if (!match) return null;
+      return { id: match[1], query: match[2] };
+    })
+    .filter(Boolean);
+
+  if (numberedItems.length > 1) {
+    const batchResults = numberedItems.map((item) => {
+      const { results } = searchSingle(item.query, records);
+      const codes = limitResults(results || []).map((entry) => ({
+        code: entry.code,
+        desc: entry.description || entry.desc || '',
+      }));
+      return { id: item.id, query: item.query, codes };
+    });
+
+    res.setHeader('Content-Type', 'application/json');
+    res.status(200).json({ batch: batchResults });
+    return;
+  }
+
+  const { results } = searchSingle(rawQuery, records);
   res.setHeader('Content-Type', 'application/json');
-  res.status(200).json({ results: cleanedResults });
+  res.status(200).json({ results });
 };

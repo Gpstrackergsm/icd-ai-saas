@@ -44,6 +44,7 @@
         flex-wrap: wrap;
       }
 
+      textarea,
       input[type="text"] {
         flex: 1;
         min-width: 220px;
@@ -51,6 +52,8 @@
         border: 1px solid #cbd5e1;
         border-radius: 8px;
         font-size: 16px;
+        resize: vertical;
+        min-height: 120px;
       }
 
       button {
@@ -125,12 +128,11 @@
       <div class="panel">
         <label for="query">Search ICD codes</label>
         <div class="input-row">
-          <input
-            type="text"
+          <textarea
             id="query"
             name="query"
             placeholder="Enter code, condition, or synonym"
-          />
+          ></textarea>
           <button id="searchBtn">Search</button>
         </div>
         <div class="actions">
@@ -148,7 +150,9 @@
       const status = document.getElementById('status');
       const resultsEl = document.getElementById('results');
 
-      function renderResults(items) {
+      let lastRendered = null;
+
+      function renderSingleResults(items) {
         resultsEl.innerHTML = '';
         if (!items.length) {
           resultsEl.innerHTML = '<p>No results found.</p>';
@@ -167,7 +171,7 @@
 
           const desc = document.createElement('div');
           desc.className = 'desc';
-          desc.textContent = item.description;
+          desc.textContent = item.description || item.desc || '';
 
           const synonyms = document.createElement('div');
           synonyms.className = 'synonyms';
@@ -180,6 +184,48 @@
           card.appendChild(code);
           card.appendChild(desc);
           card.appendChild(synonyms);
+          fragment.appendChild(card);
+        });
+
+        resultsEl.appendChild(fragment);
+        copyBtn.disabled = false;
+      }
+
+      function renderBatchResults(batchItems) {
+        resultsEl.innerHTML = '';
+
+        if (!batchItems.length) {
+          resultsEl.innerHTML = '<p>No results found.</p>';
+          copyBtn.disabled = true;
+          return;
+        }
+
+        const fragment = document.createDocumentFragment();
+
+        batchItems.forEach((item) => {
+          const card = document.createElement('div');
+          card.className = 'card';
+
+          const header = document.createElement('div');
+          header.className = 'code';
+          header.textContent = `${item.id}) ${item.query}`;
+          card.appendChild(header);
+
+          if (Array.isArray(item.codes) && item.codes.length) {
+            item.codes.forEach((codeEntry) => {
+              const line = document.createElement('div');
+              line.className = 'desc';
+              const description = codeEntry.description || codeEntry.desc || '';
+              line.textContent = `${codeEntry.code} — ${description}`;
+              card.appendChild(line);
+            });
+          } else {
+            const empty = document.createElement('div');
+            empty.className = 'desc';
+            empty.textContent = 'No codes found.';
+            card.appendChild(empty);
+          }
+          
           fragment.appendChild(card);
         });
 
@@ -214,8 +260,15 @@
           }
 
           const data = await response.json();
-          renderResults(data.results || []);
-          status.textContent = `Found ${data.results?.length || 0} result(s).`;
+          lastRendered = data;
+
+          if (Array.isArray(data.batch)) {
+            renderBatchResults(data.batch);
+            status.textContent = `Found ${data.batch.length} question(s).`;
+          } else {
+            renderSingleResults(data.results || []);
+            status.textContent = `Found ${data.results?.length || 0} result(s).`;
+          }
         } catch (err) {
           status.textContent = err.message || 'Unable to search right now.';
         } finally {
@@ -225,14 +278,30 @@
 
       async function copyResults() {
         const cards = Array.from(resultsEl.querySelectorAll('.card'));
-        if (!cards.length) return;
-        const lines = cards.map((card) => {
-          const code = card.querySelector('.code')?.textContent || '';
-          const desc = card.querySelector('.desc')?.textContent || '';
-          return `${code} — ${desc}`;
-        });
+        if (!cards.length || !lastRendered) return;
+
         try {
-          await navigator.clipboard.writeText(lines.join('\n'));
+          if (Array.isArray(lastRendered.batch)) {
+            const lines = lastRendered.batch.flatMap((item) => {
+              const entryLines = [];
+              entryLines.push(`${item.id}) ${item.query}`);
+              if (Array.isArray(item.codes) && item.codes.length) {
+                item.codes.forEach((codeEntry) => {
+                  const description = codeEntry.description || codeEntry.desc || '';
+                  entryLines.push(`   ${codeEntry.code} — ${description}`);
+                });
+              }
+              return [...entryLines, ''];
+            });
+            await navigator.clipboard.writeText(lines.join('\n').trim());
+          } else {
+            const lines = cards.map((card) => {
+              const code = card.querySelector('.code')?.textContent || '';
+              const desc = card.querySelector('.desc')?.textContent || '';
+              return `${code} — ${desc}`;
+            });
+            await navigator.clipboard.writeText(lines.join('\n'));
+          }
           status.textContent = 'Results copied to clipboard.';
         } catch (err) {
           status.textContent = 'Unable to copy results.';
@@ -241,11 +310,6 @@
 
       searchBtn.addEventListener('click', performSearch);
       copyBtn.addEventListener('click', copyResults);
-      queryInput.addEventListener('keydown', (event) => {
-        if (event.key === 'Enter') {
-          performSearch();
-        }
-      });
     </script>
   </body>
 </html>
