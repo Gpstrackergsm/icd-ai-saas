@@ -1,0 +1,8 @@
+{
+  "name": "icd-ai-saas",
+  "private": true,
+  "scripts": {
+    "build": "echo 'no build'",
+    "start": "echo 'vercel runtime'"
+  }
+}
