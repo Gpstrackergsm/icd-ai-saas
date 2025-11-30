@@ -234,6 +234,188 @@ function cleanICDCodes(codes = []) {
   return filtered;
 }
 
+function hasKeywordMatch(normalizedQuery = '', description = '', synonyms = []) {
+  const loweredDescription = normalize(description);
+  const descriptionTokens = loweredDescription.split(/[^a-z0-9]+/i).filter(Boolean);
+  const synonymTokens = synonyms
+    .map((syn) => normalize(syn))
+    .flatMap((syn) => syn.split(/[^a-z0-9]+/i).filter(Boolean));
+
+  const keywordSet = new Set(
+    [...descriptionTokens, ...synonymTokens].filter((token) => token.length > 2)
+  );
+
+  for (const token of keywordSet) {
+    const pattern = new RegExp(`\\b${escapeRegExp(token)}\\b`, 'i');
+    if (pattern.test(normalizedQuery)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+const BLOCKED_CODES = ['M06.9', 'I48.91', 'Z00.00', 'Z12', 'C80.1'];
+
+function isCodeExplicitlyMentioned(rawQuery = '', code = '') {
+  if (!code) return false;
+  const pattern = new RegExp(`\\b${escapeRegExp(code)}\\b`, 'i');
+  return pattern.test(rawQuery || '');
+}
+
+function applyBlockList(results = [], rawQuery = '') {
+  return results.filter((entry) => {
+    const upperCode = (entry.code || '').toUpperCase();
+    const isBlocked = BLOCKED_CODES.some((blocked) =>
+      blocked.endsWith('.x')
+        ? upperCode.startsWith(blocked.replace('.x', ''))
+        : upperCode.startsWith(blocked)
+    );
+    if (!isBlocked) return true;
+    return isCodeExplicitlyMentioned(rawQuery, upperCode);
+  });
+}
+
+function applyStageLock(results = [], normalizedQuery = '') {
+  const stageCode = extractCkdStageCode(normalizedQuery);
+  if (!stageCode) return results;
+
+  const filtered = results.filter((entry) => !/^N18\./i.test(entry.code || ''));
+  filtered.push({ code: stageCode });
+
+  return cleanICDCodes(filtered);
+}
+
+function applyMentalHealthRules(normalizedQuery = '', results = []) {
+  const hasRecurrent = /\brecurrent\b/.test(normalizedQuery);
+  const hasPsychotic = /\bpsychotic\b/.test(normalizedQuery);
+  const hasSevere = /\bsevere\b/.test(normalizedQuery);
+
+  const targetPrefix = hasRecurrent ? 'F33' : 'F32';
+  const severityDigit = hasPsychotic ? '3' : hasSevere ? '2' : '9';
+  const replacementCode = `${targetPrefix}.${severityDigit}`;
+
+  const hasMentalHealth = results.some((entry) => /^F3[23]\./i.test(entry.code || ''));
+  if (!hasMentalHealth) return results;
+
+  const filtered = results.filter((entry) => !/^F3[23]\./i.test(entry.code || ''));
+  filtered.push({ code: replacementCode });
+
+  return cleanICDCodes(filtered);
+}
+
+function applyDiabetesRules(normalizedQuery = '', results = []) {
+  if (!/\bdiabet/i.test(normalizedQuery)) return results;
+
+  if (/\bneuropathy\b/.test(normalizedQuery)) {
+    return cleanICDCodes([{ code: 'E11.40' }]);
+  }
+
+  if (/\bnephropathy\b/.test(normalizedQuery)) {
+    return cleanICDCodes([{ code: 'E11.21' }]);
+  }
+
+  if (/\bretinopathy\b/.test(normalizedQuery)) {
+    return cleanICDCodes([{ code: 'E11.319' }]);
+  }
+
+  const hasCkd = /\bckd\b/.test(normalizedQuery) || /chronic kidney disease/.test(normalizedQuery);
+  const hasHyperglycemia = /hyperglycemia/.test(normalizedQuery);
+
+  const filtered = results.filter((entry) => {
+    if (!hasCkd && /^E(10|11|13)\.2\d/i.test(entry.code || '')) {
+      return false;
+    }
+    if (!hasHyperglycemia && /(R73|E16\.1)/i.test(entry.code || '')) {
+      return false;
+    }
+    return true;
+  });
+
+  return cleanICDCodes(filtered);
+}
+
+function removeI10WithCkd(normalizedQuery = '', results = []) {
+  const hasCkd = /\bckd\b/.test(normalizedQuery) || /chronic kidney disease/.test(normalizedQuery);
+  if (!hasCkd) return results;
+  return results.filter((entry) => !/^I10$/i.test(entry.code || ''));
+}
+
+function applyHypertensionRules(normalizedQuery = '') {
+  const hasHypertension = /\bhypertension\b/.test(normalizedQuery) ||
+    /\bhypertensive\b/.test(normalizedQuery);
+  if (!hasHypertension) return { detected: false, results: [] };
+
+  const hasHeart = /heart/.test(normalizedQuery) || /cardiac/.test(normalizedQuery);
+  const hasHeartFailure =
+    /heart failure/.test(normalizedQuery) || /cardiac failure/.test(normalizedQuery) ||
+    /\bhf\b/.test(normalizedQuery);
+  const hasKidney = /kidney/.test(normalizedQuery) || /\bckd\b/.test(normalizedQuery);
+
+  const stageCode = extractCkdStageCode(normalizedQuery);
+
+  if (hasKidney && hasHeart) {
+    const baseCode = hasHeartFailure ? 'I13.0' : 'I13.10';
+    const codes = [{ code: baseCode }];
+    if (stageCode) codes.push({ code: stageCode });
+    return { detected: true, results: codes };
+  }
+
+  if (hasKidney) {
+    const codes = [{ code: 'I12.9' }];
+    if (stageCode) codes.push({ code: stageCode });
+    return { detected: true, results: codes };
+  }
+
+  if (hasHeart) {
+    const baseCode = hasHeartFailure ? 'I11.0' : 'I11.9';
+    return { detected: true, results: [{ code: baseCode }] };
+  }
+
+  return { detected: false, results: [] };
+}
+
+function applyCoreConditionAdds(normalizedQuery = '', results = []) {
+  const updated = [...results];
+
+  const addCode = (code) => {
+    if (!updated.some((entry) => (entry.code || '').toUpperCase() === code.toUpperCase())) {
+      updated.push({ code });
+    }
+  };
+
+  if (/\bdka\b/.test(normalizedQuery)) {
+    const isType1 = /type\s*1/.test(normalizedQuery) || /\bE10/i.test(normalizedQuery);
+    addCode(isType1 ? 'E10.10' : 'E11.10');
+  }
+
+  if (/pulmonary embolism/.test(normalizedQuery) && /cor pulmonale/.test(normalizedQuery)) {
+    addCode('I26.09');
+  }
+
+  if (/chronic systolic (hf|heart failure)/.test(normalizedQuery)) {
+    addCode('I50.22');
+  }
+
+  if (/history of .*cancer/.test(normalizedQuery)) {
+    addCode('Z85.9');
+  }
+
+  if (/\bhomeless/.test(normalizedQuery)) {
+    addCode('Z59.00');
+  }
+
+  if (/insomnia due to/.test(normalizedQuery)) {
+    addCode('G47.01');
+  }
+
+  if (/klebsiella pneumonia/.test(normalizedQuery)) {
+    addCode('J15.0');
+  }
+
+  return cleanICDCodes(updated);
+}
+
 function limitResults(results = []) {
   return results.slice(0, 10);
 }
@@ -245,6 +427,12 @@ function searchSingle(rawQuery = '', records = []) {
   }
 
   const normalizedQuery = applyNormalization(query);
+
+  const hypertensionRule = applyHypertensionRules(normalizedQuery);
+  if (hypertensionRule.detected) {
+    const cleanedHypertension = limitResults(cleanICDCodes(hypertensionRule.results));
+    return { results: applyCoreConditionAdds(normalizedQuery, cleanedHypertension) };
+  }
 
   const hypertensiveHeartCkd = detectHypertensiveHeartCkd(normalizedQuery);
   if (hypertensiveHeartCkd.detected) {
@@ -315,6 +503,14 @@ function searchSingle(rawQuery = '', records = []) {
       const codeExact = entryCode === normalizedQuery;
       const synonymExact = entrySynonyms.some((syn) => syn === normalizedQuery);
 
+      if (
+        !codeExact &&
+        !synonymExact &&
+        !hasKeywordMatch(normalizedQuery, entryDescription, entrySynonyms)
+      ) {
+        return null;
+      }
+
       const tokensInDescription = tokens.length
         ? tokens.every((token) => entryDescription.includes(token))
         : false;
@@ -353,6 +549,18 @@ function searchSingle(rawQuery = '', records = []) {
   cleanedResults = cleanICDCodes(
     appendCkdStageForHypertensive(cleanedResults, normalizedQuery)
   );
+
+  cleanedResults = removeI10WithCkd(normalizedQuery, cleanedResults);
+
+  cleanedResults = applyStageLock(cleanedResults, normalizedQuery);
+
+  cleanedResults = applyDiabetesRules(normalizedQuery, cleanedResults);
+
+  cleanedResults = applyMentalHealthRules(normalizedQuery, cleanedResults);
+
+  cleanedResults = applyCoreConditionAdds(normalizedQuery, cleanedResults);
+
+  cleanedResults = applyBlockList(cleanedResults, rawQuery);
 
   if (normalizedQuery === 'type 2 diabetes with ckd stage 4') {
     const codes = cleanedResults.map((r) => r.code);
