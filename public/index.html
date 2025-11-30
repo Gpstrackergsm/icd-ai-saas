@@ -1,207 +1,251 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ICD Smart Search</title>
-  <style>
-    :root {
-      font-family: Arial, sans-serif;
-      color: #0f172a;
-      background-color: #f8fafc;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      background: radial-gradient(circle at 20% 20%, #e2e8f0, #f8fafc 45%),
-        radial-gradient(circle at 80% 0%, #e0f2fe, #f8fafc 40%);
-    }
-
-    .container {
-      background: #ffffff;
-      margin: 40px 16px;
-      padding: 32px;
-      border-radius: 16px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
-      width: min(960px, 100%);
-      box-sizing: border-box;
-    }
-
-    h1 {
-      margin-top: 0;
-      margin-bottom: 8px;
-      font-size: 28px;
-      letter-spacing: -0.5px;
-    }
-
-    p.subtitle {
-      margin-top: 0;
-      margin-bottom: 24px;
-      color: #475569;
-    }
-
-    .input-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 16px;
-    }
-
-    input[type="text"] {
-      flex: 1 1 240px;
-      padding: 14px 16px;
-      border: 1px solid #cbd5e1;
-      border-radius: 10px;
-      font-size: 16px;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
-
-    input[type="text"]:focus {
-      outline: none;
-      border-color: #2563eb;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-    }
-
-    button {
-      background: #2563eb;
-      color: #ffffff;
-      border: none;
-      border-radius: 10px;
-      padding: 14px 18px;
-      font-size: 15px;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    button:hover { background: #1d4ed8; }
-    button:active { transform: translateY(1px); }
-
-    .results-panel {
-      border: 1px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 16px;
-      min-height: 160px;
-      background: #f8fafc;
-      white-space: pre-line;
-      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-      color: #0f172a;
-    }
-
-    .actions {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-    }
-
-    .secondary {
-      background: #0f172a;
-    }
-
-    .status {
-      margin-top: 10px;
-      color: #475569;
-      font-size: 14px;
-      min-height: 20px;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>ICD Smart Search</h1>
-    <p class="subtitle">Search ICD-10-CM codes and copy results instantly.</p>
-
-    <div class="input-row">
-      <input id="query" type="text" placeholder="Search ICD-10-CM..." />
-      <button id="searchBtn" type="button">Search</button>
-    </div>
-
-    <div class="actions">
-      <button id="copyBtn" class="secondary" type="button">Copy All</button>
-    </div>
-
-    <div id="results" class="results-panel"></div>
-    <div id="status" class="status"></div>
-  </div>
-
-  <script>
-    const queryInput = document.getElementById('query');
-    const searchBtn = document.getElementById('searchBtn');
-    const copyBtn = document.getElementById('copyBtn');
-    const resultsPanel = document.getElementById('results');
-    const statusEl = document.getElementById('status');
-
-    async function search() {
-      const query = queryInput.value.trim();
-      statusEl.textContent = '';
-      resultsPanel.textContent = '';
-
-      if (!query) {
-        statusEl.textContent = 'Enter a term or code to search.';
-        return;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ICD-10 Smart Search</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background: #f4f6fb;
+        color: #1e293b;
+        margin: 0;
+        padding: 0;
       }
 
-      searchBtn.disabled = true;
-      searchBtn.textContent = 'Searching...';
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 32px 16px 48px;
+      }
 
-      try {
-        const response = await fetch('/api/search', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query })
+      h1 {
+        font-size: 28px;
+        margin-bottom: 16px;
+        color: #0f172a;
+      }
+
+      .panel {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+        padding: 20px;
+      }
+
+      label {
+        display: block;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .input-row {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+
+      input[type="text"] {
+        flex: 1;
+        min-width: 220px;
+        padding: 12px;
+        border: 1px solid #cbd5e1;
+        border-radius: 8px;
+        font-size: 16px;
+      }
+
+      button {
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        padding: 12px 18px;
+        border-radius: 8px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: background 0.15s ease;
+      }
+
+      button:hover {
+        background: #1d4ed8;
+      }
+
+      button.secondary {
+        background: #0ea5e9;
+      }
+
+      button.secondary:hover {
+        background: #0284c7;
+      }
+
+      .status {
+        margin-top: 12px;
+        color: #475569;
+        min-height: 20px;
+      }
+
+      .results {
+        margin-top: 20px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .card {
+        border: 1px solid #e2e8f0;
+        border-radius: 10px;
+        padding: 14px;
+        background: #f8fafc;
+      }
+
+      .code {
+        font-weight: 700;
+        color: #0f172a;
+        margin-bottom: 6px;
+      }
+
+      .desc {
+        margin: 4px 0;
+        color: #334155;
+      }
+
+      .synonyms {
+        font-size: 13px;
+        color: #64748b;
+      }
+
+      .actions {
+        margin-top: 16px;
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>ICD-10 Smart Search</h1>
+      <div class="panel">
+        <label for="query">Search ICD codes</label>
+        <div class="input-row">
+          <input
+            type="text"
+            id="query"
+            name="query"
+            placeholder="Enter code, condition, or synonym"
+          />
+          <button id="searchBtn">Search</button>
+        </div>
+        <div class="actions">
+          <button id="copyBtn" class="secondary" disabled>Copy results</button>
+        </div>
+        <div id="status" class="status"></div>
+        <div id="results" class="results"></div>
+      </div>
+    </div>
+
+    <script>
+      const queryInput = document.getElementById('query');
+      const searchBtn = document.getElementById('searchBtn');
+      const copyBtn = document.getElementById('copyBtn');
+      const status = document.getElementById('status');
+      const resultsEl = document.getElementById('results');
+
+      function renderResults(items) {
+        resultsEl.innerHTML = '';
+        if (!items.length) {
+          resultsEl.innerHTML = '<p>No results found.</p>';
+          copyBtn.disabled = true;
+          return;
+        }
+
+        const fragment = document.createDocumentFragment();
+        items.forEach((item) => {
+          const card = document.createElement('div');
+          card.className = 'card';
+
+          const code = document.createElement('div');
+          code.className = 'code';
+          code.textContent = item.code;
+
+          const desc = document.createElement('div');
+          desc.className = 'desc';
+          desc.textContent = item.description;
+
+          const synonyms = document.createElement('div');
+          synonyms.className = 'synonyms';
+          if (item.synonyms && item.synonyms.length) {
+            synonyms.textContent = `Synonyms: ${item.synonyms.join(', ')}`;
+          } else {
+            synonyms.textContent = 'Synonyms: —';
+          }
+
+          card.appendChild(code);
+          card.appendChild(desc);
+          card.appendChild(synonyms);
+          fragment.appendChild(card);
         });
 
-        if (!response.ok) {
-          const errorData = await response.json().catch(() => ({}));
-          throw new Error(errorData.error || 'Search failed');
+        resultsEl.appendChild(fragment);
+        copyBtn.disabled = false;
+      }
+
+      async function performSearch() {
+        const query = queryInput.value.trim();
+        resultsEl.innerHTML = '';
+        status.textContent = '';
+        copyBtn.disabled = true;
+
+        if (!query) {
+          status.textContent = 'Please enter a search query.';
+          return;
         }
 
-        const data = await response.json();
-        if (data.codes && data.codes.length > 0) {
-          const lines = data.codes.map((item) => `${item.code} — ${item.desc}`);
-          resultsPanel.textContent = lines.join('\n');
-          statusEl.textContent = `${data.codes.length} result(s)`;
-        } else {
-          resultsPanel.textContent = 'No matches found.';
-          statusEl.textContent = '';
-        }
-      } catch (err) {
-        resultsPanel.textContent = '';
-        statusEl.textContent = err.message || 'Search failed.';
-      } finally {
-        searchBtn.disabled = false;
-        searchBtn.textContent = 'Search';
-      }
-    }
+        searchBtn.disabled = true;
+        status.textContent = 'Searching…';
 
-    function copyResults() {
-      const text = resultsPanel.textContent.trim();
-      if (!text) {
-        statusEl.textContent = 'Nothing to copy.';
-        return;
+        try {
+          const response = await fetch('/api/search', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query }),
+          });
+
+          if (!response.ok) {
+            const error = await response.json().catch(() => ({}));
+            throw new Error(error.error || 'Search failed');
+          }
+
+          const data = await response.json();
+          renderResults(data.results || []);
+          status.textContent = `Found ${data.results?.length || 0} result(s).`;
+        } catch (err) {
+          status.textContent = err.message || 'Unable to search right now.';
+        } finally {
+          searchBtn.disabled = false;
+        }
       }
-      navigator.clipboard.writeText(text).then(() => {
-        statusEl.textContent = 'Results copied to clipboard.';
-      }).catch(() => {
-        statusEl.textContent = 'Unable to copy results.';
+
+      async function copyResults() {
+        const cards = Array.from(resultsEl.querySelectorAll('.card'));
+        if (!cards.length) return;
+        const lines = cards.map((card) => {
+          const code = card.querySelector('.code')?.textContent || '';
+          const desc = card.querySelector('.desc')?.textContent || '';
+          return `${code} — ${desc}`;
+        });
+        try {
+          await navigator.clipboard.writeText(lines.join('\n'));
+          status.textContent = 'Results copied to clipboard.';
+        } catch (err) {
+          status.textContent = 'Unable to copy results.';
+        }
+      }
+
+      searchBtn.addEventListener('click', performSearch);
+      copyBtn.addEventListener('click', copyResults);
+      queryInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+          performSearch();
+        }
       });
-    }
-
-    searchBtn.addEventListener('click', search);
-    copyBtn.addEventListener('click', copyResults);
-    queryInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        search();
-      }
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>
