@@ -92,11 +92,19 @@ export interface IcdGuidelineRule {
 export interface ParsedConceptAttributes {
   stage?: string;
   severity?: string;
-  laterality?: string;
+  laterality?: 'left' | 'right' | 'bilateral' | 'unspecified' | string;
   trimester?: "1st" | "2nd" | "3rd";
   episode?: "initial" | "subsequent" | "sequela";
   acuity?: "acute" | "chronic" | "acute_on_chronic";
   site?: string;
+  diabetesType?: 'type1' | 'type2' | 'secondary';
+  complications?: {
+    retinopathy?: boolean;
+    neuropathy?: boolean;
+    nephropathy?: boolean;
+    hypoglycemia?: boolean;
+    hyperosmolar?: boolean;
+  };
 }
 
 export interface ParsedConcept {
@@ -122,6 +130,7 @@ export interface CandidateCode {
   reason: string;
   baseScore: number;
   conceptRefs: string[];
+  guidelineRule?: string;
 }
 
 export interface EncodingContext {
@@ -143,6 +152,8 @@ export interface EncoderOutputCode {
   description: string;
   reason: string;
   order: number;
+  guidelineRule?: string;
+  confidence: number;
 }
 
 export interface EncoderOutput {
