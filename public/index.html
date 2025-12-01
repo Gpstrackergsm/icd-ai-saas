@@ -260,6 +260,24 @@
         copyBtn.disabled = false;
       }
 
+      async function fetchPayload(url, body, defaultError) {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+
+        const data = await response.json().catch(() => ({}));
+        const message =
+          data?.error?.message || data?.message || data?.error || defaultError;
+
+        if (!response.ok || data?.success === false) {
+          throw new Error(message);
+        }
+
+        return data?.data ?? data;
+      }
+
       async function performSearch() {
         const query = queryInput.value.trim();
         resultsEl.innerHTML = '';
@@ -275,19 +293,12 @@
         status.textContent = 'Searching…';
 
         try {
-          const response = await fetch('/api/search', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ query }),
-          });
-
-          if (!response.ok) {
-            const error = await response.json().catch(() => ({}));
-            throw new Error(error.error || 'Search failed');
-          }
-
-          const data = await response.json();
-          lastRendered = data.results || [];
+          const payload = await fetchPayload(
+            '/api/search',
+            { query },
+            'Search failed'
+          );
+          lastRendered = payload.results || [];
           renderSearchResults(lastRendered);
           status.textContent = `Found ${lastRendered.length} result(s).`;
         } catch (err) {
@@ -389,21 +400,14 @@
         encodeStatus.textContent = 'Encoding…';
 
         try {
-          const response = await fetch('/api/encode', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ text }),
-          });
-
-          if (!response.ok) {
-            const error = await response.json().catch(() => ({}));
-            throw new Error(error.error || 'Encoding failed');
-          }
-
-          const data = await response.json();
-          lastEncoded = data;
-          renderEncodeResults(data);
-          encodeStatus.textContent = `Found ${data.codes?.length || 0} code(s).`;
+          const payload = await fetchPayload(
+            '/api/encode',
+            { text },
+            'Encoding failed'
+          );
+          lastEncoded = payload;
+          renderEncodeResults(payload);
+          encodeStatus.textContent = `Found ${payload.codes?.length || 0} code(s).`;
         } catch (err) {
           encodeStatus.textContent = err.message || 'Unable to encode right now.';
         } finally {
