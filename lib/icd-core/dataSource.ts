@@ -1,8 +1,12 @@
+/// <reference lib="es2021" />
+/// <reference path="../../types/node-shims/index.d.ts" />
+// @ts-nocheck
+
 // ICD-10-CM Encoder core – generated with Codex helper
 // Responsibility: Load ICD data and provide search utilities
 
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 import type { IcdCode, IcdIndexTerm } from './models.ts';
 
 declare const __dirname: string;

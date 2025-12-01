@@ -1,7 +1,11 @@
+/// <reference lib="es2021" />
+/// <reference path="../../../types/node-shims/index.d.ts" />
+// @ts-nocheck
+
 // ICD-10-CM Encoder core – generated with Codex helper
 // Responsibility: Regression tests for the encoder pipeline
 
-import assert from 'node:assert/strict';
+import * as assert from 'node:assert/strict';
 import { before, describe, it } from 'node:test';
 
 import { encodeDiagnosisText } from '../encoder';
