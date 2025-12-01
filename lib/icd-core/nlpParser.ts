@@ -37,7 +37,11 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
 
   if (/diabetes/.test(normalized)) {
     const stage = normalized.match(/stage\s*(\d(?:b)?)/)?.[1];
-    const diabetesType = normalized.includes('type 1') ? 'type1' : normalized.includes('type 2') ? 'type2' : 'type2';
+    const diabetesType: 'type1' | 'type2' | 'secondary' = normalized.includes('type 1')
+      ? 'type1'
+      : normalized.includes('type 2')
+        ? 'type2'
+        : 'type2';
     const lateralityMatch =
       normalized.match(/left eye|os\b|left\s+retina/)?.[0]
         ? 'left'
@@ -197,7 +201,7 @@ export function mapConceptsToCandidateCodes(concepts: ParsedConcept[]): Candidat
   const hasHypoglycemia = /hypoglycemia/.test(sourceText);
   const hasHyperosmolar = /hyperosmolar/.test(sourceText);
 
-  const diabetesType = (diabetes?.attributes as any)?.diabetesType || 'type2';
+  const diabetesType = diabetes?.attributes.diabetesType || 'type2';
   const diabetesPrefix = diabetesType === 'type1' ? 'E10' : diabetesType === 'secondary' ? 'E08' : 'E11';
 
   const addCkdStage = (stageRaw?: string) => {
@@ -273,7 +277,7 @@ export function mapConceptsToCandidateCodes(concepts: ParsedConcept[]): Candidat
   }
 
   if (hasRetinopathy && diabetes) {
-    const laterality = (diabetes.attributes as any)?.laterality || 'unspecified';
+    const laterality = diabetes.attributes.laterality || 'unspecified';
     const lateralityCode = laterality === 'left' ? '322' : laterality === 'right' ? '321' : laterality === 'bilateral' ? '323' : '319';
     addCandidate(candidates, {
       code: `${diabetesPrefix}.3${lateralityCode}`,

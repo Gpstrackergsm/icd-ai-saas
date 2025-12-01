@@ -33,9 +33,9 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
   const hasPregnancy = ctx.concepts.some((c) => c.type === 'pregnancy');
   const hasInjury = ctx.concepts.some((c) => c.type === 'injury');
 
-  const diabetesPrefix = (diabetesConcept?.attributes as any)?.diabetesType === 'type1'
+  const diabetesPrefix = diabetesConcept?.attributes.diabetesType === 'type1'
     ? 'E10'
-    : (diabetesConcept?.attributes as any)?.diabetesType === 'secondary'
+    : diabetesConcept?.attributes.diabetesType === 'secondary'
       ? 'E08'
       : 'E11';
 
