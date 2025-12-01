@@ -1,6 +1,9 @@
 // ICD-10-CM Encoder core – generated with Codex helper
 // Responsibility: HTTP handler to encode free-text narratives into ICD-10-CM codes
 
+const fs = require('fs');
+const path = require('path');
+
 let icdModule;
 let encoderModule;
 
@@ -8,14 +11,19 @@ function loadRuntimeModules() {
   if (icdModule && encoderModule) return { icdModule, encoderModule };
 
   try {
-    require('ts-node/register');
+    require(path.resolve(__dirname, '../lib/runtime/register-ts'));
   } catch (err) {
     throw new Error('TypeScript runtime support is unavailable; install ts-node and typescript');
   }
 
+  const icdJs = path.resolve(__dirname, '../lib/icd-core/dataSource.js');
+  const icdTs = path.resolve(__dirname, '../lib/icd-core/dataSource.ts');
+  const encoderJs = path.resolve(__dirname, '../lib/icd-core/encoder.js');
+  const encoderTs = path.resolve(__dirname, '../lib/icd-core/encoder.ts');
+
   try {
-    icdModule = require('../lib/icd-core/dataSource');
-    encoderModule = require('../lib/icd-core/encoder');
+    icdModule = require(fs.existsSync(icdJs) ? icdJs : icdTs);
+    encoderModule = require(fs.existsSync(encoderJs) ? encoderJs : encoderTs);
     return { icdModule, encoderModule };
   } catch (err) {
     throw new Error('Failed to load ICD encoder modules');
@@ -98,6 +106,7 @@ module.exports = async function handler(req, res) {
     return sendJson(res, 200, { success: true, data: output });
   } catch (err) {
     console.error('Encode handler failed:', err);
-    return sendJson(res, 500, { success: false, error: { message: 'Unexpected server error' } });
+    const message = err?.message || 'Unexpected server error';
+    return sendJson(res, 500, { success: false, error: { message } });
   }
 };
