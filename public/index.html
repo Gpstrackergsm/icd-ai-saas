@@ -283,11 +283,13 @@
 
           if (!response.ok) {
             const error = await response.json().catch(() => ({}));
-            throw new Error(error.error || 'Search failed');
+            const message = error.error?.message || error.error || 'Search failed';
+            throw new Error(message);
           }
 
           const data = await response.json();
-          lastRendered = data.results || [];
+          const payload = data.data ?? data;
+          lastRendered = payload.results || [];
           renderSearchResults(lastRendered);
           status.textContent = `Found ${lastRendered.length} result(s).`;
         } catch (err) {
@@ -397,13 +399,15 @@
 
           if (!response.ok) {
             const error = await response.json().catch(() => ({}));
-            throw new Error(error.error || 'Encoding failed');
+            const message = error.error?.message || error.error || 'Encoding failed';
+            throw new Error(message);
           }
 
           const data = await response.json();
-          lastEncoded = data;
-          renderEncodeResults(data);
-          encodeStatus.textContent = `Found ${data.codes?.length || 0} code(s).`;
+          const payload = data.data ?? data;
+          lastEncoded = payload;
+          renderEncodeResults(payload);
+          encodeStatus.textContent = `Found ${payload.codes?.length || 0} code(s).`;
         } catch (err) {
           encodeStatus.textContent = err.message || 'Unable to encode right now.';
         } finally {
