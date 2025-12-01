@@ -1,13 +1,16 @@
 // ICD-10-CM Encoder core – generated with Codex helper
 // Responsibility: HTTP handler to search ICD-10-CM codes and index terms
 
+const fs = require('fs');
+const path = require('path');
+
 let icdModule;
 
 function loadIcdModule() {
   if (icdModule) return icdModule;
 
   try {
-    require('../lib/runtime/register-ts');
+    require(path.resolve(__dirname, '../lib/runtime/register-ts'));
   } catch (err) {
     throw createHttpError(
       'TypeScript runtime support is unavailable; install ts-node and typescript',
@@ -16,8 +19,11 @@ function loadIcdModule() {
     );
   }
 
+  const icdJs = path.resolve(__dirname, '../lib/icd-core/dataSource.js');
+  const icdTs = path.resolve(__dirname, '../lib/icd-core/dataSource.ts');
+
   try {
-    icdModule = require('../lib/icd-core/dataSource.ts');
+    icdModule = require(fs.existsSync(icdJs) ? icdJs : icdTs);
     return icdModule;
   } catch (err) {
     throw createHttpError('Failed to load ICD data module', 500, 'api/search:runtime');

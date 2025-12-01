@@ -5,6 +5,8 @@ import fs from 'fs';
 import path from 'path';
 import type { IcdCode, IcdIndexTerm } from './models.ts';
 
+declare const __dirname: string;
+
 interface SampleData {
   codes: IcdCode[];
   indexTerms: IcdIndexTerm[];
@@ -13,6 +15,29 @@ interface SampleData {
 let codes: IcdCode[] = [];
 let indexTerms: IcdIndexTerm[] = [];
 let initialized = false;
+let resolvedDataPath: string | undefined;
+
+const DATA_FILE = 'icd-sample.json';
+
+function resolveDataPath(): string {
+  if (resolvedDataPath) return resolvedDataPath;
+
+  const candidates = [
+    path.resolve(process.cwd(), 'data', DATA_FILE),
+    path.resolve(__dirname, '..', '..', 'data', DATA_FILE),
+    path.resolve(__dirname, '..', '..', '..', 'data', DATA_FILE),
+  ];
+
+  const existing = candidates.find((candidate) => fs.existsSync(candidate));
+
+  if (!existing) {
+    throw new Error('ICD data missing');
+  }
+
+  resolvedDataPath = existing;
+  console.log('[ICD] Resolved dataset path:', resolvedDataPath);
+  return resolvedDataPath!;
+}
 
 function normalizeTerm(term: string): string {
   return term
@@ -24,7 +49,14 @@ function normalizeTerm(term: string): string {
 
 export async function initIcdData(): Promise<void> {
   if (initialized) return;
-  const datasetPath = path.join(process.cwd(), 'data', 'icd-sample.json');
+  const datasetPath = resolveDataPath();
+
+  if (!fs.existsSync(datasetPath)) {
+    throw new Error('ICD data missing');
+  }
+
+  console.log('[ICD] Loading dataset from', datasetPath);
+
   const raw = fs.readFileSync(datasetPath, 'utf-8');
   const parsed: SampleData = JSON.parse(raw);
   codes = parsed.codes;

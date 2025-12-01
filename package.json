@@ -2,7 +2,7 @@
   "name": "icd-ai-saas",
   "private": true,
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && mkdir -p dist && cp -R data dist/data",
     "dev": "ts-node src/index.ts",
     "start": "node dist/index.js"
   },
