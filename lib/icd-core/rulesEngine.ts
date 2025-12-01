@@ -1,5 +1,4 @@
 /// <reference lib="es2021" />
-/// <reference path="../../types/node-shims/index.d.ts" />
 // @ts-nocheck
 
 // ICD-10-CM Encoder core – generated with Codex helper
