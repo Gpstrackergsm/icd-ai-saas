@@ -7,11 +7,11 @@ let encoderModule;
 function loadRuntimeModules() {
   if (icdModule && encoderModule) return { icdModule, encoderModule };
 
-  try {
-    require('ts-node/register');
-  } catch (err) {
-    throw new Error('TypeScript runtime support is unavailable; install ts-node and typescript');
-  }
+try {
+  require('../lib/runtime/register-ts');
+} catch (err) {
+  throw new Error('TypeScript runtime support is unavailable; install ts-node and typescript');
+}
 
   try {
     icdModule = require('../lib/icd-core/dataSource');

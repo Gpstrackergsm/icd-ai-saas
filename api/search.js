@@ -7,7 +7,7 @@ function loadIcdModule() {
   if (icdModule) return icdModule;
 
   try {
-    require('ts-node/register');
+    require('../lib/runtime/register-ts');
   } catch (err) {
     throw createHttpError(
       'TypeScript runtime support is unavailable; install ts-node and typescript',
