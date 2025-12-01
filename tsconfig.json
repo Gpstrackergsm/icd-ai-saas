@@ -9,8 +9,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "typeRoots": ["./types"],
-    "allowImportingTsExtensions": true
+    "typeRoots": ["./types"]
   },
   "include": ["lib/**/*", "api/**/*", "data/**/*", "public/**/*", "*.ts"],
   "exclude": ["node_modules", "dist"]
