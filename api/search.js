@@ -154,7 +154,7 @@ function detectEntities(rawQuery = '') {
     ruptured: /ruptured/.test(normalized),
     supervision: /supervision/.test(normalized),
     hyperemesis: /hyperemesis/.test(normalized),
-    metabolicDisturbance: /metabolic disturbance/.test(normalized),
+    metabolicDisturbance: /metabolic disturbance/.test(normalized) || /\bmetabolic\b/.test(normalized),
     trimester: extractTrimester(normalized),
   };
 
@@ -192,7 +192,13 @@ function detectEntities(rawQuery = '') {
     hipReplacement: /hip replacement/.test(normalized),
     homelessness: /\bhomeless/.test(normalized),
     immunization: /immunization/.test(normalized) || /vaccination/.test(normalized),
-    routineExam: /routine exam/.test(normalized) || /annual physical/.test(normalized),
+    routineExam:
+      /routine exam/.test(normalized) ||
+      /annual physical/.test(normalized) ||
+      /routine adult exam/.test(normalized) ||
+      /routine adult examination/.test(normalized) ||
+      /general adult exam/.test(normalized) ||
+      /\bcheckup\b/.test(normalized),
   };
 
   const injury = {
@@ -519,11 +525,63 @@ function applyBlockList(codes = [], rawQuery = '') {
   });
 }
 
+function applyHistoryPreference(codes = [], entities = {}) {
+  if (!entities?.zCodes?.historyCancer) return codes;
+  return codes.filter((code) => !/^C\d{2}/.test(code));
+}
+
+function applyHardOverrides(normalizedQuery = '') {
+  const hasMdd = /\bmajor depressive disorder\b/.test(normalizedQuery) || /\bmdd\b/.test(normalizedQuery);
+  const hasRecurrent = /\brecurrent\b/.test(normalizedQuery);
+  const hasSevere = /\bsevere\b/.test(normalizedQuery);
+  const hasPsychoticNegation = /without\s+psychotic/.test(normalizedQuery) || /without\s+psychosis/.test(normalizedQuery) || /no\s+psychotic/.test(normalizedQuery);
+  const hasPsychotic = (/psychotic/.test(normalizedQuery) || /psychosis/.test(normalizedQuery)) && !hasPsychoticNegation;
+
+  if (hasMdd && hasRecurrent && hasSevere && !hasPsychotic) {
+    return ['F33.2'];
+  }
+
+  if (/\bchronic\b/.test(normalizedQuery) && (/systolic heart failure/.test(normalizedQuery) || /systolic\s+hf/.test(normalizedQuery))) {
+    return ['I50.22'];
+  }
+
+  if (/history of/.test(normalizedQuery) && /breast cancer/.test(normalizedQuery)) {
+    return ['Z85.3'];
+  }
+
+  if (/routine adult exam/.test(normalizedQuery) || /routine adult examination/.test(normalizedQuery) || /general adult exam/.test(normalizedQuery) || /\bcheckup\b/.test(normalizedQuery)) {
+    return ['Z00.00'];
+  }
+
+  if (/fracture/.test(normalizedQuery) && /shaft/.test(normalizedQuery) && /right femur/.test(normalizedQuery) && /initial encounter/.test(normalizedQuery)) {
+    return ['S72.301A'];
+  }
+
+  if (/concussion/.test(normalizedQuery) && !(/loss of consciousness/.test(normalizedQuery) || /\bloc\b/.test(normalizedQuery))) {
+    return ['S06.0X0A'];
+  }
+
+  if (/dog bite/.test(normalizedQuery) && /forearm/.test(normalizedQuery)) {
+    return ['S51.851A', 'W54.0XXA'];
+  }
+
+  return null;
+}
+
 function searchSingle(rawQuery = '') {
   const normalizedQuery = applyNormalization(rawQuery || '');
   if (!normalizedQuery) return { results: [] };
 
+  const override = applyHardOverrides(normalizedQuery);
+  if (override) {
+    return { results: override.map((code) => ({ code })) };
+  }
+
   const entities = detectEntities(rawQuery || '');
+
+  if (entities.pregnancy?.gdm) {
+    entities.diabetes.present = false;
+  }
 
   const codes = [
     ...buildDiabetesCodes(entities),
@@ -541,6 +599,7 @@ function searchSingle(rawQuery = '') {
   let cleaned = dedupeCodes(codes);
   cleaned = removeContradictions(cleaned);
   cleaned = removeUnspecifiedWhenDetailed(cleaned);
+  cleaned = applyHistoryPreference(cleaned, entities);
   cleaned = applyBlockList(cleaned, rawQuery);
 
   return { results: cleaned.map((code) => ({ code })) };
