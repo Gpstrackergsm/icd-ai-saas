@@ -1,9 +1,26 @@
 // ICD-10-CM Encoder core – generated with Codex helper
 // Responsibility: HTTP handler to encode free-text narratives into ICD-10-CM codes
 
-require('ts-node/register');
-const { encodeDiagnosisText } = require('../lib/icd-core/encoder');
-const { initIcdData } = require('../lib/icd-core/dataSource');
+let icdModule;
+let encoderModule;
+
+function loadRuntimeModules() {
+  if (icdModule && encoderModule) return { icdModule, encoderModule };
+
+  try {
+    require('ts-node/register');
+  } catch (err) {
+    throw new Error('TypeScript runtime support is unavailable; install ts-node and typescript');
+  }
+
+  try {
+    icdModule = require('../lib/icd-core/dataSource');
+    encoderModule = require('../lib/icd-core/encoder');
+    return { icdModule, encoderModule };
+  } catch (err) {
+    throw new Error('Failed to load ICD encoder modules');
+  }
+}
 
 function sendJson(res, status, payload) {
   res.statusCode = status;
@@ -39,6 +56,13 @@ module.exports = async function handler(req, res) {
     return sendJson(res, 405, { success: false, error: { message: 'Method not allowed' } });
   }
 
+  let modules;
+  try {
+    modules = loadRuntimeModules();
+  } catch (err) {
+    return sendJson(res, 500, { success: false, error: { message: err.message || 'Missing runtime' } });
+  }
+
   let body;
   try {
     body = req.body ?? (await parseBody(req));
@@ -69,8 +93,8 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    await initIcdData();
-    const output = encodeDiagnosisText(text, { debug: Boolean(body.debug) });
+    await modules.icdModule.initIcdData();
+    const output = modules.encoderModule.encodeDiagnosisText(text, { debug: Boolean(body.debug) });
     return sendJson(res, 200, { success: true, data: output });
   } catch (err) {
     console.error('Encode handler failed:', err);
