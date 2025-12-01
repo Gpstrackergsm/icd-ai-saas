@@ -6,16 +6,31 @@ import { applyGuidelineRules } from './rulesEngine';
 import type { CandidateCode, EncoderOutput, EncoderOutputCode } from './models';
 import { extractClinicalConcepts, mapConceptsToCandidateCodes, normalizeText } from './nlpParser';
 
-function sequenceCodes(codes: CandidateCode[], priorityOrder: string[] = []): CandidateCode[] {
+function computeRankingScore(candidate: CandidateCode): number {
+  let score = candidate.baseScore;
+  if (/^I1[123]/.test(candidate.code)) score += 1.5;
+  if (/^(E0[8]|E1[01]\.(2[12]|4|0))/.test(candidate.code)) score += 1.25;
+  if (/^N18\.[1-6]/.test(candidate.code)) score += 0.75;
+  if (/\.9$/.test(candidate.code)) score -= 0.5;
+  return score;
+}
+
+function rankAndFilterCandidates(codes: CandidateCode[], priorityOrder: string[] = []): CandidateCode[] {
   const orderMap = new Map(priorityOrder.map((code, idx) => [code, idx]));
-  const ordered = [...codes];
-  ordered.sort((a, b) => {
+  const unique = codes.filter((candidate, idx, arr) => arr.findIndex((c) => c.code === candidate.code) === idx);
+  const filtered = unique.filter((candidate) => candidate.baseScore >= 3);
+
+  filtered.sort((a, b) => {
     const aOrder = orderMap.has(a.code) ? orderMap.get(a.code)! : Infinity;
     const bOrder = orderMap.has(b.code) ? orderMap.get(b.code)! : Infinity;
     if (aOrder !== bOrder) return aOrder - bOrder;
-    return b.baseScore - a.baseScore;
+    const aScore = computeRankingScore(a);
+    const bScore = computeRankingScore(b);
+    if (aScore !== bScore) return bScore - aScore;
+    return a.code.localeCompare(b.code);
   });
-  return ordered;
+
+  return filtered;
 }
 
 export function encodeDiagnosisText(text: string, opts?: { debug?: boolean }): EncoderOutput {
@@ -26,9 +41,7 @@ export function encodeDiagnosisText(text: string, opts?: { debug?: boolean }): E
   const ruleResult = applyGuidelineRules({ concepts, initialCandidates });
   const baseCandidates = initialCandidates.filter((c) => !ruleResult.removedCodes.includes(c.code));
   const workingList = ruleResult.finalCandidates ?? [...baseCandidates, ...ruleResult.addedCodes];
-  const combinedCandidates = sequenceCodes(workingList, ruleResult.reorderedCodes).filter(
-    (candidate, index, arr) => arr.findIndex((c) => c.code === candidate.code) === index,
-  );
+  const combinedCandidates = rankAndFilterCandidates(workingList, ruleResult.reorderedCodes);
 
   const outputCodes: EncoderOutputCode[] = combinedCandidates.map((candidate, index) => {
     const code = getCode(candidate.code);
