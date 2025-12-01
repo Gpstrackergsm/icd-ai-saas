@@ -24,69 +24,138 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
   const errors: string[] = [];
   const addedCodes: CandidateCode[] = [];
 
-  const hasDiabetes = ctx.concepts.some((c) => c.type === 'diabetes');
+  const diabetesConcept = ctx.concepts.find((c) => c.type === 'diabetes');
+  const hasDiabetes = Boolean(diabetesConcept);
   const hasCKD = ctx.concepts.some((c) => c.type === 'ckd');
   const ckdConcept = ctx.concepts.find((c) => c.type === 'ckd');
   const hasHypertension = ctx.concepts.some((c) => c.type === 'hypertension');
   const hasHF = ctx.concepts.some((c) => c.type === 'heart_failure');
   const hasPregnancy = ctx.concepts.some((c) => c.type === 'pregnancy');
+  const hasInjury = ctx.concepts.some((c) => c.type === 'injury');
 
-  if (hasDiabetes && hasCKD && !hasCode(working, 'E11.22')) {
-    const reason = 'Diabetes with CKD requires combination code';
-    const candidate: CandidateCode = { code: 'E11.22', reason, baseScore: 9, conceptRefs: ['diabetes', 'ckd'] };
-    working.push(candidate);
-    addedCodes.push(candidate);
-  }
+  const diabetesPrefix = (diabetesConcept?.attributes as any)?.diabetesType === 'type1'
+    ? 'E10'
+    : (diabetesConcept?.attributes as any)?.diabetesType === 'secondary'
+      ? 'E08'
+      : 'E11';
 
-  if (hasDiabetes && hasCKD) {
-    const stage = ckdConcept?.attributes.stage?.toLowerCase();
-    const ckdCode = stage === '4' ? 'N18.4' : stage === '3b' ? 'N18.32' : 'N18.9';
-    if (!hasCode(working, ckdCode)) {
-      const candidate: CandidateCode = { code: ckdCode, reason: 'CKD staging note', baseScore: 8, conceptRefs: ['ckd'] };
-      working.push(candidate);
-      addedCodes.push(candidate);
-    }
-  }
-
-  if (hasHypertension && hasCKD && hasHF) {
-    if (!hasCode(working, 'I13.0')) {
-      const candidate: CandidateCode = { code: 'I13.0', reason: 'Hypertensive heart and CKD with HF', baseScore: 9, conceptRefs: ['hypertension', 'ckd', 'hf'] };
-      working.push(candidate);
-      addedCodes.push(candidate);
-    }
-    if (!hasCode(working, 'I50.9')) {
-      const candidate: CandidateCode = { code: 'I50.9', reason: 'Heart failure detail required', baseScore: 7, conceptRefs: ['hf'] };
-      working.push(candidate);
-      addedCodes.push(candidate);
-    }
-  } else if (hasHypertension && hasCKD && !hasCode(working, 'I12.9')) {
-    const candidate: CandidateCode = { code: 'I12.9', reason: 'Hypertensive CKD combination guidance', baseScore: 8, conceptRefs: ['hypertension'] };
-    working.push(candidate);
-    addedCodes.push(candidate);
-  }
-
-  if (hasPregnancy && hasDiabetes) {
-    if (!working.some((c) => c.code.startsWith('O24'))) {
-      const candidate: CandidateCode = { code: 'O24.112', reason: 'Pregnancy supersedes standard diabetes codes', baseScore: 9, conceptRefs: ['pregnancy'] };
-      working.push(candidate);
-      addedCodes.push(candidate);
-      warnings.push('Use pregnancy-specific diabetes codes (O24.-) when pregnant.');
-    }
-    working = working.filter((c) => !c.code.startsWith('E11'));
-  }
-
-  const neoplasmSecondary = working.find((c) => c.code.startsWith('C78') || c.code.startsWith('C79'));
-  const neoplasmPrimary = working.find((c) => c.code.startsWith('C18') || c.code.startsWith('C34') || c.code.startsWith('C50'));
   const reorderedCodes: string[] = [];
+
+  const markCandidate = (code: string, reason: string, baseScore: number, rule: string, refs: string[]) => {
+    const existing = working.find((c) => c.code === code);
+    if (existing) {
+      existing.guidelineRule = rule;
+      existing.reason = existing.reason || reason;
+      existing.baseScore = Math.max(existing.baseScore, baseScore);
+      return;
+    }
+    const candidate: CandidateCode = { code, reason, baseScore, conceptRefs: refs, guidelineRule: rule };
+    working.push(candidate);
+    addedCodes.push(candidate);
+  };
+
+  // Diabetes + CKD combination enforcement
+  if (hasDiabetes && hasCKD && !working.some((c) => c.code === `${diabetesPrefix}.22`)) {
+    markCandidate(`${diabetesPrefix}.22`, 'Diabetes with CKD requires combination code', 10, 'diabetes_ckd_combo', ['diabetes', 'ckd']);
+  }
+
+  // Hyperosmolarity outranks other diabetic events
+  const hyperCode = working.find((c) => c.code === `${diabetesPrefix}.00`);
+  if (hyperCode) {
+    if (!hyperCode.guidelineRule) hyperCode.guidelineRule = 'diabetes_hyperosmolar_priority';
+  }
+
+  // Remove E11.9 when complications exist
+  const hasDiabetesComplication = working.some((c) => /E1[01]\.(2|3|4|5|6)/.test(c.code)) || hasCKD;
+  if (hasDiabetesComplication) {
+    const before = working.length;
+    working = working.filter((c) => c.code !== `${diabetesPrefix}.9`);
+    if (before !== working.length) {
+      warnings.push(`${diabetesPrefix}.9 removed because complications were documented.`);
+    }
+  }
+
+  // Hypertension combination logic
+  if (hasHypertension && hasHF && hasCKD) {
+    markCandidate('I13.0', 'Hypertension with HF and CKD requires I13.x', 10, 'htn_hf_ckd_combo', ['hypertension', 'hf', 'ckd']);
+  } else if (hasHypertension && hasCKD && !hasHF) {
+    const stage = ckdConcept?.attributes.stage;
+    const code = stage === '5' ? 'I12.0' : 'I12.9';
+    markCandidate(code, 'Hypertensive CKD requires I12.x', 9, 'htn_ckd_combo', ['hypertension', 'ckd']);
+  } else if (hasHypertension && hasHF && !hasCKD) {
+    markCandidate('I11.0', 'Hypertensive heart disease with HF requires I11.0', 9, 'htn_hf_combo', ['hypertension', 'hf']);
+  }
+
+  // Always add CKD staging when present
+  if (hasCKD) {
+    const stage = ckdConcept?.attributes.stage;
+    const ckdStageCode = working.find((c) => c.code.startsWith('N18.'))?.code;
+    if (!ckdStageCode) {
+      const defaultStage = stage ? `N18.${stage}` : 'N18.9';
+      markCandidate(defaultStage, 'CKD stage must be captured', 8, 'ckd_stage_required', ['ckd']);
+    }
+  }
+
+  // Pregnancy overrides endocrine/cardiac codes
+  if (hasPregnancy) {
+    const hadPregnancyCode = working.some((c) => c.code.startsWith('O')); 
+    if (!hadPregnancyCode) {
+      markCandidate('O26.90', 'Pregnancy present – use O chapter codes', 8, 'pregnancy_override', ['pregnancy']);
+    }
+    const before = working.length;
+    working = working.filter((c) => !(c.code.startsWith('E1') || c.code.startsWith('I1')));
+    if (before !== working.length) {
+      warnings.push('Removed endocrine/hypertensive codes because pregnancy codes take priority.');
+    }
+  }
+
+  // Neoplasm sequencing primary vs secondary
+  const hasSpecificSecondary = working.some((c) => (c.code.startsWith('C78') || c.code.startsWith('C79')) && c.code !== 'C79.9');
+  if (hasSpecificSecondary) {
+    working = working.filter((c) => c.code !== 'C79.9');
+  }
+  const neoplasmSecondary = working.find((c) => c.code.startsWith('C78') || c.code.startsWith('C79'));
+  const neoplasmPrimary = working.find((c) => c.code.startsWith('C18') || c.code.startsWith('C34') || c.code.startsWith('C50') || c.code.startsWith('C22'));
   if (neoplasmSecondary && neoplasmPrimary) {
+    if (neoplasmSecondary.code.slice(0, 3) === neoplasmPrimary.code.slice(0, 3)) {
+      errors.push('Primary site cannot equal metastatic site; check documentation.');
+    }
     working = working.filter((c) => ![neoplasmPrimary.code, neoplasmSecondary.code].includes(c.code));
     working.unshift(neoplasmSecondary, neoplasmPrimary);
     reorderedCodes.push(neoplasmSecondary.code, neoplasmPrimary.code);
   }
 
-  if (hasDiabetes && hasCKD && working.some((c) => c.code === 'E11.9')) {
-    warnings.push('E11.9 is insufficient when CKD is documented; upgrading to E11.22.');
-    working = working.filter((c) => c.code !== 'E11.9');
+  const secondarySites = ctx.concepts
+    .filter((c) => c.type === 'neoplasm' && c.attributes.severity === 'secondary')
+    .map((c) => c.attributes.site)
+    .filter(Boolean) as string[];
+  const primarySites = ctx.concepts
+    .filter((c) => c.type === 'neoplasm' && c.attributes.severity === 'primary')
+    .map((c) => c.attributes.site)
+    .filter(Boolean) as string[];
+  if (primarySites.length && (secondarySites.length === 0 || secondarySites.some((s) => primarySites.includes(s)))) {
+    errors.push('Metastatic site must differ from primary; specify distinct primary and secondary locations.');
+  }
+
+  if (hyperCode) {
+    reorderedCodes.unshift(hyperCode.code);
+  }
+
+  // Injury: ensure external cause present
+  if (hasInjury) {
+    const hasExternal = working.some((c) => c.code.startsWith('V') || c.code.startsWith('W') || c.code.startsWith('Y'));
+    if (!hasExternal) {
+      warnings.push('Injury requires external cause code; added W19.XXXA.');
+      markCandidate('W19.XXXA', 'Default external cause for fall/unspecified injury', 6, 'injury_external_cause', ['injury']);
+    }
+    // enforce 7th character presence
+    working = working.map((c) => {
+      if (/^[A-Z]\d{2}\.[A-Z0-9]{3}$/.test(c.code)) {
+        const updated = { ...c, code: `${c.code}A`, guidelineRule: c.guidelineRule ?? 'seventh_character_enforced' };
+        return updated;
+      }
+      return c;
+    });
   }
 
   const removedCodes = ctx.initialCandidates

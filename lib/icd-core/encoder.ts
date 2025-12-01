@@ -32,11 +32,14 @@ export function encodeDiagnosisText(text: string, opts?: { debug?: boolean }): E
 
   const outputCodes: EncoderOutputCode[] = combinedCandidates.map((candidate, index) => {
     const code = getCode(candidate.code);
+    const confidence = Math.min(0.99, Math.max(0.1, Number((candidate.baseScore / 10).toFixed(2))));
     return {
       code: candidate.code,
       description: code?.longDescription || code?.shortDescription || candidate.reason,
       reason: candidate.reason,
       order: index + 1,
+      guidelineRule: candidate.guidelineRule,
+      confidence,
     };
   });
 

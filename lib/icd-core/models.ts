@@ -122,6 +122,7 @@ export interface CandidateCode {
   reason: string;
   baseScore: number;
   conceptRefs: string[];
+  guidelineRule?: string;
 }
 
 export interface EncodingContext {
@@ -143,6 +144,8 @@ export interface EncoderOutputCode {
   description: string;
   reason: string;
   order: number;
+  guidelineRule?: string;
+  confidence: number;
 }
 
 export interface EncoderOutput {
