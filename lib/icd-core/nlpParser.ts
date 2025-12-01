@@ -204,7 +204,7 @@ export function mapConceptsToCandidateCodes(concepts: ParsedConcept[]): Candidat
   }
 
   if (candidates.length === 0) {
-    const searchResults = searchIndex(text, 5);
+    const searchResults = searchIndex(conceptText, 5);
     searchResults.forEach((result) => {
       addCandidate(candidates, { code: result.code.code, reason: `Index match for ${result.matchedTerm}`, baseScore: result.score, conceptRefs: [result.matchedTerm] });
     });
