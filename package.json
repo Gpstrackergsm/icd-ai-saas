@@ -4,5 +4,9 @@
   "scripts": {
     "build": "tsc --noEmit",
     "test": "node --test --experimental-strip-types lib/icd-core/__tests__/encoder.spec.ts"
+  },
+  "dependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
   }
 }

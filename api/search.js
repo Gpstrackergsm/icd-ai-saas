@@ -1,12 +1,28 @@
 // ICD-10-CM Encoder core – generated with Codex helper
 // Responsibility: HTTP handler to search ICD-10-CM codes and index terms
 
-try {
-  require('ts-node/register');
-} catch (err) {
-  console.warn('ts-node/register not found; proceeding without it');
+let icdModule;
+
+function loadIcdModule() {
+  if (icdModule) return icdModule;
+
+  try {
+    require('ts-node/register');
+  } catch (err) {
+    throw createHttpError(
+      'TypeScript runtime support is unavailable; install ts-node and typescript',
+      500,
+      'api/search:runtime',
+    );
+  }
+
+  try {
+    icdModule = require('../lib/icd-core/dataSource.ts');
+    return icdModule;
+  } catch (err) {
+    throw createHttpError('Failed to load ICD data module', 500, 'api/search:runtime');
+  }
 }
-const { initIcdData, searchIndex, searchCodesByTerm } = require('../lib/icd-core/dataSource.ts');
 
 function sendJson(res, status, payload) {
   res.statusCode = status;
@@ -64,6 +80,8 @@ module.exports = async function handler(req, res) {
   console.log('Incoming search request', { method: req.method, url: req.url, headers: req.headers });
 
   try {
+    const { initIcdData, searchIndex, searchCodesByTerm } = loadIcdModule();
+
     let query;
     let requestBody = {};
 
