@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ICD-10 Smart Search</title>
+    <title>ICD-10-CM Encoder</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -14,7 +14,7 @@
       }
 
       .container {
-        max-width: 800px;
+        max-width: 960px;
         margin: 0 auto;
         padding: 32px 16px 48px;
       }
@@ -30,6 +30,27 @@
         border-radius: 12px;
         box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
         padding: 20px;
+      }
+
+      .tabs {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+
+      .tab {
+        padding: 10px 14px;
+        background: #e2e8f0;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        border: 1px solid #cbd5e1;
+      }
+
+      .tab.active {
+        background: #2563eb;
+        color: #fff;
+        border-color: #2563eb;
       }
 
       label {
@@ -120,30 +141,82 @@
         gap: 10px;
         flex-wrap: wrap;
       }
+
+      .hidden {
+        display: none;
+      }
+
+      .pill {
+        display: inline-block;
+        padding: 4px 8px;
+        background: #e0f2fe;
+        color: #0369a1;
+        border-radius: 6px;
+        font-size: 12px;
+        margin-right: 6px;
+      }
     </style>
   </head>
   <body>
     <div class="container">
-      <h1>ICD-10 Smart Search</h1>
+      <h1>ICD-10-CM Encoder</h1>
       <div class="panel">
-        <label for="query">Search ICD codes</label>
-        <div class="input-row">
-          <textarea
-            id="query"
-            name="query"
-            placeholder="Enter code, condition, or synonym"
-          ></textarea>
-          <button id="searchBtn">Search</button>
+        <div class="tabs">
+          <div class="tab active" data-tab="search">Search</div>
+          <div class="tab" data-tab="encode">Encoder</div>
         </div>
-        <div class="actions">
-          <button id="copyBtn" class="secondary" disabled>Copy results</button>
+
+        <div id="searchPanel">
+          <label for="query">Search ICD codes</label>
+          <div class="input-row">
+            <textarea
+              id="query"
+              name="query"
+              placeholder="Enter code, condition, or synonym"
+            ></textarea>
+            <button id="searchBtn">Search</button>
+          </div>
+          <div class="actions">
+            <button id="copyBtn" class="secondary" disabled>Copy results</button>
+          </div>
+          <div id="status" class="status"></div>
+          <div id="results" class="results"></div>
         </div>
-        <div id="status" class="status"></div>
-        <div id="results" class="results"></div>
+
+        <div id="encodePanel" class="hidden">
+          <label for="narrative">Encoder: clinical narrative</label>
+          <div class="input-row">
+            <textarea
+              id="narrative"
+              name="narrative"
+              placeholder="e.g., Type 2 diabetes with CKD stage 4 and hypertension"
+            ></textarea>
+            <button id="encodeBtn">Encode</button>
+          </div>
+          <div class="actions">
+            <button id="copyEncodeBtn" class="secondary" disabled>Copy codes</button>
+          </div>
+          <div id="encodeStatus" class="status"></div>
+          <div id="encodeResults" class="results"></div>
+        </div>
       </div>
     </div>
 
     <script>
+      const tabs = Array.from(document.querySelectorAll('.tab'));
+      const searchPanel = document.getElementById('searchPanel');
+      const encodePanel = document.getElementById('encodePanel');
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          tabs.forEach((t) => t.classList.remove('active'));
+          tab.classList.add('active');
+          const isSearch = tab.dataset.tab === 'search';
+          searchPanel.classList.toggle('hidden', !isSearch);
+          encodePanel.classList.toggle('hidden', isSearch);
+        });
+      });
+
       const queryInput = document.getElementById('query');
       const searchBtn = document.getElementById('searchBtn');
       const copyBtn = document.getElementById('copyBtn');
@@ -152,7 +225,7 @@
 
       let lastRendered = null;
 
-      function renderSingleResults(items) {
+      function renderSearchResults(items) {
         resultsEl.innerHTML = '';
         if (!items.length) {
           resultsEl.innerHTML = '<p>No results found.</p>';
@@ -171,61 +244,15 @@
 
           const desc = document.createElement('div');
           desc.className = 'desc';
-          desc.textContent = item.description || item.desc || '';
+          desc.textContent = item.description || '';
 
-          const synonyms = document.createElement('div');
-          synonyms.className = 'synonyms';
-          if (item.synonyms && item.synonyms.length) {
-            synonyms.textContent = `Synonyms: ${item.synonyms.join(', ')}`;
-          } else {
-            synonyms.textContent = 'Synonyms: —';
-          }
+          const badge = document.createElement('span');
+          badge.className = 'pill';
+          badge.textContent = item.matchedTerm ? `Matched: ${item.matchedTerm}` : 'Index';
 
           card.appendChild(code);
           card.appendChild(desc);
-          card.appendChild(synonyms);
-          fragment.appendChild(card);
-        });
-
-        resultsEl.appendChild(fragment);
-        copyBtn.disabled = false;
-      }
-
-      function renderBatchResults(batchItems) {
-        resultsEl.innerHTML = '';
-
-        if (!batchItems.length) {
-          resultsEl.innerHTML = '<p>No results found.</p>';
-          copyBtn.disabled = true;
-          return;
-        }
-
-        const fragment = document.createDocumentFragment();
-
-        batchItems.forEach((item) => {
-          const card = document.createElement('div');
-          card.className = 'card';
-
-          const header = document.createElement('div');
-          header.className = 'code';
-          header.textContent = `${item.id}) ${item.query}`;
-          card.appendChild(header);
-
-          if (Array.isArray(item.codes) && item.codes.length) {
-            item.codes.forEach((codeEntry) => {
-              const line = document.createElement('div');
-              line.className = 'desc';
-              const description = codeEntry.description || codeEntry.desc || '';
-              line.textContent = `${codeEntry.code} — ${description}`;
-              card.appendChild(line);
-            });
-          } else {
-            const empty = document.createElement('div');
-            empty.className = 'desc';
-            empty.textContent = 'No codes found.';
-            card.appendChild(empty);
-          }
-          
+          card.appendChild(badge);
           fragment.appendChild(card);
         });
 
@@ -260,15 +287,9 @@
           }
 
           const data = await response.json();
-          lastRendered = data;
-
-          if (Array.isArray(data.batch)) {
-            renderBatchResults(data.batch);
-            status.textContent = `Found ${data.batch.length} question(s).`;
-          } else {
-            renderSingleResults(data.results || []);
-            status.textContent = `Found ${data.results?.length || 0} result(s).`;
-          }
+          lastRendered = data.results || [];
+          renderSearchResults(lastRendered);
+          status.textContent = `Found ${lastRendered.length} result(s).`;
         } catch (err) {
           status.textContent = err.message || 'Unable to search right now.';
         } finally {
@@ -280,28 +301,13 @@
         const cards = Array.from(resultsEl.querySelectorAll('.card'));
         if (!cards.length || !lastRendered) return;
 
+        const lines = cards.map((card) => {
+          const code = card.querySelector('.code')?.textContent || '';
+          const desc = card.querySelector('.desc')?.textContent || '';
+          return `${code} — ${desc}`;
+        });
         try {
-          if (Array.isArray(lastRendered.batch)) {
-            const lines = lastRendered.batch.flatMap((item) => {
-              const entryLines = [];
-              entryLines.push(`${item.id}) ${item.query}`);
-              if (Array.isArray(item.codes) && item.codes.length) {
-                item.codes.forEach((codeEntry) => {
-                  const description = codeEntry.description || codeEntry.desc || '';
-                  entryLines.push(`   ${codeEntry.code} — ${description}`);
-                });
-              }
-              return [...entryLines, ''];
-            });
-            await navigator.clipboard.writeText(lines.join('\n').trim());
-          } else {
-            const lines = cards.map((card) => {
-              const code = card.querySelector('.code')?.textContent || '';
-              const desc = card.querySelector('.desc')?.textContent || '';
-              return `${code} — ${desc}`;
-            });
-            await navigator.clipboard.writeText(lines.join('\n'));
-          }
+          await navigator.clipboard.writeText(lines.join('\n'));
           status.textContent = 'Results copied to clipboard.';
         } catch (err) {
           status.textContent = 'Unable to copy results.';
@@ -310,6 +316,114 @@
 
       searchBtn.addEventListener('click', performSearch);
       copyBtn.addEventListener('click', copyResults);
+
+      // Encoder tab logic
+      const narrativeInput = document.getElementById('narrative');
+      const encodeBtn = document.getElementById('encodeBtn');
+      const copyEncodeBtn = document.getElementById('copyEncodeBtn');
+      const encodeStatus = document.getElementById('encodeStatus');
+      const encodeResults = document.getElementById('encodeResults');
+      let lastEncoded = null;
+
+      function renderEncodeResults(payload) {
+        encodeResults.innerHTML = '';
+        if (!payload.codes?.length) {
+          encodeResults.innerHTML = '<p>No codes suggested.</p>';
+          copyEncodeBtn.disabled = true;
+          return;
+        }
+
+        const fragment = document.createDocumentFragment();
+        payload.codes.forEach((code) => {
+          const card = document.createElement('div');
+          card.className = 'card';
+
+          const codeEl = document.createElement('div');
+          codeEl.className = 'code';
+          codeEl.textContent = `${code.order}. ${code.code}`;
+
+          const desc = document.createElement('div');
+          desc.className = 'desc';
+          desc.textContent = code.description || '';
+
+          const reason = document.createElement('div');
+          reason.className = 'synonyms';
+          reason.textContent = `Reason: ${code.reason}`;
+
+          card.appendChild(codeEl);
+          card.appendChild(desc);
+          card.appendChild(reason);
+          fragment.appendChild(card);
+        });
+
+        if (payload.warnings?.length) {
+          const warnCard = document.createElement('div');
+          warnCard.className = 'card';
+          warnCard.innerHTML = `<div class="code">Warnings</div><div class="desc">${payload.warnings.join('<br/>')}</div>`;
+          fragment.appendChild(warnCard);
+        }
+
+        if (payload.errors?.length) {
+          const errCard = document.createElement('div');
+          errCard.className = 'card';
+          errCard.innerHTML = `<div class="code">Errors</div><div class="desc">${payload.errors.join('<br/>')}</div>`;
+          fragment.appendChild(errCard);
+        }
+
+        encodeResults.appendChild(fragment);
+        copyEncodeBtn.disabled = false;
+      }
+
+      async function performEncode() {
+        const text = narrativeInput.value.trim();
+        encodeResults.innerHTML = '';
+        encodeStatus.textContent = '';
+        copyEncodeBtn.disabled = true;
+
+        if (!text) {
+          encodeStatus.textContent = 'Please enter a clinical narrative.';
+          return;
+        }
+
+        encodeBtn.disabled = true;
+        encodeStatus.textContent = 'Encoding…';
+
+        try {
+          const response = await fetch('/api/encode', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text }),
+          });
+
+          if (!response.ok) {
+            const error = await response.json().catch(() => ({}));
+            throw new Error(error.error || 'Encoding failed');
+          }
+
+          const data = await response.json();
+          lastEncoded = data;
+          renderEncodeResults(data);
+          encodeStatus.textContent = `Found ${data.codes?.length || 0} code(s).`;
+        } catch (err) {
+          encodeStatus.textContent = err.message || 'Unable to encode right now.';
+        } finally {
+          encodeBtn.disabled = false;
+        }
+      }
+
+      async function copyEncodedCodes() {
+        if (!lastEncoded?.codes?.length) return;
+        const lines = lastEncoded.codes.map((code) => `${code.code} — ${code.description}`);
+        try {
+          await navigator.clipboard.writeText(lines.join('\n'));
+          encodeStatus.textContent = 'Codes copied to clipboard.';
+        } catch (err) {
+          encodeStatus.textContent = 'Unable to copy codes.';
+        }
+      }
+
+      encodeBtn.addEventListener('click', performEncode);
+      copyEncodeBtn.addEventListener('click', copyEncodedCodes);
     </script>
   </body>
 </html>
