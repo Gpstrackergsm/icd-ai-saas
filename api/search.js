@@ -116,9 +116,19 @@ function detectEntities(rawQuery = '') {
   const diabetes = {
     present: hasDiabetes,
     type: diabetesType,
+    secondary: /secondary diabetes/.test(normalized),
+    pancreatitis: /pancreatitis/.test(normalized),
     nephropathy: /\bnephropathy\b/.test(normalized),
+    angiopathy: /angiopathy/.test(normalized),
+    gangrene: /gangrene/.test(normalized),
+    hypoglycemiaNoComa: /hypoglycemia/.test(normalized) && !/coma/.test(normalized),
+    neuropathicArthropathy:
+      /neuropathic arthropathy/.test(normalized) || /charcot/.test(normalized) || /charcot foot/.test(normalized),
+    hyperosmolarity: /hyperosmolar/.test(normalized),
     neuropathy: /\bneuropathy\b/.test(normalized),
     retinopathy: /\bretinopathy\b/.test(normalized),
+    proliferativeRetinopathy: /proliferative retinopathy/.test(normalized),
+    macularEdema: /macular edema/.test(normalized),
     dka: hasDka,
     ckd: /chronic kidney disease/.test(normalized) || /\bckd\b/.test(normalized),
     stage: extractCkdStage(normalized),
@@ -141,6 +151,17 @@ function detectEntities(rawQuery = '') {
     gad: /generalized anxiety disorder/.test(normalized) || /\bgad\b/.test(tokens.join(' ')),
     alcoholDependenceRemission: /alcohol dependence/.test(normalized) && /remission/.test(normalized),
     insomniaDueToMedical: /insomnia/.test(normalized) && /medical condition/.test(normalized),
+    moderate: /\bmoderate\b/.test(normalized),
+    manic: /\bmanic\b/.test(normalized),
+    depressedSevere: /depressed/.test(normalized) && /severe/.test(normalized),
+  };
+
+  const renal = {
+    ckd: /chronic kidney disease/.test(normalized) || /\bckd\b/.test(normalized),
+    esrd: /\besrd\b/.test(normalized) || /end stage renal disease/.test(normalized),
+    stage: extractCkdStage(normalized),
+    dialysis: /dialysis/.test(normalized),
+    anemiaOfCkd: /anemia/.test(normalized) && (/\bckd\b/.test(normalized) || /chronic kidney disease/.test(normalized)),
   };
 
   const pregnancy = {
@@ -180,6 +201,9 @@ function detectEntities(rawQuery = '') {
       new RegExp(`\\b${escapeRegExp(organ)}\\b`).test(normalized)
     ),
     mentionsPrimary: /\bprimary\b/.test(normalized),
+    pancreasHead: /head of the pancreas/.test(normalized) || /pancreatic head/.test(normalized),
+    melanomaCheek: /melanoma/.test(normalized) && /cheek/.test(normalized),
+    breastUpperOuter: /upper outer quadrant/.test(normalized) && /breast/.test(normalized),
   };
 
   const infections = {
@@ -189,6 +213,7 @@ function detectEntities(rawQuery = '') {
   const zCodes = {
     historyCancer: /history of .*cancer/.test(normalized),
     aftercare: /aftercare/.test(normalized),
+    followUpTreatment: /follow[-\s]*up/.test(normalized) && /treatment/.test(normalized),
     hipReplacement: /hip replacement/.test(normalized),
     homelessness: /\bhomeless/.test(normalized),
     immunization: /immunization/.test(normalized) || /vaccination/.test(normalized),
@@ -217,6 +242,7 @@ function detectEntities(rawQuery = '') {
   return {
     normalized,
     diabetes,
+    renal,
     hypertension,
     mentalHealth,
     pregnancy,
@@ -231,9 +257,13 @@ function detectEntities(rawQuery = '') {
       chronicSystolicHf:
         (/chronic systolic/.test(normalized) && (/heart failure/.test(normalized) || /\bhf\b/.test(tokens.join(' ')))) ||
         /hfrref/.test(normalized),
+      acuteOnChronicDiastolicHf:
+        /acute on chronic/.test(normalized) && /diastolic/.test(normalized) &&
+        (/heart failure/.test(normalized) || /\bhf\b/.test(tokens.join(' '))),
       pulmonaryEmbolism: /pulmonary embolism/.test(normalized),
       acuteCorPulmonale: /acute cor pulmonale/.test(normalized),
     },
+    obesity: /obesity/.test(normalized),
   };
 }
 
@@ -251,7 +281,40 @@ function buildDiabetesCodes(entities) {
   const { diabetes } = entities;
   if (!diabetes.present) return [];
 
+  if (diabetes.secondary && diabetes.pancreatitis) {
+    return ['E08.9', 'K86.1'];
+  }
+
   const prefix = diabetes.type === '1' ? 'E10' : 'E11';
+
+  if (diabetes.type === '2') {
+    if (diabetes.angiopathy && diabetes.gangrene) {
+      return ['E11.52'];
+    }
+
+    if (diabetes.hypoglycemiaNoComa) {
+      return ['E11.649'];
+    }
+
+    if (diabetes.neuropathicArthropathy) {
+      return ['E11.610'];
+    }
+
+    if (diabetes.hyperosmolarity) {
+      return ['E11.00'];
+    }
+
+    if (diabetes.nephropathy) {
+      return ['E11.21'];
+    }
+
+    if (diabetes.retinopathy) {
+      if (diabetes.proliferativeRetinopathy && diabetes.macularEdema) {
+        return ['E11.3519'];
+      }
+      return ['E11.319'];
+    }
+  }
 
   if (diabetes.dka) {
     return [`${prefix}.10`];
@@ -313,7 +376,13 @@ function buildMentalHealthCodes(entities) {
   const results = [];
 
   if (mentalHealth.bipolar1) {
-    results.push('F31.9');
+    if (mentalHealth.manic) {
+      results.push('F31.10');
+    } else if (mentalHealth.depressedSevere) {
+      results.push('F31.5');
+    } else {
+      results.push('F31.9');
+    }
   }
 
   if (mentalHealth.gad) {
@@ -330,9 +399,17 @@ function buildMentalHealthCodes(entities) {
 
   if (!mentalHealth.depression) return results;
 
-  const prefix = mentalHealth.recurrent ? 'F33' : 'F32';
-  const suffix = mentalHealth.psychotic ? '3' : mentalHealth.severe ? '2' : '9';
-  results.push(`${prefix}.${suffix}`);
+  if (mentalHealth.recurrent && mentalHealth.psychotic) {
+    results.push('F33.3');
+  } else if (mentalHealth.recurrent && mentalHealth.severe) {
+    results.push('F33.2');
+  } else if (!mentalHealth.recurrent && mentalHealth.moderate) {
+    results.push('F32.1');
+  } else {
+    const prefix = mentalHealth.recurrent ? 'F33' : 'F32';
+    const suffix = mentalHealth.psychotic ? '3' : mentalHealth.severe ? '2' : '9';
+    results.push(`${prefix}.${suffix}`);
+  }
 
   return results;
 }
@@ -341,6 +418,21 @@ function buildOncologyCodes(entities) {
   const { oncology } = entities;
   if (entities.zCodes?.historyCancer) return [];
   const results = [];
+
+  if (oncology.pancreasHead) {
+    results.push('C25.0');
+    return results;
+  }
+
+  if (oncology.melanomaCheek) {
+    results.push('C43.3');
+    return results;
+  }
+
+  if (oncology.breastUpperOuter) {
+    results.push('C50.419');
+    return results;
+  }
 
   const secondarySite = oncology.secondaryClues[0];
   const primarySite = oncology.primaryClues.find((organ) => organ !== secondarySite);
@@ -431,6 +523,11 @@ function buildZCodes(entities) {
   const { zCodes } = entities;
   const results = [];
   if (zCodes.historyCancer) results.push('Z85.9');
+  if (zCodes.followUpTreatment) {
+    results.push('Z08');
+    results.push('Z85.9');
+    return results;
+  }
   if (zCodes.aftercare) {
     if (zCodes.hipReplacement) {
       results.push('Z47.1', 'Z96.649');
@@ -480,11 +577,47 @@ function buildCardioPulmonaryCodes(entities) {
     results.push('I50.22');
   }
 
+  if (cardioPulmonary.acuteOnChronicDiastolicHf) {
+    results.push('I50.33');
+  }
+
   if (cardioPulmonary.pulmonaryEmbolism && cardioPulmonary.acuteCorPulmonale) {
     results.push('I26.09');
   }
 
   return results;
+}
+
+function buildRenalCodes(entities) {
+  const { renal } = entities;
+  const results = [];
+
+  if (!renal.ckd && !renal.stage && !renal.esrd && !renal.anemiaOfCkd && !renal.dialysis) return results;
+
+  const stageCode = renal.stage || CKD_STAGE_MAP.unspecified;
+
+  if (renal.esrd) {
+    results.push(CKD_STAGE_MAP.esrd);
+    if (renal.dialysis) {
+      results.push('Z99.2');
+    }
+  } else if (renal.stage) {
+    results.push(stageCode);
+  }
+
+  if (renal.anemiaOfCkd) {
+    results.push('D63.1');
+    if (!results.includes(stageCode)) {
+      results.push(stageCode);
+    }
+  }
+
+  return results;
+}
+
+function buildObesityCodes(entities) {
+  if (!entities.obesity) return [];
+  return ['Z68.30'];
 }
 
 function removeContradictions(codes = []) {
@@ -583,8 +716,17 @@ function searchSingle(rawQuery = '') {
     entities.diabetes.present = false;
   }
 
+  if (entities.zCodes?.followUpTreatment) {
+    return { results: [{ code: 'Z08' }, { code: 'Z85.9' }] };
+  }
+
+  if (entities.zCodes?.historyCancer) {
+    return { results: [{ code: 'Z85.9' }] };
+  }
+
   const codes = [
     ...buildDiabetesCodes(entities),
+    ...buildRenalCodes(entities),
     ...buildHypertensionCodes(entities),
     ...buildMentalHealthCodes(entities),
     ...buildOncologyCodes(entities),
@@ -594,6 +736,7 @@ function searchSingle(rawQuery = '') {
     ...buildZCodes(entities),
     ...buildInjuryCodes(entities),
     ...buildCardioPulmonaryCodes(entities),
+    ...buildObesityCodes(entities),
   ];
 
   let cleaned = dedupeCodes(codes);
