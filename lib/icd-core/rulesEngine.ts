@@ -56,6 +56,12 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
     addedCodes.push(candidate);
   };
 
+  const removeCodes = (codesToRemove: string[], reason?: string) => {
+    const before = working.length;
+    working = working.filter((candidate) => !codesToRemove.includes(candidate.code));
+    if (reason && before !== working.length) warnings.push(reason);
+  };
+
   // Diabetes + CKD combination enforcement
   if (hasDiabetes && hasCKD && !working.some((c) => c.code === `${diabetesPrefix}.22`)) {
     markCandidate(`${diabetesPrefix}.22`, 'Diabetes with CKD requires combination code', 10, 'diabetes_ckd_combo', ['diabetes', 'ckd']);
@@ -92,21 +98,48 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
   };
 
   // Hypertension combination logic
+  let preferredHypertensionCode: string | undefined;
   if (hasHypertension && hasHF && hasCKD) {
-    markCandidate('I13.0', 'Hypertension with HF and CKD requires I13.x', 10, 'htn_hf_ckd_combo', ['hypertension', 'hf', 'ckd']);
+    preferredHypertensionCode = 'I13.0';
+    markCandidate(preferredHypertensionCode, 'Hypertension with HF and CKD requires I13.x', 10, 'htn_hf_ckd_combo', ['hypertension', 'hf', 'ckd']);
     markCandidate(mapCkdStageCode(ckdConcept?.attributes.stage, ckdConcept?.attributes.ckdStage), 'CKD stage required', 9, 'ckd_stage_required', ['ckd']);
   } else if (hasHypertension && hasCKD && !hasHF) {
-    const code = ckdConcept?.attributes.ckdStage === 5 || ckdConcept?.attributes.stage === '5' || ckdConcept?.attributes.stage === 'ESRD' ? 'I12.0' : 'I12.9';
-    markCandidate(code, 'Hypertensive CKD requires I12.x', 9, 'htn_ckd_combo', ['hypertension', 'ckd']);
+    preferredHypertensionCode =
+      ckdConcept?.attributes.ckdStage === 5 || ckdConcept?.attributes.stage === '5' || ckdConcept?.attributes.stage === 'ESRD'
+        ? 'I12.0'
+        : 'I12.9';
+    markCandidate(preferredHypertensionCode, 'Hypertensive CKD requires I12.x', 9, 'htn_ckd_combo', ['hypertension', 'ckd']);
     markCandidate(mapCkdStageCode(ckdConcept?.attributes.stage, ckdConcept?.attributes.ckdStage), 'CKD stage required', 9, 'ckd_stage_required', ['ckd']);
   } else if (hasHypertension && hasHF && !hasCKD) {
-    markCandidate('I11.0', 'Hypertensive heart disease with HF requires I11.0', 9, 'htn_hf_combo', ['hypertension', 'hf']);
+    preferredHypertensionCode = 'I11.0';
+    markCandidate(preferredHypertensionCode, 'Hypertensive heart disease with HF requires I11.0', 9, 'htn_hf_combo', ['hypertension', 'hf']);
+  }
+
+  if (preferredHypertensionCode) {
+    reorderedCodes.unshift(preferredHypertensionCode);
   }
 
   // Remove essential hypertension when HF or CKD present
   if ((hasHF || hasCKD) && working.some((c) => c.code === 'I10')) {
-    working = working.filter((c) => c.code !== 'I10');
-    warnings.push('Removed I10 because hypertensive complications are present.');
+    removeCodes(['I10'], 'Removed I10 because hypertensive complications are present.');
+  }
+
+  // Resolve hypertensive hierarchy conflicts: I13 outranks I12/I11/I10, I12 outranks I11/I10
+  const hasI13 = working.some((c) => c.code.startsWith('I13'));
+  const hasI12 = working.some((c) => c.code.startsWith('I12'));
+  const hasI11 = working.some((c) => c.code.startsWith('I11'));
+  if (hasI13) {
+    removeCodes(
+      working.filter((c) => c.code === 'I10' || c.code.startsWith('I11') || c.code.startsWith('I12')).map((c) => c.code),
+      'Removed less specific hypertension combinations because I13 captured HF and CKD.',
+    );
+  } else if (hasI12) {
+    removeCodes(
+      working.filter((c) => c.code === 'I10' || c.code.startsWith('I11')).map((c) => c.code),
+      'Removed essential/heart disease hypertension because CKD combination applies.',
+    );
+  } else if (hasI11) {
+    removeCodes(['I10'], 'Removed essential hypertension because heart disease combination applies.');
   }
 
   // Always add CKD staging when present
@@ -116,6 +149,11 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
     if (!ckdStageCode) {
       const defaultStage = mapCkdStageCode(stage, ckdConcept?.attributes.ckdStage);
       markCandidate(defaultStage, 'CKD stage must be captured', 8, 'ckd_stage_required', ['ckd']);
+    }
+    // Drop unspecified CKD when a staged code exists
+    const stagedCodes = working.filter((c) => /^N18\.[1-6]/.test(c.code));
+    if (stagedCodes.length) {
+      removeCodes(['N18.9'], 'Dropped unspecified CKD because staged CKD is documented.');
     }
   }
 

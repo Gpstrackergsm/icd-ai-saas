@@ -59,6 +59,15 @@ describe('ICD-10-CM encoder scenarios', () => {
     assert.ok(codes.includes('N18.32'));
   });
 
+  it('ranks composite diabetes, hypertension, and CKD with combination codes first', () => {
+    const result = encodeDiagnosisText('type 2 diabetes with CKD stage 4 and hypertension');
+    const codes = result.codes.map((c) => c.code);
+    const topThree = codes.slice(0, 3);
+    assert.ok(topThree.includes('E11.22'));
+    assert.ok(topThree.includes('I12.9'));
+    assert.ok(codes.includes('N18.4'));
+  });
+
   it('assigns hypertension with heart failure to I11.0', () => {
     const result = encodeDiagnosisText('hypertension with heart failure');
     const codes = result.codes.map((c) => c.code);
@@ -72,6 +81,15 @@ describe('ICD-10-CM encoder scenarios', () => {
     assert.ok(codes.includes('I13.0'));
     assert.ok(codes.includes('I50.9'));
     assert.ok(codes.includes('N18.5'));
+  });
+
+  it('prioritizes hypertensive heart and CKD combinations and removes conflicting hypertension codes', () => {
+    const result = encodeDiagnosisText('hypertension with heart failure and chronic kidney disease stage 3');
+    const codes = result.codes.map((c) => c.code);
+    assert.equal(codes[0], 'I13.0');
+    assert.ok(!codes.includes('I10'));
+    assert.ok(!codes.some((c) => c.startsWith('I12')));
+    assert.ok(codes.some((c) => c.startsWith('N18.3')));
   });
 
   it('adds N18.x whenever CKD stage is documented', () => {
