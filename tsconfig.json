@@ -9,7 +9,8 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "outDir": "dist",
-    "types": ["node", "vitest"]
+    "typeRoots": ["./types"],
+    "allowImportingTsExtensions": true
   },
   "include": ["lib/**/*", "api/**/*", "data/**/*", "public/**/*", "*.ts"],
   "exclude": ["node_modules", "dist"]
