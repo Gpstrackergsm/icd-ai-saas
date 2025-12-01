@@ -1,8 +1,8 @@
 // ICD-10-CM Encoder core – generated with Codex helper
 // Responsibility: Deterministic NLP helpers to normalize text and extract concepts
 
-import { CandidateCode, ParsedConcept } from './models';
-import { searchIndex } from './dataSource';
+import type { CandidateCode, ParsedConcept } from './models.ts';
+import { searchIndex } from './dataSource.ts';
 
 const abbreviationMap: Record<string, string> = {
   copd: 'chronic obstructive pulmonary disease',
@@ -57,7 +57,7 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
     });
   }
 
-  if (/hypertension|high blood pressure/.test(normalized)) {
+  if (/hypertension|hypertensive|high blood pressure/.test(normalized)) {
     concepts.push({ raw: text, normalized: 'hypertension', type: 'hypertension', attributes: {} });
   }
 
@@ -96,7 +96,7 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
   }
 
   if (/depress/.test(normalized)) {
-    const hasPsychotic = /psychotic/.test(normalized);
+    const hasPsychotic = /with psychotic/.test(normalized);
     concepts.push({
       raw: text,
       normalized: hasPsychotic
@@ -131,7 +131,8 @@ export function mapConceptsToCandidateCodes(concepts: ParsedConcept[]): Candidat
   const copd = concepts.find((c) => c.type === 'copd');
   const pneumonia = concepts.find((c) => c.normalized.includes('pneumonia'));
   const depression = concepts.find((c) => c.normalized.startsWith('major depressive disorder'));
-  const hasNeuropathy = /neuropathy/.test(conceptText);
+  const sourceText = concepts.map((c) => c.raw.toLowerCase()).join(' ');
+  const hasNeuropathy = /neuropathy/.test(sourceText);
 
   if (diabetes && ckd) {
     addCandidate(candidates, { code: 'E11.22', reason: 'Type 2 diabetes with CKD', baseScore: 9, conceptRefs: [diabetes.raw] });
@@ -141,6 +142,11 @@ export function mapConceptsToCandidateCodes(concepts: ParsedConcept[]): Candidat
     else addCandidate(candidates, { code: 'N18.9', reason: 'CKD unspecified stage', baseScore: 5, conceptRefs: [ckd.raw] });
   } else if (diabetes) {
     addCandidate(candidates, { code: 'E11.9', reason: 'Diabetes without clear manifestation', baseScore: 5, conceptRefs: [diabetes.raw] });
+  } else if (ckd) {
+    const stage = ckd.attributes.stage?.toLowerCase();
+    if (stage === '4') addCandidate(candidates, { code: 'N18.4', reason: 'CKD stage 4', baseScore: 8, conceptRefs: [ckd.raw] });
+    else if (stage === '3b') addCandidate(candidates, { code: 'N18.32', reason: 'CKD stage 3b', baseScore: 8, conceptRefs: [ckd.raw] });
+    else addCandidate(candidates, { code: 'N18.9', reason: 'CKD unspecified stage', baseScore: 5, conceptRefs: [ckd.raw] });
   }
 
   if (hypertension && ckd && !heartFailure) {

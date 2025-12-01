@@ -1,10 +1,10 @@
 // ICD-10-CM Encoder core – generated with Codex helper
 // Responsibility: High-level encoder orchestrating NLP, rules, and ordering
 
-import { initIcdData, getCode } from './dataSource';
-import { applyGuidelineRules } from './rulesEngine';
-import { CandidateCode, EncoderOutput, EncoderOutputCode } from './models';
-import { extractClinicalConcepts, mapConceptsToCandidateCodes, normalizeText } from './nlpParser';
+import { initIcdData, getCode } from './dataSource.ts';
+import { applyGuidelineRules } from './rulesEngine.ts';
+import type { CandidateCode, EncoderOutput, EncoderOutputCode } from './models.ts';
+import { extractClinicalConcepts, mapConceptsToCandidateCodes, normalizeText } from './nlpParser.ts';
 
 function sequenceCodes(codes: CandidateCode[], priorityOrder: string[] = []): CandidateCode[] {
   const orderMap = new Map(priorityOrder.map((code, idx) => [code, idx]));
