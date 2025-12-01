@@ -132,7 +132,8 @@ function detectEntities(rawQuery = '') {
     neuropathy: /\bneuropathy\b/.test(normalized),
     retinopathy: /\bretinopathy\b/.test(normalized),
     proliferativeRetinopathy: /proliferative retinopathy/.test(normalized),
-    macularEdema: /macular edema/.test(normalized),
+    macularEdema: /macular edema/.test(normalized) && !/without macular edema/.test(normalized),
+    withoutMacularEdema: /without macular edema/.test(normalized),
     eyeLaterality: /right eye/.test(normalized)
       ? 'right'
       : /left eye/.test(normalized)
@@ -152,6 +153,7 @@ function detectEntities(rawQuery = '') {
 
   const hypertension = {
     present: /\bhypertension\b/.test(normalized) || /\bhypertensive\b/.test(normalized),
+    emergency: /hypertensive (?:emergency|crisis)/.test(normalized) || /malignant hypertension/.test(normalized),
     heart: /heart/.test(normalized) || /cardiac/.test(normalized),
     heartFailure: /cardiac failure/.test(normalized) || /\bhf\b/.test(tokens.join(' ')),
     kidney: /kidney/.test(normalized) || /\bckd\b/.test(normalized) || /chronic kidney disease/.test(normalized),
@@ -290,6 +292,12 @@ function detectEntities(rawQuery = '') {
       acuteOnChronicDiastolicHf:
         /acute on chronic/.test(normalized) && /diastolic/.test(normalized) &&
         (/heart failure/.test(normalized) || /cardiac failure/.test(normalized) || /\bhf\b/.test(tokens.join(' '))),
+      acuteHf:
+        /acute/.test(normalized) &&
+        (/heart failure/.test(normalized) || /cardiac failure/.test(normalized) || /\bhf\b/.test(tokens.join(' '))),
+      chronicHf:
+        /chronic/.test(normalized) &&
+        (/heart failure/.test(normalized) || /cardiac failure/.test(normalized) || /\bhf\b/.test(tokens.join(' '))),
       pulmonaryEmbolism: /pulmonary embolism/.test(normalized),
       acuteCorPulmonale: /acute cor pulmonale/.test(normalized),
       stemiAnterior: /\bstemi\b/.test(normalized) && /anterior wall/.test(normalized),
@@ -362,11 +370,25 @@ function buildDiabetesCodes(entities) {
     }
 
     if (diabetes.retinopathy) {
-      if (diabetes.proliferativeRetinopathy && diabetes.macularEdema) {
-        const lateralitySuffixMap = { right: '1', left: '2', bilateral: '3' };
-        const eyeSuffix = lateralitySuffixMap[diabetes.eyeLaterality] || '9';
-        return [`E11.35${eyeSuffix}`];
+      const lateralitySuffixMap = { right: '1', left: '2', bilateral: '3' };
+      const eyeSuffix = lateralitySuffixMap[diabetes.eyeLaterality];
+      const edemaSpecified = diabetes.macularEdema || diabetes.withoutMacularEdema;
+
+      if (!edemaSpecified || !eyeSuffix) {
+        return [];
       }
+
+      if (diabetes.proliferativeRetinopathy) {
+        if (diabetes.macularEdema) {
+          return [`E11.35${eyeSuffix}`];
+        }
+        return [`E11.359${eyeSuffix}`];
+      }
+
+      if (diabetes.macularEdema) {
+        return ['E11.311'];
+      }
+
       return ['E11.319'];
     }
   }
@@ -397,11 +419,29 @@ function buildDiabetesCodes(entities) {
   }
 
   if (diabetes.retinopathy) {
-    if (diabetes.type === '1' && diabetes.proliferativeRetinopathy && diabetes.macularEdema) {
-      const lateralitySuffixMap = { right: '11', left: '12', bilateral: '13' };
-      const eyeSuffix = lateralitySuffixMap[diabetes.eyeLaterality] || '19';
-      return [`E10.35${eyeSuffix}`];
+    const lateralitySuffixMap = {
+      right: diabetes.type === '1' ? '11' : '1',
+      left: diabetes.type === '1' ? '12' : '2',
+      bilateral: diabetes.type === '1' ? '13' : '3',
+    };
+    const eyeSuffix = lateralitySuffixMap[diabetes.eyeLaterality];
+    const edemaSpecified = diabetes.macularEdema || diabetes.withoutMacularEdema;
+
+    if (!edemaSpecified || !eyeSuffix) {
+      return [];
     }
+
+    if (diabetes.proliferativeRetinopathy) {
+      if (diabetes.macularEdema) {
+        return [`${prefix}.35${eyeSuffix}`];
+      }
+      return [`${prefix}.359${eyeSuffix}`];
+    }
+
+    if (diabetes.macularEdema) {
+      return [`${prefix}.311`];
+    }
+
     return [`${prefix}.319`];
   }
 
@@ -415,6 +455,10 @@ function buildDiabetesCodes(entities) {
 function buildHypertensionCodes(entities) {
   const { hypertension } = entities;
   if (!hypertension.present) return [];
+
+  if (hypertension.emergency) {
+    return ['I16.1'];
+  }
 
   const stageCode = hypertension.kidney ? hypertension.stage || CKD_STAGE_MAP.unspecified : null;
   const advancedCkd = stageCode === CKD_STAGE_MAP[5] || stageCode === CKD_STAGE_MAP.esrd;
@@ -560,10 +604,9 @@ function buildPregnancyCodes(entities) {
   }
 
   if (pregnancy.gdm) {
-    if (pregnancy.dietControlled && pregnancy.trimester === PREGNANCY_TRIMESTER_MAP.third) {
-      return ['O24.410'];
-    }
-    return ['O24.419'];
+    const trimesterDigit = pregnancy.trimester || PREGNANCY_TRIMESTER_MAP.unspecified;
+    const base = pregnancy.dietControlled ? 'O24.41' : 'O24.42';
+    return [`${base}${trimesterDigit}`];
   }
 
   if (pregnancy.preeclampsia) {
@@ -571,11 +614,13 @@ function buildPregnancyCodes(entities) {
     return [`O14.0${trimester}`];
   }
 
-  if (pregnancy.supervision && pregnancy.trimester === PREGNANCY_TRIMESTER_MAP.first) {
-    return ['Z34.01'];
+  if (pregnancy.supervision) {
+    const trimesterDigit = pregnancy.trimester || PREGNANCY_TRIMESTER_MAP.unspecified;
+    return [`Z34.0${trimesterDigit}`];
   }
 
-  return ['O26.90'];
+  const trimesterDigit = pregnancy.trimester || PREGNANCY_TRIMESTER_MAP.unspecified;
+  return [`O26.9${trimesterDigit}`];
 }
 
 function buildRespiratoryCodes(entities) {
@@ -678,6 +723,14 @@ function buildCardioPulmonaryCodes(entities) {
 
   if (cardioPulmonary.acuteOnChronicDiastolicHf) {
     results.push('I50.33');
+  }
+
+  if (cardioPulmonary.acuteHf && !cardioPulmonary.chronicSystolicHf && !cardioPulmonary.acuteOnChronicDiastolicHf) {
+    results.push(cardioPulmonary.chronicHf ? 'I50.89' : 'I50.9');
+  }
+
+  if (cardioPulmonary.chronicHf && !cardioPulmonary.chronicSystolicHf && !cardioPulmonary.acuteOnChronicDiastolicHf) {
+    results.push('I50.9');
   }
 
   if (cardioPulmonary.pulmonaryEmbolism && cardioPulmonary.acuteCorPulmonale) {
@@ -901,6 +954,10 @@ function searchSingle(rawQuery = '') {
     ...buildCardioPulmonaryCodes(entities),
     ...buildObesityCodes(entities),
   ];
+
+  if (entities.zCodes?.aftercare) {
+    codes.splice(0, codes.length, ...codes.filter((code) => code?.startsWith('Z')));
+  }
 
   let cleaned = dedupeCodes(codes);
   cleaned = removeContradictions(cleaned);
