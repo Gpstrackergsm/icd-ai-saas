@@ -1,8 +1,8 @@
 // ICD-10-CM Encoder core – generated with Codex helper
 // Responsibility: Deterministic NLP helpers to normalize text and extract concepts
 
-import type { CandidateCode, ParsedConcept } from './models.ts';
-import { searchIndex } from './dataSource.ts';
+import type { CandidateCode, ParsedConcept } from './models';
+import { searchIndex } from './dataSource';
 
 const abbreviationMap: Record<string, string> = {
   copd: 'chronic obstructive pulmonary disease',

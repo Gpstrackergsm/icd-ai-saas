@@ -4,8 +4,8 @@
 import assert from 'node:assert/strict';
 import { before, describe, it } from 'node:test';
 
-import { encodeDiagnosisText } from '../encoder.ts';
-import { initIcdData } from '../dataSource.ts';
+import { encodeDiagnosisText } from '../encoder';
+import { initIcdData } from '../dataSource';
 
 before(async () => {
   await initIcdData();
