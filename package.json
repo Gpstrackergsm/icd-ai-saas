@@ -2,8 +2,9 @@
   "name": "icd-ai-saas",
   "private": true,
   "scripts": {
-    "build": "tsc --noEmit",
-    "test": "node --test --experimental-strip-types lib/icd-core/__tests__/encoder.spec.ts"
+    "build": "tsc",
+    "dev": "ts-node src/index.ts",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "ts-node": "^10.9.2",
