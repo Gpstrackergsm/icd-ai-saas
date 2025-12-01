@@ -52,7 +52,7 @@ const synonymDictionary = {
   'heart failure': 'cardiac failure',
 };
 
-const BLOCKED_CODES = ['M06.9', 'I48.91', 'C80.1', 'Z00.00'];
+const BLOCKED_CODES = ['M06.9', 'I48.91', 'C80.1'];
 
 function normalize(text = '') {
   return text.toString().toLowerCase().trim();
@@ -110,7 +110,8 @@ function detectEntities(rawQuery = '') {
   const normalized = applyNormalization(rawQuery);
   const tokens = normalized.split(/[^a-z0-9]+/).filter(Boolean);
 
-  const hasDiabetes = /\bdiabet/i.test(normalized);
+  const hasDka = /\bdka\b/.test(normalized) || /diabetic ketoacidosis/.test(normalized) || /ketoacidosis/.test(normalized);
+  const hasDiabetes = /\bdiabet/i.test(normalized) || hasDka;
   const diabetesType = /type\s*1/.test(normalized) ? '1' : '2';
   const diabetes = {
     present: hasDiabetes,
@@ -118,7 +119,7 @@ function detectEntities(rawQuery = '') {
     nephropathy: /\bnephropathy\b/.test(normalized),
     neuropathy: /\bneuropathy\b/.test(normalized),
     retinopathy: /\bretinopathy\b/.test(normalized),
-    dka: /\bdka\b/.test(normalized) || /diabetic ketoacidosis/.test(normalized),
+    dka: hasDka,
     ckd: /chronic kidney disease/.test(normalized) || /\bckd\b/.test(normalized),
     stage: extractCkdStage(normalized),
   };
@@ -136,14 +137,24 @@ function detectEntities(rawQuery = '') {
     recurrent: /\brecurrent\b/.test(normalized),
     severe: /\bsevere\b/.test(normalized),
     psychotic: /\bpsychotic\b/.test(normalized),
+    bipolar1: /bipolar\s*i\b/.test(normalized),
+    gad: /generalized anxiety disorder/.test(normalized) || /\bgad\b/.test(tokens.join(' ')),
+    alcoholDependenceRemission: /alcohol dependence/.test(normalized) && /remission/.test(normalized),
+    insomniaDueToMedical: /insomnia/.test(normalized) && /medical condition/.test(normalized),
   };
 
   const pregnancy = {
     pregnant:
       /pregnan/.test(normalized) || /gestation/.test(normalized) || /trimester/.test(normalized),
     gdm: /gestational diabetes/.test(normalized) || /gdm/.test(tokens.join(' ')),
+    dietControlled: /diet controlled/.test(normalized),
     preeclampsia: /preeclampsia/.test(normalized) || /pre-eclampsia/.test(normalized),
     ectopic: /ectopic/.test(normalized),
+    tubal: /tubal/.test(normalized),
+    ruptured: /ruptured/.test(normalized),
+    supervision: /supervision/.test(normalized),
+    hyperemesis: /hyperemesis/.test(normalized),
+    metabolicDisturbance: /metabolic disturbance/.test(normalized),
     trimester: extractTrimester(normalized),
   };
 
@@ -178,13 +189,23 @@ function detectEntities(rawQuery = '') {
   const zCodes = {
     historyCancer: /history of .*cancer/.test(normalized),
     aftercare: /aftercare/.test(normalized),
+    hipReplacement: /hip replacement/.test(normalized),
     homelessness: /\bhomeless/.test(normalized),
     immunization: /immunization/.test(normalized) || /vaccination/.test(normalized),
+    routineExam: /routine exam/.test(normalized) || /annual physical/.test(normalized),
   };
 
   const injury = {
     hasInjury: /fracture|laceration|burn|injury/.test(normalized),
     externalCause: /fall|motor vehicle|collision|assault/.test(normalized),
+    bodySite: (() => {
+      if (/\bfemur\b/.test(normalized)) return 'femur';
+      if (/\bthigh\b/.test(normalized)) return 'thigh';
+      if (/\bhand\b/.test(normalized)) return 'hand';
+      if (/\bforearm\b/.test(normalized)) return 'forearm';
+      if (/\bhead\b/.test(normalized)) return 'head';
+      return null;
+    })(),
   };
 
   return {
@@ -198,6 +219,15 @@ function detectEntities(rawQuery = '') {
     infections,
     zCodes,
     injury,
+    cardioPulmonary: {
+      nstemi: /non st elevation myocardial infarction/.test(normalized) || /\bnstemi\b/.test(normalized),
+      heartAttack: /myocardial infarction/.test(normalized) || /heart attack/.test(normalized),
+      chronicSystolicHf:
+        (/chronic systolic/.test(normalized) && (/heart failure/.test(normalized) || /\bhf\b/.test(tokens.join(' ')))) ||
+        /hfrref/.test(normalized),
+      pulmonaryEmbolism: /pulmonary embolism/.test(normalized),
+      acuteCorPulmonale: /acute cor pulmonale/.test(normalized),
+    },
   };
 }
 
@@ -251,6 +281,7 @@ function buildHypertensionCodes(entities) {
   if (!hypertension.present) return [];
 
   const stageCode = hypertension.kidney ? hypertension.stage || CKD_STAGE_MAP.unspecified : null;
+  const advancedCkd = stageCode === CKD_STAGE_MAP[5] || stageCode === CKD_STAGE_MAP.esrd;
 
   if (hypertension.kidney && hypertension.heart) {
     const codes = [hypertension.heartFailure ? 'I13.0' : 'I13.10'];
@@ -259,7 +290,7 @@ function buildHypertensionCodes(entities) {
   }
 
   if (hypertension.kidney) {
-    const codes = ['I12.9'];
+    const codes = [advancedCkd ? 'I12.0' : 'I12.9'];
     if (stageCode) codes.push(stageCode);
     return codes;
   }
@@ -273,15 +304,36 @@ function buildHypertensionCodes(entities) {
 
 function buildMentalHealthCodes(entities) {
   const { mentalHealth } = entities;
-  if (!mentalHealth.depression) return [];
+  const results = [];
+
+  if (mentalHealth.bipolar1) {
+    results.push('F31.9');
+  }
+
+  if (mentalHealth.gad) {
+    results.push('F41.1');
+  }
+
+  if (mentalHealth.alcoholDependenceRemission) {
+    results.push('F10.21');
+  }
+
+  if (mentalHealth.insomniaDueToMedical) {
+    results.push('G47.01');
+  }
+
+  if (!mentalHealth.depression) return results;
 
   const prefix = mentalHealth.recurrent ? 'F33' : 'F32';
   const suffix = mentalHealth.psychotic ? '3' : mentalHealth.severe ? '2' : '9';
-  return [`${prefix}.${suffix}`];
+  results.push(`${prefix}.${suffix}`);
+
+  return results;
 }
 
 function buildOncologyCodes(entities) {
   const { oncology } = entities;
+  if (entities.zCodes?.historyCancer) return [];
   const results = [];
 
   const secondarySite = oncology.secondaryClues[0];
@@ -309,16 +361,30 @@ function buildPregnancyCodes(entities) {
   if (!pregnancy.pregnant) return [];
 
   if (pregnancy.ectopic) {
+    if (pregnancy.tubal && pregnancy.ruptured) {
+      return ['O00.1'];
+    }
     return ['O00.90'];
   }
 
+  if (pregnancy.hyperemesis && pregnancy.metabolicDisturbance) {
+    return ['O21.1'];
+  }
+
   if (pregnancy.gdm) {
+    if (pregnancy.dietControlled && pregnancy.trimester === PREGNANCY_TRIMESTER_MAP.third) {
+      return ['O24.410'];
+    }
     return ['O24.419'];
   }
 
   if (pregnancy.preeclampsia) {
     const trimester = pregnancy.trimester || PREGNANCY_TRIMESTER_MAP.unspecified;
     return [`O14.0${trimester}`];
+  }
+
+  if (pregnancy.supervision && pregnancy.trimester === PREGNANCY_TRIMESTER_MAP.first) {
+    return ['Z34.01'];
   }
 
   return ['O26.90'];
@@ -359,9 +425,16 @@ function buildZCodes(entities) {
   const { zCodes } = entities;
   const results = [];
   if (zCodes.historyCancer) results.push('Z85.9');
-  if (zCodes.aftercare) results.push('Z47.89', 'Z48.89');
+  if (zCodes.aftercare) {
+    if (zCodes.hipReplacement) {
+      results.push('Z47.1', 'Z96.649');
+    } else {
+      results.push('Z47.89');
+    }
+  }
   if (zCodes.homelessness) results.push('Z59.00');
   if (zCodes.immunization) results.push('Z23');
+  if (zCodes.routineExam) results.push('Z00.00');
   return results;
 }
 
@@ -370,10 +443,41 @@ function buildInjuryCodes(entities) {
   const results = [];
   if (!injury.hasInjury) return results;
 
-  results.push('S09.90XA');
+  if (injury.bodySite === 'femur') {
+    results.push('S72');
+  } else if (injury.bodySite === 'thigh') {
+    results.push('T24.2');
+  } else if (injury.bodySite === 'hand') {
+    results.push('S61');
+  } else if (injury.bodySite === 'forearm') {
+    results.push('S51');
+  } else if (injury.bodySite === 'head') {
+    results.push('S06');
+  }
   if (injury.externalCause) {
     results.push('W19.XXXA');
   }
+  return results;
+}
+
+function buildCardioPulmonaryCodes(entities) {
+  const { cardioPulmonary } = entities;
+  const results = [];
+
+  if (cardioPulmonary.nstemi) {
+    results.push('I21.4');
+  } else if (cardioPulmonary.heartAttack) {
+    results.push('I21.9');
+  }
+
+  if (cardioPulmonary.chronicSystolicHf) {
+    results.push('I50.22');
+  }
+
+  if (cardioPulmonary.pulmonaryEmbolism && cardioPulmonary.acuteCorPulmonale) {
+    results.push('I26.09');
+  }
+
   return results;
 }
 
@@ -431,6 +535,7 @@ function searchSingle(rawQuery = '') {
     ...buildInfectionCodes(entities),
     ...buildZCodes(entities),
     ...buildInjuryCodes(entities),
+    ...buildCardioPulmonaryCodes(entities),
   ];
 
   let cleaned = dedupeCodes(codes);
