@@ -26,10 +26,12 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
 
   const diabetesConcept = ctx.concepts.find((c) => c.type === 'diabetes');
   const hasDiabetes = Boolean(diabetesConcept);
-  const hasCKD = ctx.concepts.some((c) => c.type === 'ckd');
   const ckdConcept = ctx.concepts.find((c) => c.type === 'ckd');
-  const hasHypertension = ctx.concepts.some((c) => c.type === 'hypertension');
-  const hasHF = ctx.concepts.some((c) => c.type === 'heart_failure');
+  const hasCKD = Boolean(ckdConcept?.attributes.hasCKD || ckdConcept);
+  const hypertensionConcept = ctx.concepts.find((c) => c.type === 'hypertension');
+  const hasHypertension = Boolean(hypertensionConcept?.attributes.hasHypertension || hypertensionConcept);
+  const heartFailureConcept = ctx.concepts.find((c) => c.type === 'heart_failure');
+  const hasHF = Boolean(heartFailureConcept?.attributes.hasHeartFailure || heartFailureConcept);
   const hasPregnancy = ctx.concepts.some((c) => c.type === 'pregnancy');
   const hasInjury = ctx.concepts.some((c) => c.type === 'injury');
 
@@ -75,15 +77,36 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
     }
   }
 
+  const mapCkdStageCode = (stage?: string, ckdStage?: 1 | 2 | 3 | 4 | 5 | 'ESRD') => {
+    if (ckdStage === 'ESRD' || stage === 'ESRD') return 'N18.6';
+    if (ckdStage === 5 || stage === '5') return 'N18.5';
+    if (ckdStage === 4 || stage === '4') return 'N18.4';
+    if (ckdStage === 3 || stage?.startsWith('3')) {
+      if (stage?.toLowerCase() === '3a') return 'N18.31';
+      if (stage?.toLowerCase() === '3b') return 'N18.32';
+      return 'N18.3';
+    }
+    if (ckdStage === 2 || stage === '2') return 'N18.2';
+    if (ckdStage === 1 || stage === '1') return 'N18.1';
+    return 'N18.9';
+  };
+
   // Hypertension combination logic
   if (hasHypertension && hasHF && hasCKD) {
     markCandidate('I13.0', 'Hypertension with HF and CKD requires I13.x', 10, 'htn_hf_ckd_combo', ['hypertension', 'hf', 'ckd']);
+    markCandidate(mapCkdStageCode(ckdConcept?.attributes.stage, ckdConcept?.attributes.ckdStage), 'CKD stage required', 9, 'ckd_stage_required', ['ckd']);
   } else if (hasHypertension && hasCKD && !hasHF) {
-    const stage = ckdConcept?.attributes.stage;
-    const code = stage === '5' ? 'I12.0' : 'I12.9';
+    const code = ckdConcept?.attributes.ckdStage === 5 || ckdConcept?.attributes.stage === '5' || ckdConcept?.attributes.stage === 'ESRD' ? 'I12.0' : 'I12.9';
     markCandidate(code, 'Hypertensive CKD requires I12.x', 9, 'htn_ckd_combo', ['hypertension', 'ckd']);
+    markCandidate(mapCkdStageCode(ckdConcept?.attributes.stage, ckdConcept?.attributes.ckdStage), 'CKD stage required', 9, 'ckd_stage_required', ['ckd']);
   } else if (hasHypertension && hasHF && !hasCKD) {
     markCandidate('I11.0', 'Hypertensive heart disease with HF requires I11.0', 9, 'htn_hf_combo', ['hypertension', 'hf']);
+  }
+
+  // Remove essential hypertension when HF or CKD present
+  if ((hasHF || hasCKD) && working.some((c) => c.code === 'I10')) {
+    working = working.filter((c) => c.code !== 'I10');
+    warnings.push('Removed I10 because hypertensive complications are present.');
   }
 
   // Always add CKD staging when present
@@ -91,7 +114,7 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
     const stage = ckdConcept?.attributes.stage;
     const ckdStageCode = working.find((c) => c.code.startsWith('N18.'))?.code;
     if (!ckdStageCode) {
-      const defaultStage = stage ? `N18.${stage}` : 'N18.9';
+      const defaultStage = mapCkdStageCode(stage, ckdConcept?.attributes.ckdStage);
       markCandidate(defaultStage, 'CKD stage must be captured', 8, 'ckd_stage_required', ['ckd']);
     }
   }
@@ -127,13 +150,13 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
 
   const secondarySites = ctx.concepts
     .filter((c) => c.type === 'neoplasm' && c.attributes.severity === 'secondary')
-    .map((c) => c.attributes.site)
+    .flatMap((c) => c.attributes.metastaticSites || (c.attributes.site ? [c.attributes.site] : []))
     .filter(Boolean) as string[];
   const primarySites = ctx.concepts
     .filter((c) => c.type === 'neoplasm' && c.attributes.severity === 'primary')
-    .map((c) => c.attributes.site)
+    .map((c) => c.attributes.primaryNeoplasmSite || c.attributes.site)
     .filter(Boolean) as string[];
-  if (primarySites.length && (secondarySites.length === 0 || secondarySites.some((s) => primarySites.includes(s)))) {
+  if (primarySites.length && secondarySites.length && secondarySites.some((s) => primarySites.includes(s))) {
     errors.push('Metastatic site must differ from primary; specify distinct primary and secondary locations.');
   }
 

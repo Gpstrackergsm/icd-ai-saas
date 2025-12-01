@@ -19,6 +19,30 @@ describe('ICD-10-CM encoder scenarios', () => {
     assert.deepEqual(result.warnings, []);
   });
 
+  it('codes hypertension with CKD stage 3 per guidelines', () => {
+    const result = encodeDiagnosisText('Hypertension with chronic kidney disease stage 3');
+    const codes = result.codes.map((c) => c.code);
+    assert.ok(codes.some((c) => c.startsWith('I12.')));
+    assert.ok(codes.some((c) => c.startsWith('N18.3')));
+    assert.ok(!codes.includes('I10'));
+  });
+
+  it('codes hypertensive heart disease with heart failure', () => {
+    const result = encodeDiagnosisText('Hypertensive heart disease with heart failure');
+    const codes = result.codes.map((c) => c.code);
+    assert.ok(codes.includes('I11.0'));
+    assert.ok(codes.some((c) => c.startsWith('I50.')));
+    assert.ok(!codes.includes('I10'));
+  });
+
+  it('codes hypertension with heart failure and CKD to combination rules', () => {
+    const result = encodeDiagnosisText('Hypertensive heart and chronic kidney disease with heart failure and CKD stage 4');
+    const codes = result.codes.map((c) => c.code);
+    assert.ok(codes.includes('I13.0'));
+    assert.ok(codes.some((c) => c.startsWith('I50.')));
+    assert.ok(codes.includes('N18.4'));
+  });
+
   it('removes uncomplicated diabetes when CKD is present', () => {
     const result = encodeDiagnosisText('type 1 diabetes with CKD stage 3 and neuropathy');
     const codes = result.codes.map((c) => c.code);
@@ -93,11 +117,57 @@ describe('ICD-10-CM encoder scenarios', () => {
     assert.ok(!codes.some((c) => c.startsWith('I1')));
   });
 
+  it('codes gestational diabetes by trimester', () => {
+    const result = encodeDiagnosisText('Gestational diabetes third trimester diet controlled');
+    const codes = result.codes.map((c) => c.code);
+    assert.ok(codes.some((c) => c.startsWith('O24.41')));
+    assert.ok(!codes.some((c) => c.startsWith('E1')));
+  });
+
+  it('codes mild preeclampsia in second trimester', () => {
+    const result = encodeDiagnosisText('Mild preeclampsia second trimester');
+    const codes = result.codes.map((c) => c.code);
+    assert.ok(codes.includes('O14.02'));
+  });
+
+  it('codes hyperemesis gravidarum with metabolic disturbance', () => {
+    const result = encodeDiagnosisText('Hyperemesis gravidarum with metabolic disturbance');
+    const codes = result.codes.map((c) => c.code);
+    assert.ok(codes.includes('O21.1'));
+  });
+
   it('orders metastatic before primary neoplasm', () => {
     const result = encodeDiagnosisText('Metastatic cancer to liver from colon primary');
     const codes = result.codes.map((c) => c.code);
     assert.equal(codes[0], 'C78.7');
     assert.ok(codes.includes('C18.9'));
+  });
+
+  it('codes secondary liver cancer with colon primary', () => {
+    const result = encodeDiagnosisText('Secondary liver cancer from colon');
+    const codes = result.codes.map((c) => c.code);
+    assert.ok(codes.includes('C78.7'));
+    assert.ok(codes.includes('C18.9'));
+  });
+
+  it('codes bone metastasis with prostate primary', () => {
+    const result = encodeDiagnosisText('Bone metastasis from prostate cancer');
+    const codes = result.codes.map((c) => c.code);
+    assert.ok(codes.includes('C79.51'));
+    assert.ok(codes.includes('C61'));
+  });
+
+  it('codes follow-up after completed treatment for lung cancer', () => {
+    const result = encodeDiagnosisText('Follow-up exam after completed treatment for lung cancer');
+    const codes = result.codes.map((c) => c.code);
+    assert.ok(codes.includes('Z08'));
+    assert.ok(codes.includes('Z85.118'));
+  });
+
+  it('codes history of colon cancer', () => {
+    const result = encodeDiagnosisText('History of colon cancer');
+    const codes = result.codes.map((c) => c.code);
+    assert.ok(codes.includes('Z85.038'));
   });
 
   it('flags conflicting neoplasm sites', () => {
@@ -121,6 +191,31 @@ describe('ICD-10-CM encoder scenarios', () => {
     const result = encodeDiagnosisText('COPD with acute exacerbation and asthma history');
     const codes = result.codes.map((c) => c.code);
     assert.ok(codes.includes('J44.1'));
+  });
+
+  it('codes COPD with acute lower respiratory infection', () => {
+    const result = encodeDiagnosisText('COPD with acute lower respiratory infection');
+    const codes = result.codes.map((c) => c.code);
+    assert.ok(codes.includes('J44.0'));
+    assert.ok(codes.some((c) => c.startsWith('J1')));
+  });
+
+  it('codes COPD with acute exacerbation', () => {
+    const result = encodeDiagnosisText('Chronic obstructive pulmonary disease with acute exacerbation');
+    const codes = result.codes.map((c) => c.code);
+    assert.ok(codes.includes('J44.1'));
+  });
+
+  it('codes moderate persistent asthma with acute exacerbation', () => {
+    const result = encodeDiagnosisText('Moderate persistent asthma with acute exacerbation');
+    const codes = result.codes.map((c) => c.code);
+    assert.ok(codes.includes('J45.41'));
+  });
+
+  it('codes severe persistent asthma with status asthmaticus', () => {
+    const result = encodeDiagnosisText('Severe persistent asthma with status asthmaticus');
+    const codes = result.codes.map((c) => c.code);
+    assert.ok(codes.includes('J45.52'));
   });
 
   it('distinguishes MI from heart failure', () => {
