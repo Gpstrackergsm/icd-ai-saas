@@ -108,9 +108,13 @@ function extractTrimester(normalizedQuery = '') {
 
 function detectEntities(rawQuery = '') {
   const normalized = applyNormalization(rawQuery);
+  const rawNormalized = normalize(rawQuery);
   const tokens = normalized.split(/[^a-z0-9]+/).filter(Boolean);
 
   const hasDka = /\bdka\b/.test(normalized) || /diabetic ketoacidosis/.test(normalized) || /ketoacidosis/.test(normalized);
+  const hasComaMention =
+    /with\s+(?:diabetic\s+)?coma/.test(rawNormalized) ||
+    (/(?:^|\s)coma\b/.test(rawNormalized) && !/without\s+coma/.test(rawNormalized));
   const hasDiabetes = /\bdiabet/i.test(normalized) || hasDka;
   const diabetesType = /type\s*1/.test(normalized) ? '1' : '2';
   const diabetes = {
@@ -121,7 +125,7 @@ function detectEntities(rawQuery = '') {
     nephropathy: /\bnephropathy\b/.test(normalized),
     angiopathy: /angiopathy/.test(normalized),
     gangrene: /gangrene/.test(normalized),
-    hypoglycemiaNoComa: /hypoglycemia/.test(normalized) && !/coma/.test(normalized),
+    hypoglycemiaNoComa: /hypoglycemia/.test(rawNormalized) && !hasComaMention,
     neuropathicArthropathy:
       /neuropathic arthropathy/.test(normalized) || /charcot/.test(normalized) || /charcot foot/.test(normalized),
     hyperosmolarity: /hyperosmolar/.test(normalized),
@@ -137,11 +141,13 @@ function detectEntities(rawQuery = '') {
       ? 'bilateral'
       : null,
     dka: hasDka,
+    dkaWithComa: hasDka && hasComaMention,
     ckd: /chronic kidney disease/.test(normalized) || /\bckd\b/.test(normalized),
     stage: extractCkdStage(normalized),
     proteinuria: /proteinuria/.test(normalized),
     dueToObesity:
-      /type\s*2\s+diabetes/.test(normalized) && /due to obesity/.test(normalized),
+      /type\s*2\s+diabetes/.test(rawNormalized) &&
+      (/due to obesity/.test(rawNormalized) || /secondary to obesity/.test(rawNormalized) || /obesity[-\s]*related/.test(rawNormalized)),
   };
 
   const hypertension = {
@@ -230,7 +236,9 @@ function detectEntities(rawQuery = '') {
 
   const zCodes = {
     historyCancer: /history of .*cancer/.test(normalized),
-    historyColonCancer: /history of .*colon cancer/.test(normalized) || /history of colon\s+cancer/.test(normalized),
+    historyColonCancer:
+      /history\s+(?:of\s+)?colon\s+cancer/.test(rawNormalized) ||
+      /personal history/.test(rawNormalized) && /colon\s+cancer/.test(rawNormalized),
     aftercare: /aftercare/.test(normalized),
     followUpTreatment: /follow[-\s]*up/.test(normalized) && /treatment/.test(normalized),
     followUpLungCancer:
@@ -276,11 +284,12 @@ function detectEntities(rawQuery = '') {
       nstemi: /non st elevation myocardial infarction/.test(normalized) || /\bnstemi\b/.test(normalized),
       heartAttack: /myocardial infarction/.test(normalized) || /heart attack/.test(normalized),
       chronicSystolicHf:
-        (/chronic systolic/.test(normalized) && (/heart failure/.test(normalized) || /\bhf\b/.test(tokens.join(' ')))) ||
+        (/chronic systolic/.test(normalized) &&
+          (/heart failure/.test(normalized) || /cardiac failure/.test(normalized) || /\bhf\b/.test(tokens.join(' ')))) ||
         /hfrref/.test(normalized),
       acuteOnChronicDiastolicHf:
         /acute on chronic/.test(normalized) && /diastolic/.test(normalized) &&
-        (/heart failure/.test(normalized) || /\bhf\b/.test(tokens.join(' '))),
+        (/heart failure/.test(normalized) || /cardiac failure/.test(normalized) || /\bhf\b/.test(tokens.join(' '))),
       pulmonaryEmbolism: /pulmonary embolism/.test(normalized),
       acuteCorPulmonale: /acute cor pulmonale/.test(normalized),
       stemiAnterior: /\bstemi\b/.test(normalized) && /anterior wall/.test(normalized),
@@ -290,7 +299,10 @@ function detectEntities(rawQuery = '') {
       present: /obesity/.test(normalized),
       bmi: (() => {
         const match = normalized.match(/bmi\s*(\d+(?:\.\d+)?)/);
-        return match ? parseFloat(match[1]) : null;
+        if (!match) return null;
+        const value = parseFloat(match[1]);
+        if (!Number.isFinite(value)) return null;
+        return value < 10 && value >= 4 ? value * 10 : value;
       })(),
     },
   };
@@ -360,6 +372,9 @@ function buildDiabetesCodes(entities) {
   }
 
   if (diabetes.dka) {
+    if (diabetes.dkaWithComa && diabetes.type === '1') {
+      return ['E10.11'];
+    }
     return [`${prefix}.10`];
   }
 
@@ -756,6 +771,29 @@ function applyBlockList(codes = [], rawQuery = '') {
   });
 }
 
+function enforceHypertensionCkdOrdering(codes = []) {
+  const ordered = [...codes];
+
+  const ensureOrder = (primaryCodes = [], secondaryCodes = []) => {
+    primaryCodes.forEach((primary) => {
+      secondaryCodes.forEach((secondary) => {
+        const iPrimary = ordered.indexOf(primary);
+        const iSecondary = ordered.indexOf(secondary);
+        if (iPrimary !== -1 && iSecondary !== -1 && iPrimary > iSecondary) {
+          ordered.splice(iPrimary, 1);
+          ordered.splice(ordered.indexOf(secondary), 0, primary);
+        }
+      });
+    });
+  };
+
+  ensureOrder(['I12.9'], ['N18.3', 'N18.32']);
+  ensureOrder(['I12.0'], ['N18.5']);
+  ensureOrder(['I13.0'], ['N18.4']);
+
+  return ordered;
+}
+
 function applyHistoryPreference(codes = [], entities = {}) {
   if (!entities?.zCodes?.historyCancer) return codes;
   return codes.filter((code) => !/^C\d{2}/.test(code));
@@ -772,7 +810,10 @@ function applyHardOverrides(normalizedQuery = '') {
     return ['F33.2'];
   }
 
-  if (/\bchronic\b/.test(normalizedQuery) && (/systolic heart failure/.test(normalizedQuery) || /systolic\s+hf/.test(normalizedQuery))) {
+  if (
+    /\bchronic\b/.test(normalizedQuery) &&
+    (/systolic heart failure/.test(normalizedQuery) || /systolic\s+hf/.test(normalizedQuery) || /systolic cardiac failure/.test(normalizedQuery))
+  ) {
     return ['I50.22'];
   }
 
@@ -866,6 +907,7 @@ function searchSingle(rawQuery = '') {
   cleaned = removeUnspecifiedWhenDetailed(cleaned);
   cleaned = applyHistoryPreference(cleaned, entities);
   cleaned = applyBlockList(cleaned, rawQuery);
+  cleaned = enforceHypertensionCkdOrdering(cleaned);
 
   return { results: cleaned.map((code) => ({ code })) };
 }
