@@ -93,7 +93,7 @@ export interface ParsedConceptAttributes {
   stage?: string;
   severity?: string;
   laterality?: 'left' | 'right' | 'bilateral' | 'unspecified' | string;
-  trimester?: "1st" | "2nd" | "3rd";
+  trimester?: 1 | 2 | 3 | "1st" | "2nd" | "3rd";
   episode?: "initial" | "subsequent" | "sequela";
   acuity?: "acute" | "chronic" | "acute_on_chronic";
   site?: string;
@@ -105,6 +105,36 @@ export interface ParsedConceptAttributes {
     hypoglycemia?: boolean;
     hyperosmolar?: boolean;
   };
+  hasHypertension?: boolean;
+  hasHeartFailure?: boolean;
+  heartFailureType?: "systolic" | "diastolic" | "combined" | "unspecified";
+  hasCKD?: boolean;
+  ckdStage?: 1 | 2 | 3 | 4 | 5 | "ESRD";
+  hasNeoplasm?: boolean;
+  primaryNeoplasmSite?: string;
+  primaryNeoplasmLaterality?: "left" | "right" | "bilateral" | "unspecified";
+  metastaticSites?: string[];
+  hasHistoryOfCancer?: boolean;
+  hasFollowUpAfterCancer?: boolean;
+  isPregnant?: boolean;
+  pregnancyComplicationType?:
+    | "preeclampsia"
+    | "gestationalDiabetes"
+    | "hyperemesis"
+    | "placentaPrevia"
+    | "threatenedAbortion"
+    | "postpartumHemorrhage";
+  hasCOPD?: boolean;
+  hasAsthma?: boolean;
+  asthmaSeverity?:
+    | "mildIntermittent"
+    | "mildPersistent"
+    | "moderatePersistent"
+    | "severePersistent"
+    | "unspecified";
+  hasAcuteExacerbation?: boolean;
+  hasAcuteLowerRespInfection?: boolean;
+  pneumoniaOrganism?: "staph" | "klebsiella" | "viral" | "unspecified";
 }
 
 export interface ParsedConcept {
