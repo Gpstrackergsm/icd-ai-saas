@@ -3,7 +3,7 @@
 
 import fs from 'fs';
 import path from 'path';
-import { IcdCode, IcdIndexTerm } from './models';
+import type { IcdCode, IcdIndexTerm } from './models.ts';
 
 interface SampleData {
   codes: IcdCode[];

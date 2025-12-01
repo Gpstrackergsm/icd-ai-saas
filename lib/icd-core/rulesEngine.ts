@@ -1,7 +1,7 @@
 // ICD-10-CM Encoder core – generated with Codex helper
 // Responsibility: Apply ICD-10-CM style guideline rules and sequencing
 
-import { CandidateCode, EncodingContext, RuleResult } from './models';
+import type { CandidateCode, EncodingContext, RuleResult } from './models.ts';
 
 function ensureUnique(codes: CandidateCode[]): CandidateCode[] {
   const seen = new Map<string, CandidateCode>();
