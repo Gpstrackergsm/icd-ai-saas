@@ -1,4 +1,4 @@
-import { SequencedCode } from './rulesEngine';
+import { SequencedCode } from './rulesEngine.js';
 
 export interface ExclusionResult {
   valid: boolean;
@@ -6,42 +6,43 @@ export interface ExclusionResult {
   filtered: SequencedCode[];
 }
 
-const excludes1Pairs: [string, string][] = [
+const excludes1: Array<[string, string]> = [
+  ['E11.610', 'M14.6'],
   ['E11.65', 'E11.64'],
   ['E10.65', 'E10.64'],
 ];
 
-const excludes2Pairs: [string, string][] = [
+const excludes2: Array<[string, string]> = [
   ['E11.9', 'E11.65'],
   ['E10.9', 'E10.65'],
 ];
 
-function matches(code: string, prefix: string): boolean {
-  return code === prefix || code.startsWith(`${prefix}`);
+function codeMatches(candidate: string, target: string): boolean {
+  return candidate === target || candidate.startsWith(`${target}`);
 }
 
 export function applyExclusions(sequence: SequencedCode[]): ExclusionResult {
   const errors: string[] = [];
   let filtered = [...sequence];
 
-  excludes1Pairs.forEach(([a, b]) => {
-    const hasA = filtered.some((c) => matches(c.code, a));
-    const hasB = filtered.some((c) => matches(c.code, b));
+  excludes1.forEach(([a, b]) => {
+    const hasA = filtered.some((c) => codeMatches(c.code, a));
+    const hasB = filtered.some((c) => codeMatches(c.code, b));
     if (hasA && hasB) {
-      errors.push(`Excludes1 conflict between ${a} and ${b}`);
+      const preferred = a.startsWith('E') ? a : b;
+      filtered = filtered.filter((c) => codeMatches(c.code, preferred));
+      errors.push(`Excludes1: ${a} cannot be reported with ${b}; kept ${preferred}`);
     }
   });
 
-  excludes2Pairs.forEach(([a, b]) => {
-    const hasA = filtered.some((c) => matches(c.code, a));
-    const hasB = filtered.some((c) => matches(c.code, b));
+  excludes2.forEach(([a, b]) => {
+    const hasA = filtered.some((c) => codeMatches(c.code, a));
+    const hasB = filtered.some((c) => codeMatches(c.code, b));
     if (hasA && hasB) {
-      // Excludes2 allows both; downgrade later in ranking
-      filtered = filtered.map((item) =>
-        matches(item.code, a) || matches(item.code, b)
-          ? { ...item, note: `${item.note || ''} (excludes2 caution)`.trim() }
-          : item,
-      );
+      filtered = filtered.map((item) => ({
+        ...item,
+        note: `${item.note ? `${item.note}; ` : ''}Excludes2 caution between ${a} and ${b}`,
+      }));
     }
   });
 
