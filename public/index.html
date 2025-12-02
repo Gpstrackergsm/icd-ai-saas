@@ -1,456 +1,509 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ICD-10-CM Encoder</title>
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        background: #fef2f2;
-        color: #1e293b;
-        margin: 0;
-        padding: 0;
-      }
 
-      .container {
-        max-width: 960px;
-        margin: 0 auto;
-        padding: 32px 16px 48px;
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ICD-10-CM Encoder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fef2f2;
+      color: #1e293b;
+      margin: 0;
+      padding: 0;
+    }
 
-      h1 {
-        font-size: 28px;
-        margin-bottom: 16px;
-        color: #0f172a;
-      }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 32px 16px 48px;
+    }
 
-      .panel {
-        background: #fff;
-        border-radius: 12px;
-        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-        padding: 20px;
-      }
+    h1 {
+      font-size: 28px;
+      margin-bottom: 16px;
+      color: #0f172a;
+    }
 
-      .tabs {
-        display: flex;
-        gap: 10px;
-        margin-bottom: 16px;
-      }
+    .panel {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
+      padding: 20px;
+    }
 
-      .tab {
-        padding: 10px 14px;
-        background: #e2e8f0;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-        border: 1px solid #cbd5e1;
-      }
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
 
-      .tab.active {
-        background: #ef4444;
-        color: #fff;
-        border-color: #ef4444;
-      }
+    .tab {
+      padding: 10px 14px;
+      background: #e2e8f0;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      border: 1px solid #cbd5e1;
+    }
 
-      label {
-        display: block;
-        font-weight: 600;
-        margin-bottom: 8px;
-      }
+    .tab.active {
+      background: #ef4444;
+      color: #fff;
+      border-color: #ef4444;
+    }
 
-      .input-row {
-        display: flex;
-        gap: 12px;
-        flex-wrap: wrap;
-      }
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
 
-      textarea,
-      input[type="text"] {
-        flex: 1;
-        min-width: 220px;
-        padding: 12px;
-        border: 1px solid #cbd5e1;
-        border-radius: 8px;
-        font-size: 16px;
-        resize: vertical;
-        min-height: 120px;
-      }
+    .input-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
 
-      button {
-        background: #ef4444;
-        color: #fff;
-        border: none;
-        padding: 12px 18px;
-        border-radius: 8px;
-        font-size: 15px;
-        cursor: pointer;
-        transition: background 0.15s ease;
-      }
+    textarea,
+    input[type="text"] {
+      flex: 1;
+      min-width: 220px;
+      padding: 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      font-size: 16px;
+      resize: vertical;
+      min-height: 120px;
+    }
 
-      button:hover {
-        background: #dc2626;
-      }
+    button {
+      background: #ef4444;
+      color: #fff;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 15px;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
 
-      button.secondary {
-        background: #64748b;
-      }
+    button:hover {
+      background: #dc2626;
+    }
 
-      button.secondary:hover {
-        background: #475569;
-      }
+    button.secondary {
+      background: #64748b;
+    }
 
-      .status {
-        margin-top: 12px;
-        color: #475569;
-        min-height: 20px;
-      }
+    button.secondary:hover {
+      background: #475569;
+    }
 
-      .results {
-        margin-top: 20px;
-        display: grid;
-        gap: 12px;
-      }
+    .status {
+      margin-top: 12px;
+      color: #475569;
+      min-height: 20px;
+    }
 
-      .card {
-        border: 1px solid #e2e8f0;
-        border-radius: 10px;
-        padding: 14px;
-        background: #f8fafc;
-      }
+    .results {
+      margin-top: 20px;
+      display: grid;
+      gap: 12px;
+    }
 
-      .code {
-        font-weight: 700;
-        color: #0f172a;
-        margin-bottom: 6px;
-      }
+    .card {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 14px;
+      background: #f8fafc;
+    }
 
-      .desc {
-        margin: 4px 0;
-        color: #334155;
-      }
+    .code {
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
 
-      .synonyms {
-        font-size: 13px;
-        color: #64748b;
-      }
+    .desc {
+      margin: 4px 0;
+      color: #334155;
+    }
 
-      .actions {
-        margin-top: 16px;
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-      }
+    .synonyms {
+      font-size: 13px;
+      color: #64748b;
+    }
 
-      .hidden {
-        display: none;
-      }
+    .actions {
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
 
-      .pill {
-        display: inline-block;
-        padding: 4px 8px;
-        background: #fee2e2;
-        color: #991b1b;
-        border-radius: 6px;
-        font-size: 12px;
-        margin-right: 6px;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="container">
-      <h1>ICD-10-CM Encoder</h1>
-      <div class="panel">
-        <div class="tabs">
-          <div class="tab active" data-tab="search">Search</div>
-          <div class="tab" data-tab="encode">Encoder</div>
+    .hidden {
+      display: none;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 4px 8px;
+      background: #fee2e2;
+      color: #991b1b;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-right: 6px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>ICD-10-CM Encoder</h1>
+    <div class="panel">
+      <div class="tabs">
+        <div class="tab active" data-tab="search">Search</div>
+        <div class="tab" data-tab="encode">Encoder</div>
+      </div>
+
+      <div id="searchPanel">
+        <label for="query">Search ICD codes</label>
+        <div class="input-row">
+          <textarea id="query" name="query" placeholder="Enter code, condition, or synonym"></textarea>
+          <button id="searchBtn">Search</button>
         </div>
-
-        <div id="searchPanel">
-          <label for="query">Search ICD codes</label>
-          <div class="input-row">
-            <textarea
-              id="query"
-              name="query"
-              placeholder="Enter code, condition, or synonym"
-            ></textarea>
-            <button id="searchBtn">Search</button>
-          </div>
-          <div class="actions">
-            <button id="copyBtn" class="secondary" disabled>Copy results</button>
-          </div>
-          <div id="status" class="status"></div>
-          <div id="results" class="results"></div>
+        <div class="actions">
+          <button id="copyBtn" class="secondary" disabled>Copy results</button>
         </div>
+        <div id="status" class="status"></div>
+        <div id="results" class="results"></div>
+      </div>
 
-        <div id="encodePanel" class="hidden">
-          <label for="narrative">Encoder: clinical narrative</label>
-          <div class="input-row">
-            <textarea
-              id="narrative"
-              name="narrative"
-              placeholder="e.g., Type 2 diabetes with CKD stage 4 and hypertension"
-            ></textarea>
-            <button id="encodeBtn">Encode</button>
-          </div>
-          <div class="actions">
-            <button id="copyEncodeBtn" class="secondary" disabled>Copy codes</button>
-          </div>
-          <div id="encodeStatus" class="status"></div>
-          <div id="encodeResults" class="results"></div>
+      <div id="encodePanel" class="hidden">
+        <label for="narrative">Encoder: clinical narrative</label>
+        <div class="input-row">
+          <textarea id="narrative" name="narrative"
+            placeholder="e.g., Type 2 diabetes with CKD stage 4 and hypertension"></textarea>
+          <button id="encodeBtn">Encode</button>
         </div>
+        <div class="actions">
+          <button id="copyEncodeBtn" class="secondary" disabled>Copy codes</button>
+        </div>
+        <div id="encodeStatus" class="status"></div>
+        <div id="encodeResults" class="results"></div>
       </div>
     </div>
+  </div>
 
-    <script>
-      const tabs = Array.from(document.querySelectorAll('.tab'));
-      const searchPanel = document.getElementById('searchPanel');
-      const encodePanel = document.getElementById('encodePanel');
+  <script>
+    const tabs = Array.from(document.querySelectorAll('.tab'));
+    const searchPanel = document.getElementById('searchPanel');
+    const encodePanel = document.getElementById('encodePanel');
 
-      tabs.forEach((tab) => {
-        tab.addEventListener('click', () => {
-          tabs.forEach((t) => t.classList.remove('active'));
-          tab.classList.add('active');
-          const isSearch = tab.dataset.tab === 'search';
-          searchPanel.classList.toggle('hidden', !isSearch);
-          encodePanel.classList.toggle('hidden', isSearch);
-        });
+    tabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        tabs.forEach((t) => t.classList.remove('active'));
+        tab.classList.add('active');
+        const isSearch = tab.dataset.tab === 'search';
+        searchPanel.classList.toggle('hidden', !isSearch);
+        encodePanel.classList.toggle('hidden', isSearch);
+      });
+    });
+
+    const queryInput = document.getElementById('query');
+    const searchBtn = document.getElementById('searchBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const status = document.getElementById('status');
+    const resultsEl = document.getElementById('results');
+
+    let lastRendered = null;
+
+    function renderSearchResults(items) {
+      resultsEl.innerHTML = '';
+      if (!items.length) {
+        resultsEl.innerHTML = '<p>No results found.</p>';
+        copyBtn.disabled = true;
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+      items.forEach((item) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+
+        const code = document.createElement('div');
+        code.className = 'code';
+        code.textContent = item.code;
+
+        const desc = document.createElement('div');
+        desc.className = 'desc';
+        desc.textContent = item.description || '';
+
+        const badge = document.createElement('span');
+        badge.className = 'pill';
+        badge.textContent = item.matchedTerm ? `Matched: ${item.matchedTerm}` : 'Index';
+
+        card.appendChild(code);
+        card.appendChild(desc);
+        card.appendChild(badge);
+        fragment.appendChild(card);
       });
 
-      const queryInput = document.getElementById('query');
-      const searchBtn = document.getElementById('searchBtn');
-      const copyBtn = document.getElementById('copyBtn');
-      const status = document.getElementById('status');
-      const resultsEl = document.getElementById('results');
+      resultsEl.appendChild(fragment);
+      copyBtn.disabled = false;
+    }
 
-      let lastRendered = null;
+    async function fetchPayload(url, body, defaultError) {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
 
-      function renderSearchResults(items) {
-        resultsEl.innerHTML = '';
-        if (!items.length) {
-          resultsEl.innerHTML = '<p>No results found.</p>';
-          copyBtn.disabled = true;
-          return;
-        }
+      const data = await response.json().catch(() => ({}));
+      const message =
+        data?.error?.message || data?.message || data?.error || defaultError;
 
-        const fragment = document.createDocumentFragment();
-        items.forEach((item) => {
-          const card = document.createElement('div');
-          card.className = 'card';
-
-          const code = document.createElement('div');
-          code.className = 'code';
-          code.textContent = item.code;
-
-          const desc = document.createElement('div');
-          desc.className = 'desc';
-          desc.textContent = item.description || '';
-
-          const badge = document.createElement('span');
-          badge.className = 'pill';
-          badge.textContent = item.matchedTerm ? `Matched: ${item.matchedTerm}` : 'Index';
-
-          card.appendChild(code);
-          card.appendChild(desc);
-          card.appendChild(badge);
-          fragment.appendChild(card);
-        });
-
-        resultsEl.appendChild(fragment);
-        copyBtn.disabled = false;
+      if (!response.ok || data?.success === false) {
+        throw new Error(message);
       }
 
-      async function fetchPayload(url, body, defaultError) {
-        const response = await fetch(url, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-        });
+      return data?.data ?? data;
+    }
 
-        const data = await response.json().catch(() => ({}));
-        const message =
-          data?.error?.message || data?.message || data?.error || defaultError;
+    async function performSearch() {
+      const query = queryInput.value.trim();
+      resultsEl.innerHTML = '';
+      status.textContent = '';
+      copyBtn.disabled = true;
 
-        if (!response.ok || data?.success === false) {
-          throw new Error(message);
-        }
-
-        return data?.data ?? data;
+      if (!query) {
+        status.textContent = 'Please enter a search query.';
+        return;
       }
 
-      async function performSearch() {
-        const query = queryInput.value.trim();
-        resultsEl.innerHTML = '';
-        status.textContent = '';
-        copyBtn.disabled = true;
+      searchBtn.disabled = true;
+      status.textContent = 'Searching…';
 
-        if (!query) {
-          status.textContent = 'Please enter a search query.';
-          return;
-        }
+      try {
+        const payload = await fetchPayload(
+          '/api/search',
+          { query },
+          'Search failed'
+        );
+        lastRendered = payload.results || [];
+        renderSearchResults(lastRendered);
+        status.textContent = `Found ${lastRendered.length} result(s).`;
+      } catch (err) {
+        status.textContent = err.message || 'Unable to search right now.';
+      } finally {
+        searchBtn.disabled = false;
+      }
+    }
 
-        searchBtn.disabled = true;
-        status.textContent = 'Searching…';
+    async function copyResults() {
+      const cards = Array.from(resultsEl.querySelectorAll('.card'));
+      if (!cards.length || !lastRendered) return;
 
-        try {
-          const payload = await fetchPayload(
-            '/api/search',
-            { query },
-            'Search failed'
-          );
-          lastRendered = payload.results || [];
-          renderSearchResults(lastRendered);
-          status.textContent = `Found ${lastRendered.length} result(s).`;
-        } catch (err) {
-          status.textContent = err.message || 'Unable to search right now.';
-        } finally {
-          searchBtn.disabled = false;
-        }
+      const lines = cards.map((card) => {
+        const code = card.querySelector('.code')?.textContent || '';
+        const desc = card.querySelector('.desc')?.textContent || '';
+        return `${code} — ${desc}`;
+      });
+      try {
+        await navigator.clipboard.writeText(lines.join('\n'));
+        status.textContent = 'Results copied to clipboard.';
+      } catch (err) {
+        status.textContent = 'Unable to copy results.';
+      }
+    }
+
+    searchBtn.addEventListener('click', performSearch);
+    copyBtn.addEventListener('click', copyResults);
+
+    // Encoder tab logic
+    const narrativeInput = document.getElementById('narrative');
+    const encodeBtn = document.getElementById('encodeBtn');
+    const copyEncodeBtn = document.getElementById('copyEncodeBtn');
+    const encodeStatus = document.getElementById('encodeStatus');
+    const encodeResults = document.getElementById('encodeResults');
+    let lastEncoded = null;
+
+    function renderEncodeResults(payload) {
+      encodeResults.innerHTML = '';
+
+      // Normalize payload to array
+      const results = Array.isArray(payload) ? payload : [payload];
+
+      if (!results.length) {
+        encodeResults.innerHTML = '<p>No results returned.</p>';
+        return;
       }
 
-      async function copyResults() {
-        const cards = Array.from(resultsEl.querySelectorAll('.card'));
-        if (!cards.length || !lastRendered) return;
+      const fragment = document.createDocumentFragment();
 
-        const lines = cards.map((card) => {
-          const code = card.querySelector('.code')?.textContent || '';
-          const desc = card.querySelector('.desc')?.textContent || '';
-          return `${code} — ${desc}`;
-        });
-        try {
-          await navigator.clipboard.writeText(lines.join('\n'));
-          status.textContent = 'Results copied to clipboard.';
-        } catch (err) {
-          status.textContent = 'Unable to copy results.';
-        }
-      }
+      results.forEach((result, index) => {
+        // Container for this result item
+        const itemContainer = document.createElement('div');
+        itemContainer.className = 'result-item';
+        itemContainer.style.marginBottom = '24px';
 
-      searchBtn.addEventListener('click', performSearch);
-      copyBtn.addEventListener('click', copyResults);
-
-      // Encoder tab logic
-      const narrativeInput = document.getElementById('narrative');
-      const encodeBtn = document.getElementById('encodeBtn');
-      const copyEncodeBtn = document.getElementById('copyEncodeBtn');
-      const encodeStatus = document.getElementById('encodeStatus');
-      const encodeResults = document.getElementById('encodeResults');
-      let lastEncoded = null;
-
-      function renderEncodeResults(payload) {
-        encodeResults.innerHTML = '';
-        if (!payload.primary && (!payload.secondary || !payload.secondary.length)) {
-          encodeResults.innerHTML = '<p>No codes suggested.</p>';
-          copyEncodeBtn.disabled = true;
-          return;
+        // Header for the item if batch
+        if (results.length > 1) {
+          const header = document.createElement('h3');
+          header.textContent = `Item ${index + 1}: ${result.text}`;
+          header.style.fontSize = '16px';
+          header.style.color = '#334155';
+          header.style.marginBottom = '12px';
+          header.style.borderBottom = '1px solid #e2e8f0';
+          header.style.paddingBottom = '8px';
+          itemContainer.appendChild(header);
         }
 
-        const fragment = document.createDocumentFragment();
-        
-        const createCard = (code, type) => {
-          const card = document.createElement('div');
-          card.className = 'card';
-          if (type === 'Primary') {
-            card.style.borderLeft = '4px solid #ef4444';
+        if (!result.primary && (!result.secondary || !result.secondary.length)) {
+          const noCode = document.createElement('div');
+          noCode.className = 'card';
+          noCode.textContent = 'No codes suggested.';
+          itemContainer.appendChild(noCode);
+        } else {
+          const createCard = (code, type) => {
+            const card = document.createElement('div');
+            card.className = 'card';
+            if (type === 'Primary') {
+              card.style.borderLeft = '4px solid #ef4444';
+            }
+
+            const codeEl = document.createElement('div');
+            codeEl.className = 'code';
+            codeEl.textContent = `${type}: ${code.code}`;
+
+            const desc = document.createElement('div');
+            desc.className = 'desc';
+            desc.textContent = code.description || '';
+
+            const reason = document.createElement('div');
+            reason.className = 'synonyms';
+            reason.textContent = `Rationale: ${code.rationale}`;
+
+            card.appendChild(codeEl);
+            card.appendChild(desc);
+            card.appendChild(reason);
+            return card;
+          };
+
+          if (result.primary) {
+            itemContainer.appendChild(createCard(result.primary, 'Primary'));
           }
 
-          const codeEl = document.createElement('div');
-          codeEl.className = 'code';
-          codeEl.textContent = `${type}: ${code.code}`;
-
-          const desc = document.createElement('div');
-          desc.className = 'desc';
-          desc.textContent = code.description || '';
-
-          const reason = document.createElement('div');
-          reason.className = 'synonyms';
-          reason.textContent = `Rationale: ${code.rationale}`;
-
-          card.appendChild(codeEl);
-          card.appendChild(desc);
-          card.appendChild(reason);
-          return card;
-        };
-
-        if (payload.primary) {
-          fragment.appendChild(createCard(payload.primary, 'Primary'));
+          if (result.secondary && result.secondary.length) {
+            result.secondary.forEach((code) => {
+              itemContainer.appendChild(createCard(code, 'Secondary'));
+            });
+          }
         }
 
-        if (payload.secondary && payload.secondary.length) {
-          payload.secondary.forEach((code) => {
-            fragment.appendChild(createCard(code, 'Secondary'));
-          });
-        }
-
-        if (payload.warnings?.length) {
+        if (result.warnings?.length) {
           const warnCard = document.createElement('div');
           warnCard.className = 'card';
-          warnCard.innerHTML = `<div class="code">Warnings</div><div class="desc">${payload.warnings.join('<br/>')}</div>`;
-          fragment.appendChild(warnCard);
+          warnCard.innerHTML = `<div class="code">Warnings</div><div class="desc">${result.warnings.join('<br/>')}</div>`;
+          itemContainer.appendChild(warnCard);
         }
 
-        if (payload.errors?.length) {
+        if (result.errors?.length) {
           const errCard = document.createElement('div');
           errCard.className = 'card';
-          errCard.innerHTML = `<div class="code">Errors</div><div class="desc">${payload.errors.join('<br/>')}</div>`;
-          fragment.appendChild(errCard);
+          errCard.innerHTML = `<div class="code">Errors</div><div class="desc">${result.errors.join('<br/>')}</div>`;
+          itemContainer.appendChild(errCard);
         }
 
-        encodeResults.appendChild(fragment);
-        copyEncodeBtn.disabled = false;
+        fragment.appendChild(itemContainer);
+      });
+
+      encodeResults.appendChild(fragment);
+      copyEncodeBtn.disabled = false;
+    }
+
+    async function performEncode() {
+      const text = narrativeInput.value.trim();
+      encodeResults.innerHTML = '';
+      encodeStatus.textContent = '';
+      copyEncodeBtn.disabled = true;
+
+      if (!text) {
+        encodeStatus.textContent = 'Please enter a clinical narrative.';
+        return;
       }
 
-      async function performEncode() {
-        const text = narrativeInput.value.trim();
-        encodeResults.innerHTML = '';
-        encodeStatus.textContent = '';
-        copyEncodeBtn.disabled = true;
+      encodeBtn.disabled = true;
+      encodeStatus.textContent = 'Encoding…';
 
-        if (!text) {
-          encodeStatus.textContent = 'Please enter a clinical narrative.';
-          return;
-        }
+      // Check for numbered list
+      // Regex looks for lines starting with a number followed by dot, paren, or space
+      const lines = text.split(/\r?\n/).filter(l => l.trim());
+      const isBatch = lines.length > 1 && lines.every(l => /^\d+[\.\)\s]/.test(l.trim()));
 
-        encodeBtn.disabled = true;
-        encodeStatus.textContent = 'Encoding…';
-
-        try {
-          const payload = await fetchPayload(
-            '/api/encode',
-            { text },
-            'Encoding failed'
-          );
-          lastEncoded = payload;
-          renderEncodeResults(payload);
-          encodeStatus.textContent = `Found ${payload.codes?.length || 0} code(s).`;
-        } catch (err) {
-          encodeStatus.textContent = err.message || 'Unable to encode right now.';
-        } finally {
-          encodeBtn.disabled = false;
-        }
+      let payloadBody = {};
+      if (isBatch) {
+        // Extract text after the number
+        const items = lines.map(l => l.replace(/^\d+[\.\)\s]\s*/, '').trim());
+        payloadBody = { items };
+      } else {
+        payloadBody = { text };
       }
 
-      async function copyEncodedCodes() {
-        if (!lastEncoded?.primary && !lastEncoded?.secondary?.length) return;
-        
-        const lines = [];
-        if (lastEncoded.primary) {
-          lines.push(`Primary: ${lastEncoded.primary.code} — ${lastEncoded.primary.description}`);
+      try {
+        const payload = await fetchPayload(
+          '/api/encode',
+          payloadBody,
+          'Encoding failed'
+        );
+        lastEncoded = payload;
+        renderEncodeResults(payload);
+
+        const count = Array.isArray(payload) ? payload.length : 1;
+        encodeStatus.textContent = `Processed ${count} item(s).`;
+      } catch (err) {
+        encodeStatus.textContent = err.message || 'Unable to encode right now.';
+      } finally {
+        encodeBtn.disabled = false;
+      }
+    }
+
+    async function copyEncodedCodes() {
+      if (!lastEncoded) return;
+
+      const results = Array.isArray(lastEncoded) ? lastEncoded : [lastEncoded];
+      const lines = [];
+
+      results.forEach((res, idx) => {
+        if (results.length > 1) lines.push(`Item ${idx + 1}: ${res.text}`);
+
+        if (res.primary) {
+          lines.push(`Primary: ${res.primary.code} — ${res.primary.description}`);
         }
-        if (lastEncoded.secondary) {
-          lastEncoded.secondary.forEach((code) => {
+        if (res.secondary) {
+          res.secondary.forEach((code) => {
             lines.push(`Secondary: ${code.code} — ${code.description}`);
           });
         }
-        try {
-          await navigator.clipboard.writeText(lines.join('\n'));
-          encodeStatus.textContent = 'Codes copied to clipboard.';
-        } catch (err) {
-          encodeStatus.textContent = 'Unable to copy codes.';
-        }
-      }
+        if (results.length > 1) lines.push(''); // spacer
+      });
 
-      encodeBtn.addEventListener('click', performEncode);
-      copyEncodeBtn.addEventListener('click', copyEncodedCodes);
-    </script>
-  </body>
+      if (!lines.length) return;
+
+      try {
+        await navigator.clipboard.writeText(lines.join('\n'));
+        encodeStatus.textContent = 'Codes copied to clipboard.';
+      } catch (err) {
+        encodeStatus.textContent = 'Unable to copy codes.';
+      }
+    }
+
+    encodeBtn.addEventListener('click', performEncode);
+    copyEncodeBtn.addEventListener('click', copyEncodedCodes);
+  </script>
+</body>
+
 </html>

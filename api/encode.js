@@ -85,48 +85,37 @@ module.exports = async function handler(req, res) {
       return sendError(res, 400, 'Request body must be a JSON object', 'BAD_REQUEST');
     }
 
-    const rawText = body.text;
-    if (rawText === undefined || rawText === null) {
-      return sendError(res, 400, 'text is required', 'BAD_REQUEST');
-    }
+    // Helper to process a single text item
+    const processItem = async (text) => {
+      if (!text || typeof text !== 'string') return null;
+      
+      const trimmedText = text.trim();
+      if (!trimmedText) return null;
 
-    if (typeof rawText !== 'string') {
-      return sendError(res, 400, 'text must be a string', 'BAD_REQUEST');
-    }
+      if (trimmedText.length > MAX_TEXT_LENGTH) {
+        return {
+          text: trimmedText,
+          error: `text is too long (max ${MAX_TEXT_LENGTH} characters)`
+        };
+      }
 
-    const text = rawText.trim();
-    if (!text) {
-      return sendError(res, 400, 'text cannot be empty', 'BAD_REQUEST');
-    }
-
-    if (text.length > MAX_TEXT_LENGTH) {
-      return sendError(res, 400, `text is too long (max ${MAX_TEXT_LENGTH} characters)`, 'BAD_REQUEST');
-    }
-
-    try {
       await modules.icdModule.initIcdData();
-      const output = modules.encoderModule.encodeDiagnosisText(text, { debug: Boolean(body.debug) });
+      const output = modules.encoderModule.encodeDiagnosisText(trimmedText, { debug: Boolean(body.debug) });
 
       // Restructure to primary/secondary format
       const allCodes = Array.isArray(output?.codes) ? output.codes : [];
-
-      // Limit to max 5 codes
       const limitedCodes = allCodes.slice(0, 5);
 
       if (limitedCodes.length === 0) {
-        return sendJson(res, 200, {
-          success: true,
-          data: {
-            text,
-            primary: null,
-            secondary: [],
-            warnings: Array.isArray(output?.warnings) ? output.warnings : [],
-            audit: ['No codes could be determined from the provided text'],
-          },
-        });
+        return {
+          text: trimmedText,
+          primary: null,
+          secondary: [],
+          warnings: Array.isArray(output?.warnings) ? output.warnings : [],
+          audit: ['No codes could be determined from the provided text'],
+        };
       }
 
-      // First code is primary, rest are secondary
       const primaryCode = limitedCodes[0];
       const secondaryCodes = limitedCodes.slice(1);
 
@@ -138,27 +127,56 @@ module.exports = async function handler(req, res) {
         billable: Boolean(code.billable),
       });
 
-      return sendJson(res, 200, {
-        success: true,
-        data: {
-          text,
-          primary: formatCode(primaryCode),
-          secondary: secondaryCodes.map(formatCode),
-          warnings: Array.isArray(output?.warnings) ? output.warnings : [],
-          audit: [
-            `Processed ${allCodes.length} candidate codes`,
-            `Limited output to ${limitedCodes.length} most relevant codes`,
-            `Primary code: ${primaryCode.code}`,
-            ...(secondaryCodes.length > 0 ? [`Secondary codes: ${secondaryCodes.map(c => c.code).join(', ')}`] : []),
-          ],
-        },
-      });
-    } catch (err) {
-      console.error('Encode handler failed:', err);
-      return sendError(res, 500, 'Internal error', 'INTERNAL_ERROR');
+      return {
+        text: trimmedText,
+        primary: formatCode(primaryCode),
+        secondary: secondaryCodes.map(formatCode),
+        warnings: Array.isArray(output?.warnings) ? output.warnings : [],
+        audit: [
+          `Processed ${allCodes.length} candidate codes`,
+          `Limited output to ${limitedCodes.length} most relevant codes`,
+          `Primary code: ${primaryCode.code}`,
+          ...(secondaryCodes.length > 0 ? [`Secondary codes: ${secondaryCodes.map(c => c.code).join(', ')}`] : []),
+        ],
+      };
+    };
+
+    // Handle batch request
+    if (Array.isArray(body.items)) {
+      const results = [];
+      for (const item of body.items) {
+        try {
+          const result = await processItem(item);
+          if (result) results.push(result);
+        } catch (err) {
+          results.push({ text: item, error: 'Failed to process item' });
+        }
+      }
+      return sendJson(res, 200, { success: true, data: results });
     }
+
+    // Handle single request (legacy)
+    const rawText = body.text;
+    if (rawText === undefined || rawText === null) {
+      return sendError(res, 400, 'text is required', 'BAD_REQUEST');
+    }
+
+    if (typeof rawText !== 'string') {
+      return sendError(res, 400, 'text must be a string', 'BAD_REQUEST');
+    }
+
+    const result = await processItem(rawText);
+    if (result.error) {
+      return sendError(res, 400, result.error, 'BAD_REQUEST');
+    }
+
+    return sendJson(res, 200, {
+      success: true,
+      data: result,
+    });
+
   } catch (err) {
-    console.error('Unexpected encode handler crash:', err);
+    console.error('Encode handler failed:', err);
     return sendError(res, 500, 'Internal error', 'INTERNAL_ERROR');
   }
 };
