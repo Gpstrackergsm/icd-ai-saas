@@ -135,6 +135,48 @@ export interface ParsedConceptAttributes {
   hasAcuteExacerbation?: boolean;
   hasAcuteLowerRespInfection?: boolean;
   pneumoniaOrganism?: "staph" | "klebsiella" | "viral" | "unspecified";
+  diabetes?: ParsedDiabetesAttributes;
+}
+
+export type DiabetesSubtype = "E08" | "E09" | "E10" | "E11" | "E13";
+
+export interface ParsedDiabetesAttributes {
+  subtype?: DiabetesSubtype;
+  uncontrolled?: boolean;
+  hypoglycemia?: {
+    present: boolean;
+    withComa?: boolean;
+  };
+  ketoacidosis?: {
+    present: boolean;
+    withComa?: boolean;
+    withHyperosmolarity?: boolean;
+  };
+  hyperosmolarity?: {
+    present: boolean;
+    withComa?: boolean;
+  };
+  nephropathy?: boolean;
+  ckdStage?: string | undefined;
+  neuropathy?: boolean;
+  peripheralAngiopathy?: {
+    present: boolean;
+    withGangrene?: boolean;
+  };
+  retinopathy?: {
+    present: boolean;
+    severity?: "unspecified" | "mild-npdr" | "moderate-npdr" | "severe-npdr" | "pdr";
+    withMacularEdema?: boolean;
+    withTractionDetachmentMacula?: boolean;
+  };
+  footUlcer?: boolean;
+  charcotJoint?: boolean;
+  cataract?: boolean;
+  dueToUnderlyingCondition?: boolean;
+  dueToDrugOrChemical?: boolean;
+  gestationalOrPregnancy?: boolean;
+  dueToObesity?: boolean;
+  longTermInsulinUse?: boolean;
 }
 
 export interface ParsedConcept {

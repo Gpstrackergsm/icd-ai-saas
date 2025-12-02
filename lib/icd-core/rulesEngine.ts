@@ -6,6 +6,173 @@
 
 import type { CandidateCode, EncodingContext, RuleResult } from './models.ts';
 
+function mapCkdStageCode(stage?: string, ckdStage?: 1 | 2 | 3 | 4 | 5 | 'ESRD') {
+  if (ckdStage === 'ESRD' || stage === 'ESRD') return 'N18.6';
+  if (ckdStage === 5 || stage === '5') return 'N18.5';
+  if (ckdStage === 4 || stage === '4') return 'N18.4';
+  if (ckdStage === 3 || stage?.startsWith('3')) {
+    if (stage?.toLowerCase() === '3a') return 'N18.31';
+    if (stage?.toLowerCase() === '3b') return 'N18.32';
+    return 'N18.3';
+  }
+  if (ckdStage === 2 || stage === '2') return 'N18.2';
+  if (ckdStage === 1 || stage === '1') return 'N18.1';
+  return 'N18.9';
+}
+
+function deriveDiabetesPrefix(diabetesConcept?: any): string {
+  const diabetes = diabetesConcept?.attributes?.diabetes;
+  if (diabetes?.dueToUnderlyingCondition) return 'E08';
+  if (diabetes?.dueToDrugOrChemical) return 'E09';
+  if (diabetes?.subtype) return diabetes.subtype;
+  if (diabetesConcept?.attributes?.diabetesType === 'type1') return 'E10';
+  if (diabetesConcept?.attributes?.diabetesType === 'secondary') return 'E08';
+  return 'E11';
+}
+
+function mapRetinopathyCode(prefix: string, retinopathy: any): string {
+  const severity = retinopathy?.severity || 'unspecified';
+  const withMacular = Boolean(retinopathy?.withMacularEdema);
+  const withTraction = Boolean(retinopathy?.withTractionDetachmentMacula);
+  if (severity === 'mild-npdr') return withMacular ? `${prefix}.321` : `${prefix}.329`;
+  if (severity === 'moderate-npdr') return withMacular ? `${prefix}.331` : `${prefix}.339`;
+  if (severity === 'severe-npdr') return withMacular ? `${prefix}.341` : `${prefix}.349`;
+  if (severity === 'pdr') {
+    if (withTraction) return `${prefix}.352`;
+    return withMacular ? `${prefix}.351` : `${prefix}.359`;
+  }
+  return withMacular ? `${prefix}.311` : `${prefix}.319`;
+}
+
+function applyDiabetesGuidelines(
+  ctx: EncodingContext,
+  working: CandidateCode[],
+  warnings: string[],
+): { candidates: CandidateCode[]; reorderedCodes: string[] } {
+  const diabetesConcept = ctx.concepts.find((c) => c.type === 'diabetes');
+  if (!diabetesConcept) return { candidates: working, reorderedCodes: [] };
+
+  const diabetes = diabetesConcept.attributes.diabetes || {};
+  const prefix = deriveDiabetesPrefix(diabetesConcept);
+  const ckdConcept = ctx.concepts.find((c) => c.type === 'ckd');
+
+  let primaryCode = `${prefix}.9`;
+  const hasHyperosmolar = diabetes.hyperosmolarity?.present;
+  const hasKetoacidosis = diabetes.ketoacidosis?.present;
+  const hasHypoglycemia = diabetes.hypoglycemia?.present;
+
+  if (hasHyperosmolar) {
+    primaryCode = `${prefix}.0${diabetes.hyperosmolarity?.withComa ? '1' : '0'}`;
+  } else if (hasKetoacidosis) {
+    if (diabetes.ketoacidosis?.withHyperosmolarity) {
+      primaryCode = `${prefix}.12`;
+    } else {
+      primaryCode = `${prefix}.1${diabetes.ketoacidosis?.withComa ? '1' : '0'}`;
+    }
+  } else if (hasHypoglycemia) {
+    primaryCode = `${prefix}.64${diabetes.hypoglycemia?.withComa ? '1' : '9'}`;
+  } else if (diabetes.uncontrolled) {
+    primaryCode = `${prefix}.65`;
+  }
+
+  if (!hasHyperosmolar && !hasKetoacidosis && !hasHypoglycemia) {
+    if (diabetes.footUlcer) {
+      primaryCode = `${prefix}.621`;
+    } else if (diabetes.peripheralAngiopathy?.present) {
+      primaryCode = `${prefix}.${diabetes.peripheralAngiopathy.withGangrene ? '52' : '51'}`;
+    } else if (diabetes.charcotJoint) {
+      primaryCode = `${prefix}.610`;
+    } else if (diabetes.retinopathy?.present) {
+      primaryCode = mapRetinopathyCode(prefix, diabetes.retinopathy);
+    } else if (diabetes.nephropathy && ckdConcept) {
+      primaryCode = `${prefix}.22`;
+    } else if (diabetes.nephropathy) {
+      primaryCode = `${prefix}.21`;
+    } else if (ckdConcept) {
+      primaryCode = `${prefix}.22`;
+    } else if (diabetes.neuropathy) {
+      primaryCode = `${prefix}.42`;
+    } else if (diabetes.cataract) {
+      primaryCode = `${prefix}.36`;
+    }
+  }
+
+  let filtered = working.filter((c) => !c.code.startsWith(prefix));
+  const reorderedCodes: string[] = [];
+  const primaryCandidate: CandidateCode = {
+    code: primaryCode,
+    reason: 'Diabetes mapped per complications',
+    baseScore: 11,
+    conceptRefs: [diabetesConcept.raw],
+    guidelineRule: 'diabetes_guideline',
+  };
+  filtered.push(primaryCandidate);
+  reorderedCodes.push(primaryCode);
+
+  if (ckdConcept) {
+    const stageCode = mapCkdStageCode(
+      ckdConcept.attributes.stage || diabetes.ckdStage,
+      ckdConcept.attributes.ckdStage as any,
+    );
+    const existingStage = filtered.some((c) => c.code.startsWith('N18.'));
+    if (!existingStage) {
+      filtered.push({
+        code: stageCode,
+        reason: 'CKD stage documented',
+        baseScore: 8,
+        conceptRefs: [ckdConcept.raw],
+        guidelineRule: 'ckd_stage_required',
+      });
+    }
+  }
+
+  if (diabetes.footUlcer) {
+    filtered.push({
+      code: 'L97.409',
+      reason: 'Diabetic foot ulcer requires additional site code',
+      baseScore: 6,
+      conceptRefs: [diabetesConcept.raw],
+      guidelineRule: 'diabetes_foot_ulcer',
+    });
+  }
+
+  if (diabetes.neuropathy && !primaryCode.includes('.42')) {
+    filtered.push({
+      code: `${prefix}.42`,
+      reason: 'Diabetic neuropathy additionally documented',
+      baseScore: 9,
+      conceptRefs: [diabetesConcept.raw],
+      guidelineRule: 'diabetes_neuropathy_detail',
+    });
+  }
+
+  if (diabetes.dueToUnderlyingCondition && /pancreatitis/.test(diabetesConcept.raw.toLowerCase())) {
+    filtered.push({
+      code: 'K86.1',
+      reason: 'Underlying chronic pancreatitis documented with diabetes',
+      baseScore: 7,
+      conceptRefs: [diabetesConcept.raw],
+      guidelineRule: 'diabetes_underlying_condition',
+    });
+  }
+
+  if (primaryCode.includes('.64')) {
+    warnings.push('Hypoglycemia coded as diabetic complication; ensure coma status documented.');
+  }
+
+  if (primaryCode.includes('.51') || primaryCode.includes('.52')) {
+    filtered = filtered.filter((c) => !c.code.startsWith('I70'));
+  }
+  if (primaryCode.includes('.42') || primaryCode.includes('.610')) {
+    filtered = filtered.filter((c) => !c.code.startsWith('G6'));
+  }
+  if (/\.3\d{2}$/.test(primaryCode)) {
+    filtered = filtered.filter((c) => !(c.code.startsWith('H35') || c.code.startsWith('H36')));
+  }
+
+  return { candidates: filtered, reorderedCodes };
+}
+
 function ensureUnique(codes: CandidateCode[]): CandidateCode[] {
   const seen = new Map<string, CandidateCode>();
   codes.forEach((code) => {
@@ -38,12 +205,6 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
   const hasPregnancy = ctx.concepts.some((c) => c.type === 'pregnancy');
   const hasInjury = ctx.concepts.some((c) => c.type === 'injury');
 
-  const diabetesPrefix = diabetesConcept?.attributes.diabetesType === 'type1'
-    ? 'E10'
-    : diabetesConcept?.attributes.diabetesType === 'secondary'
-      ? 'E08'
-      : 'E11';
-
   const reorderedCodes: string[] = [];
 
   const markCandidate = (code: string, reason: string, baseScore: number, rule: string, refs: string[]) => {
@@ -65,40 +226,9 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
     if (reason && before !== working.length) warnings.push(reason);
   };
 
-  // Diabetes + CKD combination enforcement
-  if (hasDiabetes && hasCKD && !working.some((c) => c.code === `${diabetesPrefix}.22`)) {
-    markCandidate(`${diabetesPrefix}.22`, 'Diabetes with CKD requires combination code', 10, 'diabetes_ckd_combo', ['diabetes', 'ckd']);
-  }
-
-  // Hyperosmolarity outranks other diabetic events
-  const hyperCode = working.find((c) => c.code === `${diabetesPrefix}.00`);
-  if (hyperCode) {
-    if (!hyperCode.guidelineRule) hyperCode.guidelineRule = 'diabetes_hyperosmolar_priority';
-  }
-
-  // Remove E11.9 when complications exist
-  const hasDiabetesComplication = working.some((c) => /E1[01]\.(2|3|4|5|6)/.test(c.code)) || hasCKD;
-  if (hasDiabetesComplication) {
-    const before = working.length;
-    working = working.filter((c) => c.code !== `${diabetesPrefix}.9`);
-    if (before !== working.length) {
-      warnings.push(`${diabetesPrefix}.9 removed because complications were documented.`);
-    }
-  }
-
-  const mapCkdStageCode = (stage?: string, ckdStage?: 1 | 2 | 3 | 4 | 5 | 'ESRD') => {
-    if (ckdStage === 'ESRD' || stage === 'ESRD') return 'N18.6';
-    if (ckdStage === 5 || stage === '5') return 'N18.5';
-    if (ckdStage === 4 || stage === '4') return 'N18.4';
-    if (ckdStage === 3 || stage?.startsWith('3')) {
-      if (stage?.toLowerCase() === '3a') return 'N18.31';
-      if (stage?.toLowerCase() === '3b') return 'N18.32';
-      return 'N18.3';
-    }
-    if (ckdStage === 2 || stage === '2') return 'N18.2';
-    if (ckdStage === 1 || stage === '1') return 'N18.1';
-    return 'N18.9';
-  };
+  const diabetesResult = applyDiabetesGuidelines(ctx, working, warnings);
+  working = diabetesResult.candidates;
+  reorderedCodes.push(...diabetesResult.reorderedCodes);
 
   // Hypertension combination logic
   let preferredHypertensionCode: string | undefined;
@@ -199,10 +329,6 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
     .filter(Boolean) as string[];
   if (primarySites.length && secondarySites.length && secondarySites.some((s) => primarySites.includes(s))) {
     errors.push('Metastatic site must differ from primary; specify distinct primary and secondary locations.');
-  }
-
-  if (hyperCode) {
-    reorderedCodes.unshift(hyperCode.code);
   }
 
   // Injury: ensure external cause present
