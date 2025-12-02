@@ -48,6 +48,7 @@ export function runRulesEngine(text: string): EngineResult {
   const sequence: SequencedCode[] = [];
 
   if (diabetes) {
+    warnings.push(...(diabetes.warnings || []));
     sequence.push(diabetesEntry(diabetes));
     if (diabetes.attributes.complication === 'retinopathy') {
       const ret = resolveRetinopathy(diabetes.attributes);
