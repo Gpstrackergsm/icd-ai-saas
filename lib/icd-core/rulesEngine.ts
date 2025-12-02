@@ -141,6 +141,14 @@ function mapRetinopathyCode(prefix: string, retinopathy: any): string {
   return withMacular ? `${prefix}.311` : `${prefix}.319`;
 }
 
+function mapDiabeticNeuropathyCode(prefix: string, neuropathyType?: string): string {
+  if (neuropathyType === 'mononeuropathy') return `${prefix}.41`;
+  if (neuropathyType === 'polyneuropathy') return `${prefix}.42`;
+  if (neuropathyType === 'autonomic') return `${prefix}.43`;
+  if (neuropathyType === 'amyotrophy') return `${prefix}.44`;
+  return `${prefix}.40`;
+}
+
 function isDiabeticNeuropathyCode(code: string): boolean {
   return /^(E0[89]|E1[013])\.(4|61)/.test(code);
 }
@@ -355,7 +363,7 @@ function applyDiabetesGuidelines(
   ctx: EncodingContext,
   working: CandidateCode[],
   warnings: string[],
-): { candidates: CandidateCode[]; reorderedCodes: string[] } {
+): { candidates: CandidateCode[]; reorderedCodes: string[]; primaryCode?: string } {
   const diabetesConcept = ctx.concepts.find((c) => c.type === 'diabetes');
   if (!diabetesConcept) return { candidates: working, reorderedCodes: [] };
 
@@ -367,6 +375,8 @@ function applyDiabetesGuidelines(
   const hasHyperosmolar = diabetes.hyperosmolarity?.present;
   const hasKetoacidosis = diabetes.ketoacidosis?.present;
   const hasHypoglycemia = diabetes.hypoglycemia?.present;
+  const hasNeuropathy = Boolean(diabetes.neuropathy);
+  const neuropathyCode = hasNeuropathy ? mapDiabeticNeuropathyCode(prefix, diabetes.neuropathyType) : undefined;
 
   if (hasHyperosmolar) {
     primaryCode = `${prefix}.0${diabetes.hyperosmolarity?.withComa ? '1' : '0'}`;
@@ -398,10 +408,14 @@ function applyDiabetesGuidelines(
     } else if (ckdConcept) {
       primaryCode = `${prefix}.22`;
     } else if (diabetes.neuropathy) {
-      primaryCode = `${prefix}.42`;
+      primaryCode = neuropathyCode || `${prefix}.40`;
     } else if (diabetes.cataract) {
       primaryCode = `${prefix}.36`;
     }
+  }
+
+  if (neuropathyCode) {
+    primaryCode = neuropathyCode;
   }
 
   let filtered = working.filter((c) => !c.code.startsWith(prefix));
@@ -409,7 +423,7 @@ function applyDiabetesGuidelines(
   const primaryCandidate: CandidateCode = {
     code: primaryCode,
     reason: 'Diabetes mapped per complications',
-    baseScore: 11,
+    baseScore: neuropathyCode ? 12 : 11,
     conceptRefs: [diabetesConcept.raw],
     guidelineRule: 'diabetes_guideline',
   };
@@ -431,6 +445,17 @@ function applyDiabetesGuidelines(
         guidelineRule: 'ckd_stage_required',
       });
     }
+
+    const ckdComboCode = `${prefix}.22`;
+    if (!filtered.some((c) => c.code === ckdComboCode)) {
+      filtered.push({
+        code: ckdComboCode,
+        reason: 'Diabetes with CKD combination',
+        baseScore: 9,
+        conceptRefs: [diabetesConcept.raw, ckdConcept.raw],
+        guidelineRule: 'diabetes_ckd_combo',
+      });
+    }
   }
 
   if (diabetes.footUlcer) {
@@ -443,9 +468,9 @@ function applyDiabetesGuidelines(
     });
   }
 
-  if (diabetes.neuropathy && !primaryCode.includes('.42')) {
+  if (diabetes.neuropathy && neuropathyCode && !primaryCode.includes('.4')) {
     filtered.push({
-      code: `${prefix}.42`,
+      code: neuropathyCode,
       reason: 'Diabetic neuropathy additionally documented',
       baseScore: 9,
       conceptRefs: [diabetesConcept.raw],
@@ -470,14 +495,24 @@ function applyDiabetesGuidelines(
   if (primaryCode.includes('.51') || primaryCode.includes('.52')) {
     filtered = filtered.filter((c) => !c.code.startsWith('I70'));
   }
-  if (primaryCode.includes('.42') || primaryCode.includes('.610')) {
+  if (primaryCode.includes('.4') || primaryCode.includes('.610')) {
     filtered = filtered.filter((c) => !c.code.startsWith('G6'));
   }
   if (/\.3\d{2}$/.test(primaryCode)) {
     filtered = filtered.filter((c) => !(c.code.startsWith('H35') || c.code.startsWith('H36')));
   }
 
-  return { candidates: filtered, reorderedCodes };
+  if (hasNeuropathy) {
+    filtered = filtered.filter((candidate) => {
+      if (!diabetes.retinopathy?.present && candidate.code.startsWith(`${prefix}.3`)) return false;
+      if (!diabetes.nephropathy && !ckdConcept && candidate.code.startsWith(`${prefix}.2`)) return false;
+      if (!hasKetoacidosis && candidate.code.startsWith(`${prefix}.1`)) return false;
+      if (!hasHyperosmolar && candidate.code.startsWith(`${prefix}.0`)) return false;
+      return true;
+    });
+  }
+
+  return { candidates: filtered, reorderedCodes, primaryCode };
 }
 
 function ensureUnique(codes: CandidateCode[]): CandidateCode[] {
@@ -540,6 +575,7 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
   const diabetesResult = applyDiabetesGuidelines(ctx, working, warnings);
   working = diabetesResult.candidates;
   reorderedCodes.push(...diabetesResult.reorderedCodes);
+  const diabeticPrimaryCode = diabetesResult.primaryCode;
 
   working = applyNeuropathyRules(ctx, working, warnings);
 
@@ -563,6 +599,12 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
 
   if (preferredHypertensionCode) {
     reorderedCodes.unshift(preferredHypertensionCode);
+  }
+
+  if (diabeticPrimaryCode && /\.4\d?/.test(diabeticPrimaryCode)) {
+    const withoutPrimary = reorderedCodes.filter((code) => code !== diabeticPrimaryCode);
+    reorderedCodes.length = 0;
+    reorderedCodes.push(diabeticPrimaryCode, ...withoutPrimary);
   }
 
   // Remove essential hypertension when HF or CKD present

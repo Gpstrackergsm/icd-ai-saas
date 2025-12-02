@@ -108,11 +108,24 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
     diabetesAttributes.nephropathy = nephropathy || undefined;
     diabetesAttributes.ckdStage = ckdFromText.stage;
 
+    const neuropathyTriggers =
+      /neuropathy|polyneuropathy|neuropathic pain|nerve damage|peripheral neuropathy/.test(normalized);
     const diabeticNeuropathySignal =
       /diabetic (poly)?neuropathy/.test(normalized) || /neuropathic pain due to diabetes/.test(normalized);
-    const neuropathy =
-      diabeticNeuropathySignal || /neuropathy|polyneuropathy|neuropathic pain/.test(normalized);
+    const neuropathy = diabeticNeuropathySignal || neuropathyTriggers;
+    const neuropathyType: ParsedDiabetesAttributes['neuropathyType'] = /polyneuropathy|peripheral neuropathy/.test(normalized)
+      ? 'polyneuropathy'
+      : /mononeuropathy/.test(normalized)
+        ? 'mononeuropathy'
+        : /autonomic neuropathy/.test(normalized)
+          ? 'autonomic'
+          : /amyotrophy/.test(normalized)
+            ? 'amyotrophy'
+            : neuropathy
+              ? 'unspecified'
+              : undefined;
     diabetesAttributes.neuropathy = neuropathy || undefined;
+    diabetesAttributes.neuropathyType = neuropathyType;
 
     const angio = /peripheral angiopathy|peripheral artery disease|pad|pvd/.test(normalized);
     if (angio) {
@@ -392,7 +405,7 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
     });
   }
 
-  const neuropathyMention = /neuropathy|polyneuropathy|neuropathic pain/.test(normalized);
+  const neuropathyMention = /neuropathy|polyneuropathy|neuropathic pain|nerve damage|peripheral neuropathy/.test(normalized);
   if (neuropathyMention && !hasDiabetesInText) {
     concepts.push({
       raw: text,
