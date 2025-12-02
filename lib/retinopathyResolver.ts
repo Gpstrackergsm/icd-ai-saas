@@ -12,14 +12,13 @@ function codeForSeverity(prefix: DiabetesType, stage?: DiabetesAttributes['stage
     return macular ? `${prefix}.311` : `${prefix}.319`;
   }
 
-  const mac = macular ? '1' : '9';
   switch (stage) {
     case 'mild-npdr':
       return macular ? `${prefix}.311` : `${prefix}.319`;
     case 'moderate-npdr':
       return macular ? `${prefix}.321` : `${prefix}.329`;
     case 'severe-npdr':
-      return macular ? `${prefix}.331` : `${prefix}.339`;
+      return macular ? `${prefix}.341` : `${prefix}.349`;
     case 'pdr':
       return macular ? `${prefix}.351` : `${prefix}.359`;
     case 'traction-detachment':
@@ -27,7 +26,7 @@ function codeForSeverity(prefix: DiabetesType, stage?: DiabetesAttributes['stage
     case 'combined-detachment':
       return `${prefix}.353`;
     default:
-      return `${prefix}.3${mac}`;
+      return macular ? `${prefix}.311` : `${prefix}.319`;
   }
 }
 
