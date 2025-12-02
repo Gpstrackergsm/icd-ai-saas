@@ -4,6 +4,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const MAX_TEXT_LENGTH = 500;
+
 let icdModule;
 let encoderModule;
 
@@ -36,8 +38,8 @@ function sendJson(res, status, payload) {
   res.end(JSON.stringify(payload));
 }
 
-function validationError(res, message) {
-  return sendJson(res, 400, { success: false, error: { message } });
+function sendError(res, status, message, code) {
+  return sendJson(res, status, { success: false, error: { message, code } });
 }
 
 async function parseBody(req) {
@@ -60,53 +62,72 @@ function ensureObjectBody(body) {
 }
 
 module.exports = async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return sendJson(res, 405, { success: false, error: { message: 'Method not allowed' } });
-  }
-
-  let modules;
   try {
-    modules = loadRuntimeModules();
+    if (req.method !== 'POST') {
+      return sendError(res, 405, 'Method not allowed', 'BAD_REQUEST');
+    }
+
+    let modules;
+    try {
+      modules = loadRuntimeModules();
+    } catch (err) {
+      return sendError(res, 500, 'Internal error', 'INTERNAL_ERROR');
+    }
+
+    let body;
+    try {
+      body = req.body ?? (await parseBody(req));
+    } catch (err) {
+      return sendError(res, 400, 'Invalid JSON body', 'BAD_REQUEST');
+    }
+
+    if (!ensureObjectBody(body)) {
+      return sendError(res, 400, 'Request body must be a JSON object', 'BAD_REQUEST');
+    }
+
+    const rawText = body.text;
+    if (rawText === undefined || rawText === null) {
+      return sendError(res, 400, 'text is required', 'BAD_REQUEST');
+    }
+
+    if (typeof rawText !== 'string') {
+      return sendError(res, 400, 'text must be a string', 'BAD_REQUEST');
+    }
+
+    const text = rawText.trim();
+    if (!text) {
+      return sendError(res, 400, 'text cannot be empty', 'BAD_REQUEST');
+    }
+
+    if (text.length > MAX_TEXT_LENGTH) {
+      return sendError(res, 400, `text is too long (max ${MAX_TEXT_LENGTH} characters)`, 'BAD_REQUEST');
+    }
+
+    try {
+      await modules.icdModule.initIcdData();
+      const output = modules.encoderModule.encodeDiagnosisText(text, { debug: Boolean(body.debug) });
+      const codes = Array.isArray(output?.codes)
+        ? output.codes.map((code) => ({
+            code: code.code,
+            score: typeof code.score === 'number' ? Number(code.score) : 0,
+            isPrimary: Boolean(code.isPrimary),
+          }))
+        : [];
+
+      return sendJson(res, 200, {
+        success: true,
+        data: {
+          text,
+          codes,
+          warnings: Array.isArray(output?.warnings) ? output.warnings : [],
+        },
+      });
+    } catch (err) {
+      console.error('Encode handler failed:', err);
+      return sendError(res, 500, 'Internal error', 'INTERNAL_ERROR');
+    }
   } catch (err) {
-    return sendJson(res, 500, { success: false, error: { message: err.message || 'Missing runtime' } });
-  }
-
-  let body;
-  try {
-    body = req.body ?? (await parseBody(req));
-  } catch (err) {
-    return sendJson(res, 400, { success: false, error: { message: 'Invalid JSON body' } });
-  }
-
-  if (!ensureObjectBody(body)) {
-    return validationError(res, 'Request body must be a JSON object');
-  }
-
-  const rawText = body.text;
-  if (rawText === undefined || rawText === null) {
-    return validationError(res, 'text is required');
-  }
-
-  if (typeof rawText !== 'string') {
-    return validationError(res, 'text must be a string');
-  }
-
-  const text = rawText.trim();
-  if (!text) {
-    return validationError(res, 'text cannot be empty');
-  }
-
-  if (text.length > 2000) {
-    return validationError(res, 'text is too long (max 2000 characters)');
-  }
-
-  try {
-    await modules.icdModule.initIcdData();
-    const output = modules.encoderModule.encodeDiagnosisText(text, { debug: Boolean(body.debug) });
-    return sendJson(res, 200, { success: true, data: output });
-  } catch (err) {
-    console.error('Encode handler failed:', err);
-    const message = err?.message || 'Unexpected server error';
-    return sendJson(res, 500, { success: false, error: { message } });
+    console.error('Unexpected encode handler crash:', err);
+    return sendError(res, 500, 'Internal error', 'INTERNAL_ERROR');
   }
 };
