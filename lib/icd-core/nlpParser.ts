@@ -58,9 +58,9 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
 
   if (hasDiabetesInText) {
     const lateralityMatch =
-      normalized.match(/left eye|\bos\b|left\s+retina/)?.[0]
+      normalized.match(/left (eye|ankle|foot|heel|toe|leg)|\bos\b|left\s+retina/)?.[0]
         ? 'left'
-        : normalized.match(/right eye|\bod\b|right\s+retina/)?.[0]
+        : normalized.match(/right (eye|ankle|foot|heel|toe|leg)|\bod\b|right\s+retina/)?.[0]
           ? 'right'
           : normalized.match(/bilateral|both eyes/)?.[0]
             ? 'bilateral'
@@ -87,20 +87,21 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
     diabetesAttributes.uncontrolled =
       /poorly controlled|uncontrolled|hyperglycemia/.test(normalized) || undefined;
     const hasHypoglycemia = /hypoglycemia/.test(normalized);
+    const comaRegex = /(?:with|in)\s+coma|\bcoma\b/;
     diabetesAttributes.hypoglycemia = hasHypoglycemia
-      ? { present: true, withComa: /with\s+coma/.test(normalized) }
+      ? { present: true, withComa: comaRegex.test(normalized) }
       : { present: false };
     const hasKetoacidosis = /ketoacidosis|\bDKA\b/.test(normalized);
     diabetesAttributes.ketoacidosis = hasKetoacidosis
       ? {
-          present: true,
-          withComa: /with\s+coma/.test(normalized),
-          withHyperosmolarity: /hyperosmolar/.test(normalized),
-        }
+        present: true,
+        withComa: comaRegex.test(normalized),
+        withHyperosmolarity: /hyperosmolar/.test(normalized),
+      }
       : { present: false };
     const hasHyperosmolar = /hyperosmolar/.test(normalized);
     diabetesAttributes.hyperosmolarity = hasHyperosmolar
-      ? { present: true, withComa: /with\s+coma/.test(normalized) }
+      ? { present: true, withComa: comaRegex.test(normalized) }
       : { present: false };
 
     const ckdFromText = parseCkdStage(normalized);
@@ -158,7 +159,11 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
       };
     }
 
-    diabetesAttributes.footUlcer = /diabetic (foot|toe|heel) ulcer|foot ulcer/.test(normalized) || undefined;
+    const ulcerSiteMatch = normalized.match(/(?:foot|toe|heel|ankle|calf|lower leg) ulcer|ulcer.*(?:on|of).*(?:foot|toe|heel|ankle|calf|lower leg)/);
+    diabetesAttributes.footUlcer = Boolean(ulcerSiteMatch) || /diabetic (foot|toe|heel) ulcer|foot ulcer/.test(normalized) || undefined;
+    if (diabetesAttributes.footUlcer) {
+      diabetesAttributes.ulcerSite = normalized.match(/ankle/)?.[0] || normalized.match(/heel/)?.[0] || normalized.match(/toe/)?.[0] || normalized.match(/calf/)?.[0] || 'foot';
+    }
     diabetesAttributes.charcotJoint = /charcot|neuropathic arthropathy/.test(normalized) || undefined;
     diabetesAttributes.cataract = /diabetic cataract/.test(normalized) || undefined;
     diabetesAttributes.dueToUnderlyingCondition = diabetesAttributes.dueToUnderlyingCondition || /underlying condition/.test(normalized);

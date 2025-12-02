@@ -29,6 +29,20 @@ function mapCkdStageCode(stage?: string, ckdStage?: 1 | 2 | 3 | 4 | 5 | 'ESRD') 
   return 'N18.9';
 }
 
+function mapUlcerCode(site: string, laterality?: string): string {
+  const lat = laterality === 'right' ? '1' : laterality === 'left' ? '2' : '0';
+  // Default severity to 9 (unspecified)
+  const severity = '9';
+
+  let sub = '9'; // Unspecified part of lower leg
+  if (site === 'ankle') sub = '3';
+  else if (site === 'heel') sub = '4';
+  else if (site === 'toe' || site === 'foot') sub = '5'; // Other part of foot
+  else if (site === 'calf') sub = '2';
+
+  return `L97.${sub}${lat}${severity}`;
+}
+
 function deriveDiabetesPrefix(diabetesConcept?: any): string {
   const diabetes = diabetesConcept?.attributes?.diabetes;
   if (diabetes?.dueToUnderlyingCondition) return 'E08';
@@ -469,10 +483,11 @@ function applyDiabetesGuidelines(
   }
 
   if (diabetes.footUlcer) {
+    const ulcerCode = mapUlcerCode(diabetes.ulcerSite || 'foot', diabetesConcept.attributes.laterality);
     filtered.push({
-      code: 'L97.409',
-      reason: 'Diabetic foot ulcer requires additional site code',
-      baseScore: 6,
+      code: ulcerCode,
+      reason: 'Diabetic ulcer with site/laterality',
+      baseScore: 8,
       conceptRefs: [diabetesConcept.raw],
       guidelineRule: 'diabetes_foot_ulcer',
     });
