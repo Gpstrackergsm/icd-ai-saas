@@ -53,6 +53,37 @@ function deriveDiabetesPrefix(diabetesConcept?: any): string {
   return 'E11';
 }
 
+function mapHeartFailureCode(type?: string, acuity?: string): string {
+  // Systolic heart failure
+  if (type === 'systolic') {
+    if (acuity === 'acute') return 'I50.21';
+    if (acuity === 'chronic') return 'I50.22';
+    if (acuity === 'acute_on_chronic') return 'I50.23';
+    return 'I50.20';
+  }
+
+  // Diastolic heart failure
+  if (type === 'diastolic') {
+    if (acuity === 'acute') return 'I50.31';
+    if (acuity === 'chronic') return 'I50.32';
+    if (acuity === 'acute_on_chronic') return 'I50.33';
+    return 'I50.30';
+  }
+
+  // Combined systolic and diastolic
+  if (type === 'combined') {
+    if (acuity === 'acute') return 'I50.41';
+    if (acuity === 'chronic') return 'I50.42';
+    if (acuity === 'acute_on_chronic') return 'I50.43';
+    return 'I50.40';
+  }
+
+  // Unspecified heart failure
+  if (acuity === 'acute') return 'I50.9';
+  if (acuity === 'chronic') return 'I50.9';
+  return 'I50.9';
+}
+
 interface RankedCandidate extends CandidateCode {
   score: number;
   source: string;
@@ -256,6 +287,7 @@ function applyRespiratoryRules(
   const hasAsthmaConcept = ctx.concepts.some((c) => c.type === 'asthma');
   const copdConcept = ctx.concepts.find((c) => c.type === 'copd');
   const asthmaConcept = ctx.concepts.find((c) => c.type === 'asthma');
+  const pneumoniaConcept = ctx.concepts.find((c) => c.type === 'symptom' && c.normalized.includes('pneumonia'));
 
   const copdCandidates = working.filter((c) => c.code.startsWith('J44'));
   const asthmaCandidates = working.filter((c) => c.code.startsWith('J45'));
@@ -280,22 +312,171 @@ function applyRespiratoryRules(
     });
   }
 
-  const pneumoniaPresent = working.some((c) => /^J1[0-8]/.test(c.code));
-  working = working.map((candidate) => {
-    if (candidate.code.startsWith('J44.0') && !pneumoniaPresent) {
-      warnings.push('COPD with acute infection requires organism-specific pneumonia code; ensure documentation.');
+  // COPD with acute lower respiratory infection
+  if (copdConcept?.attributes.hasAcuteLowerRespInfection) {
+    working.push({
+      code: 'J44.0',
+      reason: 'COPD with acute lower respiratory infection',
+      baseScore: 10,
+      conceptRefs: [copdConcept.raw],
+      guidelineRule: 'copd_with_infection',
+    });
+
+    // REQUIRE organism-specific pneumonia code
+    const organism = pneumoniaConcept?.attributes.pneumoniaOrganism || copdConcept.attributes.pneumoniaOrganism;
+
+    if (!organism) {
+      warnings.push('COPD with acute infection requires organism-specific pneumonia code (J12-J18); defaulting to J18.9');
+      working.push({
+        code: 'J18.9',
+        reason: 'Unspecified pneumonia (default)',
+        baseScore: 6,
+        conceptRefs: [copdConcept.raw],
+        guidelineRule: 'pneumonia_unspecified',
+      });
+    } else {
+      // Map organism to specific code
+      const organismMap: Record<string, string> = {
+        'streptococcus': 'J13',
+        'klebsiella': 'J15.0',
+        'pseudomonas': 'J15.1',
+        'staphylococcus': 'J15.2',
+        'staph': 'J15.2',
+        'haemophilus': 'J14',
+        'viral': 'J12.9',
+        'fungal': 'J18.1',
+        'unspecified': 'J18.9',
+      };
+
+      const pneumoniaCode = organismMap[organism] || 'J18.9';
+      working.push({
+        code: pneumoniaCode,
+        reason: `Pneumonia organism: ${organism}`,
+        baseScore: 8,
+        conceptRefs: [pneumoniaConcept?.raw || copdConcept.raw],
+        guidelineRule: 'pneumonia_organism',
+      });
     }
+
+    // Remove generic COPD codes
+    working = working.filter((c) => !['J44.9', 'J44.1'].includes(c.code));
+  } else if (copdConcept?.attributes.hasAcuteExacerbation) {
+    // COPD with acute exacerbation (no infection)
+    working.push({
+      code: 'J44.1',
+      reason: 'COPD with acute exacerbation',
+      baseScore: 9,
+      conceptRefs: [copdConcept.raw],
+      guidelineRule: 'copd_exacerbation',
+    });
+
+    working = working.filter((c) => c.code !== 'J44.9');
+  }
+
+  // Boost COPD codes
+  working = working.map((candidate) => {
     if (candidate.code.startsWith('J44')) {
       return { ...candidate, baseScore: Math.max(candidate.baseScore, 8) };
     }
     return candidate;
   });
 
+  // Asthma with status asthmaticus
+  if (asthmaConcept?.attributes.statusAsthmaticus) {
+    const severity = asthmaConcept.attributes.asthmaSeverity;
+    const severityMap: Record<string, string> = {
+      'mildIntermittent': 'J45.22',
+      'mildPersistent': 'J45.32',
+      'moderatePersistent': 'J45.42',
+      'severePersistent': 'J45.52',
+    };
+
+    const asthmaCode = severityMap[severity] || 'J45.902';
+    working.push({
+      code: asthmaCode,
+      reason: 'Asthma with status asthmaticus',
+      baseScore: 10,
+      conceptRefs: [asthmaConcept.raw],
+      guidelineRule: 'asthma_status_asthmaticus',
+    });
+
+    // Remove generic asthma codes
+    working = working.filter((c) => c.code !== 'J45.909');
+  }
+
   if (hasCOPDConcept && asthmaCandidates.some((c) => c.code === 'J45.909')) {
     working = working.filter((c) => c.code !== 'J45.909');
   }
 
   return working;
+}
+
+function applyNeoplasmGuidelines(
+  ctx: EncodingContext,
+  working: CandidateCode[],
+  warnings: string[],
+  errors: string[],
+): { candidates: CandidateCode[]; reorderedCodes: string[] } {
+  const neoplasmConcepts = ctx.concepts.filter((c) => c.type === 'neoplasm');
+  if (!neoplasmConcepts.length) return { candidates: working, reorderedCodes: [] };
+
+  const primaryConcepts = neoplasmConcepts.filter((n) => n.attributes.severity === 'primary');
+  const secondaryConcepts = neoplasmConcepts.filter((n) => n.attributes.severity === 'secondary');
+
+  const reorderedCodes: string[] = [];
+
+  // Validate laterality for sites that require it
+  primaryConcepts.forEach((primary) => {
+    const site = primary.attributes.primaryNeoplasmSite;
+    const laterality = primary.attributes.primaryNeoplasmLaterality;
+
+    if (['breast', 'lung', 'kidney', 'ovary'].includes(site)) {
+      if (!laterality || laterality === 'unspecified') {
+        warnings.push(`${site} cancer requires laterality specification (left/right/bilateral)`);
+      }
+    }
+  });
+
+  // Validate primary vs metastatic site conflict
+  if (secondaryConcepts.length && primaryConcepts.length) {
+    const metastaticSites = secondaryConcepts.flatMap((s) => s.attributes.metastaticSites || []);
+    const primarySites = primaryConcepts.map((p) => p.attributes.primaryNeoplasmSite);
+
+    metastaticSites.forEach((metSite) => {
+      if (primarySites.includes(metSite)) {
+        errors.push(`Primary site cannot equal metastatic site: ${metSite}. Clarify documentation.`);
+      }
+    });
+  }
+
+  // Sequence secondary before primary (ICD-10-CM guideline)
+  const secondaryCandidates = working.filter((c) => c.code.startsWith('C78') || c.code.startsWith('C79'));
+  const primaryCandidates = working.filter((c) =>
+    /^C(0[0-9]|1[0-9]|2[0-6]|3[0-9]|4[0-9]|5[0-8]|6[0-9]|7[0-6])/.test(c.code) &&
+    !c.code.startsWith('C78') &&
+    !c.code.startsWith('C79')
+  );
+
+  if (secondaryCandidates.length && primaryCandidates.length) {
+    // Remove both from working
+    working = working.filter((c) =>
+      !secondaryCandidates.includes(c) && !primaryCandidates.includes(c)
+    );
+
+    // Re-add in correct sequence: secondary first, then primary
+    working.unshift(...secondaryCandidates, ...primaryCandidates);
+    reorderedCodes.push(...secondaryCandidates.map((c) => c.code), ...primaryCandidates.map((c) => c.code));
+  }
+
+  // Remove unspecified secondary (C79.9) if specific secondary exists
+  const hasSpecificSecondary = working.some((c) =>
+    (c.code.startsWith('C78') || c.code.startsWith('C79')) && c.code !== 'C79.9'
+  );
+  if (hasSpecificSecondary) {
+    working = working.filter((c) => c.code !== 'C79.9');
+  }
+
+  return { candidates: working, reorderedCodes };
 }
 
 function pickPreferredCandidate(a: CandidateCode, b: CandidateCode): CandidateCode {
@@ -607,8 +788,20 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
   // Hypertension combination logic
   let preferredHypertensionCode: string | undefined;
   if (hasHypertension && hasHF && hasCKD) {
-    preferredHypertensionCode = 'I13.0';
+    // I13.0: HTN with HF and stage 1-4 CKD
+    // I13.2: HTN with HF and stage 5/ESRD CKD
+    const ckdStage = ckdConcept?.attributes.ckdStage;
+    preferredHypertensionCode = (ckdStage === 5 || ckdStage === 'ESRD') ? 'I13.2' : 'I13.0';
+
     markCandidate(preferredHypertensionCode, 'Hypertension with HF and CKD requires I13.x', 10, 'htn_hf_ckd_combo', ['hypertension', 'hf', 'ckd']);
+
+    // Add specific HF type code
+    const hfType = heartFailureConcept?.attributes.heartFailureType;
+    const hfAcuity = heartFailureConcept?.attributes.acuity;
+    const hfCode = mapHeartFailureCode(hfType, hfAcuity);
+    markCandidate(hfCode, 'Heart failure type detail', 9, 'hf_type_detail', ['hf']);
+
+    // Add CKD stage
     markCandidate(mapCkdStageCode(ckdConcept?.attributes.stage, ckdConcept?.attributes.ckdStage), 'CKD stage required', 9, 'ckd_stage_required', ['ckd']);
   } else if (hasHypertension && hasCKD && !hasHF) {
     preferredHypertensionCode =
@@ -620,6 +813,12 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
   } else if (hasHypertension && hasHF && !hasCKD) {
     preferredHypertensionCode = 'I11.0';
     markCandidate(preferredHypertensionCode, 'Hypertensive heart disease with HF requires I11.0', 9, 'htn_hf_combo', ['hypertension', 'hf']);
+
+    // Add specific HF type code
+    const hfType = heartFailureConcept?.attributes.heartFailureType;
+    const hfAcuity = heartFailureConcept?.attributes.acuity;
+    const hfCode = mapHeartFailureCode(hfType, hfAcuity);
+    markCandidate(hfCode, 'Heart failure type detail', 9, 'hf_type_detail', ['hf']);
   }
 
   if (preferredHypertensionCode) {
@@ -670,33 +869,10 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
     }
   }
 
-  // Neoplasm sequencing primary vs secondary
-  const hasSpecificSecondary = working.some((c) => (c.code.startsWith('C78') || c.code.startsWith('C79')) && c.code !== 'C79.9');
-  if (hasSpecificSecondary) {
-    working = working.filter((c) => c.code !== 'C79.9');
-  }
-  const neoplasmSecondary = working.find((c) => c.code.startsWith('C78') || c.code.startsWith('C79'));
-  const neoplasmPrimary = working.find((c) => c.code.startsWith('C18') || c.code.startsWith('C34') || c.code.startsWith('C50') || c.code.startsWith('C22'));
-  if (neoplasmSecondary && neoplasmPrimary) {
-    if (neoplasmSecondary.code.slice(0, 3) === neoplasmPrimary.code.slice(0, 3)) {
-      errors.push('Primary site cannot equal metastatic site; check documentation.');
-    }
-    working = working.filter((c) => ![neoplasmPrimary.code, neoplasmSecondary.code].includes(c.code));
-    working.unshift(neoplasmSecondary, neoplasmPrimary);
-    reorderedCodes.push(neoplasmSecondary.code, neoplasmPrimary.code);
-  }
-
-  const secondarySites = ctx.concepts
-    .filter((c) => c.type === 'neoplasm' && c.attributes.severity === 'secondary')
-    .flatMap((c) => c.attributes.metastaticSites || (c.attributes.site ? [c.attributes.site] : []))
-    .filter(Boolean) as string[];
-  const primarySites = ctx.concepts
-    .filter((c) => c.type === 'neoplasm' && c.attributes.severity === 'primary')
-    .map((c) => c.attributes.primaryNeoplasmSite || c.attributes.site)
-    .filter(Boolean) as string[];
-  if (primarySites.length && secondarySites.length && secondarySites.some((s) => primarySites.includes(s))) {
-    errors.push('Metastatic site must differ from primary; specify distinct primary and secondary locations.');
-  }
+  // Apply neoplasm guidelines
+  const neoplasmResult = applyNeoplasmGuidelines(ctx, working, warnings, errors);
+  working = neoplasmResult.candidates;
+  reorderedCodes.push(...neoplasmResult.reorderedCodes);
 
   // Pregnancy overrides endocrine/cardiac codes
   if (hasPregnancy) {
