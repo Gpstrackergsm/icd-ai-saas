@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "module": "commonjs",
+    "target": "es2019",
+    "moduleResolution": "Node",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "lib": ["ES2021"]
+  },
+  "include": ["lib/**/*", "api/**/*", "data/**/*", "public/**/*", "*.ts"],
+  "exclude": ["node_modules", "dist", "lib/icd-core/icdTextParser.ts"]
+}
