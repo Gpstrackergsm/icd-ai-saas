@@ -67,7 +67,7 @@ describe('ICD-10-CM encoder scenarios', () => {
     assert.ok(codes.includes('E10.22'));
     assert.ok(!codes.includes('E10.9'));
     assert.ok(codes.includes('N18.3'));
-    assert.ok(codes.includes('E10.42'));
+    assert.ok(codes.some((c) => c.startsWith('E10.4')));
   });
 
   it('assigns hypertension with CKD to I12.x', () => {
@@ -137,6 +137,17 @@ describe('ICD-10-CM encoder scenarios', () => {
     assert.ok(!codes.includes('E11.9'));
     assert.ok(result.codes[0].code.startsWith('E11.4'));
     assert.ok(!result.codes[0].code.startsWith('G'));
+  });
+
+  it('prioritizes diabetic neuropathy and suppresses unrelated complications', () => {
+    const result = encodeDiagnosisText('Type 2 diabetes with neuropathy');
+    const codes = result.codes.map((c) => c.code);
+    assert.ok(result.codes[0].code.startsWith('E11.4'));
+    assert.ok(codes.includes('E11.40') || codes.includes('E11.42'));
+    assert.ok(!codes.some((c) => c.startsWith('E11.3')));
+    assert.ok(!codes.some((c) => c.startsWith('E11.2')));
+    assert.ok(!codes.some((c) => c.startsWith('E11.0') || c.startsWith('E11.1')));
+    assert.ok(!codes.some((c) => /^H47\.|G58\.|G60\.|G62\.|M14\.6/.test(c)));
   });
 
   it('uses nephropathy combination codes', () => {

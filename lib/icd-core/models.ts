@@ -161,6 +161,12 @@ export interface ParsedDiabetesAttributes {
   nephropathy?: boolean;
   ckdStage?: string | undefined;
   neuropathy?: boolean;
+  neuropathyType?:
+    | "unspecified"
+    | "polyneuropathy"
+    | "mononeuropathy"
+    | "autonomic"
+    | "amyotrophy";
   peripheralAngiopathy?: {
     present: boolean;
     withGangrene?: boolean;
