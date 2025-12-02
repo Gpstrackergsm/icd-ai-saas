@@ -23,6 +23,13 @@ describe('ICD-10-CM encoder scenarios', () => {
     assert.deepEqual(result.warnings, []);
   });
 
+  it('codes diabetes with CKD stage 3b and stages CKD secondary', () => {
+    const result = encodeDiagnosisText('Type 2 diabetes with CKD stage 3b');
+    const codes = result.codes.map((c) => c.code);
+    assert.equal(codes[0], 'E11.22');
+    assert.ok(codes.includes('N18.32'));
+  });
+
   it('codes hypertension with CKD stage 3 per guidelines', () => {
     const result = encodeDiagnosisText('Hypertension with chronic kidney disease stage 3');
     const codes = result.codes.map((c) => c.code);
@@ -37,6 +44,13 @@ describe('ICD-10-CM encoder scenarios', () => {
     assert.ok(codes.includes('I11.0'));
     assert.ok(codes.some((c) => c.startsWith('I50.')));
     assert.ok(!codes.includes('I10'));
+  });
+
+  it('sequences hypertensive heart disease with HF correctly', () => {
+    const result = encodeDiagnosisText('Hypertensive heart disease with heart failure');
+    const codes = result.codes.map((c) => c.code);
+    assert.equal(codes[0], 'I11.0');
+    assert.ok(codes.some((c) => c.startsWith('I50.')));
   });
 
   it('codes hypertension with heart failure and CKD to combination rules', () => {
@@ -85,6 +99,14 @@ describe('ICD-10-CM encoder scenarios', () => {
     assert.ok(codes.includes('I13.0'));
     assert.ok(codes.includes('I50.9'));
     assert.ok(codes.includes('N18.5'));
+  });
+
+  it('sequences hypertensive heart + CKD + HF with correct staging', () => {
+    const result = encodeDiagnosisText('hypertensive heart and chronic kidney disease with heart failure stage 4 CKD');
+    const codes = result.codes.map((c) => c.code);
+    assert.equal(codes[0], 'I13.0');
+    assert.ok(codes.some((c) => c.startsWith('I50.')));
+    assert.ok(codes.includes('N18.4'));
   });
 
   it('prioritizes hypertensive heart and CKD combinations and removes conflicting hypertension codes', () => {
@@ -165,6 +187,12 @@ describe('ICD-10-CM encoder scenarios', () => {
     assert.ok(!result.codes.some((c) => c.code.startsWith('I70')));
   });
 
+  it('prioritizes diabetic gangrene code when documented', () => {
+    const result = encodeDiagnosisText('Type 2 diabetes with peripheral angiopathy and gangrene');
+    const codes = result.codes.map((c) => c.code);
+    assert.equal(codes[0], 'E11.52');
+  });
+
   it('codes diabetic retinopathy without macular edema', () => {
     const result = encodeDiagnosisText('Type 2 diabetes with diabetic retinopathy without macular edema');
     assert.ok(result.codes.some((c) => c.code === 'E11.319'));
@@ -205,6 +233,13 @@ describe('ICD-10-CM encoder scenarios', () => {
     const result = encodeDiagnosisText('Type 2 diabetes with diabetic neuropathic arthropathy (Charcot joint)');
     assert.ok(result.codes.some((c) => c.code === 'E11.610'));
     assert.ok(!result.codes.some((c) => c.code === 'M14.6'));
+  });
+
+  it('codes diabetic Charcot foot with the diabetic manifestation first', () => {
+    const result = encodeDiagnosisText('Type 2 diabetes with Charcot foot');
+    const codes = result.codes.map((c) => c.code);
+    assert.equal(codes[0], 'E11.610');
+    assert.ok(!codes.includes('M14.6'));
   });
 
   it('excludes generic Charcot joint codes in favor of diabetic Charcot manifestations', () => {
@@ -313,6 +348,13 @@ describe('ICD-10-CM encoder scenarios', () => {
     assert.ok(codes.includes('C18.9'));
   });
 
+  it('prioritizes metastatic liver cancer over colon primary', () => {
+    const result = encodeDiagnosisText('Secondary liver cancer from colon');
+    const codes = result.codes.map((c) => c.code);
+    assert.equal(codes[0], 'C78.7');
+    assert.ok(codes.includes('C18.9'));
+  });
+
   it('codes bone metastasis with prostate primary', () => {
     const result = encodeDiagnosisText('Bone metastasis from prostate cancer');
     const codes = result.codes.map((c) => c.code);
@@ -350,6 +392,32 @@ describe('ICD-10-CM encoder scenarios', () => {
     assert.ok(result.codes.some((c) => c.code.endsWith('D')));
   });
 
+  it('codes right femur shaft fracture with initial encounter extension', () => {
+    const result = applyGuidelineRules({
+      concepts: [],
+      initialCandidates: [
+        { code: 'S72.301A', reason: 'right femur shaft fracture initial encounter', baseScore: 8, conceptRefs: [] },
+        { code: 'W19.XXXA', reason: 'fall from unspecified height', baseScore: 3, conceptRefs: [] },
+      ],
+    });
+    const codes = result.finalCandidates.map((c) => c.code);
+    assert.equal(codes[0], 'S72.301A');
+    assert.ok(codes.includes('W19.XXXA'));
+  });
+
+  it('codes dog bite of left forearm with external cause', () => {
+    const result = applyGuidelineRules({
+      concepts: [],
+      initialCandidates: [
+        { code: 'S51.851A', reason: 'dog bite of left forearm initial encounter', baseScore: 8, conceptRefs: [] },
+        { code: 'W54.0XXA', reason: 'external cause dog bite initial encounter', baseScore: 6, conceptRefs: [] },
+      ],
+    });
+    const codes = result.finalCandidates.map((c) => c.code);
+    assert.equal(codes[0], 'S51.851A');
+    assert.ok(codes.includes('W54.0XXA'));
+  });
+
   it('keeps COPD separated from asthma', () => {
     const result = encodeDiagnosisText('COPD with acute exacerbation and asthma history');
     const codes = result.codes.map((c) => c.code);
@@ -369,10 +437,22 @@ describe('ICD-10-CM encoder scenarios', () => {
     assert.ok(codes.includes('J44.1'));
   });
 
+  it('codes COPD with acute exacerbation with COPD code first', () => {
+    const result = encodeDiagnosisText('COPD with acute exacerbation');
+    const codes = result.codes.map((c) => c.code);
+    assert.equal(codes[0], 'J44.1');
+  });
+
   it('codes moderate persistent asthma with acute exacerbation', () => {
     const result = encodeDiagnosisText('Moderate persistent asthma with acute exacerbation');
     const codes = result.codes.map((c) => c.code);
     assert.ok(codes.includes('J45.41'));
+  });
+
+  it('sequences moderate persistent asthma with exacerbation first', () => {
+    const result = encodeDiagnosisText('Asthma, moderate persistent, with acute exacerbation');
+    const codes = result.codes.map((c) => c.code);
+    assert.equal(codes[0], 'J45.41');
   });
 
   it('codes severe persistent asthma with status asthmaticus', () => {
@@ -386,6 +466,17 @@ describe('ICD-10-CM encoder scenarios', () => {
     const codes = result.codes.map((c) => c.code);
     assert.ok(codes.includes('I21.9'));
     assert.ok(codes.includes('I50.9'));
+  });
+
+  it('codes NSTEMI to I21.4', () => {
+    const result = applyGuidelineRules({
+      concepts: [],
+      initialCandidates: [
+        { code: 'I21.4', reason: 'NSTEMI documented', baseScore: 9, conceptRefs: [] },
+      ],
+    });
+    const codes = result.finalCandidates.map((c) => c.code);
+    assert.equal(codes[0], 'I21.4');
   });
 
   it('handles COPD with pneumonia', () => {
