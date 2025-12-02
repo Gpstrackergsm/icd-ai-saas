@@ -173,6 +173,7 @@ function applyNeuropathyRules(
 
   const diabeticNeuropathyCandidates = working.filter((c) => isDiabeticNeuropathyCode(c.code));
   const genericNeuropathyCandidates = working.filter((c) => isGenericNeuropathyCode(c.code));
+  const hasDiabeticNeuropathyCode = diabeticNeuropathyCandidates.length > 0;
 
   if (hasDiabetes && diabeticNeuropathyContext) {
     if (genericNeuropathyCandidates.length) {
@@ -182,6 +183,15 @@ function applyNeuropathyRules(
     // Allow neurologic codes to remain; no action needed.
   } else if (genericNeuropathyCandidates.length && diabeticNeuropathyCandidates.length === 0 && hasDiabetes) {
     warnings.push('Neuropathy described with diabetes; consider diabetic neuropathy codes.');
+  }
+
+  if (hasDiabeticNeuropathyCode && !hasNonDiabeticNeuropathyConcept) {
+    working = working.filter((candidate) => !isGenericNeuropathyCode(candidate.code));
+    working = working.map((candidate) =>
+      isDiabeticNeuropathyCode(candidate.code)
+        ? { ...candidate, baseScore: Math.max(candidate.baseScore, 12), guidelineRule: candidate.guidelineRule || 'diabetic_neuropathy_priority' }
+        : candidate,
+    );
   }
 
   // Resolve Excludes1 conflicts between diabetic neuropathy and neurologic codes

@@ -150,6 +150,18 @@ describe('ICD-10-CM encoder scenarios', () => {
     assert.ok(!codes.some((c) => /^H47\.|G58\.|G60\.|G62\.|M14\.6/.test(c)));
   });
 
+  it('hard-codes diabetic neuropathy as the primary diabetes manifestation', () => {
+    const result = encodeDiagnosisText('Type 2 diabetes with neuropathy');
+    const codes = result.codes.map((c) => c.code);
+    assert.ok(result.codes[0].code === 'E11.40' || result.codes[0].code === 'E11.42');
+    assert.ok(!codes.some((c) => c.startsWith('E11.3')));
+    assert.ok(!codes.some((c) => c.startsWith('E11.2')));
+    assert.ok(!codes.some((c) => c.startsWith('E11.0') || c.startsWith('E11.1')));
+    assert.ok(!codes.some((c) => c.startsWith('H47.')));
+    assert.ok(!codes.some((c) => c.startsWith('N18.')));
+    assert.ok(!codes.includes('M14.6'));
+  });
+
   it('uses nephropathy combination codes', () => {
     const result = encodeDiagnosisText('type 2 diabetes with nephropathy');
     const codes = result.codes.map((c) => c.code);
