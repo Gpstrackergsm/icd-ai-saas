@@ -9,7 +9,7 @@ import { before, describe, it } from 'node:test';
 
 import { encodeDiagnosisText } from '../encoder';
 import { applyGuidelineRules } from '../rulesEngine';
-import { initIcdData } from '../dataSource';
+import { getICDEntry, initIcdData } from '../dataSource';
 
 before(async () => {
   await initIcdData();
@@ -171,10 +171,70 @@ describe('ICD-10-CM encoder scenarios', () => {
     assert.ok(!result.codes.some((c) => c.code.startsWith('H36')));
   });
 
+  it('drops generic H36 retinopathy codes when diabetic retinopathy applies', () => {
+    const diabetesConcept = {
+      raw: 'diabetes with retinopathy',
+      type: 'diabetes',
+      attributes: {
+        diabetesType: 'type2',
+        diabetes: {
+          subtype: 'E11',
+          retinopathy: { present: true, severity: 'unspecified' },
+          hyperosmolarity: { present: false },
+          ketoacidosis: { present: false },
+          hypoglycemia: { present: false },
+        },
+      },
+    } as const;
+
+    const result = applyGuidelineRules({
+      concepts: [diabetesConcept],
+      initialCandidates: [
+        { code: 'E11.9', reason: 'diabetes unspecified', baseScore: 5, conceptRefs: [diabetesConcept.raw] },
+        { code: 'H36.0', reason: 'generic retinopathy', baseScore: 5, conceptRefs: [diabetesConcept.raw] },
+      ],
+    });
+
+    const codes = result.finalCandidates.map((c) => c.code);
+    assert.ok(codes.some((code) => code.startsWith('E11.3')));
+    assert.ok(!codes.some((code) => code.startsWith('H36')));
+    assert.deepEqual(result.removedCodes, ['E11.9', 'H36.0']);
+  });
+
   it('codes diabetic neuropathic arthropathy', () => {
     const result = encodeDiagnosisText('Type 2 diabetes with diabetic neuropathic arthropathy (Charcot joint)');
     assert.ok(result.codes.some((c) => c.code === 'E11.610'));
     assert.ok(!result.codes.some((c) => c.code === 'M14.6'));
+  });
+
+  it('excludes generic Charcot joint codes in favor of diabetic Charcot manifestations', () => {
+    const diabetesConcept = {
+      raw: 'type 2 diabetes with Charcot joint',
+      type: 'diabetes',
+      attributes: {
+        diabetesType: 'type2',
+        diabetes: {
+          subtype: 'E11',
+          charcotJoint: true,
+          hyperosmolarity: { present: false },
+          ketoacidosis: { present: false },
+          hypoglycemia: { present: false },
+        },
+      },
+    } as const;
+
+    const result = applyGuidelineRules({
+      concepts: [diabetesConcept],
+      initialCandidates: [
+        { code: 'E11.9', reason: 'diabetes without specified manifestation', baseScore: 5, conceptRefs: [diabetesConcept.raw] },
+        { code: 'M14.6', reason: 'generic neuropathic arthropathy', baseScore: 5, conceptRefs: [diabetesConcept.raw] },
+      ],
+    });
+
+    const codes = result.finalCandidates.map((c) => c.code);
+    assert.ok(codes.includes('E11.610'));
+    assert.ok(!codes.includes('M14.6'));
+    assert.deepEqual(result.removedCodes, ['E11.9', 'M14.6']);
   });
 
   it('prefers diabetic neuropathy codes over generic neuropathy codes when diabetes present', () => {
@@ -362,6 +422,28 @@ describe('ICD-10-CM encoder scenarios', () => {
   it('ensures hyperosmolar events rank highly', () => {
     const result = encodeDiagnosisText('type 2 diabetes with hyperosmolar state and CKD stage 3');
     assert.ok(result.codes[0].code.startsWith('E11.00'));
+  });
+
+  it('boosts ICD codes when Includes text matches the documentation', () => {
+    const entry = getICDEntry('A00');
+    const originalIncludes = entry?.includes;
+    if (entry) entry.includes = ['cholera infection'];
+
+    const ctx = {
+      concepts: [],
+      initialCandidates: [
+        { code: 'A00', reason: 'cholera infection noted', baseScore: 5, conceptRefs: ['cholera infection'] },
+        { code: 'A00.9', reason: 'cholera infection noted', baseScore: 5, conceptRefs: ['cholera infection'] },
+      ],
+    } as const;
+
+    const result = applyGuidelineRules(ctx);
+    const boosted = result.finalCandidates.find((candidate) => candidate.code === 'A00');
+    const similar = result.finalCandidates.find((candidate) => candidate.code === 'A00.9');
+
+    assert.ok(boosted && similar && boosted.baseScore > similar.baseScore);
+
+    if (entry) entry.includes = originalIncludes;
   });
 
   it('keeps COPD and MI separate to avoid crash', () => {
