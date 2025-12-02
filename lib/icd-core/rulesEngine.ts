@@ -5,7 +5,15 @@
 // Responsibility: Apply ICD-10-CM style guideline rules and sequencing
 
 import type { CandidateCode, EncodingContext, RuleResult } from './models.ts';
-import { getChapterForCode, getExcludes1Codes } from './dataSource';
+import {
+  extractCodesFromText,
+  getChapterForCode,
+  getExcludes1Codes,
+  getExcludes2Codes,
+  getIncludesStrings,
+  getNotesStrings,
+  getRulesStrings,
+} from './dataSource';
 
 function mapCkdStageCode(stage?: string, ckdStage?: 1 | 2 | 3 | 4 | 5 | 'ESRD') {
   if (ckdStage === 'ESRD' || stage === 'ESRD') return 'N18.6';
@@ -114,6 +122,91 @@ function applyNeuropathyRules(
       if (chapter && nervousSystemChapters.has(chapter) && candidate.code.startsWith('M14.6')) return false;
       return true;
     });
+  }
+
+  return working;
+}
+
+function pickPreferredCandidate(a: CandidateCode, b: CandidateCode): CandidateCode {
+  if (a.baseScore !== b.baseScore) return a.baseScore > b.baseScore ? a : b;
+  if (a.code.length !== b.code.length) return a.code.length > b.code.length ? a : b;
+  return a;
+}
+
+function collectGuidanceCodes(code: string): string[] {
+  const relatedText = [
+    ...getIncludesStrings(code),
+    ...getRulesStrings(code).filter((entry) => /code\s+(also|first)|use additional code/i.test(entry)),
+    ...getNotesStrings(code).filter((entry) => /(includes|code\s+(also|first)|use additional code)/i.test(entry)),
+  ];
+
+  const collected = new Set<string>();
+  relatedText.forEach((entry) => {
+    extractCodesFromText(entry).forEach((code) => collected.add(code));
+  });
+
+  return Array.from(collected);
+}
+
+function applyInclusionExclusionGuidance(
+  working: CandidateCode[],
+  pushWarning: (message: string) => void,
+  markCandidate: (code: string, reason: string, baseScore: number, rule: string, refs: string[]) => void,
+): CandidateCode[] {
+  const existing = new Map<string, CandidateCode>(working.map((c) => [c.code, c]));
+  const removals = new Set<string>();
+  const snapshot = [...working];
+
+  snapshot.forEach((candidate) => {
+    const excludes1 = getExcludes1Codes(candidate.code);
+    excludes1.forEach((excludedCode) => {
+      const conflict = existing.get(excludedCode);
+      if (conflict) {
+        const preferred = pickPreferredCandidate(candidate, conflict);
+        const toDrop = preferred === candidate ? conflict : candidate;
+        if (toDrop) {
+          removals.add(toDrop.code);
+          pushWarning(`Removed ${toDrop.code} because it conflicts with ${preferred.code} (Excludes1).`);
+        }
+      }
+    });
+
+    const excludes2 = getExcludes2Codes(candidate.code);
+    excludes2.forEach((excludedCode) => {
+      if (existing.has(excludedCode)) {
+        pushWarning(
+          `${candidate.code} has Excludes2 guidance with ${excludedCode}; ensure conditions are unrelated if both are coded.`,
+        );
+      }
+    });
+
+    const guidanceCodes = collectGuidanceCodes(candidate.code);
+    const missingGuidanceCodes = guidanceCodes.filter((code) => {
+      if (existing.has(code)) return false;
+      const root = code.slice(0, 3);
+      return !working.some((c) => c.code.toUpperCase().startsWith(root));
+    });
+    if (missingGuidanceCodes.length === 1) {
+      const supportCode = missingGuidanceCodes[0];
+      markCandidate(
+        supportCode,
+        `Added ${supportCode} because ${candidate.code} carries an ICD guidance note requiring additional coding.`,
+        Math.max(4, candidate.baseScore - 1),
+        'icd_guidance',
+        candidate.conceptRefs || [],
+      );
+      pushWarning(`${candidate.code} requires additional code ${supportCode}; added per ICD guidance.`);
+      const added = working.find((c) => c.code === supportCode);
+      if (added) existing.set(supportCode, added);
+    } else if (missingGuidanceCodes.length > 1) {
+      pushWarning(
+        `${candidate.code} requires additional related codes (${missingGuidanceCodes.join(', ')}); select the appropriate one based on documentation.`,
+      );
+    }
+  });
+
+  if (removals.size) {
+    working = working.filter((candidate) => !removals.has(candidate.code));
   }
 
   return working;
@@ -295,6 +388,10 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
     addedCodes.push(candidate);
   };
 
+  const pushWarning = (message: string) => {
+    if (!warnings.includes(message)) warnings.push(message);
+  };
+
   const removeCodes = (codesToRemove: string[], reason?: string) => {
     const before = working.length;
     working = working.filter((candidate) => !codesToRemove.includes(candidate.code));
@@ -366,6 +463,8 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
       removeCodes(['N18.9'], 'Dropped unspecified CKD because staged CKD is documented.');
     }
   }
+
+  working = applyInclusionExclusionGuidance(working, pushWarning, markCandidate);
 
   // Pregnancy overrides endocrine/cardiac codes
   if (hasPregnancy) {

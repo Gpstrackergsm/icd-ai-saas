@@ -15,6 +15,20 @@ interface SampleData {
   indexTerms: IcdIndexTerm[];
 }
 
+export interface ICDEntry {
+  code: string;
+  title?: string;
+  chapter?: string;
+  block?: string;
+  type?: string;
+  includes?: string[];
+  excludes1?: string[];
+  excludes2?: string[];
+  notes?: string[];
+  rules?: string[];
+  children?: string[];
+}
+
 interface IndexedCode {
   entry: IcdCode;
   codeUpper: string;
@@ -40,6 +54,7 @@ let initialized = false;
 let loadingPromise: Promise<void> | null = null;
 let resolvedDataPath: string | undefined;
 let icdMasterCache: SampleData | null = null;
+let icdMasterMap: Record<string, ICDEntry> | null = null;
 
 const MASTER_DATA_FILE = 'icd-master.json';
 
@@ -90,6 +105,46 @@ function readJson(filePath: string): any {
   } catch (error: any) {
     throw new Error(`Failed to parse ICD data at ${filePath}: ${error?.message || error}`);
   }
+}
+
+export function extractCodesFromText(text: string): string[] {
+  const results = new Set<string>();
+
+  const sanitized = text
+    .replace(/([A-Z]\d{2}\.[A-Z0-9]{1,4})(?=[A-Z]\d)/gi, '$1 ')
+    .replace(/([A-Z]\d{2})(?=[A-Z]\d)/gi, '$1 ');
+
+  const rangePattern = /([A-Z]\d{2}(?:\.[A-Z0-9]+)?)[\-–]([A-Z]\d{2}(?:\.[A-Z0-9]+)?)/gi;
+  let rangeMatch: RegExpExecArray | null;
+  while ((rangeMatch = rangePattern.exec(sanitized))) {
+    const [start, end] = [rangeMatch[1].toUpperCase(), rangeMatch[2].toUpperCase()];
+    const prefixLength = Math.min(start.length, end.length);
+    const sharedPrefix = start.slice(0, prefixLength - 1);
+    const startSuffix = start.slice(sharedPrefix.length);
+    const endSuffix = end.slice(sharedPrefix.length);
+
+    if (/^\d+$/.test(startSuffix) && /^\d+$/.test(endSuffix)) {
+      const startNum = parseInt(startSuffix, 10);
+      const endNum = parseInt(endSuffix, 10);
+      if (endNum >= startNum && endNum - startNum <= 20) {
+        for (let i = startNum; i <= endNum; i++) {
+          results.add(`${sharedPrefix}${i}`);
+        }
+        continue;
+      }
+    }
+
+    results.add(start);
+    results.add(end);
+  }
+
+  const codePattern = /[A-Z][0-9][A-Z0-9](?:\.[A-Z0-9]{1,4})?/gi;
+  let match: RegExpExecArray | null;
+  while ((match = codePattern.exec(sanitized))) {
+    results.add(match[0].toUpperCase());
+  }
+
+  return Array.from(results);
 }
 
 function toIcdCode(raw: any): IcdCode {
@@ -230,6 +285,13 @@ export function loadICDMaster(): SampleData {
   }
 
   icdMasterCache = { codes: values as IcdCode[], indexTerms: (parsed as any)?.indexTerms ?? [] };
+  if (Array.isArray(parsed)) {
+    icdMasterMap = Object.fromEntries(
+      (parsed as ICDEntry[]).map((entry) => [entry.code?.toUpperCase?.() ?? entry.code, entry]),
+    );
+  } else if (parsed && typeof parsed === 'object') {
+    icdMasterMap = parsed as Record<string, ICDEntry>;
+  }
   console.log(`ICD MASTER DATABASE LOADED: ${icdMasterCache.codes.length} ENTRIES`);
   return icdMasterCache;
 }
@@ -262,20 +324,71 @@ function ensureCodeMapHydrated() {
   }
 }
 
-export function getExcludes1Codes(code: string): string[] {
-  ensureCodeMapHydrated();
-  const entry = getCode(code);
-  if (!entry || !entry.excludes1Notes?.length) return [];
+function ensureMasterMapHydrated() {
+  if (!icdMasterMap) {
+    loadICDMaster();
+    if (!icdMasterMap && icdMasterCache) {
+      icdMasterMap = Object.fromEntries(
+        icdMasterCache.codes.map((entry: any) => [entry.code.toUpperCase(), entry as ICDEntry]),
+      );
+    }
+  }
+}
 
-  const notes = Array.isArray(entry.excludes1Notes) ? entry.excludes1Notes : [entry.excludes1Notes];
-  const extracted = new Set<string>();
-  notes.forEach((note) => {
-    if (!note) return;
-    const matches = note.match(/[A-Z][0-9][A-Z0-9](?:\.[A-Z0-9]{1,4})?/gi);
-    matches?.forEach((m) => extracted.add(m.toUpperCase()));
+function normalizeTextArray(value?: string[] | string | null): string[] {
+  if (!value) return [];
+  if (Array.isArray(value)) return value.filter(Boolean).map((item) => item.toString());
+  return [value.toString()];
+}
+
+function collectCodesFromGuidance(entries: string[]): string[] {
+  const collected = new Set<string>();
+  entries.forEach((entry) => {
+    extractCodesFromText(entry).forEach((code) => collected.add(code));
   });
+  return Array.from(collected);
+}
 
-  return Array.from(extracted);
+export function getICDEntry(code: string): ICDEntry | undefined {
+  ensureMasterMapHydrated();
+  const needle = code.trim().toUpperCase();
+  return icdMasterMap?.[needle];
+}
+
+export function getExcludes1Codes(code: string): string[] {
+  const entry = getICDEntry(code);
+  if (!entry) return [];
+
+  const explicit = normalizeTextArray(entry.excludes1);
+  const noted = normalizeTextArray(entry.notes?.filter((note) => /Excludes\s*1/i.test(note)));
+  return collectCodesFromGuidance([...explicit, ...noted]);
+}
+
+export function getExcludes2Codes(code: string): string[] {
+  const entry = getICDEntry(code);
+  if (!entry) return [];
+
+  const explicit = normalizeTextArray(entry.excludes2);
+  const noted = normalizeTextArray(entry.notes?.filter((note) => /Excludes\s*2/i.test(note)));
+  return collectCodesFromGuidance([...explicit, ...noted]);
+}
+
+export function getIncludesStrings(code: string): string[] {
+  const entry = getICDEntry(code);
+  if (!entry) return [];
+  return normalizeTextArray(entry.includes);
+}
+
+export function getNotesStrings(code: string): string[] {
+  const entry = getICDEntry(code);
+  if (!entry) return [];
+  return normalizeTextArray(entry.notes);
+}
+
+export function getRulesStrings(code: string): string[] {
+  const entry = getICDEntry(code);
+  if (!entry) return [];
+  return normalizeTextArray(entry.rules);
 }
 
 export function getChapterForCode(code: string): string | undefined {

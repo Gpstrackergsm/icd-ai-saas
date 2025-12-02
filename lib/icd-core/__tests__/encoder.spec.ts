@@ -8,6 +8,7 @@ import * as assert from 'node:assert/strict';
 import { before, describe, it } from 'node:test';
 
 import { encodeDiagnosisText } from '../encoder';
+import { applyGuidelineRules } from '../rulesEngine';
 import { initIcdData } from '../dataSource';
 
 before(async () => {
@@ -381,5 +382,17 @@ describe('ICD-10-CM encoder scenarios', () => {
     const result = encodeDiagnosisText('type 2 diabetes with CKD stage 5');
     const codes = result.codes.map((c) => c.code);
     assert.ok(codes.includes('N18.5'));
+  });
+
+  it('leverages ICD guidance metadata to add supporting codes', () => {
+    const ctx = {
+      concepts: [],
+      initialCandidates: [
+        { code: 'Z79', reason: 'Long term drug therapy', baseScore: 6, conceptRefs: ['test'] },
+      ],
+    };
+    const result = applyGuidelineRules(ctx);
+    assert.ok(result.addedCodes.some((c) => c.code === 'Z51.81'));
+    assert.ok(result.warnings.some((warning) => warning.includes('Z51.81')));
   });
 });
