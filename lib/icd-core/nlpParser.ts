@@ -294,17 +294,35 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
 
   // Nicotine dependence and smoking
   if (/nicotine dependence|tobacco dependence|smoking|smoker/.test(normalized)) {
-    const isHistory = /history of smoking|former smoker|ex-smoker/.test(normalized);
-    const isCurrent = /current smoker|smokes/.test(normalized) || (!isHistory && /smoking|smoker/.test(normalized));
+    // Parenthetical "(nicotine dependence)" indicates CURRENT condition
+    const hasParentheticalDependence = /\(nicotine dependence\)|\(tobacco dependence\)/.test(normalized);
+
+    // Only treat as history if explicitly stated AND no parenthetical dependence
+    const isHistory = /former smoker|ex-smoker|quit smoking|stopped smoking/.test(normalized) && !hasParentheticalDependence;
+
+    // Current if: parenthetical dependence, current smoker, or just "smoking/smoker" without "former/ex"
+    const isCurrent = hasParentheticalDependence ||
+      /current smoker|smokes|nicotine dependence|tobacco dependence/.test(normalized) ||
+      (!isHistory && /smoking|smoker/.test(normalized));
+
+    // Detect tobacco type (cigarettes is most common, default)
+    const tobaccoType = /cigar/.test(normalized) && !/cigarette/.test(normalized)
+      ? 'cigars'
+      : /chewing tobacco|smokeless/.test(normalized)
+        ? 'chewing'
+        : /pipe/.test(normalized)
+          ? 'pipe'
+          : 'cigarettes'; // Default
 
     concepts.push({
       raw: text,
-      normalized: isHistory ? 'history of nicotine dependence' : 'nicotine dependence',
+      normalized: isCurrent ? 'nicotine dependence' : 'history of nicotine dependence',
       type: 'substance_use',
       attributes: {
         substance: 'nicotine',
         isHistory,
         isCurrent,
+        tobaccoType,
       },
     });
   }
@@ -736,9 +754,21 @@ export function mapConceptsToCandidateCodes(concepts: ParsedConcept[]): Candidat
         guidelineRule: 'nicotine_history',
       });
     } else if (substanceUse.attributes.isCurrent) {
+      // Map tobacco type to specific F17.2xx codes
+      const tobaccoType = substanceUse.attributes.tobaccoType || 'cigarettes';
+      const codeMap: Record<string, string> = {
+        'cigarettes': 'F17.210',  // Nicotine dependence, cigarettes, uncomplicated
+        'chewing': 'F17.220',     // Nicotine dependence, chewing tobacco, uncomplicated
+        'cigars': 'F17.221',      // Nicotine dependence, other tobacco product, uncomplicated (cigars)
+        'pipe': 'F17.221',        // Nicotine dependence, other tobacco product, uncomplicated (pipe)
+      };
+
+      const code = codeMap[tobaccoType] || 'F17.200'; // Default to unspecified
+      const typeLabel = tobaccoType === 'cigarettes' ? 'cigarettes' : tobaccoType;
+
       addCandidate(candidates, {
-        code: 'F17.200',
-        reason: 'Nicotine dependence, unspecified, uncomplicated',
+        code,
+        reason: `Nicotine dependence, ${typeLabel}, uncomplicated`,
         baseScore: 6,
         conceptRefs: [substanceUse.raw],
         guidelineRule: 'nicotine_dependence',
