@@ -5,7 +5,7 @@
 // Responsibility: Deterministic NLP helpers to normalize text and extract concepts
 
 import type { CandidateCode, ParsedConcept } from './models';
-import { searchIndex } from './dataSource';
+import { searchCodesByTerm, searchIndex } from './dataSource';
 
 const abbreviationMap: Record<string, string> = {
   copd: 'chronic obstructive pulmonary disease',
@@ -54,7 +54,9 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
     return { stage: stageMatch };
   };
 
-  if (/diabetes/.test(normalized)) {
+  const hasDiabetesInText = /diabetes/.test(normalized);
+
+  if (hasDiabetesInText) {
     const lateralityMatch =
       normalized.match(/left eye|\bos\b|left\s+retina/)?.[0]
         ? 'left'
@@ -106,7 +108,10 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
     diabetesAttributes.nephropathy = nephropathy || undefined;
     diabetesAttributes.ckdStage = ckdFromText.stage;
 
-    const neuropathy = /neuropathy|polyneuropathy|neuropathic pain/.test(normalized);
+    const diabeticNeuropathySignal =
+      /diabetic (poly)?neuropathy/.test(normalized) || /neuropathic pain due to diabetes/.test(normalized);
+    const neuropathy =
+      diabeticNeuropathySignal || /neuropathy|polyneuropathy|neuropathic pain/.test(normalized);
     diabetesAttributes.neuropathy = neuropathy || undefined;
 
     const angio = /peripheral angiopathy|peripheral artery disease|pad|pvd/.test(normalized);
@@ -387,6 +392,16 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
     });
   }
 
+  const neuropathyMention = /neuropathy|polyneuropathy|neuropathic pain/.test(normalized);
+  if (neuropathyMention && !hasDiabetesInText) {
+    concepts.push({
+      raw: text,
+      normalized: 'neuropathy',
+      type: 'other',
+      attributes: { neuropathy: true, neuropathyEtiology: 'non-diabetic' } as any,
+    });
+  }
+
   return concepts;
 }
 
@@ -415,6 +430,7 @@ export function mapConceptsToCandidateCodes(concepts: ParsedConcept[]): Candidat
   const depression = concepts.find((c) => c.normalized.startsWith('major depressive disorder'));
   const pregnancy = concepts.find((c) => c.type === 'pregnancy');
   const injury = concepts.find((c) => c.type === 'injury');
+  const neuropathyConcept = concepts.find((c) => c.attributes.neuropathy);
   const sourceText = concepts.map((c) => c.raw.toLowerCase()).join(' ');
   const hasStatusAsthmaticus = sourceText.includes('status asthmaticus');
 
@@ -699,6 +715,42 @@ export function mapConceptsToCandidateCodes(concepts: ParsedConcept[]): Candidat
     if (/fall/.test(sourceText)) {
       addCandidate(candidates, { code: `W19.XXX${seventh}`, reason: 'External cause for fall', baseScore: 6, conceptRefs: [injury.raw] });
     }
+  }
+
+  if (neuropathyConcept && !diabetes) {
+    const neuropathyText = sourceText;
+    if (/intercostal/.test(neuropathyText)) {
+      addCandidate(candidates, {
+        code: 'G58.0',
+        reason: 'Intercostal neuropathy without diabetic context',
+        baseScore: 8,
+        conceptRefs: [neuropathyConcept.raw],
+      });
+    } else if (/optic/.test(neuropathyText)) {
+      addCandidate(candidates, {
+        code: 'H46.3',
+        reason: 'Optic neuropathy without diabetic context',
+        baseScore: 8,
+        conceptRefs: [neuropathyConcept.raw],
+      });
+    } else {
+      addCandidate(candidates, {
+        code: 'G62.9',
+        reason: 'Neuropathy without diabetic context',
+        baseScore: 7,
+        conceptRefs: [neuropathyConcept.raw],
+      });
+    }
+
+    const neurologyMatches = searchCodesByTerm(neuropathyConcept.normalized || 'neuropathy', 5);
+    neurologyMatches.forEach((code) =>
+      addCandidate(candidates, {
+        code: code.code,
+        reason: 'Neuropathy without diabetic context',
+        baseScore: 6,
+        conceptRefs: [neuropathyConcept.raw],
+      }),
+    );
   }
 
   if (candidates.length === 0) {

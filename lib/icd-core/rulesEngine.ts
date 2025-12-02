@@ -5,6 +5,7 @@
 // Responsibility: Apply ICD-10-CM style guideline rules and sequencing
 
 import type { CandidateCode, EncodingContext, RuleResult } from './models.ts';
+import { getChapterForCode, getExcludes1Codes } from './dataSource';
 
 function mapCkdStageCode(stage?: string, ckdStage?: 1 | 2 | 3 | 4 | 5 | 'ESRD') {
   if (ckdStage === 'ESRD' || stage === 'ESRD') return 'N18.6';
@@ -42,6 +43,80 @@ function mapRetinopathyCode(prefix: string, retinopathy: any): string {
     return withMacular ? `${prefix}.351` : `${prefix}.359`;
   }
   return withMacular ? `${prefix}.311` : `${prefix}.319`;
+}
+
+function isDiabeticNeuropathyCode(code: string): boolean {
+  return /^(E0[89]|E1[013])\.(4|61)/.test(code);
+}
+
+function isGenericNeuropathyCode(code: string): boolean {
+  return /^(G5[8-9]|G6[0-9]|H47\.|M14\.6)/.test(code);
+}
+
+function applyNeuropathyRules(
+  ctx: EncodingContext,
+  working: CandidateCode[],
+  warnings: string[],
+): CandidateCode[] {
+  const diabetesConcept = ctx.concepts.find((c) => c.type === 'diabetes');
+  const diabeticNeuropathyContext = Boolean(
+    diabetesConcept?.attributes.diabetes?.neuropathy || diabetesConcept?.attributes.diabetes?.charcotJoint,
+  );
+  const hasDiabetes = Boolean(diabetesConcept);
+  const hasNonDiabeticNeuropathyConcept = ctx.concepts.some(
+    (c) => c.attributes.neuropathy && c.type !== 'diabetes',
+  );
+
+  const diabeticNeuropathyCandidates = working.filter((c) => isDiabeticNeuropathyCode(c.code));
+  const genericNeuropathyCandidates = working.filter((c) => isGenericNeuropathyCode(c.code));
+
+  if (hasDiabetes && diabeticNeuropathyContext) {
+    if (genericNeuropathyCandidates.length) {
+      working = working.filter((c) => !isGenericNeuropathyCode(c.code));
+    }
+  } else if (!hasDiabetes && hasNonDiabeticNeuropathyConcept) {
+    // Allow neurologic codes to remain; no action needed.
+  } else if (genericNeuropathyCandidates.length && diabeticNeuropathyCandidates.length === 0 && hasDiabetes) {
+    warnings.push('Neuropathy described with diabetes; consider diabetic neuropathy codes.');
+  }
+
+  // Resolve Excludes1 conflicts between diabetic neuropathy and neurologic codes
+  const conflicts = new Set<string>();
+  diabeticNeuropathyCandidates.forEach((candidate) => {
+    const excludes = getExcludes1Codes(candidate.code);
+    excludes.forEach((excluded) => {
+      if (genericNeuropathyCandidates.some((c) => c.code === excluded)) {
+        conflicts.add(excluded);
+      }
+    });
+  });
+
+  genericNeuropathyCandidates.forEach((candidate) => {
+    const excludes = getExcludes1Codes(candidate.code);
+    excludes.forEach((excluded) => {
+      if (diabeticNeuropathyCandidates.some((c) => c.code === excluded)) {
+        conflicts.add(candidate.code);
+      }
+    });
+  });
+
+  if (conflicts.size) {
+    working = working.filter((c) => !conflicts.has(c.code));
+  }
+
+  // Prefer diabetic neuropathy codes over other nervous system chapters when both present
+  if (hasDiabetes && diabeticNeuropathyCandidates.length) {
+    const nervousSystemChapters = new Set(['Diseases of the nervous system', 'Diseases of the eye and adnexa', 'Diseases of the musculoskeletal system and connective tissue']);
+    working = working.filter((candidate) => {
+      if (isDiabeticNeuropathyCode(candidate.code)) return true;
+      if (isGenericNeuropathyCode(candidate.code)) return false;
+      const chapter = getChapterForCode(candidate.code);
+      if (chapter && nervousSystemChapters.has(chapter) && candidate.code.startsWith('M14.6')) return false;
+      return true;
+    });
+  }
+
+  return working;
 }
 
 function applyDiabetesGuidelines(
@@ -229,6 +304,8 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
   const diabetesResult = applyDiabetesGuidelines(ctx, working, warnings);
   working = diabetesResult.candidates;
   reorderedCodes.push(...diabetesResult.reorderedCodes);
+
+  working = applyNeuropathyRules(ctx, working, warnings);
 
   // Hypertension combination logic
   let preferredHypertensionCode: string | undefined;

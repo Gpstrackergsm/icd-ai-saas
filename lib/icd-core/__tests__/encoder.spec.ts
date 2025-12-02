@@ -112,6 +112,8 @@ describe('ICD-10-CM encoder scenarios', () => {
     const codes = result.codes.map((c) => c.code);
     assert.ok(codes.includes('E11.42'));
     assert.ok(!codes.includes('E11.9'));
+    assert.ok(result.codes[0].code.startsWith('E11.4'));
+    assert.ok(!result.codes[0].code.startsWith('G'));
   });
 
   it('uses nephropathy combination codes', () => {
@@ -171,6 +173,29 @@ describe('ICD-10-CM encoder scenarios', () => {
   it('codes diabetic neuropathic arthropathy', () => {
     const result = encodeDiagnosisText('Type 2 diabetes with diabetic neuropathic arthropathy (Charcot joint)');
     assert.ok(result.codes.some((c) => c.code === 'E11.610'));
+    assert.ok(!result.codes.some((c) => c.code === 'M14.6'));
+  });
+
+  it('prefers diabetic neuropathy codes over generic neuropathy codes when diabetes present', () => {
+    const result = encodeDiagnosisText('Type 2 diabetes with peripheral neuropathy');
+    assert.ok(result.codes[0].code.startsWith('E11.4'));
+    assert.ok(!result.codes.some((c) => c.code.startsWith('G58') || c.code.startsWith('G62') || c.code.startsWith('H47') || c.code.startsWith('M14.6')));
+  });
+
+  it('codes intercostal neuropathy without diabetes context', () => {
+    const result = encodeDiagnosisText('Intercostal neuropathy');
+    assert.ok(result.codes.some((c) => c.code.startsWith('G58')));
+  });
+
+  it('codes Charcot joint due to diabetes with diabetic code', () => {
+    const result = encodeDiagnosisText('Charcot joint due to diabetes');
+    assert.ok(result.codes.some((c) => c.code.endsWith('610')));
+    assert.ok(!result.codes.some((c) => c.code === 'M14.6'));
+  });
+
+  it('codes toxic optic neuropathy without diabetes using ophthalmic codes', () => {
+    const result = encodeDiagnosisText('Toxic optic neuropathy');
+    assert.ok(result.codes.some((c) => c.code.startsWith('H46')) || result.codes.some((c) => c.code.startsWith('H47')));
   });
 
   it('codes diabetic foot ulcer with additional ulcer code', () => {
