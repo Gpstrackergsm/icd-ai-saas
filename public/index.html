@@ -33,26 +33,6 @@
       padding: 20px;
     }
 
-    .tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 16px;
-    }
-
-    .tab {
-      padding: 10px 14px;
-      background: #e2e8f0;
-      border-radius: 8px;
-      cursor: pointer;
-      font-weight: 600;
-      border: 1px solid #cbd5e1;
-    }
-
-    .tab.active {
-      background: #ef4444;
-      color: #fff;
-      border-color: #ef4444;
-    }
 
     label {
       display: block;
@@ -163,25 +143,8 @@
   <div class="container">
     <h1>ICD-10-CM Encoder</h1>
     <div class="panel">
-      <div class="tabs">
-        <div class="tab active" data-tab="search">Search</div>
-        <div class="tab" data-tab="encode">Encoder</div>
-      </div>
 
-      <div id="searchPanel">
-        <label for="query">Search ICD codes</label>
-        <div class="input-row">
-          <textarea id="query" name="query" placeholder="Enter code, condition, or synonym"></textarea>
-          <button id="searchBtn">Search</button>
-        </div>
-        <div class="actions">
-          <button id="copyBtn" class="secondary" disabled>Copy results</button>
-        </div>
-        <div id="status" class="status"></div>
-        <div id="results" class="results"></div>
-      </div>
-
-      <div id="encodePanel" class="hidden">
+      <div id="encodePanel">
         <label for="narrative">Encoder: clinical narrative</label>
         <div class="input-row">
           <textarea id="narrative" name="narrative"
@@ -198,130 +161,6 @@
   </div>
 
   <script>
-    const tabs = Array.from(document.querySelectorAll('.tab'));
-    const searchPanel = document.getElementById('searchPanel');
-    const encodePanel = document.getElementById('encodePanel');
-
-    tabs.forEach((tab) => {
-      tab.addEventListener('click', () => {
-        tabs.forEach((t) => t.classList.remove('active'));
-        tab.classList.add('active');
-        const isSearch = tab.dataset.tab === 'search';
-        searchPanel.classList.toggle('hidden', !isSearch);
-        encodePanel.classList.toggle('hidden', isSearch);
-      });
-    });
-
-    const queryInput = document.getElementById('query');
-    const searchBtn = document.getElementById('searchBtn');
-    const copyBtn = document.getElementById('copyBtn');
-    const status = document.getElementById('status');
-    const resultsEl = document.getElementById('results');
-
-    let lastRendered = null;
-
-    function renderSearchResults(items) {
-      resultsEl.innerHTML = '';
-      if (!items.length) {
-        resultsEl.innerHTML = '<p>No results found.</p>';
-        copyBtn.disabled = true;
-        return;
-      }
-
-      const fragment = document.createDocumentFragment();
-      items.forEach((item) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-
-        const code = document.createElement('div');
-        code.className = 'code';
-        code.textContent = item.code;
-
-        const desc = document.createElement('div');
-        desc.className = 'desc';
-        desc.textContent = item.description || '';
-
-        const badge = document.createElement('span');
-        badge.className = 'pill';
-        badge.textContent = item.matchedTerm ? `Matched: ${item.matchedTerm}` : 'Index';
-
-        card.appendChild(code);
-        card.appendChild(desc);
-        card.appendChild(badge);
-        fragment.appendChild(card);
-      });
-
-      resultsEl.appendChild(fragment);
-      copyBtn.disabled = false;
-    }
-
-    async function fetchPayload(url, body, defaultError) {
-      const response = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
-      });
-
-      const data = await response.json().catch(() => ({}));
-      const message =
-        data?.error?.message || data?.message || data?.error || defaultError;
-
-      if (!response.ok || data?.success === false) {
-        throw new Error(message);
-      }
-
-      return data?.data ?? data;
-    }
-
-    async function performSearch() {
-      const query = queryInput.value.trim();
-      resultsEl.innerHTML = '';
-      status.textContent = '';
-      copyBtn.disabled = true;
-
-      if (!query) {
-        status.textContent = 'Please enter a search query.';
-        return;
-      }
-
-      searchBtn.disabled = true;
-      status.textContent = 'Searching…';
-
-      try {
-        const payload = await fetchPayload(
-          '/api/search',
-          { query },
-          'Search failed'
-        );
-        lastRendered = payload.results || [];
-        renderSearchResults(lastRendered);
-        status.textContent = `Found ${lastRendered.length} result(s).`;
-      } catch (err) {
-        status.textContent = err.message || 'Unable to search right now.';
-      } finally {
-        searchBtn.disabled = false;
-      }
-    }
-
-    async function copyResults() {
-      const cards = Array.from(resultsEl.querySelectorAll('.card'));
-      if (!cards.length || !lastRendered) return;
-
-      const lines = cards.map((card) => {
-        const code = card.querySelector('.code')?.textContent || '';
-        const desc = card.querySelector('.desc')?.textContent || '';
-        return `${code} — ${desc}`;
-      });
-      try {
-        await navigator.clipboard.writeText(lines.join('\n'));
-        status.textContent = 'Results copied to clipboard.';
-      } catch (err) {
-        status.textContent = 'Unable to copy results.';
-      }
-    }
-
-    searchBtn.addEventListener('click', performSearch);
-    copyBtn.addEventListener('click', copyResults);
 
     // Encoder tab logic
     const narrativeInput = document.getElementById('narrative');
@@ -423,6 +262,24 @@
 
       encodeResults.appendChild(fragment);
       copyEncodeBtn.disabled = false;
+    }
+
+    async function fetchPayload(url, body, defaultError) {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      const data = await response.json().catch(() => ({}));
+      const message =
+        data?.error?.message || data?.message || data?.error || defaultError;
+
+      if (!response.ok || data?.success === false) {
+        throw new Error(message);
+      }
+
+      return data?.data ?? data;
     }
 
     async function performEncode() {
