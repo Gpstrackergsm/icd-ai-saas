@@ -86,7 +86,7 @@ module.exports = async function handler(req, res) {
   console.log('Incoming search request', { method: req.method, url: req.url, headers: req.headers });
 
   try {
-    const { initIcdData, searchIndex, searchCodesByTerm } = loadIcdModule();
+    const { initIcdData, searchIndex, searchCodesByTerm, searchCodesFuzzy } = loadIcdModule();
 
     let query;
     let requestBody = {};
@@ -144,6 +144,7 @@ module.exports = async function handler(req, res) {
     await initIcdData();
     const indexResults = searchIndex(query, 10);
     const codeMatches = searchCodesByTerm(query, 5);
+    const fuzzyMatches = searchCodesFuzzy(query, 5);
 
     const combined = [
       ...indexResults.map((item) => ({
@@ -161,6 +162,17 @@ module.exports = async function handler(req, res) {
           description: code.longDescription || code.shortDescription,
           matchedTerm: query,
           score: 1,
+        });
+      }
+    });
+
+    fuzzyMatches.forEach((match) => {
+      if (!combined.some((entry) => entry.code === match.code.code)) {
+        combined.push({
+          code: match.code.code,
+          description: match.code.longDescription || match.code.shortDescription,
+          matchedTerm: query,
+          score: match.score,
         });
       }
     });

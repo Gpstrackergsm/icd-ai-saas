@@ -34,6 +34,7 @@ let codeMap = new Map<string, IcdCode>();
 let initialized = false;
 let loadingPromise: Promise<void> | null = null;
 let resolvedDataPath: string | undefined;
+let icdMasterCache: SampleData | null = null;
 
 const MASTER_DATA_FILE = 'icd-master.json';
 
@@ -90,6 +91,10 @@ function toIcdCode(raw: any): IcdCode {
   const shortDescription = raw.shortDescription || raw.title || raw.description || raw.longDescription || raw.code;
   const longDescription = raw.longDescription || raw.title || raw.description || shortDescription;
 
+  const type = (raw.type || '').toString().toLowerCase();
+  const isHeader = raw.isHeader !== undefined ? raw.isHeader : type === 'header';
+  const isBillable = raw.isBillable !== undefined ? raw.isBillable : type !== 'header';
+
   return {
     ...raw,
     code: raw.code,
@@ -97,8 +102,8 @@ function toIcdCode(raw: any): IcdCode {
     longDescription,
     chapter: raw.chapter || raw.category || raw.block || raw.section || 'Unknown',
     block: raw.block || raw.section || raw.category || undefined,
-    isBillable: raw.isBillable !== undefined ? raw.isBillable : true,
-    isHeader: raw.isHeader !== undefined ? raw.isHeader : false,
+    isBillable,
+    isHeader,
   } satisfies IcdCode;
 }
 
@@ -160,27 +165,32 @@ function hydrateInMemoryIndexes(dataset: SampleData, dataSourceLabel: string): v
   );
 }
 
-function loadFromDataFile(datasetPath: string): SampleData {
+export function loadICDMaster(): SampleData {
+  if (icdMasterCache) return icdMasterCache;
+
+  const datasetPath = resolveDataPath();
+  if (!datasetPath) {
+    throw new Error('ICD master database not found: expected data/icd-master.json');
+  }
+
+  if (!fs.existsSync(datasetPath)) {
+    throw new Error(`ICD master database missing at ${datasetPath}`);
+  }
+
   const parsed = readJson(datasetPath);
-  if (parsed && Array.isArray(parsed.codes) && Array.isArray(parsed.indexTerms)) {
-    return { codes: parsed.codes, indexTerms: parsed.indexTerms };
+  const values = Array.isArray(parsed)
+    ? parsed
+    : parsed && typeof parsed === 'object'
+      ? Object.values(parsed)
+      : null;
+
+  if (!values) {
+    throw new Error('ICD master database is corrupted or in an unsupported format.');
   }
 
-  if (Array.isArray(parsed)) {
-    return { codes: parsed, indexTerms: [] };
-  }
-
-  throw new Error('ICD data file exists but is not in a supported format.');
-}
-
-function loadFromSplitSources(dataDir: string): SampleData | null {
-  const codesPath = path.join(dataDir, 'icd_codes.json');
-  const indexTermsPath = path.join(dataDir, 'index_terms.json');
-  if (!fs.existsSync(codesPath)) return null;
-
-  const rawCodes = readJson(codesPath);
-  const rawIndexTerms = fs.existsSync(indexTermsPath) ? readJson(indexTermsPath) : [];
-  return { codes: rawCodes || [], indexTerms: rawIndexTerms || [] };
+  icdMasterCache = { codes: values as IcdCode[], indexTerms: (parsed as any)?.indexTerms ?? [] };
+  console.log(`ICD MASTER DATABASE LOADED: ${icdMasterCache.codes.length} ENTRIES`);
+  return icdMasterCache;
 }
 
 export async function initIcdData(): Promise<void> {
@@ -188,31 +198,8 @@ export async function initIcdData(): Promise<void> {
   if (loadingPromise) return loadingPromise;
 
   loadingPromise = (async () => {
-    const datasetPath = resolveDataPath();
-    const dataDir = resolveDataDirectory();
-
-    if (datasetPath && fs.existsSync(datasetPath)) {
-      const dataset = loadFromDataFile(datasetPath);
-      hydrateInMemoryIndexes(dataset, path.basename(datasetPath));
-      return;
-    }
-
-    if (dataDir) {
-      const splitDataset = loadFromSplitSources(dataDir);
-      if (splitDataset) {
-        hydrateInMemoryIndexes(splitDataset, 'icd_codes.json + index_terms.json');
-        return;
-      }
-
-      const samplePath = path.join(dataDir, 'icd-sample.json');
-      if (fs.existsSync(samplePath)) {
-        const dataset = loadFromDataFile(samplePath);
-        hydrateInMemoryIndexes(dataset, path.basename(samplePath));
-        return;
-      }
-    }
-
-    throw new Error('ICD data missing');
+    const dataset = loadICDMaster();
+    hydrateInMemoryIndexes(dataset, 'icd-master.json');
   })();
 
   return loadingPromise;
@@ -244,6 +231,40 @@ function computeScore(term: string, entry: IndexedCode): number {
   if (entry.normalizedShort.includes(term)) score += 3;
   if (entry.normalizedLong.includes(term)) score += 2;
   return score;
+}
+
+function levenshteinDistance(a: string, b: string): number {
+  const dp = Array.from({ length: a.length + 1 }, () => new Array<number>(b.length + 1).fill(0));
+  for (let i = 0; i <= a.length; i++) dp[i][0] = i;
+  for (let j = 0; j <= b.length; j++) dp[0][j] = j;
+
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      dp[i][j] = Math.min(dp[i - 1][j] + 1, dp[i][j - 1] + 1, dp[i - 1][j - 1] + cost);
+    }
+  }
+
+  return dp[a.length][b.length];
+}
+
+export function searchCodesFuzzy(term: string, limit = 10): { code: IcdCode; score: number }[] {
+  const normalized = normalizeTerm(term);
+  if (!normalized) return [];
+
+  const matches = indexedCodes
+    .map((item) => {
+      const distance = levenshteinDistance(normalized, item.normalizedShort.slice(0, normalized.length));
+      const altDistance = levenshteinDistance(normalized, item.normalizedLong.slice(0, Math.max(normalized.length, 6)));
+      const bestDistance = Math.min(distance, altDistance);
+      const score = Math.max(0, normalized.length - bestDistance);
+      return { code: item.entry, score };
+    })
+    .filter((entry) => entry.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit);
+
+  return matches;
 }
 
 export function searchIndex(
