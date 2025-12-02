@@ -39,6 +39,94 @@ function deriveDiabetesPrefix(diabetesConcept?: any): string {
   return 'E11';
 }
 
+interface RankedCandidate extends CandidateCode {
+  score: number;
+  source: string;
+}
+
+function applyExclusionEngine(candidates: RankedCandidate[]): RankedCandidate[] {
+  const working = candidates.map((candidate) => ({ ...candidate }));
+  const hasDiabetesDomain = working.some((c) => /^E0[89]|E1[013]/.test(c.code));
+
+  const normalizeText = (value?: string) => value?.toLowerCase() || '';
+
+  const applyIncludesAndRules = (candidate: RankedCandidate): RankedCandidate => {
+    let score = candidate.score;
+    const includesText = getIncludesStrings(candidate.code);
+    const haystack = normalizeText((candidate as any).source || (candidate as any).reason);
+
+    if (includesText.some((entry) => entry && haystack.includes(entry.toLowerCase()))) {
+      score += 0.5;
+    }
+
+    const ruleText = getRulesStrings(candidate.code).join(' ').toLowerCase();
+    if (/code first/.test(ruleText)) score += 0.1;
+    if (/use additional code/.test(ruleText)) score -= 0.1;
+
+    return { ...candidate, score };
+  };
+
+  const updated = working.map(applyIncludesAndRules);
+
+  const markExcludes2 = new Set<string>();
+  updated.forEach((candidate) => {
+    const excludes2 = getExcludes2Codes(candidate.code);
+    excludes2.forEach((code) => {
+      const conflict = updated.find((c) => c.code === code || c.code.startsWith(`${code}.`));
+      if (conflict) {
+        markExcludes2.add(candidate.code);
+        markExcludes2.add(conflict.code);
+      }
+    });
+  });
+
+  const adjusted = updated.map((candidate) =>
+    markExcludes2.has(candidate.code) ? { ...candidate, score: candidate.score - 0.25 } : candidate,
+  );
+
+  const specificity = (code: string) => code.replace(/\./g, '').length;
+  const isDiabetesCode = (code: string) => /^E0[89]|E1[013]/.test(code);
+
+  const decidePreferred = (a: RankedCandidate, b: RankedCandidate): RankedCandidate => {
+    const specA = specificity(a.code);
+    const specB = specificity(b.code);
+    if (specA !== specB) return specA > specB ? a : b;
+    if (hasDiabetesDomain && isDiabetesCode(a.code) !== isDiabetesCode(b.code)) {
+      return isDiabetesCode(a.code) ? a : b;
+    }
+    if (a.score !== b.score) return a.score >= b.score ? a : b;
+    return a.code.localeCompare(b.code) <= 0 ? a : b;
+  };
+
+  const conflictsToRemove = new Set<string>();
+
+  const matchesExcluded = (candidateCode: string, excludedCode: string) =>
+    candidateCode === excludedCode || candidateCode.startsWith(`${excludedCode}.`) || excludedCode.startsWith(candidateCode);
+
+  adjusted.forEach((candidate) => {
+    const excludes1 = getExcludes1Codes(candidate.code);
+    excludes1.forEach((excludedCode) => {
+      const conflict = adjusted.find(
+        (other) => other.code !== candidate.code && matchesExcluded(other.code, excludedCode),
+      );
+      if (conflict && !conflictsToRemove.has(conflict.code) && !conflictsToRemove.has(candidate.code)) {
+        const preferred = decidePreferred(candidate, conflict);
+        const toDrop = preferred.code === candidate.code ? conflict : candidate;
+        conflictsToRemove.add(toDrop.code);
+      }
+    });
+  });
+
+  let filtered = adjusted.filter((candidate) => !conflictsToRemove.has(candidate.code));
+
+  if (!filtered.length && adjusted.length) {
+    const best = adjusted.reduce((top, next) => decidePreferred(top, next));
+    filtered = [best];
+  }
+
+  return filtered;
+}
+
 function mapRetinopathyCode(prefix: string, retinopathy: any): string {
   const severity = retinopathy?.severity || 'unspecified';
   const withMacular = Boolean(retinopathy?.withMacularEdema);
@@ -521,6 +609,21 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
         return updated;
       }
       return c;
+    });
+  }
+
+  if (working.length) {
+    const ranked = working.map((candidate) => ({
+      ...candidate,
+      score: candidate.baseScore,
+      source: candidate.guidelineRule || candidate.reason || 'rules_engine',
+    })) as RankedCandidate[];
+
+    const resolved = applyExclusionEngine(ranked);
+    working = resolved.map((rc) => {
+      const existing = working.find((c) => c.code === rc.code);
+      if (existing) return { ...existing, baseScore: rc.score };
+      return { code: rc.code, reason: rc.source, baseScore: rc.score, conceptRefs: [], guidelineRule: 'exclusion_engine' };
     });
   }
 
