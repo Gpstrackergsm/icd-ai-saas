@@ -7,7 +7,7 @@
     <style>
       body {
         font-family: Arial, sans-serif;
-        background: #f4f6fb;
+        background: #f0fdf4;
         color: #1e293b;
         margin: 0;
         padding: 0;
@@ -48,9 +48,9 @@
       }
 
       .tab.active {
-        background: #2563eb;
+        background: #16a34a;
         color: #fff;
-        border-color: #2563eb;
+        border-color: #16a34a;
       }
 
       label {
@@ -78,7 +78,7 @@
       }
 
       button {
-        background: #2563eb;
+        background: #16a34a;
         color: #fff;
         border: none;
         padding: 12px 18px;
@@ -89,15 +89,15 @@
       }
 
       button:hover {
-        background: #1d4ed8;
+        background: #15803d;
       }
 
       button.secondary {
-        background: #0ea5e9;
+        background: #0d9488;
       }
 
       button.secondary:hover {
-        background: #0284c7;
+        background: #0f766e;
       }
 
       .status {
@@ -149,8 +149,8 @@
       .pill {
         display: inline-block;
         padding: 4px 8px;
-        background: #e0f2fe;
-        color: #0369a1;
+        background: #dcfce7;
+        color: #166534;
         border-radius: 6px;
         font-size: 12px;
         margin-right: 6px;
@@ -338,20 +338,24 @@
 
       function renderEncodeResults(payload) {
         encodeResults.innerHTML = '';
-        if (!payload.codes?.length) {
+        if (!payload.primary && (!payload.secondary || !payload.secondary.length)) {
           encodeResults.innerHTML = '<p>No codes suggested.</p>';
           copyEncodeBtn.disabled = true;
           return;
         }
 
         const fragment = document.createDocumentFragment();
-        payload.codes.forEach((code) => {
+        
+        const createCard = (code, type) => {
           const card = document.createElement('div');
           card.className = 'card';
+          if (type === 'Primary') {
+            card.style.borderLeft = '4px solid #16a34a';
+          }
 
           const codeEl = document.createElement('div');
           codeEl.className = 'code';
-          codeEl.textContent = `${code.order}. ${code.code}`;
+          codeEl.textContent = `${type}: ${code.code}`;
 
           const desc = document.createElement('div');
           desc.className = 'desc';
@@ -359,13 +363,23 @@
 
           const reason = document.createElement('div');
           reason.className = 'synonyms';
-          reason.textContent = `Reason: ${code.reason}`;
+          reason.textContent = `Rationale: ${code.rationale}`;
 
           card.appendChild(codeEl);
           card.appendChild(desc);
           card.appendChild(reason);
-          fragment.appendChild(card);
-        });
+          return card;
+        };
+
+        if (payload.primary) {
+          fragment.appendChild(createCard(payload.primary, 'Primary'));
+        }
+
+        if (payload.secondary && payload.secondary.length) {
+          payload.secondary.forEach((code) => {
+            fragment.appendChild(createCard(code, 'Secondary'));
+          });
+        }
 
         if (payload.warnings?.length) {
           const warnCard = document.createElement('div');
@@ -416,8 +430,17 @@
       }
 
       async function copyEncodedCodes() {
-        if (!lastEncoded?.codes?.length) return;
-        const lines = lastEncoded.codes.map((code) => `${code.code} — ${code.description}`);
+        if (!lastEncoded?.primary && !lastEncoded?.secondary?.length) return;
+        
+        const lines = [];
+        if (lastEncoded.primary) {
+          lines.push(`Primary: ${lastEncoded.primary.code} — ${lastEncoded.primary.description}`);
+        }
+        if (lastEncoded.secondary) {
+          lastEncoded.secondary.forEach((code) => {
+            lines.push(`Secondary: ${code.code} — ${code.description}`);
+          });
+        }
         try {
           await navigator.clipboard.writeText(lines.join('\n'));
           encodeStatus.textContent = 'Codes copied to clipboard.';

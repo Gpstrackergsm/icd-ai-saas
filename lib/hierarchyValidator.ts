@@ -31,15 +31,44 @@ export function validateHierarchy(sequence: SequencedCode[]): HierarchyResult {
     filtered.push(entry);
   });
 
-  const hasPresymptomatic = filtered.some((e) => /^E10\.A[12]/.test(e.code));
+  // Parent-child prevention: Remove parent codes when child codes exist
+  const codesToRemove = new Set<string>();
+  filtered.forEach((entry) => {
+    const codeWithoutDot = entry.code.replace('.', '');
+    const codePrefix = entry.code.split('.')[0]; // e.g., "E11" from "E11.22"
+    const hasMoreSpecific = filtered.some((other) =>
+      other.code !== entry.code &&
+      other.code.startsWith(codePrefix + '.') // Must have a dot to be more specific
+    );
+
+    // Header codes are 3 characters without a decimal (e.g., "E11")
+    const isHeaderCode = codeWithoutDot.length === 3 && !entry.code.includes('.');
+
+    if (hasMoreSpecific && isHeaderCode) {
+      // This is a parent/header code, remove it
+      codesToRemove.add(entry.code);
+      warnings.push(`Header code ${entry.code} removed; more specific code exists.`);
+    }
+  });
+
+  // Filter out parent codes
+  const withoutParents = filtered.filter(entry => !codesToRemove.has(entry.code));
+
+  const hasPresymptomatic = withoutParents.some((e) => /^E10\.A[12]/.test(e.code));
   if (hasPresymptomatic) {
-    const withPresymptomatic = filtered.filter((e) => /^E10\.A[12]/.test(e.code));
-    const withoutPresymptomatic = filtered.filter((e) => !/^E10\.A[12]/.test(e.code) || !/^E10/.test(e.code));
+    const withPresymptomatic = withoutParents.filter((e) => /^E10\.A[12]/.test(e.code));
+    const withoutPresymptomatic = withoutParents.filter((e) => !/^E10\.A[12]/.test(e.code) || !/^E10/.test(e.code));
     if (withPresymptomatic.length && withoutPresymptomatic.some((e) => /^E10\./.test(e.code))) {
       warnings.push('Presymptomatic Type 1 diabetes cannot coexist with complication codes; removed E10 complication entries.');
-      filtered.splice(0, filtered.length, ...withPresymptomatic, ...withoutPresymptomatic.filter((e) => !/^E10\./.test(e.code)));
+      const finalFiltered = [...withPresymptomatic, ...withoutPresymptomatic.filter((e) => !/^E10\./.test(e.code))];
+      return processRemainingRules(finalFiltered, warnings);
     }
   }
+
+  return processRemainingRules(withoutParents, warnings);
+}
+
+function processRemainingRules(filtered: SequencedCode[], warnings: string[]): HierarchyResult {
 
   const retinopathyLevels = filtered.filter((e) => /^E10\.3[135]/.test(e.code));
   if (retinopathyLevels.length > 1) {

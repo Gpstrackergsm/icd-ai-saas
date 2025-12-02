@@ -22,6 +22,18 @@ export interface EngineResult {
   audit: string[];
 }
 
+function mapCkdStageToCode(stage: 1 | 2 | 3 | 4 | 5 | 'ESRD'): string | undefined {
+  switch (stage) {
+    case 1: return 'N18.1';
+    case 2: return 'N18.2';
+    case 3: return 'N18.3';
+    case 4: return 'N18.4';
+    case 5:
+    case 'ESRD': return 'N18.5';
+    default: return undefined;
+  }
+}
+
 function diabetesEntry(resolution: DiabetesResolution): SequencedCode {
   return {
     code: resolution.code,
@@ -43,6 +55,10 @@ export function runRulesEngine(text: string): EngineResult {
     laterality: 'unspecified',
     stage: undefined,
     macular_edema: false,
+    neuropathy_type: undefined,
+    ckd_stage: undefined,
+    charcot_joint: false,
+    charcot_laterality: 'unspecified',
   };
 
   const sequence: SequencedCode[] = [];
@@ -50,6 +66,8 @@ export function runRulesEngine(text: string): EngineResult {
   if (diabetes) {
     warnings.push(...(diabetes.warnings || []));
     sequence.push(diabetesEntry(diabetes));
+
+    // Add retinopathy secondary code if applicable
     if (diabetes.attributes.complication === 'retinopathy') {
       const ret = resolveRetinopathy(diabetes.attributes);
       if (ret?.code) {
@@ -61,6 +79,19 @@ export function runRulesEngine(text: string): EngineResult {
         });
       }
       warnings.push(...(ret?.warnings || []));
+    }
+
+    // Add CKD secondary code if nephropathy detected
+    if (diabetes.attributes.complication === 'nephropathy' && diabetes.attributes.ckd_stage) {
+      const ckdCode = mapCkdStageToCode(diabetes.attributes.ckd_stage);
+      if (ckdCode) {
+        sequence.push({
+          code: ckdCode,
+          label: `Chronic kidney disease, stage ${diabetes.attributes.ckd_stage}`,
+          triggeredBy: 'nephropathy_resolution',
+          hcc: true,
+        });
+      }
     }
   }
 

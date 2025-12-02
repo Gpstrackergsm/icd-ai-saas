@@ -3,29 +3,35 @@ export type DiabetesType = 'E08' | 'E09' | 'E10' | 'E11' | 'E13' | 'none';
 export interface DiabetesAttributes {
   diabetes_type: DiabetesType;
   complication?:
-    | 'hyperglycemia'
-    | 'hypoglycemia'
-    | 'retinopathy'
-    | 'ketoacidosis'
-    | 'neuropathy'
-    | 'circulatory'
-    | 'oral'
-    | 'unspecified'
-    | 'none';
+  | 'hyperglycemia'
+  | 'hypoglycemia'
+  | 'retinopathy'
+  | 'ketoacidosis'
+  | 'neuropathy'
+  | 'nephropathy'
+  | 'circulatory'
+  | 'oral'
+  | 'charcot'
+  | 'unspecified'
+  | 'none';
   cause?: 'underlying_condition' | 'drug' | 'other' | undefined;
   pump_failure?: boolean;
   overdose_or_underdose?: 'overdose' | 'underdose' | 'none';
   laterality?: 'right' | 'left' | 'bilateral' | 'unspecified';
   stage?:
-    | 'mild-npdr'
-    | 'moderate-npdr'
-    | 'severe-npdr'
-    | 'pdr'
-    | 'traction-detachment'
-    | 'combined-detachment'
-    | 'unspecified';
+  | 'mild-npdr'
+  | 'moderate-npdr'
+  | 'severe-npdr'
+  | 'pdr'
+  | 'traction-detachment'
+  | 'combined-detachment'
+  | 'unspecified';
   macular_edema?: boolean;
   presymptomatic_stage?: 'stage1' | 'stage2';
+  neuropathy_type?: 'peripheral' | 'autonomic' | 'polyneuropathy' | 'unspecified';
+  ckd_stage?: 1 | 2 | 3 | 4 | 5 | 'ESRD';
+  charcot_joint?: boolean;
+  charcot_laterality?: 'right' | 'left' | 'bilateral' | 'unspecified';
 }
 
 export interface DiabetesResolution {
@@ -65,6 +71,32 @@ function detectRetinopathyStage(text: string): DiabetesAttributes['stage'] {
   return undefined;
 }
 
+function detectCkdStage(text: string): DiabetesAttributes['ckd_stage'] {
+  if (/ckd\s*stage\s*5|esrd|end[- ]stage\s+renal/.test(text)) return 'ESRD';
+  if (/ckd\s*stage\s*4|stage\s*4\s+ckd/.test(text)) return 4;
+  if (/ckd\s*stage\s*3|stage\s*3\s+ckd/.test(text)) return 3;
+  if (/ckd\s*stage\s*2|stage\s*2\s+ckd/.test(text)) return 2;
+  if (/ckd\s*stage\s*1|stage\s*1\s+ckd/.test(text)) return 1;
+  if (/chronic kidney disease|ckd|chronic renal/.test(text)) return 'ESRD'; // Default to unspecified
+  return undefined;
+}
+
+function detectNeuropathyType(text: string): DiabetesAttributes['neuropathy_type'] {
+  if (/peripheral\s+neuropathy/.test(text)) return 'peripheral';
+  if (/autonomic\s+neuropathy/.test(text)) return 'autonomic';
+  if (/polyneuropathy/.test(text)) return 'polyneuropathy';
+  if (/neuropathy/.test(text)) return 'unspecified';
+  return undefined;
+}
+
+function detectCharcotJoint(text: string): { detected: boolean; laterality: DiabetesAttributes['charcot_laterality'] } {
+  const hasCharcot = /charcot|neuropathic\s+arthropathy/.test(text);
+  if (!hasCharcot) return { detected: false, laterality: 'unspecified' };
+
+  const laterality = detectLaterality(text);
+  return { detected: true, laterality };
+}
+
 function buildBaseCode(prefix: DiabetesType): string {
   return `${prefix}.9`;
 }
@@ -85,6 +117,11 @@ export function resolveDiabetes(text: string): DiabetesResolution | undefined {
     /diabet/.test(lower) || /\bdm\b/.test(lower) || /type\s*[12]/.test(lower) || /presymptomatic/.test(lower) || /due to underlying condition/.test(lower);
   const prefix = detectDiabetesFamily(lower);
   const diabetes_type: DiabetesType = diabetesPresent ? prefix || 'E11' : 'none';
+
+  const ckdStage = detectCkdStage(lower);
+  const neuropathyType = detectNeuropathyType(lower);
+  const charcotInfo = detectCharcotJoint(lower);
+
   const attributes: DiabetesAttributes = {
     diabetes_type,
     complication: 'none',
@@ -94,6 +131,10 @@ export function resolveDiabetes(text: string): DiabetesResolution | undefined {
     laterality: detectLaterality(lower),
     stage: detectRetinopathyStage(lower),
     macular_edema: /macular edema/.test(lower),
+    neuropathy_type: neuropathyType,
+    ckd_stage: ckdStage,
+    charcot_joint: charcotInfo.detected,
+    charcot_laterality: charcotInfo.laterality,
   };
 
   if (prefix === 'E08') attributes.cause = 'underlying_condition';
@@ -150,6 +191,44 @@ export function resolveDiabetes(text: string): DiabetesResolution | undefined {
 
   if (/retinopathy/.test(lower) || /npdr/.test(lower) || /pdr/.test(lower)) {
     attributes.complication = 'retinopathy';
+  }
+
+  // Charcot joint detection (highest priority for neuropathy)
+  if (charcotInfo.detected) {
+    attributes.complication = 'charcot';
+    warnings.push('Charcot joint in diabetes context: using diabetes-specific code (E*.610), NOT M14.6*');
+    const code = `${diabetes_type}.610`;
+    return { code, label: 'Diabetes with diabetic neuropathic arthropathy (Charcot joint)', attributes, warnings };
+  }
+
+  // Nephropathy/CKD detection
+  if (ckdStage !== undefined || /nephropathy|kidney disease|renal/.test(lower)) {
+    attributes.complication = 'nephropathy';
+    let code: string;
+    if (ckdStage === 1 || ckdStage === 2) {
+      code = `${diabetes_type}.21`;
+    } else if (ckdStage === 3 || ckdStage === 4 || ckdStage === 5 || ckdStage === 'ESRD') {
+      code = `${diabetes_type}.22`;
+    } else {
+      code = `${diabetes_type}.29`;
+    }
+    return { code, label: 'Diabetes with diabetic chronic kidney disease', attributes, warnings };
+  }
+
+  // Enhanced neuropathy detection
+  if (neuropathyType !== undefined) {
+    attributes.complication = 'neuropathy';
+    let code: string;
+    if (neuropathyType === 'peripheral') {
+      code = `${diabetes_type}.42`;
+    } else if (neuropathyType === 'autonomic') {
+      code = `${diabetes_type}.43`;
+    } else if (neuropathyType === 'polyneuropathy') {
+      code = `${diabetes_type}.42`;
+    } else {
+      code = `${diabetes_type}.40`;
+    }
+    return { code, label: `Diabetes with diabetic ${neuropathyType} neuropathy`, attributes, warnings };
   }
 
   if (prefix === 'E10') {

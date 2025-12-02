@@ -106,20 +106,51 @@ module.exports = async function handler(req, res) {
     try {
       await modules.icdModule.initIcdData();
       const output = modules.encoderModule.encodeDiagnosisText(text, { debug: Boolean(body.debug) });
-      const codes = Array.isArray(output?.codes)
-        ? output.codes.map((code) => ({
-            code: code.code,
-            score: typeof code.score === 'number' ? Number(code.score) : 0,
-            isPrimary: Boolean(code.isPrimary),
-          }))
-        : [];
+
+      // Restructure to primary/secondary format
+      const allCodes = Array.isArray(output?.codes) ? output.codes : [];
+
+      // Limit to max 5 codes
+      const limitedCodes = allCodes.slice(0, 5);
+
+      if (limitedCodes.length === 0) {
+        return sendJson(res, 200, {
+          success: true,
+          data: {
+            text,
+            primary: null,
+            secondary: [],
+            warnings: Array.isArray(output?.warnings) ? output.warnings : [],
+            audit: ['No codes could be determined from the provided text'],
+          },
+        });
+      }
+
+      // First code is primary, rest are secondary
+      const primaryCode = limitedCodes[0];
+      const secondaryCodes = limitedCodes.slice(1);
+
+      const formatCode = (code) => ({
+        code: code.code,
+        description: code.title || 'Unknown',
+        rationale: code.rationale || code.guidelineRule || 'Clinical diagnosis match',
+        confidence: typeof code.confidence === 'number' ? Number(code.confidence.toFixed(2)) : 0.85,
+        billable: Boolean(code.billable),
+      });
 
       return sendJson(res, 200, {
         success: true,
         data: {
           text,
-          codes,
+          primary: formatCode(primaryCode),
+          secondary: secondaryCodes.map(formatCode),
           warnings: Array.isArray(output?.warnings) ? output.warnings : [],
+          audit: [
+            `Processed ${allCodes.length} candidate codes`,
+            `Limited output to ${limitedCodes.length} most relevant codes`,
+            `Primary code: ${primaryCode.code}`,
+            ...(secondaryCodes.length > 0 ? [`Secondary codes: ${secondaryCodes.map(c => c.code).join(', ')}`] : []),
+          ],
         },
       });
     } catch (err) {
