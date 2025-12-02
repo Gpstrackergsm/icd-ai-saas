@@ -130,6 +130,62 @@ describe('ICD-10-CM encoder scenarios', () => {
     assert.ok(result.codes.map((c) => c.code).includes('E11.00'));
   });
 
+  it('codes diabetic ketoacidosis with coma for type 1 diabetes', () => {
+    const result = encodeDiagnosisText('Type 1 diabetes with ketoacidosis with coma');
+    assert.equal(result.codes[0].code, 'E10.11');
+  });
+
+  it('maps diabetic hypoglycemia without coma', () => {
+    const result = encodeDiagnosisText('Type 2 diabetes with hypoglycemia without coma');
+    assert.ok(result.codes.some((c) => c.code === 'E11.649'));
+  });
+
+  it('maps diabetic hyperosmolar state without coma', () => {
+    const result = encodeDiagnosisText('Type 2 diabetes with hyperosmolarity without coma');
+    assert.equal(result.codes[0].code, 'E11.00');
+  });
+
+  it('codes diabetic nephropathy with proteinuria', () => {
+    const result = encodeDiagnosisText('Type 2 diabetes with diabetic nephropathy and proteinuria');
+    assert.ok(result.codes.some((c) => c.code === 'E11.21'));
+  });
+
+  it('codes diabetic CKD with staging and sequencing', () => {
+    const result = encodeDiagnosisText('Type 2 diabetes mellitus with chronic kidney disease stage 4');
+    assert.equal(result.codes[0].code, 'E11.22');
+    assert.ok(result.codes.some((c) => c.code === 'N18.4'));
+  });
+
+  it('codes diabetic peripheral angiopathy with gangrene', () => {
+    const result = encodeDiagnosisText('Type 2 diabetes with peripheral angiopathy with gangrene of left foot');
+    assert.equal(result.codes[0].code, 'E11.52');
+    assert.ok(!result.codes.some((c) => c.code.startsWith('I70')));
+  });
+
+  it('codes diabetic retinopathy without macular edema', () => {
+    const result = encodeDiagnosisText('Type 2 diabetes with diabetic retinopathy without macular edema');
+    assert.ok(result.codes.some((c) => c.code === 'E11.319'));
+    assert.ok(!result.codes.some((c) => c.code.startsWith('H36')));
+  });
+
+  it('codes diabetic neuropathic arthropathy', () => {
+    const result = encodeDiagnosisText('Type 2 diabetes with diabetic neuropathic arthropathy (Charcot joint)');
+    assert.ok(result.codes.some((c) => c.code === 'E11.610'));
+  });
+
+  it('codes diabetic foot ulcer with additional ulcer code', () => {
+    const result = encodeDiagnosisText('Type 2 diabetes with diabetic foot ulcer, left heel');
+    assert.ok(result.codes.some((c) => c.code === 'E11.621'));
+    assert.ok(result.codes.some((c) => c.code.startsWith('L97.4')));
+  });
+
+  it('codes secondary diabetes due to pancreatitis with underlying condition code', () => {
+    const result = encodeDiagnosisText('Secondary diabetes due to chronic pancreatitis');
+    const codes = result.codes.map((c) => c.code);
+    assert.ok(codes[0].startsWith('E08'));
+    assert.ok(codes.some((c) => c.startsWith('K86.1')));
+  });
+
   it('prefers pregnancy O codes over endocrine/hypertensive codes', () => {
     const result = encodeDiagnosisText('pregnancy with preexisting type 2 diabetes and hypertension');
     const codes = result.codes.map((c) => c.code);

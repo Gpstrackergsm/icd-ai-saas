@@ -55,12 +55,6 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
   };
 
   if (/diabetes/.test(normalized)) {
-    const stage = normalized.match(/stage\s*(\d(?:b)?)/)?.[1];
-    const diabetesType: 'type1' | 'type2' | 'secondary' = normalized.includes('type 1')
-      ? 'type1'
-      : normalized.includes('secondary')
-        ? 'secondary'
-        : 'type2';
     const lateralityMatch =
       normalized.match(/left eye|\bos\b|left\s+retina/)?.[0]
         ? 'left'
@@ -69,26 +63,110 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
           : normalized.match(/bilateral|both eyes/)?.[0]
             ? 'bilateral'
             : undefined;
-    const hasRetinopathy = /retinopathy/.test(normalized);
-    const hasNeuropathy = /neuropathy/.test(normalized);
-    const hasNephropathy = /nephropathy/.test(normalized);
+
+    const diabetesAttributes: any = {};
+
+    if (/type\s*1/.test(normalized)) diabetesAttributes.subtype = 'E10';
+    if (/type\s*2/.test(normalized)) diabetesAttributes.subtype = 'E11';
+    if (/other specified diabetes/.test(normalized)) diabetesAttributes.subtype = 'E13';
+    if (/underlying condition/.test(normalized) || /pancreatitis/.test(normalized)) {
+      diabetesAttributes.subtype = diabetesAttributes.subtype || 'E08';
+      diabetesAttributes.dueToUnderlyingCondition = true;
+    }
+    if (/drug|steroid/.test(normalized) && /diabetes/.test(normalized)) {
+      diabetesAttributes.subtype = diabetesAttributes.subtype || 'E09';
+      diabetesAttributes.dueToDrugOrChemical = true;
+    }
+    if (/secondary/.test(normalized)) diabetesAttributes.subtype = diabetesAttributes.subtype || 'E09';
+    if (/gestational|pregnan/.test(normalized)) diabetesAttributes.gestationalOrPregnancy = true;
+    if (/obesity/.test(normalized)) diabetesAttributes.dueToObesity = true;
+    if (/due to obesity/.test(normalized)) diabetesAttributes.subtype = diabetesAttributes.subtype || 'E11';
+
+    diabetesAttributes.uncontrolled =
+      /poorly controlled|uncontrolled|hyperglycemia/.test(normalized) || undefined;
     const hasHypoglycemia = /hypoglycemia/.test(normalized);
+    diabetesAttributes.hypoglycemia = hasHypoglycemia
+      ? { present: true, withComa: /with\s+coma/.test(normalized) }
+      : { present: false };
+    const hasKetoacidosis = /ketoacidosis|\bDKA\b/.test(normalized);
+    diabetesAttributes.ketoacidosis = hasKetoacidosis
+      ? {
+          present: true,
+          withComa: /with\s+coma/.test(normalized),
+          withHyperosmolarity: /hyperosmolar/.test(normalized),
+        }
+      : { present: false };
     const hasHyperosmolar = /hyperosmolar/.test(normalized);
+    diabetesAttributes.hyperosmolarity = hasHyperosmolar
+      ? { present: true, withComa: /with\s+coma/.test(normalized) }
+      : { present: false };
+
+    const ckdFromText = parseCkdStage(normalized);
+    const nephropathy = /nephropathy|proteinuria/.test(normalized);
+    diabetesAttributes.nephropathy = nephropathy || undefined;
+    diabetesAttributes.ckdStage = ckdFromText.stage;
+
+    const neuropathy = /neuropathy|polyneuropathy|neuropathic pain/.test(normalized);
+    diabetesAttributes.neuropathy = neuropathy || undefined;
+
+    const angio = /peripheral angiopathy|peripheral artery disease|pad|pvd/.test(normalized);
+    if (angio) {
+      diabetesAttributes.peripheralAngiopathy = {
+        present: true,
+        withGangrene: /gangrene/.test(normalized) || undefined,
+      };
+    }
+
+    const retinopathyPresent = /retinopathy/.test(normalized);
+    if (retinopathyPresent) {
+      const severity: any = /mild/.test(normalized)
+        ? 'mild-npdr'
+        : /moderate/.test(normalized)
+          ? 'moderate-npdr'
+          : /severe/.test(normalized)
+            ? 'severe-npdr'
+            : /proliferative/.test(normalized)
+              ? 'pdr'
+              : 'unspecified';
+      const macularMention = /macular edema/.test(normalized);
+      const withoutMacular = /without macular edema/.test(normalized);
+      diabetesAttributes.retinopathy = {
+        present: true,
+        severity,
+        withMacularEdema: macularMention && !withoutMacular || undefined,
+        withTractionDetachmentMacula: /traction retinal detachment.*macula/.test(normalized) || undefined,
+      };
+    }
+
+    diabetesAttributes.footUlcer = /diabetic (foot|toe|heel) ulcer|foot ulcer/.test(normalized) || undefined;
+    diabetesAttributes.charcotJoint = /charcot|neuropathic arthropathy/.test(normalized) || undefined;
+    diabetesAttributes.cataract = /diabetic cataract/.test(normalized) || undefined;
+    diabetesAttributes.dueToUnderlyingCondition = diabetesAttributes.dueToUnderlyingCondition || /underlying condition/.test(normalized);
+
+    const subtypeCode = diabetesAttributes.subtype || (/type\s*1/.test(normalized) ? 'E10' : 'E11');
+    const diabetesType: 'type1' | 'type2' | 'secondary' = subtypeCode === 'E10'
+      ? 'type1'
+      : subtypeCode === 'E08' || subtypeCode === 'E09'
+        ? 'secondary'
+        : 'type2';
+
     concepts.push({
       raw: text,
-      normalized: normalized.includes('type 1') ? 'type 1 diabetes' : 'type 2 diabetes',
+      normalized: normalized.includes('type 1') ? 'type 1 diabetes' : 'type 2 diabetes mellitus',
       type: 'diabetes',
       attributes: {
-        stage: stage || undefined,
+        stage: ckdFromText.stage || undefined,
         diabetesType,
         laterality: lateralityMatch,
         complications: {
-          retinopathy: hasRetinopathy,
-          neuropathy: hasNeuropathy,
-          nephropathy: hasNephropathy,
-          hypoglycemia: hasHypoglycemia,
-          hyperosmolar: hasHyperosmolar,
+          retinopathy: Boolean(diabetesAttributes.retinopathy?.present),
+          neuropathy: Boolean(diabetesAttributes.neuropathy),
+          nephropathy: Boolean(diabetesAttributes.nephropathy),
+          hypoglycemia: Boolean(diabetesAttributes.hypoglycemia?.present),
+          hyperosmolar: Boolean(diabetesAttributes.hyperosmolarity?.present),
         },
+        ckdStage: ckdFromText.ckdStage,
+        diabetes: diabetesAttributes,
       },
     });
   }
@@ -327,6 +405,7 @@ export function mapConceptsToCandidateCodes(concepts: ParsedConcept[]): Candidat
   const conceptText = concepts.map((c) => c.normalized).join(' ');
 
   const diabetes = concepts.find((c) => c.type === 'diabetes');
+  const diabetesDetails = diabetes?.attributes.diabetes;
   const ckd = concepts.find((c) => c.type === 'ckd');
   const hypertension = concepts.find((c) => c.type === 'hypertension');
   const heartFailure = concepts.find((c) => c.type === 'heart_failure');
@@ -339,14 +418,24 @@ export function mapConceptsToCandidateCodes(concepts: ParsedConcept[]): Candidat
   const sourceText = concepts.map((c) => c.raw.toLowerCase()).join(' ');
   const hasStatusAsthmaticus = sourceText.includes('status asthmaticus');
 
-  const hasNeuropathy = diabetes?.attributes.complications?.neuropathy;
-  const hasRetinopathy = diabetes?.attributes.complications?.retinopathy;
-  const hasNephropathy = diabetes?.attributes.complications?.nephropathy;
-  const hasHypoglycemia = diabetes?.attributes.complications?.hypoglycemia;
-  const hasHyperosmolar = diabetes?.attributes.complications?.hyperosmolar;
+  const hasNeuropathy = diabetesDetails?.neuropathy || diabetes?.attributes.complications?.neuropathy;
+  const hasRetinopathy = diabetesDetails?.retinopathy?.present || diabetes?.attributes.complications?.retinopathy;
+  const hasNephropathy = diabetesDetails?.nephropathy || diabetes?.attributes.complications?.nephropathy;
+  const hasHypoglycemia = diabetesDetails?.hypoglycemia?.present || diabetes?.attributes.complications?.hypoglycemia;
+  const hasHyperosmolar = diabetesDetails?.hyperosmolarity?.present || diabetes?.attributes.complications?.hyperosmolar;
 
-  const diabetesType = diabetes?.attributes.diabetesType || 'type2';
-  const diabetesPrefix = diabetesType === 'type1' ? 'E10' : diabetesType === 'secondary' ? 'E08' : 'E11';
+  const diabetesType = diabetesDetails?.subtype === 'E10'
+    ? 'type1'
+    : diabetesDetails?.subtype === 'E08' || diabetesDetails?.subtype === 'E09'
+      ? 'secondary'
+      : diabetes?.attributes.diabetesType || 'type2';
+  const diabetesPrefix = diabetesDetails?.subtype
+    ? diabetesDetails.subtype
+    : diabetesType === 'type1'
+      ? 'E10'
+      : diabetesType === 'secondary'
+        ? diabetesDetails?.subtype || 'E08'
+        : 'E11';
 
   const getCkdStageCode = (stageRaw?: string, ckdStage?: ParsedConcept['attributes']['ckdStage']) => {
     if (ckdStage === 'ESRD') return 'N18.6';
@@ -363,7 +452,7 @@ export function mapConceptsToCandidateCodes(concepts: ParsedConcept[]): Candidat
   };
 
   if (diabetes && ckd) {
-    addCandidate(candidates, { code: `${diabetesPrefix}.22`, reason: 'Diabetes with CKD combination', baseScore: 10, conceptRefs: [diabetes.raw, ckd.raw], guidelineRule: 'diabetes_ckd_combo' });
+    addCandidate(candidates, { code: `${diabetesPrefix}.22`, reason: 'Diabetes with CKD combination', baseScore: 9, conceptRefs: [diabetes.raw, ckd.raw], guidelineRule: 'diabetes_ckd_combo' });
     addCandidate(candidates, {
       code: getCkdStageCode(ckd.attributes.stage, ckd.attributes.ckdStage),
       reason: 'CKD stage documented',
@@ -489,38 +578,6 @@ export function mapConceptsToCandidateCodes(concepts: ParsedConcept[]): Candidat
       baseScore: 6,
       conceptRefs: [depression.raw],
     });
-  }
-
-  if (hasNeuropathy && diabetes) {
-    addCandidate(candidates, {
-      code: `${diabetesPrefix}.42`,
-      reason: 'Diabetic neuropathy',
-      baseScore: 9,
-      conceptRefs: [diabetes.raw],
-    });
-  }
-
-  if (hasRetinopathy && diabetes) {
-    const laterality = diabetes.attributes.laterality || 'unspecified';
-    const lateralityCode = laterality === 'left' ? '322' : laterality === 'right' ? '321' : laterality === 'bilateral' ? '323' : '319';
-    addCandidate(candidates, {
-      code: `${diabetesPrefix}.3${lateralityCode}`,
-      reason: 'Diabetic retinopathy with laterality',
-      baseScore: 9,
-      conceptRefs: [diabetes.raw],
-    });
-  }
-
-  if (hasNephropathy && diabetes) {
-    addCandidate(candidates, { code: `${diabetesPrefix}.21`, reason: 'Diabetic nephropathy', baseScore: 9, conceptRefs: [diabetes.raw] });
-  }
-
-  if (hasHypoglycemia && diabetes) {
-    addCandidate(candidates, { code: `${diabetesPrefix}.649`, reason: 'Diabetic hypoglycemia without coma', baseScore: 8, conceptRefs: [diabetes.raw] });
-  }
-
-  if (hasHyperosmolar && diabetes) {
-    addCandidate(candidates, { code: `${diabetesPrefix}.00`, reason: 'Diabetes with hyperosmolarity', baseScore: 10, conceptRefs: [diabetes.raw] });
   }
 
   const neoplasmConcepts = concepts.filter((c) => c.type === 'neoplasm');
