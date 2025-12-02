@@ -86,7 +86,7 @@ module.exports = async function handler(req, res) {
   console.log('Incoming search request', { method: req.method, url: req.url, headers: req.headers });
 
   try {
-    const { initIcdData, searchIndex, searchCodesByTerm, searchCodesFuzzy } = loadIcdModule();
+    const { initIcdData, rankedSearch, getSuggestions } = loadIcdModule();
 
     let query;
     let requestBody = {};
@@ -142,42 +142,17 @@ module.exports = async function handler(req, res) {
     console.log('Validated search query', { query });
 
     await initIcdData();
-    const indexResults = searchIndex(query, 10);
-    const codeMatches = searchCodesByTerm(query, 5);
-    const fuzzyMatches = searchCodesFuzzy(query, 5);
+    const { results, suggestions, refinements } = rankedSearch(query, 20);
+    const suggestionPayload = getSuggestions(query, 10);
 
-    const combined = [
-      ...indexResults.map((item) => ({
-        code: item.code.code,
-        description: item.code.longDescription || item.code.shortDescription,
-        matchedTerm: item.matchedTerm,
-        score: item.score,
-      })),
-    ];
-
-    codeMatches.forEach((code) => {
-      if (!combined.some((entry) => entry.code === code.code)) {
-        combined.push({
-          code: code.code,
-          description: code.longDescription || code.shortDescription,
-          matchedTerm: query,
-          score: 1,
-        });
-      }
-    });
-
-    fuzzyMatches.forEach((match) => {
-      if (!combined.some((entry) => entry.code === match.code.code)) {
-        combined.push({
-          code: match.code.code,
-          description: match.code.longDescription || match.code.shortDescription,
-          matchedTerm: query,
-          score: match.score,
-        });
-      }
-    });
-
-    const successPayload = { success: true, data: { results: combined } };
+    const successPayload = {
+      success: true,
+      data: {
+        results: results.map((item) => ({ ...item, confidence: item.confidence ?? 0, source: item.source || 'icd-master' })),
+        suggestions: suggestionPayload.suggestions,
+        refinements: suggestionPayload.refinements.length ? suggestionPayload.refinements : refinements,
+      },
+    };
     return respondJson(res, 200, successPayload);
   } catch (err) {
     console.error('Search handler failed:', err);
