@@ -20,10 +20,12 @@ interface IndexedCode {
   codeUpper: string;
   normalizedShort: string;
   normalizedLong: string;
+  tokens: Set<string>;
 }
 
 interface IndexedIndexTerm extends IcdIndexTerm {
   normalizedTerm: string;
+  tokens: Set<string>;
 }
 
 let codes: IcdCode[] = [];
@@ -31,6 +33,9 @@ let indexedCodes: IndexedCode[] = [];
 let indexTerms: IcdIndexTerm[] = [];
 let normalizedIndexTerms: IndexedIndexTerm[] = [];
 let codeMap = new Map<string, IcdCode>();
+let indexedCodeMap = new Map<string, IndexedCode>();
+let codesByToken = new Map<string, IndexedCode[]>();
+let indexTermsByToken = new Map<string, IndexedIndexTerm[]>();
 let initialized = false;
 let loadingPromise: Promise<void> | null = null;
 let resolvedDataPath: string | undefined;
@@ -146,17 +151,53 @@ function hydrateInMemoryIndexes(dataset: SampleData, dataSourceLabel: string): v
   indexTerms = normalizeIndexTermsShape(dataset.indexTerms || []);
 
   codeMap = new Map(codes.map((entry) => [entry.code.toUpperCase(), entry]));
-  indexedCodes = codes.map((entry) => ({
-    entry,
-    codeUpper: entry.code.toUpperCase(),
-    normalizedShort: normalizeTerm(entry.shortDescription || entry.code),
-    normalizedLong: normalizeTerm(entry.longDescription || entry.shortDescription || entry.code),
-  }));
+  indexedCodeMap = new Map();
+  codesByToken = new Map();
+  indexTermsByToken = new Map();
 
-  normalizedIndexTerms = indexTerms.map((item) => ({
-    ...item,
-    normalizedTerm: normalizeTerm(item.term),
-  }));
+  indexedCodes = codes.map((entry) => {
+    const normalizedShort = normalizeTerm(entry.shortDescription || entry.code);
+    const normalizedLong = normalizeTerm(entry.longDescription || entry.shortDescription || entry.code);
+    const tokens = new Set<string>([
+      ...normalizedShort.split(' '),
+      ...normalizedLong.split(' '),
+      entry.code.toLowerCase(),
+      entry.code.replace('.', '').toLowerCase(),
+    ]);
+    const indexed: IndexedCode = {
+      entry,
+      codeUpper: entry.code.toUpperCase(),
+      normalizedShort,
+      normalizedLong,
+      tokens,
+    };
+
+    tokens.forEach((token) => {
+      if (!codesByToken.has(token)) codesByToken.set(token, []);
+      codesByToken.get(token)!.push(indexed);
+    });
+
+    indexedCodeMap.set(indexed.codeUpper, indexed);
+
+    return indexed;
+  });
+
+  normalizedIndexTerms = indexTerms.map((item) => {
+    const normalizedTerm = normalizeTerm(item.term);
+    const tokens = new Set<string>(normalizedTerm.split(' '));
+    const indexed: IndexedIndexTerm = {
+      ...item,
+      normalizedTerm,
+      tokens,
+    };
+
+    tokens.forEach((token) => {
+      if (!indexTermsByToken.has(token)) indexTermsByToken.set(token, []);
+      indexTermsByToken.get(token)!.push(indexed);
+    });
+
+    return indexed;
+  });
 
   initialized = true;
   console.log(
@@ -213,7 +254,17 @@ export function getCode(code: string): IcdCode | undefined {
 export function searchCodesByTerm(term: string, limit = 20): IcdCode[] {
   const normalized = normalizeTerm(term);
   if (!normalized) return [];
-  const matches = indexedCodes
+  const tokens = normalized.split(' ');
+  const candidateSet = new Set<IndexedCode>();
+
+  tokens.forEach((token) => {
+    const bucket = codesByToken.get(token);
+    bucket?.forEach((entry) => candidateSet.add(entry));
+  });
+
+  const candidates = candidateSet.size > 0 ? [...candidateSet] : indexedCodes;
+
+  const matches = candidates
     .map((item) => {
       const score = computeScore(normalized, item);
       return { entry: item.entry, score };
@@ -252,7 +303,16 @@ export function searchCodesFuzzy(term: string, limit = 10): { code: IcdCode; sco
   const normalized = normalizeTerm(term);
   if (!normalized) return [];
 
-  const matches = indexedCodes
+  const tokens = normalized.split(' ');
+  const candidateSet = new Set<IndexedCode>();
+  tokens.forEach((token) => {
+    const bucket = codesByToken.get(token);
+    bucket?.forEach((item) => candidateSet.add(item));
+  });
+
+  const candidates = candidateSet.size > 0 ? [...candidateSet] : indexedCodes;
+
+  const matches = candidates
     .map((item) => {
       const distance = levenshteinDistance(normalized, item.normalizedShort.slice(0, normalized.length));
       const altDistance = levenshteinDistance(normalized, item.normalizedLong.slice(0, Math.max(normalized.length, 6)));
@@ -273,7 +333,17 @@ export function searchIndex(
 ): { code: IcdCode; score: number; matchedTerm: string }[] {
   const normalized = normalizeTerm(term);
   if (!normalized) return [];
-  const matches = normalizedIndexTerms
+  const tokens = normalized.split(' ');
+  const candidateSet = new Set<IndexedIndexTerm>();
+
+  tokens.forEach((token) => {
+    const bucket = indexTermsByToken.get(token);
+    bucket?.forEach((entry) => candidateSet.add(entry));
+  });
+
+  const candidates = candidateSet.size > 0 ? [...candidateSet] : normalizedIndexTerms;
+
+  const matches = candidates
     .map((item) => {
       const matchScore = similarity(normalized, item.normalizedTerm);
       return { item, score: matchScore };
@@ -309,6 +379,136 @@ function similarity(search: string, candidate: string): number {
   return overlap > 0 ? overlap : 0;
 }
 
+function computeCodeDepthScore(code: IcdCode): number {
+  const compact = code.code.replace(/\./g, '');
+  const depthScore = Math.min(20, compact.length * 3);
+  const specificity = code.isBillable ? 20 : 8;
+  return depthScore + specificity;
+}
+
+function normalizedConfidence(score: number): number {
+  return Math.max(0, Math.min(100, Math.round(score)));
+}
+
+type MatchType = 'exact' | 'index' | 'term' | 'fuzzy';
+
+interface RankedEntry {
+  code: string;
+  description: string;
+  matchedTerm: string;
+  matchType: MatchType;
+  confidence: number;
+  source: 'icd-master';
+  score: number;
+}
+
+function buildRankedEntry(
+  code: IcdCode,
+  matchedTerm: string,
+  matchType: MatchType,
+  matchScore: number,
+  confidenceBoost = 0,
+): RankedEntry {
+  const codeDepthScore = computeCodeDepthScore(code);
+  const matchConfidence = matchType === 'exact' ? 30 : matchType === 'index' ? 15 : matchType === 'term' ? 10 : 0;
+  const fuzzyPenalty = matchType === 'fuzzy' ? -15 : 0;
+  const combinedScore = matchScore * 10 + codeDepthScore + matchConfidence + confidenceBoost + fuzzyPenalty;
+  const confidence = normalizedConfidence(combinedScore);
+
+  return {
+    code: code.code,
+    description: code.longDescription || code.shortDescription || code.code,
+    matchedTerm,
+    matchType,
+    confidence,
+    source: 'icd-master',
+    score: combinedScore,
+  };
+}
+
+function pickBetterResult(current: RankedEntry | undefined, next: RankedEntry): RankedEntry {
+  if (!current) return next;
+  if (current.matchType === 'fuzzy' && next.matchType !== 'fuzzy') return next;
+  if (next.matchType === 'exact' && current.matchType !== 'exact') return next;
+  return next.score > current.score ? next : current;
+}
+
+export function rankedSearch(
+  term: string,
+  limit = 20,
+): { results: RankedEntry[]; suggestions: RankedEntry[]; refinements: string[] } {
+  const normalized = normalizeTerm(term);
+  if (!normalized) return { results: [], suggestions: [], refinements: [] };
+
+  const indexResults = searchIndex(term, limit * 2);
+  const codeMatches = searchCodesByTerm(term, limit * 2);
+  const fuzzyMatches = searchCodesFuzzy(term, limit * 2);
+
+  const combined = new Map<string, RankedEntry>();
+
+  indexResults.forEach((match) => {
+    const matchType: MatchType = match.matchedTerm && normalizeTerm(match.matchedTerm) === normalized ? 'exact' : 'index';
+    const ranked = buildRankedEntry(match.code, match.matchedTerm || term, matchType, match.score, match.score * 2);
+    combined.set(match.code.code, pickBetterResult(combined.get(match.code.code), ranked));
+  });
+
+  codeMatches.forEach((code) => {
+    const indexed = indexedCodeMap.get(code.code.toUpperCase());
+    const baseScore = indexed ? computeScore(normalized, indexed) : 1;
+    const matchType: MatchType =
+      normalizeTerm(code.code) === normalized || normalizeTerm(code.shortDescription) === normalized ? 'exact' : 'term';
+    const ranked = buildRankedEntry(code, term, matchType, baseScore, baseScore * 2);
+    combined.set(code.code, pickBetterResult(combined.get(code.code), ranked));
+  });
+
+  fuzzyMatches.forEach((match) => {
+    const ranked = buildRankedEntry(match.code, term, 'fuzzy', match.score);
+    combined.set(match.code.code, pickBetterResult(combined.get(match.code.code), ranked));
+  });
+
+  const results = Array.from(combined.values())
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit);
+
+  const suggestions = results.slice(0, Math.min(10, results.length));
+  const refinements = buildRefinements(normalized, suggestions);
+
+  return { results, suggestions, refinements };
+}
+
+function buildRefinements(query: string, ranked: RankedEntry[]): string[] {
+  const seen = new Set<string>();
+  const refinements: string[] = [];
+
+  normalizedIndexTerms
+    .filter((item) => item.normalizedTerm.startsWith(query) && item.normalizedTerm !== query)
+    .slice(0, 15)
+    .forEach((item) => {
+      const suggestion = item.normalizedTerm;
+      if (!seen.has(suggestion)) {
+        refinements.push(suggestion);
+        seen.add(suggestion);
+      }
+    });
+
+  ranked.forEach((entry) => {
+    const tokens = normalizeTerm(entry.description).split(' ');
+    tokens.forEach((token) => {
+      if (token.length > 3 && token.startsWith(query.split(' ')[0]) && !seen.has(token)) {
+        refinements.push(token);
+        seen.add(token);
+      }
+    });
+  });
+
+  return refinements.slice(0, 10);
+}
+
+export function getSuggestions(term: string, limit = 10): { suggestions: RankedEntry[]; refinements: string[] } {
+  const { suggestions, refinements } = rankedSearch(term, limit);
+  return { suggestions: suggestions.slice(0, limit), refinements };
+}
+
 export function normalizeSearchTerm(term: string): string {
   return normalizeTerm(term);
 }
@@ -334,3 +534,6 @@ export function getIcdDatasetStats(): {
     blocks,
   };
 }
+
+// Preload ICD data on module import to keep lookups fast.
+void initIcdData();
