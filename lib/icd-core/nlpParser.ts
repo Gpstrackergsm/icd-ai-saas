@@ -245,6 +245,70 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
     concepts.push({ raw: text, normalized: 'acute myocardial infarction', type: 'other', attributes: {} });
   }
 
+  // Atherosclerosis and coronary artery disease
+  if (/atherosclerosis|coronary artery disease|cad/.test(normalized)) {
+    const vessel = /native.*coronary/.test(normalized)
+      ? 'native'
+      : /bypass.*graft|cabg/.test(normalized)
+        ? 'bypass_graft'
+        : 'unspecified';
+
+    const withAngina = /angina/.test(normalized);
+    const anginaType = /unstable angina/.test(normalized)
+      ? 'unstable'
+      : /stable angina/.test(normalized)
+        ? 'stable'
+        : withAngina
+          ? 'unspecified'
+          : undefined;
+
+    concepts.push({
+      raw: text,
+      normalized: 'atherosclerosis of coronary artery',
+      type: 'atherosclerosis',
+      attributes: {
+        vessel,
+        withAngina,
+        anginaType,
+      },
+    });
+  }
+
+  // Angina pectoris (standalone)
+  if (/angina pectoris|angina/.test(normalized) && !concepts.some(c => c.type === 'atherosclerosis')) {
+    const anginaType = /unstable/.test(normalized)
+      ? 'unstable'
+      : /stable/.test(normalized)
+        ? 'stable'
+        : /variant|prinzmetal/.test(normalized)
+          ? 'variant'
+          : 'unspecified';
+
+    concepts.push({
+      raw: text,
+      normalized: 'angina pectoris',
+      type: 'angina',
+      attributes: { anginaType },
+    });
+  }
+
+  // Nicotine dependence and smoking
+  if (/nicotine dependence|tobacco dependence|smoking|smoker/.test(normalized)) {
+    const isHistory = /history of smoking|former smoker|ex-smoker/.test(normalized);
+    const isCurrent = /current smoker|smokes/.test(normalized) || (!isHistory && /smoking|smoker/.test(normalized));
+
+    concepts.push({
+      raw: text,
+      normalized: isHistory ? 'history of nicotine dependence' : 'nicotine dependence',
+      type: 'substance_use',
+      attributes: {
+        substance: 'nicotine',
+        isHistory,
+        isCurrent,
+      },
+    });
+  }
+
   const hasAcuteExacerbation = /acute exacerbation|status asthmaticus/.test(normalized);
   const hasLowerRespInfection = /acute lower respiratory infection|lower respiratory infection/.test(normalized);
   const pneumoniaOrganism = /klebsiella/.test(normalized)
@@ -607,6 +671,79 @@ export function mapConceptsToCandidateCodes(concepts: ParsedConcept[]): Candidat
 
   if (conceptText.includes('myocardial infarction') || /heart attack/.test(conceptText)) {
     addCandidate(candidates, { code: 'I21.9', reason: 'Acute myocardial infarction', baseScore: 6, conceptRefs: ['mi'] });
+  }
+
+  // Atherosclerosis with or without angina
+  const atherosclerosis = concepts.find((c) => c.type === 'atherosclerosis');
+  if (atherosclerosis) {
+    const vessel = atherosclerosis.attributes.vessel;
+    const anginaType = atherosclerosis.attributes.anginaType;
+
+    let code = 'I25.10'; // Default: atherosclerosis of native coronary artery without angina
+
+    if (vessel === 'native') {
+      if (anginaType === 'unstable') {
+        code = 'I25.110'; // Atherosclerotic heart disease of native coronary artery with unstable angina pectoris
+      } else if (anginaType === 'stable') {
+        code = 'I25.119'; // Atherosclerotic heart disease of native coronary artery with unspecified angina pectoris (stable typically coded here)
+      } else if (anginaType === 'unspecified') {
+        code = 'I25.119'; // With angina, unspecified type
+      } else {
+        code = 'I25.10'; // Without angina
+      }
+    } else if (vessel === 'bypass_graft') {
+      code = 'I25.700'; // Atherosclerosis of coronary artery bypass graft(s)
+    }
+
+    addCandidate(candidates, {
+      code,
+      reason: `Atherosclerosis of ${vessel} coronary artery${anginaType ? ` with ${anginaType} angina` : ''}`,
+      baseScore: 9,
+      conceptRefs: [atherosclerosis.raw],
+      guidelineRule: 'atherosclerosis_coronary',
+    });
+  }
+
+  // Standalone angina (not associated with atherosclerosis)
+  const angina = concepts.find((c) => c.type === 'angina');
+  if (angina && !atherosclerosis) {
+    const anginaType = angina.attributes.anginaType;
+    const codeMap: Record<string, string> = {
+      'unstable': 'I20.0',
+      'stable': 'I20.8', // Other forms of angina pectoris (stable angina)
+      'variant': 'I20.1', // Angina pectoris with documented spasm (Prinzmetal)
+      'unspecified': 'I20.9',
+    };
+
+    addCandidate(candidates, {
+      code: codeMap[anginaType] || 'I20.9',
+      reason: `${anginaType} angina pectoris`,
+      baseScore: 8,
+      conceptRefs: [angina.raw],
+      guidelineRule: 'angina_pectoris',
+    });
+  }
+
+  // Nicotine dependence
+  const substanceUse = concepts.find((c) => c.type === 'substance_use' && c.attributes.substance === 'nicotine');
+  if (substanceUse) {
+    if (substanceUse.attributes.isHistory) {
+      addCandidate(candidates, {
+        code: 'Z87.891',
+        reason: 'Personal history of nicotine dependence',
+        baseScore: 5,
+        conceptRefs: [substanceUse.raw],
+        guidelineRule: 'nicotine_history',
+      });
+    } else if (substanceUse.attributes.isCurrent) {
+      addCandidate(candidates, {
+        code: 'F17.200',
+        reason: 'Nicotine dependence, unspecified, uncomplicated',
+        baseScore: 6,
+        conceptRefs: [substanceUse.raw],
+        guidelineRule: 'nicotine_dependence',
+      });
+    }
   }
 
   if (depression) {
