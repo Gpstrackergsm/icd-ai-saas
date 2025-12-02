@@ -136,6 +136,8 @@ export interface ParsedConceptAttributes {
   hasAcuteLowerRespInfection?: boolean;
   pneumoniaOrganism?: "staph" | "klebsiella" | "viral" | "unspecified";
   diabetes?: ParsedDiabetesAttributes;
+  neuropathy?: boolean;
+  neuropathyEtiology?: string;
 }
 
 export type DiabetesSubtype = "E08" | "E09" | "E10" | "E11" | "E13";

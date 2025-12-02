@@ -251,6 +251,38 @@ export function getCode(code: string): IcdCode | undefined {
   return codeMap.get(needle);
 }
 
+function ensureCodeMapHydrated() {
+  if (codeMap.size === 0 && icdMasterCache) {
+    codeMap = new Map(icdMasterCache.codes.map((entry) => [entry.code.toUpperCase(), toIcdCode(entry)]));
+  } else if (!icdMasterCache) {
+    loadICDMaster();
+    if (icdMasterCache) {
+      codeMap = new Map(icdMasterCache.codes.map((entry) => [entry.code.toUpperCase(), toIcdCode(entry)]));
+    }
+  }
+}
+
+export function getExcludes1Codes(code: string): string[] {
+  ensureCodeMapHydrated();
+  const entry = getCode(code);
+  if (!entry || !entry.excludes1Notes?.length) return [];
+
+  const notes = Array.isArray(entry.excludes1Notes) ? entry.excludes1Notes : [entry.excludes1Notes];
+  const extracted = new Set<string>();
+  notes.forEach((note) => {
+    if (!note) return;
+    const matches = note.match(/[A-Z][0-9][A-Z0-9](?:\.[A-Z0-9]{1,4})?/gi);
+    matches?.forEach((m) => extracted.add(m.toUpperCase()));
+  });
+
+  return Array.from(extracted);
+}
+
+export function getChapterForCode(code: string): string | undefined {
+  ensureCodeMapHydrated();
+  return getCode(code)?.chapter;
+}
+
 export function searchCodesByTerm(term: string, limit = 20): IcdCode[] {
   const normalized = normalizeTerm(term);
   if (!normalized) return [];
