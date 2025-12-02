@@ -109,7 +109,9 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
     diabetesAttributes.ckdStage = ckdFromText.stage;
 
     const neuropathyTriggers =
-      /neuropathy|polyneuropathy|neuropathic pain|nerve damage|peripheral neuropathy/.test(normalized);
+      /neuropathy|polyneuropathy|neuropathic pain|nerve damage|peripheral neuropathy|paresthesia|numbness|burning feet|autonomic neuropathy|autonomic dysfunction/.test(
+        normalized,
+      );
     const diabeticNeuropathySignal =
       /diabetic (poly)?neuropathy/.test(normalized) || /neuropathic pain due to diabetes/.test(normalized);
     const neuropathy = diabeticNeuropathySignal || neuropathyTriggers;
@@ -117,7 +119,7 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
       ? 'polyneuropathy'
       : /mononeuropathy/.test(normalized)
         ? 'mononeuropathy'
-        : /autonomic neuropathy/.test(normalized)
+        : /autonomic neuropathy|autonomic dysfunction/.test(normalized)
           ? 'autonomic'
           : /amyotrophy/.test(normalized)
             ? 'amyotrophy'
@@ -405,7 +407,10 @@ export function extractClinicalConcepts(text: string): ParsedConcept[] {
     });
   }
 
-  const neuropathyMention = /neuropathy|polyneuropathy|neuropathic pain|nerve damage|peripheral neuropathy/.test(normalized);
+  const neuropathyMention =
+    /neuropathy|polyneuropathy|neuropathic pain|nerve damage|peripheral neuropathy|paresthesia|numbness|burning feet|autonomic neuropathy|autonomic dysfunction/.test(
+      normalized,
+    );
   if (neuropathyMention && !hasDiabetesInText) {
     concepts.push({
       raw: text,
