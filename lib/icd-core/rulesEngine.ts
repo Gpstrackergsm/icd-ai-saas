@@ -215,6 +215,57 @@ function applyNeuropathyRules(
   return working;
 }
 
+function applyRespiratoryRules(
+  ctx: EncodingContext,
+  working: CandidateCode[],
+  warnings: string[],
+): CandidateCode[] {
+  const hasCOPDConcept = ctx.concepts.some((c) => c.type === 'copd');
+  const hasAsthmaConcept = ctx.concepts.some((c) => c.type === 'asthma');
+  const copdConcept = ctx.concepts.find((c) => c.type === 'copd');
+  const asthmaConcept = ctx.concepts.find((c) => c.type === 'asthma');
+
+  const copdCandidates = working.filter((c) => c.code.startsWith('J44'));
+  const asthmaCandidates = working.filter((c) => c.code.startsWith('J45'));
+
+  if (hasCOPDConcept && !copdCandidates.length) {
+    working.push({
+      code: 'J44.9',
+      reason: 'COPD documented',
+      baseScore: 6,
+      conceptRefs: [copdConcept?.raw || 'copd'],
+      guidelineRule: 'copd_default',
+    });
+  }
+
+  if (hasAsthmaConcept && !asthmaCandidates.length) {
+    working.push({
+      code: 'J45.909',
+      reason: 'Asthma documented',
+      baseScore: 6,
+      conceptRefs: [asthmaConcept?.raw || 'asthma'],
+      guidelineRule: 'asthma_default',
+    });
+  }
+
+  const pneumoniaPresent = working.some((c) => /^J1[0-8]/.test(c.code));
+  working = working.map((candidate) => {
+    if (candidate.code.startsWith('J44.0') && !pneumoniaPresent) {
+      warnings.push('COPD with acute infection requires organism-specific pneumonia code; ensure documentation.');
+    }
+    if (candidate.code.startsWith('J44')) {
+      return { ...candidate, baseScore: Math.max(candidate.baseScore, 8) };
+    }
+    return candidate;
+  });
+
+  if (hasCOPDConcept && asthmaCandidates.some((c) => c.code === 'J45.909')) {
+    working = working.filter((c) => c.code !== 'J45.909');
+  }
+
+  return working;
+}
+
 function pickPreferredCandidate(a: CandidateCode, b: CandidateCode): CandidateCode {
   if (a.baseScore !== b.baseScore) return a.baseScore > b.baseScore ? a : b;
   if (a.code.length !== b.code.length) return a.code.length > b.code.length ? a : b;
@@ -552,21 +603,6 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
     }
   }
 
-  working = applyInclusionExclusionGuidance(working, pushWarning, markCandidate);
-
-  // Pregnancy overrides endocrine/cardiac codes
-  if (hasPregnancy) {
-    const hadPregnancyCode = working.some((c) => c.code.startsWith('O')); 
-    if (!hadPregnancyCode) {
-      markCandidate('O26.90', 'Pregnancy present – use O chapter codes', 8, 'pregnancy_override', ['pregnancy']);
-    }
-    const before = working.length;
-    working = working.filter((c) => !(c.code.startsWith('E1') || c.code.startsWith('I1')));
-    if (before !== working.length) {
-      warnings.push('Removed endocrine/hypertensive codes because pregnancy codes take priority.');
-    }
-  }
-
   // Neoplasm sequencing primary vs secondary
   const hasSpecificSecondary = working.some((c) => (c.code.startsWith('C78') || c.code.startsWith('C79')) && c.code !== 'C79.9');
   if (hasSpecificSecondary) {
@@ -594,6 +630,23 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
   if (primarySites.length && secondarySites.length && secondarySites.some((s) => primarySites.includes(s))) {
     errors.push('Metastatic site must differ from primary; specify distinct primary and secondary locations.');
   }
+
+  // Pregnancy overrides endocrine/cardiac codes
+  if (hasPregnancy) {
+    const hadPregnancyCode = working.some((c) => c.code.startsWith('O'));
+    if (!hadPregnancyCode) {
+      markCandidate('O26.90', 'Pregnancy present – use O chapter codes', 8, 'pregnancy_override', ['pregnancy']);
+    }
+    const before = working.length;
+    working = working.filter((c) => !(c.code.startsWith('E1') || c.code.startsWith('I1')));
+    if (before !== working.length) {
+      warnings.push('Removed endocrine/hypertensive codes because pregnancy codes take priority.');
+    }
+  }
+
+  working = applyRespiratoryRules(ctx, working, warnings);
+
+  working = applyInclusionExclusionGuidance(working, pushWarning, markCandidate);
 
   // Injury: ensure external cause present
   if (hasInjury) {
