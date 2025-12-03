@@ -140,9 +140,17 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         }
         // RULE: HTN + CKD → I12.x
         else if (c.hypertension && hasCKD) {
+            // I12.0 = with stage 5 CKD or ESRD
+            // I12.9 = with stage 1-4 or unspecified CKD
+            const ckdStage = ctx.conditions.ckd?.stage;
+            const code = (ckdStage === 5 || ckdStage === 'esrd') ? 'I12.0' : 'I12.9';
+            const label = (ckdStage === 5 || ckdStage === 'esrd')
+                ? 'Hypertensive chronic kidney disease with stage 5 chronic kidney disease or end stage renal disease'
+                : 'Hypertensive chronic kidney disease with stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease';
+
             codes.push({
-                code: 'I12.9',
-                label: 'Hypertensive chronic kidney disease with stage 1 through stage 4 CKD, or unspecified CKD',
+                code: code,
+                label: label,
                 rationale: 'Combination code for HTN and CKD',
                 guideline: 'ICD-10-CM I.C.9.a.2',
                 trigger: 'Hypertension + CKD',
