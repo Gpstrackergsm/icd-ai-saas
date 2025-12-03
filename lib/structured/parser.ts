@@ -303,6 +303,234 @@ export function parseInput(text: string): ParseResult {
                 else context.conditions.injury.externalCause.mechanism = 'other';
                 break;
 
+            // Neurology
+            case 'altered mental status':
+            case 'ams':
+                if (!context.conditions.neurology) context.conditions.neurology = {};
+                context.conditions.neurology.alteredMentalStatus = parseBoolean(value);
+                break;
+            case 'encephalopathy':
+                if (!context.conditions.neurology) context.conditions.neurology = {};
+                context.conditions.neurology.encephalopathy = { present: parseBoolean(value) };
+                break;
+            case 'encephalopathy type':
+                if (!context.conditions.neurology) context.conditions.neurology = {};
+                if (!context.conditions.neurology.encephalopathy) context.conditions.neurology.encephalopathy = { present: true };
+                if (lowerValue.includes('metabolic')) context.conditions.neurology.encephalopathy.type = 'metabolic';
+                else if (lowerValue.includes('toxic')) context.conditions.neurology.encephalopathy.type = 'toxic';
+                else if (lowerValue.includes('hepatic')) context.conditions.neurology.encephalopathy.type = 'hepatic';
+                else if (lowerValue.includes('hypoxic')) context.conditions.neurology.encephalopathy.type = 'hypoxic';
+                break;
+            case 'seizure':
+            case 'seizure disorder':
+                if (!context.conditions.neurology) context.conditions.neurology = {};
+                context.conditions.neurology.seizure = parseBoolean(value);
+                break;
+            case 'dementia':
+                if (!context.conditions.neurology) context.conditions.neurology = {};
+                if (parseBoolean(value)) context.conditions.neurology.dementia = { type: 'unspecified' };
+                break;
+            case 'dementia type':
+                if (!context.conditions.neurology) context.conditions.neurology = {};
+                if (!context.conditions.neurology.dementia) context.conditions.neurology.dementia = { type: 'unspecified' };
+                if (lowerValue.includes('alzheimer')) context.conditions.neurology.dementia.type = 'alzheimer';
+                else if (lowerValue.includes('vascular')) context.conditions.neurology.dementia.type = 'vascular';
+                break;
+            case 'parkinson':
+            case 'parkinsons':
+                if (!context.conditions.neurology) context.conditions.neurology = {};
+                context.conditions.neurology.parkinsons = parseBoolean(value);
+                break;
+            case 'coma':
+                if (!context.conditions.neurology) context.conditions.neurology = {};
+                context.conditions.neurology.coma = parseBoolean(value);
+                break;
+            case 'gcs':
+            case 'glasgow coma scale':
+                if (!context.conditions.neurology) context.conditions.neurology = {};
+                const gcsValue = parseInt(value);
+                if (!isNaN(gcsValue)) context.conditions.neurology.gcs = gcsValue;
+                break;
+
+            // Gastroenterology
+            case 'liver disease':
+                if (!context.conditions.gastro) context.conditions.gastro = {};
+                context.conditions.gastro.liverDisease = parseBoolean(value);
+                break;
+            case 'cirrhosis':
+                if (!context.conditions.gastro) context.conditions.gastro = {};
+                if (parseBoolean(value)) context.conditions.gastro.cirrhosis = { type: 'unspecified' };
+                break;
+            case 'cirrhosis type':
+                if (!context.conditions.gastro) context.conditions.gastro = {};
+                if (!context.conditions.gastro.cirrhosis) context.conditions.gastro.cirrhosis = { type: 'unspecified' };
+                if (lowerValue.includes('alcoholic')) context.conditions.gastro.cirrhosis.type = 'alcoholic';
+                else if (lowerValue.includes('nash')) context.conditions.gastro.cirrhosis.type = 'nash';
+                break;
+            case 'hepatitis':
+                if (!context.conditions.gastro) context.conditions.gastro = {};
+                if (parseBoolean(value)) context.conditions.gastro.hepatitis = { type: 'unspecified' };
+                break;
+            case 'hepatitis type':
+                if (!context.conditions.gastro) context.conditions.gastro = {};
+                if (!context.conditions.gastro.hepatitis) context.conditions.gastro.hepatitis = { type: 'unspecified' };
+                if (lowerValue === 'a') context.conditions.gastro.hepatitis.type = 'a';
+                else if (lowerValue === 'b') context.conditions.gastro.hepatitis.type = 'b';
+                else if (lowerValue === 'c') context.conditions.gastro.hepatitis.type = 'c';
+                else if (lowerValue.includes('alcoholic')) context.conditions.gastro.hepatitis.type = 'alcoholic';
+                break;
+            case 'gi bleeding':
+                if (!context.conditions.gastro) context.conditions.gastro = {};
+                if (parseBoolean(value)) context.conditions.gastro.bleeding = { site: 'unspecified' };
+                break;
+            case 'bleeding site':
+                if (!context.conditions.gastro) context.conditions.gastro = {};
+                if (!context.conditions.gastro.bleeding) context.conditions.gastro.bleeding = { site: 'unspecified' };
+                if (lowerValue.includes('upper')) context.conditions.gastro.bleeding.site = 'upper';
+                else if (lowerValue.includes('lower')) context.conditions.gastro.bleeding.site = 'lower';
+                break;
+            case 'pancreatitis':
+                if (!context.conditions.gastro) context.conditions.gastro = {};
+                if (parseBoolean(value)) context.conditions.gastro.pancreatitis = { type: 'unspecified' };
+                break;
+            case 'pancreatitis type':
+                if (!context.conditions.gastro) context.conditions.gastro = {};
+                if (!context.conditions.gastro.pancreatitis) context.conditions.gastro.pancreatitis = { type: 'unspecified' };
+                if (lowerValue.includes('acute')) context.conditions.gastro.pancreatitis.type = 'acute';
+                else if (lowerValue.includes('chronic')) context.conditions.gastro.pancreatitis.type = 'chronic';
+                break;
+            case 'ascites':
+                if (!context.conditions.gastro) context.conditions.gastro = {};
+                context.conditions.gastro.ascites = parseBoolean(value);
+                break;
+
+            // Hematology/Oncology
+            case 'cancer':
+            case 'cancer present':
+                if (!context.conditions.neoplasm) context.conditions.neoplasm = {};
+                context.conditions.neoplasm.present = parseBoolean(value);
+                break;
+            case 'cancer site':
+            case 'primary site':
+                if (!context.conditions.neoplasm) context.conditions.neoplasm = { present: true };
+                if (lowerValue.includes('lung')) context.conditions.neoplasm.site = 'lung';
+                else if (lowerValue.includes('breast')) context.conditions.neoplasm.site = 'breast';
+                else if (lowerValue.includes('colon')) context.conditions.neoplasm.site = 'colon';
+                else if (lowerValue.includes('prostate')) context.conditions.neoplasm.site = 'prostate';
+                else context.conditions.neoplasm.site = 'other';
+                break;
+            case 'metastasis':
+            case 'metastatic':
+                if (!context.conditions.neoplasm) context.conditions.neoplasm = { present: true };
+                context.conditions.neoplasm.metastasis = parseBoolean(value);
+                break;
+            case 'metastatic site':
+                if (!context.conditions.neoplasm) context.conditions.neoplasm = { present: true, metastasis: true };
+                if (lowerValue.includes('bone')) context.conditions.neoplasm.metastaticSite = 'bone';
+                else if (lowerValue.includes('brain')) context.conditions.neoplasm.metastaticSite = 'brain';
+                else if (lowerValue.includes('liver')) context.conditions.neoplasm.metastaticSite = 'liver';
+                else if (lowerValue.includes('lung')) context.conditions.neoplasm.metastaticSite = 'lung';
+                break;
+            case 'chemotherapy':
+                if (!context.conditions.neoplasm) context.conditions.neoplasm = { present: true };
+                context.conditions.neoplasm.chemotherapy = parseBoolean(value);
+                break;
+            case 'anemia':
+                if (!context.conditions.hematology) context.conditions.hematology = {};
+                if (parseBoolean(value)) context.conditions.hematology.anemia = { type: 'unspecified' };
+                break;
+            case 'anemia type':
+                if (!context.conditions.hematology) context.conditions.hematology = {};
+                if (!context.conditions.hematology.anemia) context.conditions.hematology.anemia = { type: 'unspecified' };
+                if (lowerValue.includes('iron')) context.conditions.hematology.anemia.type = 'iron_deficiency';
+                else if (lowerValue.includes('b12')) context.conditions.hematology.anemia.type = 'b12_deficiency';
+                else if (lowerValue.includes('chronic disease')) context.conditions.hematology.anemia.type = 'chronic_disease';
+                else if (lowerValue.includes('blood loss')) context.conditions.hematology.anemia.type = 'acute_blood_loss';
+                break;
+            case 'coagulopathy':
+                if (!context.conditions.hematology) context.conditions.hematology = {};
+                context.conditions.hematology.coagulopathy = parseBoolean(value);
+                break;
+
+            // OB/GYN
+            case 'pregnancy':
+            case 'pregnant':
+                if (!context.conditions.obstetric) context.conditions.obstetric = {};
+                context.conditions.obstetric.pregnant = parseBoolean(value);
+                break;
+            case 'trimester':
+                if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                if (lowerValue.includes('1') || lowerValue.includes('first')) context.conditions.obstetric.trimester = 1;
+                else if (lowerValue.includes('2') || lowerValue.includes('second')) context.conditions.obstetric.trimester = 2;
+                else if (lowerValue.includes('3') || lowerValue.includes('third')) context.conditions.obstetric.trimester = 3;
+                break;
+            case 'gestational age':
+            case 'weeks':
+                if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                const weeks = parseInt(value);
+                if (!isNaN(weeks)) context.conditions.obstetric.gestationalAge = weeks;
+                break;
+            case 'delivery':
+                if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                context.conditions.obstetric.delivery = { occurred: parseBoolean(value) };
+                break;
+            case 'delivery type':
+                if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                if (!context.conditions.obstetric.delivery) context.conditions.obstetric.delivery = { occurred: true };
+                if (lowerValue.includes('vaginal') || lowerValue.includes('normal')) context.conditions.obstetric.delivery.type = 'vaginal';
+                else if (lowerValue.includes('cesarean') || lowerValue.includes('c-section')) context.conditions.obstetric.delivery.type = 'cesarean';
+                break;
+            case 'preeclampsia':
+                if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                context.conditions.obstetric.preeclampsia = parseBoolean(value);
+                break;
+            case 'gestational diabetes':
+                if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                context.conditions.obstetric.gestationalDiabetes = parseBoolean(value);
+                break;
+            case 'postpartum':
+                if (!context.conditions.obstetric) context.conditions.obstetric = {};
+                context.conditions.obstetric.postpartum = parseBoolean(value);
+                break;
+
+            // Social Status
+            case 'smoking':
+            case 'smoking status':
+                if (!context.social) context.social = {};
+                if (lowerValue.includes('current')) context.social.smoking = 'current';
+                else if (lowerValue.includes('former')) context.social.smoking = 'former';
+                else if (lowerValue.includes('never')) context.social.smoking = 'never';
+                else if (parseBoolean(value)) context.social.smoking = 'current';
+                break;
+            case 'pack years':
+                if (!context.social) context.social = {};
+                const packYears = parseInt(value);
+                if (!isNaN(packYears)) context.social.packYears = packYears;
+                break;
+            case 'alcohol use':
+            case 'alcohol':
+                if (!context.social) context.social = {};
+                if (lowerValue.includes('abuse')) context.social.alcoholUse = 'abuse';
+                else if (lowerValue.includes('dependence')) context.social.alcoholUse = 'dependence';
+                else if (parseBoolean(value)) context.social.alcoholUse = 'use';
+                break;
+            case 'drug use':
+                if (!context.social) context.social = {};
+                if (parseBoolean(value)) context.social.drugUse = { present: true };
+                break;
+            case 'drug type':
+                if (!context.social) context.social = {};
+                if (!context.social.drugUse) context.social.drugUse = { present: true };
+                if (lowerValue.includes('opioid')) context.social.drugUse.type = 'opioid';
+                else if (lowerValue.includes('cocaine')) context.social.drugUse.type = 'cocaine';
+                else if (lowerValue.includes('cannabis') || lowerValue.includes('marijuana')) context.social.drugUse.type = 'cannabis';
+                break;
+            case 'homelessness':
+            case 'homeless':
+                if (!context.social) context.social = {};
+                context.social.homeless = parseBoolean(value);
+                break;
+
             default:
                 // Ignore unknown fields or log warning
                 break;

@@ -83,10 +83,12 @@ export interface PatientContext {
         };
         neoplasm?: {
             present: boolean;
-            site?: string;
+            site?: 'lung' | 'breast' | 'colon' | 'prostate' | 'other';
             primaryOrSecondary?: 'primary' | 'secondary';
             metastasis?: boolean;
+            metastaticSite?: 'bone' | 'brain' | 'liver' | 'lung';
             activeTreatment?: boolean;
+            chemotherapy?: boolean;
         };
         injury?: {
             present: boolean;
@@ -99,11 +101,63 @@ export interface PatientContext {
                 mechanism?: 'fall' | 'mvc' | 'assault' | 'sports' | 'other';
             };
         };
-        social?: {
-            smoking?: 'never' | 'current' | 'former';
-            alcohol?: 'none' | 'yes';
-            drugUse?: 'none' | 'yes';
-            tobaccoDependence?: boolean;
+        neurology?: {
+            alteredMentalStatus?: boolean;
+            encephalopathy?: {
+                present: boolean;
+                type?: 'metabolic' | 'toxic' | 'hepatic' | 'hypoxic';
+            };
+            seizure?: boolean;
+            dementia?: {
+                type: 'alzheimer' | 'vascular' | 'unspecified';
+            };
+            parkinsons?: boolean;
+            coma?: boolean;
+            gcs?: number;
         };
+        gastro?: {
+            liverDisease?: boolean;
+            cirrhosis?: {
+                type: 'alcoholic' | 'nash' | 'unspecified';
+            };
+            hepatitis?: {
+                type: 'a' | 'b' | 'c' | 'alcoholic' | 'unspecified';
+            };
+            bleeding?: {
+                site: 'upper' | 'lower' | 'unspecified';
+            };
+            pancreatitis?: {
+                type: 'acute' | 'chronic' | 'unspecified';
+            };
+            ascites?: boolean;
+        };
+        hematology?: {
+            anemia?: {
+                type: 'iron_deficiency' | 'b12_deficiency' | 'chronic_disease' | 'acute_blood_loss' | 'unspecified';
+            };
+            coagulopathy?: boolean;
+        };
+        obstetric?: {
+            pregnant?: boolean;
+            trimester?: 1 | 2 | 3;
+            gestationalAge?: number;
+            delivery?: {
+                occurred: boolean;
+                type?: 'vaginal' | 'cesarean';
+            };
+            preeclampsia?: boolean;
+            gestationalDiabetes?: boolean;
+            postpartum?: boolean;
+        };
+    };
+    social?: {
+        smoking?: 'never' | 'current' | 'former';
+        packYears?: number;
+        alcoholUse?: 'use' | 'abuse' | 'dependence';
+        drugUse?: {
+            present: boolean;
+            type?: 'opioid' | 'cocaine' | 'cannabis';
+        };
+        homeless?: boolean;
     };
 }
