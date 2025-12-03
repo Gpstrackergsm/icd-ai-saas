@@ -127,6 +127,7 @@ export function parseInput(text: string): ParseResult {
                 }
                 break;
             case 'acute kidney injury':
+            case 'acute kidney injury / aki':
             case 'aki':
             case 'aki present':
                 if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
@@ -204,6 +205,7 @@ export function parseInput(text: string): ParseResult {
                 if (lowerValue.includes('mrsa')) context.conditions.infection.organism = 'mrsa';
                 else if (lowerValue.includes('e. coli') || lowerValue.includes('e.coli')) context.conditions.infection.organism = 'e_coli';
                 else if (lowerValue.includes('pseudomonas')) context.conditions.infection.organism = 'pseudomonas';
+                else if (lowerValue.includes('staphylococcus aureus') || lowerValue.includes('staph aureus')) context.conditions.infection.organism = 'mssa';
                 else if (lowerValue.includes('staphylococcus') || lowerValue.includes('staph')) context.conditions.infection.organism = 'staphylococcus';
                 else if (lowerValue.includes('streptococcus') || lowerValue.includes('strep')) context.conditions.infection.organism = 'streptococcus';
                 else if (lowerValue.includes('klebsiella')) context.conditions.infection.organism = 'klebsiella';

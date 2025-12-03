@@ -961,31 +961,60 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     // 3. Other acute conditions
     // 4. Chronic conditions
 
+    // --- DEDUPLICATION ---
+    const uniqueCodes = new Map<string, StructuredCode>();
+    codes.forEach(c => {
+        if (!uniqueCodes.has(c.code)) {
+            uniqueCodes.set(c.code, c);
+        }
+    });
+    const finalCodes = Array.from(uniqueCodes.values());
+
+    // --- SEQUENCING LOGIC ---
+    // Per ICD-10-CM guidelines, certain conditions must be sequenced first:
+    // 1. Underlying infection (A40, A41, B37.7, A48.1, etc.) - I.C.1.d.1.a
+    // 2. Severe sepsis (R65.20/R65.21)
+    // 3. Other acute conditions
+    // 4. Chronic conditions
+
     let primary: StructuredCode | null = null;
     let secondary: StructuredCode[] = [];
 
-    if (codes.length > 0) {
+    if (finalCodes.length > 0) {
         // Find severe sepsis code (R65.20 or R65.21)
-        const severeSepsisIndex = codes.findIndex(c => c.code === 'R65.20' || c.code === 'R65.21');
-        // Find underlying infection code (e.g., A41.xx)
-        const infectionIndex = codes.findIndex(c => c.code.startsWith('A41') || c.code.startsWith('A40') || c.code.startsWith('A39'));
+        const severeSepsisIndex = finalCodes.findIndex(c => c.code === 'R65.20' || c.code === 'R65.21');
+
+        // Find underlying infection code (Sepsis codes)
+        // Expanded to include B37 (Candidal), A48 (Legionella), etc.
+        const infectionIndex = finalCodes.findIndex(c =>
+            c.code.startsWith('A40') ||
+            c.code.startsWith('A41') ||
+            c.code.startsWith('A39') ||
+            c.code.startsWith('A42') ||
+            c.code === 'A48.1' ||
+            c.code === 'B37.7'
+        );
 
         if (severeSepsisIndex !== -1 && infectionIndex !== -1) {
-            // SEQUENCING RULE: Underlying infection (A41.xx) FIRST, then Severe Sepsis (R65.2x)
+            // SEQUENCING RULE: Underlying infection FIRST, then Severe Sepsis (R65.2x)
             // Move infection to primary
-            primary = codes[infectionIndex];
+            primary = finalCodes[infectionIndex];
 
             // Construct secondary list: Severe Sepsis must be first secondary
-            const otherCodes = codes.filter((_, i) => i !== severeSepsisIndex && i !== infectionIndex);
-            secondary = [codes[severeSepsisIndex], ...otherCodes];
+            const otherCodes = finalCodes.filter((_, i) => i !== severeSepsisIndex && i !== infectionIndex);
+            secondary = [finalCodes[severeSepsisIndex], ...otherCodes];
+        } else if (infectionIndex !== -1) {
+            // If sepsis is present but no severe sepsis, sepsis is primary
+            primary = finalCodes[infectionIndex];
+            secondary = finalCodes.filter((_, i) => i !== infectionIndex);
         } else if (severeSepsisIndex !== -1) {
             // If only severe sepsis is present (unlikely with correct logic), make it primary
-            primary = codes[severeSepsisIndex];
-            secondary = [...codes.slice(0, severeSepsisIndex), ...codes.slice(severeSepsisIndex + 1)];
+            primary = finalCodes[severeSepsisIndex];
+            secondary = finalCodes.filter((_, i) => i !== severeSepsisIndex);
         } else {
             // Default: first code is primary
-            primary = codes[0];
-            secondary = codes.slice(1);
+            primary = finalCodes[0];
+            secondary = finalCodes.slice(1);
         }
     }
 
@@ -1082,7 +1111,9 @@ function mapSepsisOrganism(organism: string): string {
     if (lower.includes('e. coli') || lower.includes('e.coli') || lower === 'e_coli') return 'A41.51';
     if (lower.includes('pseudomonas')) return 'A41.52';
     if (lower.includes('mrsa')) return 'A41.02';
-    if (lower.includes('staph') || lower.includes('staphylococcus')) return 'A41.2'; // MSSA/Unspecified Staph
+    if (lower.includes('mssa')) return 'A41.01';
+    if (lower.includes('staphylococcus aureus') || lower.includes('staph aureus')) return 'A41.01'; // Default to MSSA if not specified as MRSA
+    if (lower.includes('staph') || lower.includes('staphylococcus')) return 'A41.2'; // Other/Unspecified Staph
     if (lower.includes('strep') || lower.includes('streptococcus')) return 'A40.9'; // Streptococcal sepsis, unspecified
     if (lower.includes('klebsiella')) return 'A41.59'; // Other Gram-negative sepsis
     if (lower.includes('enterococcus')) return 'A41.81';
@@ -1092,6 +1123,8 @@ function mapSepsisOrganism(organism: string): string {
     if (lower.includes('enterobacter')) return 'A41.59'; // Other Gram-negative sepsis
     if (lower.includes('serratia')) return 'A41.53';
     if (lower.includes('acinetobacter')) return 'A41.59';
+    if (lower.includes('legionella')) return 'A48.1'; // Legionnaires' disease
+    if (lower.includes('influenza') || lower.includes('viral')) return 'A41.89'; // Other specified sepsis
     return 'A41.9'; // Unspecified
 }
 
