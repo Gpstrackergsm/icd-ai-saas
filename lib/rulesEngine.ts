@@ -112,25 +112,7 @@ export function runRulesEngine(text: string): EngineResult {
     }
   }
 
-  // 2. Cardiovascular
-  const cardio = resolveCardiovascular(text);
-  if (cardio) {
-    sequence.push({ code: cardio.code, label: cardio.label, triggeredBy: 'cardiovascular_resolution', hcc: false });
-    if (cardio.warnings) warnings.push(...cardio.warnings);
-
-    if (cardio.secondary_codes) {
-      cardio.secondary_codes.forEach(sc => {
-        sequence.push({
-          code: sc.code,
-          label: sc.label,
-          triggeredBy: `cardiovascular_${sc.type}`,
-          hcc: sc.code.startsWith('N18') // HCC for CKD
-        });
-      });
-    }
-  }
-
-  // 3. Renal
+  // 2. Renal (Run early to catch AKI before cardiovascular handles CKD)
   const renal = resolveRenal(text);
   if (renal) {
     sequence.push({ code: renal.code, label: renal.label, triggeredBy: 'renal_resolution', hcc: false });
@@ -147,8 +129,24 @@ export function runRulesEngine(text: string): EngineResult {
         });
       });
     }
+  }
 
+  // 3. Cardiovascular
+  const cardio = resolveCardiovascular(text);
+  if (cardio) {
+    sequence.push({ code: cardio.code, label: cardio.label, triggeredBy: 'cardiovascular_resolution', hcc: false });
+    if (cardio.warnings) warnings.push(...cardio.warnings);
 
+    if (cardio.secondary_codes) {
+      cardio.secondary_codes.forEach(sc => {
+        sequence.push({
+          code: sc.code,
+          label: sc.label,
+          triggeredBy: `cardiovascular_${sc.type}`,
+          hcc: sc.code.startsWith('N18') // HCC for CKD
+        });
+      });
+    }
   }
 
   // 4. Infection

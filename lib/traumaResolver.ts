@@ -222,8 +222,10 @@ export function resolveTrauma(text: string): TraumaResolution | undefined {
         };
     }
 
-    // General Injury
-    if (/injury|trauma|wound|laceration|contusion/.test(lower)) {
+    // General Injury - but exclude medical conditions that use "injury" terminology
+    // (e.g., "acute kidney injury" is a medical condition, not a trauma)
+    if (/injury|trauma|wound|laceration|contusion/.test(lower) &&
+        !/kidney injury|renal injury|aki/.test(lower)) {
         return {
             code: `T14.90X${suffix}`,
             label: 'Injury, unspecified',

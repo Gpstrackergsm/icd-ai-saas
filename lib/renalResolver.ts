@@ -51,7 +51,21 @@ export function resolveRenal(text: string): RenalResolution | undefined {
         }
     };
 
-    // 1. Pyelonephritis (Kidney infection)
+    // 1. Acute Kidney Injury (AKI)
+    // Check for AKI but exclude if it's specifically "chronic kidney injury"
+    if (/acute kidney injury|acute renal injury|aki\b/.test(lower) && !/chronic kidney injury|chronic renal injury/.test(lower)) {
+        return {
+            code: 'N17.9',
+            label: 'Acute kidney failure, unspecified',
+            attributes: {
+                type: 'ckd', // Using 'ckd' type for now, could add 'aki' type
+                acuity: 'acute'
+            },
+            warnings: []
+        };
+    }
+
+    // 2. Pyelonephritis (Kidney infection)
     if (/pyelonephritis|kidney infection/.test(lower)) {
         let code = 'N10'; // Acute pyelonephritis
         if (isChronic) code = 'N11.9'; // Chronic pyelonephritis, unspecified

@@ -43,7 +43,30 @@ export function resolveRespiratory(text: string): RespiratoryResolution | undefi
         if (/bacterial/.test(lower)) code = 'J15.9';
         if (/strep/.test(lower)) code = 'J13';
         if (/hemophilus/.test(lower)) code = 'J14';
+        if (/pseudomonas/.test(lower)) code = 'J15.1'; // Pneumonia due to Pseudomonas
         return code;
+    };
+
+    const getOrganismCode = (): { code: string; label: string } | null => {
+        if (/pseudomonas.*aeruginosa|p\.?\s*aeruginosa/.test(lower)) {
+            return { code: 'B96.5', label: 'Pseudomonas (aeruginosa) as the cause of diseases classified elsewhere' };
+        }
+        if (/e\.?\s*coli|escherichia\s+coli/.test(lower)) {
+            return { code: 'B96.20', label: 'Unspecified Escherichia coli [E. coli] as the cause of diseases classified elsewhere' };
+        }
+        if (/strep|streptococcus/.test(lower)) {
+            return { code: 'B95.9', label: 'Unspecified streptococcus as the cause of diseases classified elsewhere' };
+        }
+        if (/staph|staphylococcus/.test(lower)) {
+            if (/aureus/.test(lower)) {
+                if (/mrsa|methicillin resistant/.test(lower)) {
+                    return { code: 'B95.62', label: 'Methicillin resistant Staphylococcus aureus as the cause of diseases classified elsewhere' };
+                }
+                return { code: 'B95.61', label: 'Methicillin susceptible Staphylococcus aureus as the cause of diseases classified elsewhere' };
+            }
+            return { code: 'B95.8', label: 'Other staphylococcus as the cause of diseases classified elsewhere' };
+        }
+        return null;
     };
 
     const getCopdCode = (): string => {
@@ -183,14 +206,22 @@ export function resolveRespiratory(text: string): RespiratoryResolution | undefi
         };
     }
 
-    // 5. Pneumonia (Standalone)
+    // 3. Pneumonia (Primary Diagnosis)
     if (hasPneumonia) {
         const code = getPneumoniaCode();
+
+        // Add organism code if detected
+        const organism = getOrganismCode();
+        if (organism) {
+            secondary_codes.push({ code: organism.code, label: organism.label, type: 'organism' });
+        }
+
         return {
             code,
             label: 'Pneumonia',
-            attributes: { type: 'pneumonia', organism: 'unspecified' },
-            warnings: ['Code underlying organism if known']
+            attributes: { type: 'pneumonia', acuity: isAcute ? 'acute' : 'unspecified' },
+            secondary_codes: secondary_codes.length > 0 ? secondary_codes : undefined,
+            warnings: organism ? [] : ['Code underlying organism if known']
         };
     }
 
