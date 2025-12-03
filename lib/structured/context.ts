@@ -5,7 +5,7 @@ export interface PatientContext {
         gender?: 'male' | 'female';
     };
     encounter: {
-        type: 'initial' | 'subsequent' | 'sequela';
+        type: 'initial' | 'subsequent' | 'sequela' | 'inpatient' | 'outpatient' | 'ed';
     };
     conditions: {
         diabetes?: {
@@ -18,6 +18,7 @@ export interface PatientContext {
         ckd?: {
             stage: 1 | 2 | 3 | 4 | 5 | 'esrd';
             onDialysis: boolean;
+            dialysisType?: 'none' | 'temporary' | 'chronic';
             aki: boolean;
             transplantStatus: boolean;
         };
@@ -28,46 +29,81 @@ export interface PatientContext {
                 acuity: 'acute' | 'chronic' | 'acute_on_chronic' | 'unspecified';
             };
             cad?: boolean;
+            previousMI?: boolean;
+            atrialFib?: boolean;
             mi?: {
                 type: 'stemi' | 'nstemi';
-                site?: 'anterior' | 'inferior' | 'other';
+                site?: 'anterior' | 'inferior' | 'lateral' | 'posterior' | 'other';
                 acuity: 'acute' | 'old';
             };
         };
         respiratory?: {
-            pneumonia?: {
-                organism?: 'pseudomonas' | 'e_coli' | 'mrsa' | 'mss' | 'strep' | 'viral' | 'unspecified';
-                type: 'aspiration' | 'bacterial' | 'viral' | 'unspecified';
+            failure?: {
+                type: 'none' | 'acute' | 'chronic' | 'acute_on_chronic';
+                withHypoxia?: boolean;
+                withHypercapnia?: boolean;
             };
             copd?: {
-                exacerbation: boolean;
-                infection: boolean;
+                present: boolean;
+                withInfection?: boolean;
+                withExacerbation?: boolean;
             };
             asthma?: {
-                severity: 'mild' | 'moderate' | 'severe';
-                frequency: 'intermittent' | 'persistent';
-                exacerbation: boolean;
-                statusAsthmaticus: boolean;
+                present: boolean;
+                severity?: 'mild' | 'moderate' | 'severe';
+                exacerbation?: boolean;
             };
-            failure?: {
-                acuity: 'acute' | 'chronic' | 'acute_on_chronic';
-                postProcedural: boolean;
+            pneumonia?: {
+                organism?: 'pseudomonas' | 'e_coli' | 'mrsa' | 'mssa' | 'strep' | 'viral' | 'unspecified';
+                type: 'aspiration' | 'bacterial' | 'viral' | 'unspecified';
+            };
+            mechanicalVent?: {
+                present: boolean;
+                duration?: number; // hours
             };
         };
         infection?: {
+            present: boolean;
+            site?: 'lung' | 'urinary' | 'blood' | 'skin' | 'other';
+            organism?: 'mrsa' | 'e_coli' | 'pseudomonas' | 'unspecified';
             sepsis?: {
                 present: boolean;
-                severe: boolean;
-                shock: boolean;
-                postProcedural: boolean;
-                organism?: string;
+                severe?: boolean;
+                shock?: boolean;
             };
+            hospitalAcquired?: boolean;
+        };
+        wounds?: {
+            present: boolean;
+            type?: 'pressure' | 'diabetic' | 'traumatic' | 'venous' | 'arterial';
+            location?: 'sacral' | 'foot_right' | 'foot_left' | 'heel' | 'buttock' | 'other';
+            stage?: 'stage1' | 'stage2' | 'stage3' | 'stage4' | 'unstageable' | 'deep_tissue';
+            depth?: 'skin' | 'fat' | 'muscle' | 'bone';
+            laterality?: 'left' | 'right' | 'bilateral';
+        };
+        neoplasm?: {
+            present: boolean;
+            site?: string;
+            primaryOrSecondary?: 'primary' | 'secondary';
+            metastasis?: boolean;
+            activeTreatment?: boolean;
         };
         injury?: {
-            type: 'fracture' | 'laceration' | 'contusion' | 'burn';
-            site: string;
+            present: boolean;
+            type?: 'fracture' | 'open_wound' | 'burn' | 'contusion' | 'laceration';
+            bodyRegion?: string;
             laterality?: 'left' | 'right' | 'bilateral';
-            episode: 'initial' | 'subsequent' | 'sequela';
+            encounterType?: 'initial' | 'subsequent' | 'sequela';
+            externalCause?: {
+                present: boolean;
+                mechanism?: 'fall' | 'mvc' | 'assault' | 'sports' | 'other';
+            };
+        };
+        social?: {
+            smoking?: 'never' | 'current' | 'former';
+            alcohol?: 'none' | 'yes';
+            drugUse?: 'none' | 'yes';
+            tobaccoDependence?: boolean;
         };
     };
 }

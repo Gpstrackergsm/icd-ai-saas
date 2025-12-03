@@ -178,13 +178,14 @@
         label: 'Demographics',
         fields: [
           { key: 'Age', type: 'number', label: 'Age' },
-          { key: 'Gender', type: 'select', label: 'Gender', options: ['Male', 'Female'] }
+          { key: 'Gender', type: 'select', label: 'Gender', options: ['Male', 'Female'] },
+          { key: 'Encounter Type', type: 'select', label: 'Encounter', options: ['Inpatient', 'Outpatient', 'ED', 'Initial', 'Subsequent'] }
         ]
       },
       diabetes: {
         label: 'Diabetes',
         fields: [
-          { key: 'Diabetes Type', type: 'select', label: 'Type', options: ['Type 1', 'Type 2'], required: true },
+          { key: 'Diabetes Type', type: 'select', label: 'Type', options: ['None', 'Type 1', 'Type 2'], required: true },
           {
             key: 'Complications',
             type: 'checkbox-group',
@@ -200,25 +201,83 @@
       ckd: {
         label: 'Renal / CKD',
         fields: [
-          { key: 'CKD Stage', type: 'select', label: 'CKD Stage', options: ['1', '2', '3', '4', '5', 'ESRD'], required: true },
-          { key: 'Dialysis', type: 'select', label: 'Dialysis Status', options: ['Yes', 'No'], required: 'if_esrd', showIf: 'ESRD' },
-          { key: 'Acute Kidney Injury', type: 'select', label: 'AKI Present', options: ['Yes', 'No'] }
+          { key: 'CKD Present', type: 'select', label: 'CKD Present', options: ['Yes', 'No'] },
+          { key: 'CKD Stage', type: 'select', label: 'CKD Stage', options: ['1', '2', '3', '4', '5', 'ESRD'], required: true, showIf: 'Yes' },
+          { key: 'Dialysis', type: 'select', label: 'Dialysis', options: ['None', 'Temporary', 'Chronic'], showIf: 'ESRD' },
+          { key: 'Acute Kidney Injury', type: 'select', label: 'AKI', options: ['Yes', 'No'] },
+          { key: 'Kidney Transplant History', type: 'select', label: 'Transplant', options: ['Yes', 'No'] }
         ]
       },
       cardio: {
         label: 'Cardiovascular',
         fields: [
           { key: 'Hypertension', type: 'select', label: 'Hypertension', options: ['Yes', 'No'] },
-          { key: 'Heart Failure', type: 'select', label: 'Heart Failure', options: ['Yes', 'No'] },
-          { key: 'Heart Failure Type', type: 'select', label: 'HF Type', options: ['Systolic', 'Diastolic', 'Combined'] },
-          { key: 'Heart Failure Acuity', type: 'select', label: 'HF Acuity', options: ['Acute', 'Chronic', 'Acute on chronic'] }
+          { key: 'Heart Failure', type: 'select', label: 'Heart Failure', options: ['None', 'Systolic', 'Diastolic', 'Combined'] },
+          { key: 'Heart Failure Acuity', type: 'select', label: 'HF Acuity', options: ['Acute', 'Chronic', 'Acute on chronic'], showIf: 'Systolic|Diastolic|Combined' },
+          { key: 'Ischemic Heart Disease', type: 'select', label: 'CAD/IHD', options: ['Yes', 'No'] },
+          { key: 'Previous MI', type: 'select', label: 'Prior MI', options: ['Yes', 'No'] },
+          { key: 'Atrial Fibrillation', type: 'select', label: 'AFib', options: ['Yes', 'No'] }
         ]
       },
       respiratory: {
         label: 'Respiratory',
         fields: [
+          { key: 'Respiratory Failure', type: 'select', label: 'Resp Failure', options: ['None', 'Acute', 'Chronic', 'Acute on chronic'] },
+          { key: 'COPD', type: 'select', label: 'COPD', options: ['None', 'With infection', 'With exacerbation', 'With both'] },
+          { key: 'Asthma', type: 'select', label: 'Asthma', options: ['Yes', 'No'] },
+          { key: 'Mechanical Ventilation', type: 'select', label: 'Mech Vent', options: ['Yes', 'No'] },
+          { key: 'Ventilation Duration', type: 'number', label: 'Vent Hours', showIf: 'Yes' },
           { key: 'Pneumonia', type: 'select', label: 'Pneumonia', options: ['Yes', 'No'] },
-          { key: 'Pneumonia Organism', type: 'select', label: 'Organism', options: ['Pseudomonas', 'MRSA', 'E. coli', 'Viral', 'Unspecified'] }
+          { key: 'Pneumonia Organism', type: 'select', label: 'Organism', options: ['Pseudomonas', 'MRSA', 'E. coli', 'Viral', 'Unspecified'], showIf: 'Yes' }
+        ]
+      },
+      infection: {
+        label: 'Infections',
+        fields: [
+          { key: 'Infection Present', type: 'select', label: 'Infection', options: ['Yes', 'No'] },
+          { key: 'Infection Site', type: 'select', label: 'Site', options: ['Lung', 'Urinary tract', 'Blood', 'Skin', 'Other'], showIf: 'Yes' },
+          { key: 'Organism', type: 'select', label: 'Organism', options: ['MRSA', 'E. coli', 'Pseudomonas', 'Not specified'], showIf: 'Yes' },
+          { key: 'Sepsis', type: 'select', label: 'Sepsis', options: ['Yes', 'No'] },
+          { key: 'Septic Shock', type: 'select', label: 'Septic Shock', options: ['Yes', 'No'], showIf: 'Yes' },
+          { key: 'Hospital-Acquired', type: 'select', label: 'HAI', options: ['Yes', 'No'], showIf: 'Yes' }
+        ]
+      },
+      wounds: {
+        label: 'Wounds / Ulcers',
+        fields: [
+          { key: 'Ulcer Present', type: 'select', label: 'Ulcer/Wound', options: ['Yes', 'No'] },
+          { key: 'Ulcer Type', type: 'select', label: 'Type', options: ['Pressure', 'Diabetic', 'Traumatic'], required: true, showIf: 'Yes' },
+          { key: 'Ulcer Location', type: 'select', label: 'Location', options: ['Sacral', 'Right foot', 'Left foot', 'Heel', 'Other'], required: true, showIf: 'Yes' },
+          { key: 'Ulcer Stage', type: 'select', label: 'Stage/Depth', options: ['Stage 1', 'Stage 2', 'Stage 3', 'Stage 4', 'Muscle necrosis', 'Bone necrosis'], required: true, showIf: 'Yes' }
+        ]
+      },
+      neoplasm: {
+        label: 'Neoplasm / Cancer',
+        fields: [
+          { key: 'Cancer Present', type: 'select', label: 'Cancer', options: ['Yes', 'No'] },
+          { key: 'Cancer Site', type: 'text', label: 'Site', showIf: 'Yes' },
+          { key: 'Primary or Secondary', type: 'select', label: 'Type', options: ['Primary', 'Secondary'], showIf: 'Yes' },
+          { key: 'Metastasis', type: 'select', label: 'Metastasis', options: ['Yes', 'No'], showIf: 'Yes' },
+          { key: 'Active Treatment', type: 'select', label: 'Active Tx', options: ['Yes', 'No'], showIf: 'Yes' }
+        ]
+      },
+      injury: {
+        label: 'Injury / Trauma',
+        fields: [
+          { key: 'Injury Present', type: 'select', label: 'Injury', options: ['Yes', 'No'] },
+          { key: 'Injury Type', type: 'select', label: 'Type', options: ['Fracture', 'Open wound', 'Burn'], required: true, showIf: 'Yes' },
+          { key: 'Body Region', type: 'text', label: 'Body Region', showIf: 'Yes' },
+          { key: 'Laterality', type: 'select', label: 'Laterality', options: ['Left', 'Right', 'Bilateral'], showIf: 'Yes' },
+          { key: 'Injury Encounter Type', type: 'select', label: 'Encounter', options: ['Initial', 'Subsequent', 'Sequela'], required: true, showIf: 'Yes' },
+          { key: 'External Cause', type: 'select', label: 'Ext Cause', options: ['Fall', 'MVC', 'Assault', 'Sports', 'Other'], showIf: 'Yes' }
+        ]
+      },
+      social: {
+        label: 'Social / Lifestyle',
+        fields: [
+          { key: 'Smoking', type: 'select', label: 'Smoking', options: ['Never', 'Current', 'Former'] },
+          { key: 'Alcohol Use', type: 'select', label: 'Alcohol', options: ['None', 'Yes'] },
+          { key: 'Drug Use', type: 'select', label: 'Drug Use', options: ['None', 'Yes'] }
         ]
       }
     };
