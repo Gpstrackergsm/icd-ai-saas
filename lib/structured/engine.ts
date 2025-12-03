@@ -215,17 +215,24 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             });
         }
 
-        // RULE: Dialysis → Z99.2
-        if (k.onDialysis) {
-            codes.push({
-                code: 'Z99.2',
-                label: 'Dependence on renal dialysis',
-                rationale: 'Patient on dialysis',
-                guideline: 'ICD-10-CM I.C.21.c.3',
-                trigger: 'Dialysis Status = Yes',
-                rule: 'Dialysis status code'
-            });
+        // RULE: Dialysis → Z99.2 (ONLY IF CHRONIC)
+        // COMMANDMENT: Never assume chronic dialysis
+        if (k.dialysisType === 'chronic' || (k.onDialysis && k.dialysisType === undefined)) {
+            // Only generate if explicitly chronic OR if onDialysis=true but no type specified (backward compat)
+            if (k.dialysisType === 'chronic') {
+                codes.push({
+                    code: 'Z99.2',
+                    label: 'Dependence on renal dialysis',
+                    rationale: 'Patient on chronic dialysis',
+                    guideline: 'ICD-10-CM I.C.21.c.3',
+                    trigger: 'Dialysis Type = Chronic',
+                    rule: 'Chronic dialysis status code'
+                });
+            }
         }
+
+        // RULE: If dialysis is temporary, do NOT generate Z99.2
+        // RULE: If dialysis is none, do NOT generate Z99.2
     }
 
     // --- RESPIRATORY RULES ---
