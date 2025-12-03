@@ -1,5 +1,6 @@
+
 export interface InfectionAttributes {
-    type: 'sepsis' | 'bacteremia' | 'uti' | 'pneumonia' | 'post_procedural_sepsis' | 'other';
+    type: 'sepsis' | 'bacteremia' | 'uti' | 'pneumonia' | 'post_procedural_sepsis' | 'urosepsis' | 'other';
     organism?: string;
     severe?: boolean;
     shock?: boolean;
@@ -7,6 +8,10 @@ export interface InfectionAttributes {
     complicated?: boolean;
     post_procedural?: boolean;
     requires_sepsis_code?: boolean;
+    requires_shock_code?: boolean;
+    requires_source_code?: boolean;
+    source_code?: string;
+    source_label?: string;
 }
 
 export interface InfectionResolution {
@@ -28,6 +33,7 @@ export function resolveInfection(text: string): InfectionResolution | undefined 
     // Detect if pneumonia + organ failure + post-procedure = implied sepsis
     const hasPneumonia = /pneumonia/.test(lower);
     const hasRespiratoryFailure = /respiratory failure/.test(lower);
+    const hasUTI = /uti|urinary tract infection|urosepsis/.test(lower);
     const impliedSepsis = isPostProcedural && hasPneumonia && (hasRespiratoryFailure || organDysfunction);
 
     // 1. Post-Procedural Sepsis (T81.44XA) - HIGHEST PRIORITY
@@ -50,28 +56,12 @@ export function resolveInfection(text: string): InfectionResolution | undefined 
         };
     }
 
-    // 2. Sepsis / Severe Sepsis / Septic Shock (Non-procedural)
-    if (/sepsis|septic/.test(lower)) {
-        if (hasShock) {
-            return {
-                code: 'R65.21',
-                label: 'Severe sepsis with septic shock',
-                attributes: { type: 'sepsis', severe: true, shock: true, organ_dysfunction: true },
-                warnings: ['Code first underlying infection', 'Use additional code to identify specific organ dysfunction']
-            };
-        }
-        if (isSevere || organDysfunction) {
-            return {
-                code: 'R65.20',
-                label: 'Severe sepsis without septic shock',
-                attributes: { type: 'sepsis', severe: true, organ_dysfunction: true },
-                warnings: ['Code first underlying infection', 'Use additional code to identify specific organ dysfunction']
-            };
-        }
-
-        // Unspecified Sepsis (A41.9)
+    // 2. Urosepsis / Sepsis with Shock (Non-procedural)
+    // Per ICD-10-CM guidelines: A41.9 (Sepsis) MUST be sequenced before R65.21 (Shock)
+    if (/sepsis|septic|urosepsis/.test(lower)) {
+        // Determine organism
         let code = 'A41.9';
-        if (/e\.? coli|escherichia coli/.test(lower)) code = 'A41.51';
+        if (/e\\.? coli|escherichia coli/.test(lower)) code = 'A41.51';
         if (/staph|staphylococcus/.test(lower)) {
             if (/aureus/.test(lower)) {
                 if (/mrsa|methicillin resistant/.test(lower)) code = 'A41.02';
@@ -81,11 +71,31 @@ export function resolveInfection(text: string): InfectionResolution | undefined 
             }
         }
 
+        // Detect source
+        let sourceCode: string | undefined;
+        let sourceLabel: string | undefined;
+        if (hasUTI) {
+            sourceCode = 'N39.0';
+            sourceLabel = 'Urinary tract infection, site not specified';
+        } else if (hasPneumonia) {
+            sourceCode = 'J18.9';
+            sourceLabel = 'Pneumonia, unspecified organism';
+        }
+
         return {
             code,
             label: 'Sepsis, unspecified organism',
-            attributes: { type: 'sepsis' },
-            warnings: ['Code first underlying infection if known']
+            attributes: {
+                type: hasUTI ? 'urosepsis' : 'sepsis',
+                severe: isSevere || hasShock,
+                shock: hasShock,
+                organ_dysfunction: hasShock || organDysfunction,
+                requires_shock_code: hasShock, // Flag to add R65.21
+                requires_source_code: !!sourceCode,
+                source_code: sourceCode,
+                source_label: sourceLabel
+            },
+            warnings: hasShock ? ['Code also R65.21 (Severe sepsis with septic shock)', 'Code also localized infection source'] : []
         };
     }
 
@@ -99,8 +109,8 @@ export function resolveInfection(text: string): InfectionResolution | undefined 
         };
     }
 
-    // 4. UTI
-    if (/uti|urinary tract infection/.test(lower)) {
+    // 4. UTI (Standalone, no sepsis)
+    if (hasUTI && !/sepsis|septic/.test(lower)) {
         return {
             code: 'N39.0',
             label: 'Urinary tract infection, site not specified',
