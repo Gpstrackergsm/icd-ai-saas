@@ -504,8 +504,8 @@ CKD Stage: 3`
     scenarioContainer.appendChild(scenarioSelect);
 
     // Insert before the input label
-    const narrativeLabel = encodePanel.querySelector('label[for="narrative"]');
-    encodePanel.insertBefore(scenarioContainer, narrativeLabel);
+    const narrativeLabelForScenario = encodePanel.querySelector('label[for="narrative"]');
+    encodePanel.insertBefore(scenarioContainer, narrativeLabelForScenario);
 
     function renderEncodeResults(payload) {
       encodeResults.innerHTML = '';
