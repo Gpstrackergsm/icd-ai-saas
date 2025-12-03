@@ -407,8 +407,8 @@ export function parseInput(text: string): ParseResult {
             // Hematology/Oncology
             case 'cancer':
             case 'cancer present':
-                if (!context.conditions.neoplasm) context.conditions.neoplasm = {};
-                context.conditions.neoplasm.present = parseBoolean(value);
+                if (!context.conditions.neoplasm) context.conditions.neoplasm = { present: false };
+                context.conditions.neoplasm!.present = parseBoolean(value);
                 break;
             case 'cancer site':
             case 'primary site':
