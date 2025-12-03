@@ -38,6 +38,7 @@ export interface DiabetesResolution {
   code: string;
   label: string;
   attributes: DiabetesAttributes;
+  secondary_codes?: Array<{ code: string; label: string; type: string }>;
   warnings?: string[];
 }
 
@@ -201,6 +202,80 @@ export function resolveDiabetes(text: string): DiabetesResolution | undefined {
     return { code, label: 'Diabetes with diabetic neuropathic arthropathy (Charcot joint)', attributes, warnings };
   }
 
+  const secondary_codes: Array<{ code: string; label: string; type: string }> = [];
+
+  // Diabetic Foot Ulcer
+  if (/ulcer/.test(lower) && (/foot|heel|toe|ankle/.test(lower))) {
+    attributes.complication = 'unspecified'; // Will be overridden by specific code
+    const ulcerCode = `${diabetes_type}.621`;
+
+    // Determine L97 code
+    let l97Base = 'L97.5'; // Default to other part of foot
+    let siteLabel = 'foot';
+
+    if (/ankle/.test(lower)) { l97Base = 'L97.3'; siteLabel = 'ankle'; }
+    else if (/heel/.test(lower)) { l97Base = 'L97.4'; siteLabel = 'heel'; }
+    else if (/toe/.test(lower)) { l97Base = 'L97.5'; siteLabel = 'toe'; } // L97.5 covers toes too
+
+    // Laterality
+    let latDigit = '9';
+    if (attributes.laterality === 'right') latDigit = '1';
+    if (attributes.laterality === 'left') latDigit = '2';
+
+    // Depth/Severity
+    let depthDigit = '9'; // Unspecified
+    if (/bone/.test(lower) && /necrosis|exposed/.test(lower)) depthDigit = '4';
+    else if (/muscle/.test(lower) && /necrosis|exposed/.test(lower)) depthDigit = '3';
+    else if (/fat/.test(lower) && /exposed/.test(lower)) depthDigit = '2';
+    else if (/skin/.test(lower) && /breakdown/.test(lower)) depthDigit = '1';
+
+    const l97Code = `${l97Base}${latDigit}${depthDigit}`;
+
+    secondary_codes.push({
+      code: l97Code,
+      label: `Non-pressure chronic ulcer of ${siteLabel}`,
+      type: 'manifestation'
+    });
+
+    // Check for other complications to add as secondary codes
+    // 1. CKD
+    if (ckdStage !== undefined || /nephropathy|kidney disease|renal/.test(lower)) {
+      let ckdDiabetesCode = `${diabetes_type}.22`; // Default to CKD
+      if (ckdStage === 1 || ckdStage === 2) ckdDiabetesCode = `${diabetes_type}.21`;
+      else if (ckdStage === 3 || ckdStage === 4 || ckdStage === 5 || ckdStage === 'ESRD') ckdDiabetesCode = `${diabetes_type}.22`;
+      else ckdDiabetesCode = `${diabetes_type}.29`;
+
+      secondary_codes.push({ code: ckdDiabetesCode, label: 'Diabetes with diabetic chronic kidney disease', type: 'complication' });
+
+      let n18Code = 'N18.9';
+      if (ckdStage === 1) n18Code = 'N18.1';
+      else if (ckdStage === 2) n18Code = 'N18.2';
+      else if (ckdStage === 3) n18Code = 'N18.30';
+      else if (ckdStage === 4) n18Code = 'N18.4';
+      else if (ckdStage === 5 || ckdStage === 'ESRD') n18Code = 'N18.6';
+
+      secondary_codes.push({ code: n18Code, label: `Chronic kidney disease, stage ${ckdStage || 'unspecified'}`, type: 'manifestation' });
+    }
+
+    // 2. Neuropathy
+    if (neuropathyType !== undefined) {
+      let neuroCode = `${diabetes_type}.40`;
+      if (neuropathyType === 'peripheral') neuroCode = `${diabetes_type}.42`;
+      else if (neuropathyType === 'autonomic') neuroCode = `${diabetes_type}.43`;
+      else if (neuropathyType === 'polyneuropathy') neuroCode = `${diabetes_type}.42`;
+
+      secondary_codes.push({ code: neuroCode, label: `Diabetes with diabetic ${neuropathyType} neuropathy`, type: 'complication' });
+    }
+
+    return {
+      code: ulcerCode,
+      label: 'Diabetes with foot ulcer',
+      attributes,
+      secondary_codes,
+      warnings
+    };
+  }
+
   // Nephropathy/CKD detection
   if (ckdStage !== undefined || /nephropathy|kidney disease|renal/.test(lower)) {
     attributes.complication = 'nephropathy';
@@ -212,7 +287,24 @@ export function resolveDiabetes(text: string): DiabetesResolution | undefined {
     } else {
       code = `${diabetes_type}.29`;
     }
-    return { code, label: 'Diabetes with diabetic chronic kidney disease', attributes, warnings };
+
+    // Add N18 code as secondary
+    if (ckdStage) {
+      let n18Code = 'N18.9';
+      if (ckdStage === 1) n18Code = 'N18.1';
+      else if (ckdStage === 2) n18Code = 'N18.2';
+      else if (ckdStage === 3) n18Code = 'N18.30'; // Default to unspecified 3
+      else if (ckdStage === 4) n18Code = 'N18.4';
+      else if (ckdStage === 5 || ckdStage === 'ESRD') n18Code = 'N18.6'; // ESRD is N18.6
+
+      secondary_codes.push({
+        code: n18Code,
+        label: `Chronic kidney disease, stage ${ckdStage}`,
+        type: 'manifestation'
+      });
+    }
+
+    return { code, label: 'Diabetes with diabetic chronic kidney disease', attributes, secondary_codes, warnings };
   }
 
   // Enhanced neuropathy detection

@@ -10,14 +10,16 @@ export interface ObstetricsResolution {
     code: string;
     label: string;
     attributes: ObstetricsAttributes;
+    secondary_codes?: Array<{ code: string; label: string; type: string }>;
     warnings?: string[];
 }
 
 export function resolveObstetrics(text: string): ObstetricsResolution | undefined {
     const lower = text.toLowerCase();
     const warnings: string[] = [];
+    const secondary_codes: Array<{ code: string; label: string; type: string }> = [];
 
-    if (!/pregnan|gestation|delivery|maternity|obstetric/.test(lower)) {
+    if (!/pregnan|gestation|delivery|maternity|obstetric|birth/.test(lower)) {
         return undefined;
     }
 
@@ -38,9 +40,38 @@ export function resolveObstetrics(text: string): ObstetricsResolution | undefine
         else trimester = '3';
     }
 
+    // Generate Z3A code
+    if (weeks) {
+        let z3aCode = 'Z3A.00';
+        if (weeks < 8) z3aCode = 'Z3A.01';
+        else if (weeks >= 8 && weeks <= 42) z3aCode = `Z3A.${weeks}`;
+        else if (weeks > 42) z3aCode = 'Z3A.49';
+
+        secondary_codes.push({ code: z3aCode, label: `${weeks} weeks gestation of pregnancy`, type: 'weeks_of_gestation' });
+    } else {
+        warnings.push('Weeks of gestation not specified; add Z3A code manually if known');
+    }
+
+    // Delivery Outcome (Z37)
+    if (/delivery|birth|born/.test(lower) && !/history/.test(lower)) {
+        // Default to single live birth if not specified
+        let z37Code = 'Z37.0';
+        let z37Label = 'Single live birth';
+
+        if (/twin/.test(lower)) {
+            z37Code = 'Z37.2';
+            z37Label = 'Twins, both liveborn';
+        } else if (/stillborn|stillbirth/.test(lower)) {
+            z37Code = 'Z37.1';
+            z37Label = 'Single stillbirth';
+        }
+
+        secondary_codes.push({ code: z37Code, label: z37Label, type: 'outcome_of_delivery' });
+    }
+
     // 1. Normal Pregnancy (Z34) - Supervision of normal pregnancy
     // Only if no complications mentioned
-    const hasComplication = /complication|hypertension|diabetes|preeclampsia|placenta|hemorrhage/.test(lower);
+    const hasComplication = /complication|hypertension|diabetes|preeclampsia|placenta|hemorrhage|eclampsia/.test(lower);
 
     if (!hasComplication && /normal|routine/.test(lower)) {
         let code = 'Z34.90'; // Unspecified
@@ -52,7 +83,8 @@ export function resolveObstetrics(text: string): ObstetricsResolution | undefine
             code,
             label: 'Encounter for supervision of normal pregnancy',
             attributes: { type: 'pregnancy', trimester, weeks },
-            warnings: weeks ? ['Add Z3A code for weeks of gestation'] : ['Add Z3A code for weeks of gestation']
+            secondary_codes,
+            warnings
         };
     }
 
@@ -63,7 +95,30 @@ export function resolveObstetrics(text: string): ObstetricsResolution | undefine
     let code = 'O99.89';
     let label = 'Other specified diseases and conditions complicating pregnancy, childbirth and the puerperium';
 
-    if (/hypertension/.test(lower)) {
+    if (/preeclampsia/.test(lower)) {
+        if (/severe/.test(lower)) {
+            code = 'O14.10'; // Severe pre-eclampsia
+            if (trimester === '1') code = 'O14.10'; // Usually not 1st
+            if (trimester === '2') code = 'O14.12';
+            if (trimester === '3') code = 'O14.13';
+            label = 'Severe pre-eclampsia';
+        } else {
+            code = 'O14.00'; // Mild to moderate
+            if (trimester === '2') code = 'O14.02';
+            if (trimester === '3') code = 'O14.03';
+            label = 'Mild to moderate pre-eclampsia';
+        }
+    } else if (/placenta previa/.test(lower)) {
+        code = 'O44.00'; // Placenta previa without hemorrhage
+        if (/hemorrhage|bleeding/.test(lower)) code = 'O44.10';
+
+        // Trimester specific
+        const base = /hemorrhage|bleeding/.test(lower) ? 'O44.1' : 'O44.0';
+        if (trimester === '2') code = `${base}2`;
+        if (trimester === '3') code = `${base}3`;
+
+        label = 'Placenta previa';
+    } else if (/hypertension/.test(lower)) {
         code = 'O16.9'; // Unspecified maternal hypertension
         if (trimester === '1') code = 'O16.1';
         if (trimester === '2') code = 'O16.2';
@@ -81,6 +136,7 @@ export function resolveObstetrics(text: string): ObstetricsResolution | undefine
         code,
         label,
         attributes: { type: 'complication', trimester, weeks },
-        warnings: ['Add Z3A code for weeks of gestation']
+        secondary_codes,
+        warnings
     };
 }

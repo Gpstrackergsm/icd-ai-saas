@@ -13,12 +13,14 @@ export interface RenalResolution {
     code: string;
     label: string;
     attributes: RenalAttributes;
+    secondary_codes?: Array<{ code: string; label: string; type: string }>;
     warnings?: string[];
 }
 
 export function resolveRenal(text: string): RenalResolution | undefined {
     const lower = text.toLowerCase();
     const warnings: string[] = [];
+    const secondary_codes: Array<{ code: string; label: string; type: string }> = [];
 
     // Detect organism
     let organism: string | undefined;
@@ -32,10 +34,29 @@ export function resolveRenal(text: string): RenalResolution | undefined {
     const isChronic = /chronic/.test(lower);
     const acuity = isAcute ? 'acute' : isChronic ? 'chronic' : 'unspecified';
 
+    // Helper to get organism code
+    const getOrganismCode = (): void => {
+        if (!organism) return;
+        const organismMap: Record<string, { code: string; label: string }> = {
+            'e_coli': { code: 'B96.20', label: 'Unspecified Escherichia coli [E. coli] as the cause of diseases classified elsewhere' },
+            'klebsiella': { code: 'B96.1', label: 'Klebsiella pneumoniae [K. pneumoniae] as the cause of diseases classified elsewhere' },
+            'proteus': { code: 'B96.4', label: 'Proteus (mirabilis) (morganii) as the cause of diseases classified elsewhere' },
+            'pseudomonas': { code: 'B96.5', label: 'Pseudomonas (aeruginosa) (mallei) (pseudomallei) as the cause of diseases classified elsewhere' },
+            'enterococcus': { code: 'B95.2', label: 'Enterococcus as the cause of diseases classified elsewhere' }
+        };
+
+        const info = organismMap[organism];
+        if (info) {
+            secondary_codes.push({ code: info.code, label: info.label, type: 'organism' });
+        }
+    };
+
     // 1. Pyelonephritis (Kidney infection)
     if (/pyelonephritis|kidney infection/.test(lower)) {
         let code = 'N10'; // Acute pyelonephritis
         if (isChronic) code = 'N11.9'; // Chronic pyelonephritis, unspecified
+
+        getOrganismCode();
 
         return {
             code,
@@ -46,7 +67,8 @@ export function resolveRenal(text: string): RenalResolution | undefined {
                 organism,
                 requires_organism_code: !!organism
             },
-            warnings: organism ? ['Use additional code B96.20 to identify E. coli as causative organism'] : ['Use additional code to identify infectious agent']
+            secondary_codes,
+            warnings: organism ? [] : ['Use additional code to identify infectious agent']
         };
     }
 
@@ -55,6 +77,8 @@ export function resolveRenal(text: string): RenalResolution | undefined {
         let code = 'N30.00'; // Acute cystitis without hematuria
         if (/hematuria|blood/.test(lower)) code = 'N30.01'; // Acute cystitis with hematuria
         if (isChronic) code = /hematuria|blood/.test(lower) ? 'N30.11' : 'N30.10';
+
+        getOrganismCode();
 
         return {
             code,
@@ -65,12 +89,14 @@ export function resolveRenal(text: string): RenalResolution | undefined {
                 organism,
                 requires_organism_code: !!organism
             },
-            warnings: organism ? ['Use additional code to identify infectious organism'] : []
+            secondary_codes,
+            warnings: organism ? [] : ['Use additional code to identify infectious organism']
         };
     }
 
     // 3. UTI (Generic) - Skip if sepsis is present (let infection resolver handle it)
     if (/uti|urinary tract infection/.test(lower) && !/pyelonephritis|cystitis|sepsis|septic|urosepsis/.test(lower)) {
+        getOrganismCode();
         return {
             code: 'N39.0',
             label: 'Urinary tract infection, site not specified',
@@ -79,7 +105,8 @@ export function resolveRenal(text: string): RenalResolution | undefined {
                 organism,
                 requires_organism_code: !!organism
             },
-            warnings: organism ? ['Use additional code to identify infectious organism'] : []
+            secondary_codes,
+            warnings: organism ? [] : ['Use additional code to identify infectious organism']
         };
     }
 
@@ -95,7 +122,10 @@ export function resolveRenal(text: string): RenalResolution | undefined {
 
     const onDialysis = /dialysis/.test(lower);
     const hasHypertension = /hypertens|high blood pressure/.test(lower);
-    const hasDiabetes = /diabet|dm/.test(lower);
+
+    if (onDialysis) {
+        secondary_codes.push({ code: 'Z99.2', label: 'Dependence on renal dialysis', type: 'status' });
+    }
 
     // 4. ESRD
     if (stage === 'ESRD') {
@@ -103,7 +133,8 @@ export function resolveRenal(text: string): RenalResolution | undefined {
             code: 'N18.6',
             label: 'End stage renal disease',
             attributes: { type: 'esrd', stage: 'ESRD', on_dialysis: onDialysis, complication: hasHypertension ? 'hypertension' : 'none' },
-            warnings: onDialysis ? ['Use Z99.2 for dialysis status'] : []
+            secondary_codes,
+            warnings
         };
     }
 
@@ -125,11 +156,12 @@ export function resolveRenal(text: string): RenalResolution | undefined {
             code,
             label: `Chronic kidney disease, stage ${stage || 'unspecified'}`,
             attributes: { type: 'ckd', stage, on_dialysis: onDialysis, complication: hasHypertension ? 'hypertension' : 'none' },
+            secondary_codes,
             warnings
         };
     }
 
-    // 6. Dialysis Status (Z99.2)
+    // 6. Dialysis Status (Z99.2) - Standalone
     if (onDialysis) {
         return {
             code: 'Z99.2',

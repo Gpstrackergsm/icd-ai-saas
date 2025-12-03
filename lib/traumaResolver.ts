@@ -49,52 +49,129 @@ export function resolveTrauma(text: string): TraumaResolution | undefined {
 
     // Fracture logic
     if (/fracture|broken/.test(lower)) {
-        const open = /open/.test(lower) ? 'open' : 'closed';
+        const open = /open|compound/.test(lower) ? 'open' : 'closed';
         const displaced = /displaced/.test(lower) && !/nondisplaced/.test(lower);
+
+        // 7th Character Logic
+        // A = Initial encounter for closed fracture
+        // B = Initial encounter for open fracture
+        // D = Subsequent encounter for fracture with routine healing
+        // S = Sequela
+        let char7 = 'A';
+        if (encounter === 'initial') {
+            char7 = open === 'open' ? 'B' : 'A';
+        } else if (encounter === 'subsequent') {
+            char7 = 'D'; // Default to routine healing
+            if (/delayed/.test(lower)) char7 = 'G';
+            if (/nonunion/.test(lower)) char7 = 'K';
+            if (/malunion/.test(lower)) char7 = 'P';
+        } else if (encounter === 'sequela') {
+            char7 = 'S';
+        }
 
         let baseCode = 'S00.00';
         let site = 'unspecified';
         let label = 'Fracture';
+        let requiresLaterality = false;
 
         // Specific fracture types
+
         // Colles' fracture (distal radius)
         if (/distal radius|wrist.*radius|colles/.test(lower)) {
             site = 'distal_radius';
+            requiresLaterality = true;
             const latCode = laterality === 'left' ? '2' : laterality === 'right' ? '1' : '9';
-            baseCode = `S52.53${latCode}${suffix}`;
+            baseCode = `S52.53${latCode}${char7}`;
             label = "Colles' fracture of radius";
         }
         // Generic radius
         else if (/radius|forearm/.test(lower) && !/distal/.test(lower)) {
             site = 'radius';
+            requiresLaterality = true;
             const latCode = laterality === 'left' ? '2' : laterality === 'right' ? '1' : '9';
-            baseCode = `S52.50${latCode}${suffix}`;
+            baseCode = `S52.50${latCode}${char7}`;
             label = 'Unspecified fracture of radius';
         }
-        // Femur
+        // Femur (Neck)
+        else if (/femur|thigh/.test(lower) && /neck/.test(lower)) {
+            site = 'femur_neck';
+            requiresLaterality = true;
+            const latCode = laterality === 'left' ? '2' : laterality === 'right' ? '1' : '9';
+            baseCode = `S72.00${latCode}${char7}`;
+            label = 'Fracture of unspecified part of neck of femur';
+        }
+        // Femur (Shaft/Unspecified)
         else if (/femur|thigh/.test(lower)) {
             site = 'femur';
-            baseCode = `S72.90X${suffix}`;
+            requiresLaterality = true;
+            const latCode = laterality === 'left' ? '2' : laterality === 'right' ? '1' : '9';
+            baseCode = `S72.9${latCode}X${char7}`; // S72.91XA
             label = 'Unspecified fracture of femur';
         }
-        // Hip
-        else if (/hip/.test(lower)) {
-            site = 'hip';
+        // Ankle (Lateral malleolus)
+        else if (/ankle/.test(lower) || /malleolus/.test(lower)) {
+            site = 'ankle';
+            requiresLaterality = true;
             const latCode = laterality === 'left' ? '2' : laterality === 'right' ? '1' : '9';
-            baseCode = `S72.00${latCode}${suffix}`;
-            label = 'Fracture of unspecified part of neck of femur';
+            // S82.891A Other fracture of right lower leg
+            // Let's use Lateral Malleolus S82.6
+            baseCode = `S82.6${latCode}X${char7}`;
+            label = 'Fracture of lateral malleolus';
+        }
+        // Humerus
+        else if (/humerus|upper arm/.test(lower)) {
+            site = 'humerus';
+            requiresLaterality = true;
+            const latCode = laterality === 'left' ? '2' : laterality === 'right' ? '1' : '9';
+            baseCode = `S42.30${latCode}${char7}`; // Shaft
+            label = 'Fracture of shaft of humerus';
+        }
+        // Tibia
+        else if (/tibia|shin/.test(lower)) {
+            site = 'tibia';
+            requiresLaterality = true;
+            const latCode = laterality === 'left' ? '2' : laterality === 'right' ? '1' : '9';
+            baseCode = `S82.20${latCode}${char7}`;
+            label = 'Fracture of shaft of tibia';
+        }
+        // Clavicle
+        else if (/clavicle|collar bone/.test(lower)) {
+            site = 'clavicle';
+            requiresLaterality = true;
+            const latCode = laterality === 'left' ? '2' : laterality === 'right' ? '1' : '9';
+            baseCode = `S42.00${latCode}${char7}`;
+            label = 'Fracture of clavicle';
         }
         // Rib
         else if (/rib/.test(lower)) {
             site = 'rib';
-            baseCode = `S22.39X${suffix}`;
+            requiresLaterality = true; // S22.3 is by side
+            const latCode = laterality === 'left' ? '2' : laterality === 'right' ? '1' : '9';
+            baseCode = `S22.39X${char7}`; // S22.39XA
+            // Actually S22.3xx is complicated. S22.39XA is "Fracture of one rib, unspecified side"
+            // S22.31XA = Fracture of one rib, right side
+            // S22.32XA = Fracture of one rib, left side
+            if (laterality === 'right') baseCode = `S22.31X${char7}`;
+            if (laterality === 'left') baseCode = `S22.32X${char7}`;
             label = 'Fracture of one rib';
+        }
+        // Hip (General)
+        else if (/hip/.test(lower)) {
+            site = 'hip';
+            requiresLaterality = true;
+            const latCode = laterality === 'left' ? '2' : laterality === 'right' ? '1' : '9';
+            baseCode = `S72.00${latCode}${char7}`;
+            label = 'Fracture of unspecified part of neck of femur (Hip)';
         }
         // Generic fracture
         else {
-            baseCode = `T14.8XX${suffix}`;
+            baseCode = `T14.8XX${char7}`;
             label = 'Fracture of unspecified body region';
             warnings.push('Fracture site not specified; using unspecified code');
+        }
+
+        if (requiresLaterality && laterality === 'unspecified') {
+            warnings.push('Laterality (left/right) missing; code is unspecified');
         }
 
         // Add pain code if documented

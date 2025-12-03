@@ -17,6 +17,10 @@ import { resolveNeoplasm } from './neoplasmResolver.js';
 import { resolveTrauma } from './traumaResolver.js';
 import { resolveObstetrics } from './obstetricsResolver.js';
 import { resolvePsychiatric } from './psychiatricResolver.js';
+import { validateSpecificity } from './specificityValidator.js';
+import { validateCompliance } from './complianceValidator.js';
+import { generateRationale, CodeRationale } from './rationaleEngine.js';
+import { calculateConfidence, ConfidenceAssessment } from './confidenceEngine.js';
 
 export interface SequencedCode {
   code: string;
@@ -31,6 +35,8 @@ export interface EngineResult {
   attributes: DiabetesAttributes;
   warnings: string[];
   audit: string[];
+  rationale: CodeRationale[];
+  confidence: ConfidenceAssessment;
 }
 
 function mapCkdStageToCode(stage: 1 | 2 | 3 | 4 | 5 | 'ESRD'): string | undefined {
@@ -93,17 +99,16 @@ export function runRulesEngine(text: string): EngineResult {
       warnings.push(...(ret?.warnings || []));
     }
 
-    // Add CKD secondary code if nephropathy detected
-    if (diabetes.attributes.complication === 'nephropathy' && diabetes.attributes.ckd_stage) {
-      const ckdCode = mapCkdStageToCode(diabetes.attributes.ckd_stage);
-      if (ckdCode) {
+    // Add secondary codes from diabetes resolver (CKD, Ulcers, etc.)
+    if (diabetes.secondary_codes) {
+      diabetes.secondary_codes.forEach(sc => {
         sequence.push({
-          code: ckdCode,
-          label: `Chronic kidney disease, stage ${diabetes.attributes.ckd_stage}`,
-          triggeredBy: 'nephropathy_resolution',
-          hcc: true,
+          code: sc.code,
+          label: sc.label,
+          triggeredBy: `diabetes_${sc.type}`,
+          hcc: sc.code.startsWith('N18') // HCC for CKD
         });
-      }
+      });
     }
   }
 
@@ -112,6 +117,17 @@ export function runRulesEngine(text: string): EngineResult {
   if (cardio) {
     sequence.push({ code: cardio.code, label: cardio.label, triggeredBy: 'cardiovascular_resolution', hcc: false });
     if (cardio.warnings) warnings.push(...cardio.warnings);
+
+    if (cardio.secondary_codes) {
+      cardio.secondary_codes.forEach(sc => {
+        sequence.push({
+          code: sc.code,
+          label: sc.label,
+          triggeredBy: `cardiovascular_${sc.type}`,
+          hcc: sc.code.startsWith('N18') // HCC for CKD
+        });
+      });
+    }
   }
 
   // 3. Renal
@@ -120,36 +136,19 @@ export function runRulesEngine(text: string): EngineResult {
     sequence.push({ code: renal.code, label: renal.label, triggeredBy: 'renal_resolution', hcc: false });
     if (renal.warnings) warnings.push(...renal.warnings);
 
-    // Add organism code if required
-    if (renal.attributes.requires_organism_code && renal.attributes.organism) {
-      const organismMap: Record<string, { code: string; label: string }> = {
-        'e_coli': { code: 'B96.20', label: 'Unspecified Escherichia coli [E. coli] as the cause of diseases classified elsewhere' },
-        'klebsiella': { code: 'B96.1', label: 'Klebsiella pneumoniae [K. pneumoniae] as the cause of diseases classified elsewhere' },
-        'proteus': { code: 'B96.4', label: 'Proteus (mirabilis) (morganii) as the cause of diseases classified elsewhere' },
-        'pseudomonas': { code: 'B96.5', label: 'Pseudomonas (aeruginosa) (mallei) (pseudomallei) as the cause of diseases classified elsewhere' },
-        'enterococcus': { code: 'B95.2', label: 'Enterococcus as the cause of diseases classified elsewhere' }
-      };
-
-      const organismInfo = organismMap[renal.attributes.organism];
-      if (organismInfo) {
+    // Add secondary codes (Organism, Dialysis, etc.)
+    if (renal.secondary_codes) {
+      renal.secondary_codes.forEach(sc => {
         sequence.push({
-          code: organismInfo.code,
-          label: organismInfo.label,
-          triggeredBy: 'renal_organism',
+          code: sc.code,
+          label: sc.label,
+          triggeredBy: `renal_${sc.type}`,
           hcc: false
         });
-      }
-    }
-
-    // Add Dialysis Z99.2 if indicated
-    if (renal.attributes.on_dialysis) {
-      sequence.push({
-        code: 'Z99.2',
-        label: 'Dependence on renal dialysis',
-        triggeredBy: 'renal_resolution_dialysis',
-        hcc: true
       });
     }
+
+
   }
 
   // 4. Infection
@@ -185,22 +184,15 @@ export function runRulesEngine(text: string): EngineResult {
     if (respiratory.warnings) warnings.push(...respiratory.warnings);
 
     // Handle secondary respiratory conditions
-    if (respiratory.attributes.secondary_conditions) {
-      if (respiratory.attributes.secondary_conditions.includes('pneumonia')) {
-        sequence.push({ code: 'J18.9', label: 'Pneumonia, unspecified organism', triggeredBy: 'respiratory_secondary', hcc: false });
-      }
-      if (respiratory.attributes.secondary_conditions.includes('copd')) {
-        sequence.push({ code: 'J44.9', label: 'Chronic obstructive pulmonary disease, unspecified', triggeredBy: 'respiratory_secondary', hcc: true });
-      }
-      if (respiratory.attributes.secondary_conditions.includes('asthma')) {
-        sequence.push({ code: 'J45.909', label: 'Unspecified asthma, uncomplicated', triggeredBy: 'respiratory_secondary', hcc: false });
-      }
-      // If primary is Pneumonia/COPD but has Failure as secondary?
-      // The resolver logic prioritizes Failure, so Failure is usually primary.
-      // But if we add logic for Failure as secondary:
-      if (respiratory.attributes.secondary_conditions.includes('respiratory_failure')) {
-        sequence.push({ code: 'J96.90', label: 'Respiratory failure, unspecified', triggeredBy: 'respiratory_secondary', hcc: true });
-      }
+    if (respiratory.secondary_codes) {
+      respiratory.secondary_codes.forEach(sc => {
+        sequence.push({
+          code: sc.code,
+          label: sc.label,
+          triggeredBy: `respiratory_${sc.type}`,
+          hcc: sc.code.startsWith('J44') // HCC for COPD
+        });
+      });
     }
   }
 
@@ -209,6 +201,17 @@ export function runRulesEngine(text: string): EngineResult {
   if (neoplasm) {
     sequence.push({ code: neoplasm.code, label: neoplasm.label, triggeredBy: 'neoplasm_resolution', hcc: false });
     if (neoplasm.warnings) warnings.push(...neoplasm.warnings);
+
+    if (neoplasm.secondary_codes) {
+      neoplasm.secondary_codes.forEach(sc => {
+        sequence.push({
+          code: sc.code,
+          label: sc.label,
+          triggeredBy: `neoplasm_${sc.type}`,
+          hcc: false
+        });
+      });
+    }
   }
 
   // 8. Trauma
@@ -251,19 +254,15 @@ export function runRulesEngine(text: string): EngineResult {
     sequence.push({ code: obstetrics.code, label: obstetrics.label, triggeredBy: 'obstetrics_resolution', hcc: false });
     if (obstetrics.warnings) warnings.push(...obstetrics.warnings);
 
-    // Add Z3A Weeks of Gestation
-    if (obstetrics.attributes.weeks) {
-      const w = obstetrics.attributes.weeks;
-      let z3a = 'Z3A.00';
-      if (w < 8) z3a = 'Z3A.01';
-      else if (w >= 8 && w <= 42) z3a = `Z3A.${w}`;
-      else if (w > 42) z3a = 'Z3A.49';
-
-      sequence.push({
-        code: z3a,
-        label: `Weeks of gestation of pregnancy, ${w} weeks`,
-        triggeredBy: 'obstetrics_weeks',
-        hcc: false
+    // Add secondary codes (Z3A, Z37, etc.)
+    if (obstetrics.secondary_codes) {
+      obstetrics.secondary_codes.forEach(sc => {
+        sequence.push({
+          code: sc.code,
+          label: sc.label,
+          triggeredBy: `obstetrics_${sc.type}`,
+          hcc: false
+        });
       });
     }
   }
@@ -320,8 +319,17 @@ export function runRulesEngine(text: string): EngineResult {
   const hierarchyResult = validateHierarchy(exclusionResult.filtered);
   warnings.push(...hierarchyResult.warnings);
 
+  // ... (inside runRulesEngine, before final return)
+
   const withHcc = flagHcc(hierarchyResult.filtered);
   const scored = scoreSequence(withHcc, warnings);
+
+  // Phase 4: Specificity and Compliance Validation
+  const specificityResult = validateSpecificity(withHcc); // Check against filtered list
+  warnings.push(...specificityResult.warnings);
+
+  const complianceResult = validateCompliance(withHcc);
+  warnings.push(...complianceResult.warnings);
 
   // Build audit trail with sequencing rationale
   const audit = buildAuditTrail(scored, warnings);
@@ -329,9 +337,31 @@ export function runRulesEngine(text: string): EngineResult {
 
   const finalSequence = scored.map(({ score, ...rest }) => rest);
 
+  // Phase 5: Generate Rationale and Confidence
+  const rationaleResult = generateRationale(withHcc, warnings);
+  const confidenceResult = calculateConfidence(withHcc, warnings);
+
+  // Add rationale summary to audit trail
+  audit.push(`\n[RATIONALE] ${rationaleResult.summary}`);
+  audit.push(`[CONFIDENCE] Overall: ${confidenceResult.overallConfidence}% - ${confidenceResult.explanation}`);
+
   if (!hierarchyResult.valid || !exclusionResult.valid || !sequencingResult.valid) {
-    return { sequence: [], attributes, warnings, audit };
+    return {
+      sequence: [],
+      attributes,
+      warnings,
+      audit,
+      rationale: [],
+      confidence: { overallConfidence: 0, factors: [], explanation: 'Validation failed' }
+    };
   }
 
-  return { sequence: finalSequence, attributes, warnings, audit };
+  return {
+    sequence: finalSequence,
+    attributes,
+    warnings,
+    audit,
+    rationale: rationaleResult.rationales,
+    confidence: confidenceResult
+  };
 }

@@ -13,12 +13,14 @@ export interface RespiratoryResolution {
     code: string;
     label: string;
     attributes: RespiratoryAttributes;
+    secondary_codes?: Array<{ code: string; label: string; type: string }>;
     warnings?: string[];
 }
 
 export function resolveRespiratory(text: string): RespiratoryResolution | undefined {
     const lower = text.toLowerCase();
     const warnings: string[] = [];
+    const secondary_codes: Array<{ code: string; label: string; type: string }> = [];
 
     const isAcute = /acute/.test(lower);
     const isChronic = /chronic/.test(lower);
@@ -34,29 +36,84 @@ export function resolveRespiratory(text: string): RespiratoryResolution | undefi
 
     const secondary_conditions: RespiratoryAttributes['secondary_conditions'] = [];
 
+    // Helper functions to generate codes
+    const getPneumoniaCode = (): string => {
+        let code = 'J18.9'; // Unspecified
+        if (/viral/.test(lower)) code = 'J12.9';
+        if (/bacterial/.test(lower)) code = 'J15.9';
+        if (/strep/.test(lower)) code = 'J13';
+        if (/hemophilus/.test(lower)) code = 'J14';
+        return code;
+    };
+
+    const getCopdCode = (): string => {
+        let code = 'J44.9';
+        if (exacerbation) code = 'J44.1';
+        else if (/infection/.test(lower) || hasPneumonia) code = 'J44.0';
+        return code;
+    };
+
+    const getAsthmaCode = (): string => {
+        let code = 'J45.909'; // Unspecified asthma, uncomplicated
+        const severe = /severe/.test(lower);
+        const moderate = /moderate/.test(lower);
+        const mild = /mild/.test(lower);
+        const intermittent = /intermittent/.test(lower);
+        const persistent = /persistent/.test(lower);
+
+        if (mild && intermittent) code = exacerbation ? 'J45.21' : 'J45.20';
+        else if (mild && persistent) code = exacerbation ? 'J45.31' : 'J45.30';
+        else if (moderate && persistent) code = exacerbation ? 'J45.41' : 'J45.40';
+        else if (severe && persistent) code = exacerbation ? 'J45.51' : 'J45.50';
+        else if (exacerbation) code = 'J45.901';
+
+        if (/status asthmaticus/.test(lower)) {
+            code = 'J45.902';
+        }
+        return code;
+    };
+
     // 1. Post-procedural Respiratory Failure (Highest Priority)
     if (hasFailure && isPostProcedural) {
-        if (hasPneumonia) secondary_conditions.push('pneumonia');
-        if (hasCopd) secondary_conditions.push('copd');
-        if (hasAsthma) secondary_conditions.push('asthma');
+        if (hasPneumonia) {
+            secondary_conditions.push('pneumonia');
+            secondary_codes.push({ code: getPneumoniaCode(), label: 'Pneumonia', type: 'underlying_condition' });
+        }
+        if (hasCopd) {
+            secondary_conditions.push('copd');
+            secondary_codes.push({ code: getCopdCode(), label: 'COPD', type: 'underlying_condition' });
+        }
+        if (hasAsthma) {
+            secondary_conditions.push('asthma');
+            secondary_codes.push({ code: getAsthmaCode(), label: 'Asthma', type: 'underlying_condition' });
+        }
 
         let code = 'J95.821'; // Acute postprocedural respiratory failure
         if (isAcute && isChronic) code = 'J95.822'; // Acute on chronic
-        // Note: J95.821 is Acute. J95.822 is Acute on chronic.
 
         return {
             code,
             label: 'Postprocedural respiratory failure',
             attributes: { type: 'post_procedural_failure', acuity: isAcute && isChronic ? 'acute_on_chronic' : 'acute', hypoxia, hypercapnia, secondary_conditions },
+            secondary_codes,
             warnings: ['Code also underlying cause (e.g. pneumonia) if known']
         };
     }
 
     // 2. Respiratory Failure (Non-procedural)
     if (hasFailure) {
-        if (hasPneumonia) secondary_conditions.push('pneumonia');
-        if (hasCopd) secondary_conditions.push('copd');
-        if (hasAsthma) secondary_conditions.push('asthma');
+        if (hasPneumonia) {
+            secondary_conditions.push('pneumonia');
+            secondary_codes.push({ code: getPneumoniaCode(), label: 'Pneumonia', type: 'underlying_condition' });
+        }
+        if (hasCopd) {
+            secondary_conditions.push('copd');
+            secondary_codes.push({ code: getCopdCode(), label: 'COPD', type: 'underlying_condition' });
+        }
+        if (hasAsthma) {
+            secondary_conditions.push('asthma');
+            secondary_codes.push({ code: getAsthmaCode(), label: 'Asthma', type: 'underlying_condition' });
+        }
 
         let code = 'J96.90'; // Unspecified
         if (isAcute && isChronic) {
@@ -77,14 +134,23 @@ export function resolveRespiratory(text: string): RespiratoryResolution | undefi
             code,
             label: 'Respiratory failure',
             attributes: { type: 'respiratory_failure', acuity: isAcute && isChronic ? 'acute_on_chronic' : isAcute ? 'acute' : isChronic ? 'chronic' : 'unspecified', hypoxia, hypercapnia, secondary_conditions },
+            secondary_codes,
             warnings
         };
     }
 
     // 3. COPD
     if (hasCopd) {
-        if (hasPneumonia) secondary_conditions.push('pneumonia');
-        if (hasAsthma) secondary_conditions.push('asthma');
+        if (hasPneumonia) {
+            secondary_conditions.push('pneumonia');
+            // J44.0 includes "with acute lower respiratory infection", but we also code the infection
+            secondary_codes.push({ code: getPneumoniaCode(), label: 'Pneumonia', type: 'infection' });
+        }
+        if (hasAsthma) {
+            secondary_conditions.push('asthma');
+            // Code also type of asthma
+            secondary_codes.push({ code: getAsthmaCode(), label: 'Asthma', type: 'comorbidity' });
+        }
 
         let code = 'J44.9';
         if (exacerbation) code = 'J44.1';
@@ -94,47 +160,32 @@ export function resolveRespiratory(text: string): RespiratoryResolution | undefi
             code,
             label: 'Chronic obstructive pulmonary disease',
             attributes: { type: 'copd', exacerbation, secondary_conditions },
+            secondary_codes,
             warnings: ['Code also type of asthma if applicable']
         };
     }
 
     // 4. Asthma
     if (hasAsthma) {
-        if (hasPneumonia) secondary_conditions.push('pneumonia');
-
-        let code = 'J45.909'; // Unspecified asthma, uncomplicated
-        const severe = /severe/.test(lower);
-        const moderate = /moderate/.test(lower);
-        const mild = /mild/.test(lower);
-        const intermittent = /intermittent/.test(lower);
-        const persistent = /persistent/.test(lower);
-
-        if (mild && intermittent) code = exacerbation ? 'J45.21' : 'J45.20';
-        else if (mild && persistent) code = exacerbation ? 'J45.31' : 'J45.30';
-        else if (moderate && persistent) code = exacerbation ? 'J45.41' : 'J45.40';
-        else if (severe && persistent) code = exacerbation ? 'J45.51' : 'J45.50';
-        else if (exacerbation) code = 'J45.901';
-
-        if (/status asthmaticus/.test(lower)) {
-            code = 'J45.902';
+        if (hasPneumonia) {
+            secondary_conditions.push('pneumonia');
+            secondary_codes.push({ code: getPneumoniaCode(), label: 'Pneumonia', type: 'comorbidity' });
         }
+
+        const code = getAsthmaCode();
 
         return {
             code,
             label: 'Asthma',
             attributes: { type: 'asthma', exacerbation, secondary_conditions },
+            secondary_codes,
             warnings
         };
     }
 
     // 5. Pneumonia (Standalone)
     if (hasPneumonia) {
-        let code = 'J18.9'; // Unspecified
-        if (/viral/.test(lower)) code = 'J12.9';
-        if (/bacterial/.test(lower)) code = 'J15.9';
-        if (/strep/.test(lower)) code = 'J13';
-        if (/hemophilus/.test(lower)) code = 'J14';
-
+        const code = getPneumoniaCode();
         return {
             code,
             label: 'Pneumonia',
