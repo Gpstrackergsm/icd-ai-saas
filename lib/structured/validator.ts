@@ -188,6 +188,103 @@ export function validateContext(ctx: PatientContext): ValidationResult {
         }
     }
 
+    // === HARD STOP 14: ENCEPHALOPATHY REQUIRES TYPE ===
+    if (ctx.conditions.neurology?.encephalopathy?.present) {
+        if (!ctx.conditions.neurology.encephalopathy.type) {
+            errors.push('HARD STOP: Encephalopathy selected but no type specified. Type (Metabolic, Toxic, Hepatic, Hypoxic) is REQUIRED.');
+        }
+    }
+
+    // === HARD STOP 15: COMA REQUIRES GCS ===
+    if (ctx.conditions.neurology?.coma) {
+        if (!ctx.conditions.neurology.gcs) {
+            errors.push('HARD STOP: Coma documented but no GCS score provided. Glasgow Coma Scale is REQUIRED for coma coding.');
+        }
+    }
+
+    // === HARD STOP 16: HEPATITIS REQUIRES TYPE ===
+    if (ctx.conditions.gastro?.hepatitis) {
+        if (!ctx.conditions.gastro.hepatitis.type || ctx.conditions.gastro.hepatitis.type === 'unspecified') {
+            errors.push('HARD STOP: Hepatitis selected but no type specified. Type (A, B, C, Alcoholic) is REQUIRED.');
+        }
+    }
+
+    // === HARD STOP 17: GI BLEEDING REQUIRES SITE ===
+    if (ctx.conditions.gastro?.bleeding) {
+        if (!ctx.conditions.gastro.bleeding.site || ctx.conditions.gastro.bleeding.site === 'unspecified') {
+            errors.push('HARD STOP: GI bleeding selected but no site specified. Site (Upper, Lower) is REQUIRED.');
+        }
+    }
+
+    // === HARD STOP 18: PANCREATITIS REQUIRES TYPE ===
+    if (ctx.conditions.gastro?.pancreatitis) {
+        if (!ctx.conditions.gastro.pancreatitis.type || ctx.conditions.gastro.pancreatitis.type === 'unspecified') {
+            errors.push('HARD STOP: Pancreatitis selected but no type specified. Type (Acute, Chronic) is REQUIRED.');
+        }
+    }
+
+    // === HARD STOP 19: CANCER REQUIRES PRIMARY SITE ===
+    if (ctx.conditions.neoplasm?.present) {
+        if (!ctx.conditions.neoplasm.site) {
+            errors.push('HARD STOP: Cancer selected but no primary site specified. Primary Site (Lung, Breast, Colon, Prostate) is REQUIRED.');
+        }
+    }
+
+    // === HARD STOP 20: METASTASIS REQUIRES PRIMARY + METASTATIC SITE ===
+    if (ctx.conditions.neoplasm?.metastasis) {
+        if (!ctx.conditions.neoplasm.site) {
+            errors.push('HARD STOP: Metastasis selected but no primary cancer site specified. Primary Site is REQUIRED for metastatic cancer.');
+        }
+        if (!ctx.conditions.neoplasm.metastaticSite) {
+            errors.push('HARD STOP: Metastasis selected but no metastatic site specified. Metastatic Site (Bone, Brain, Liver, Lung) is REQUIRED.');
+        }
+    }
+
+    // === HARD STOP 21: ANEMIA REQUIRES TYPE ===
+    if (ctx.conditions.hematology?.anemia) {
+        if (!ctx.conditions.hematology.anemia.type || ctx.conditions.hematology.anemia.type === 'unspecified') {
+            errors.push('HARD STOP: Anemia selected but no type specified. Type (Iron deficiency, B12 deficiency, Chronic disease, Acute blood loss) is REQUIRED.');
+        }
+    }
+
+    // === HARD STOP 22: PREGNANCY REQUIRES TRIMESTER OR GESTATIONAL AGE ===
+    if (ctx.conditions.obstetric?.pregnant) {
+        if (!ctx.conditions.obstetric.trimester && !ctx.conditions.obstetric.gestationalAge) {
+            errors.push('HARD STOP: Pregnancy selected but no trimester or gestational age specified. Trimester (1st, 2nd, 3rd) OR Gestational Age is REQUIRED.');
+        }
+    }
+
+    // === HARD STOP 23: DELIVERY REQUIRES TYPE ===
+    if (ctx.conditions.obstetric?.delivery?.occurred) {
+        if (!ctx.conditions.obstetric.delivery.type) {
+            errors.push('HARD STOP: Delivery occurred but no delivery type specified. Type (Vaginal, Cesarean) is REQUIRED.');
+        }
+    }
+
+    // === CONFLICT DETECTION (PHASE 2) ===
+
+    // CONFLICT: Pregnancy + Male gender
+    if (ctx.conditions.obstetric?.pregnant && ctx.demographics.gender === 'male') {
+        errors.push('CONFLICT: Pregnancy documented but patient gender is Male. Please verify patient demographics.');
+    }
+
+    // CONFLICT: Delivery without pregnancy
+    if (ctx.conditions.obstetric?.delivery?.occurred && !ctx.conditions.obstetric.pregnant) {
+        errors.push('CONFLICT: Delivery occurred but pregnancy not documented. Pregnancy = Yes is REQUIRED for delivery coding.');
+    }
+
+    // CONFLICT: Chemotherapy without cancer
+    if (ctx.conditions.neoplasm?.chemotherapy && !ctx.conditions.neoplasm.present) {
+        errors.push('CONFLICT: Chemotherapy documented but no cancer diagnosis. Cancer = Yes is REQUIRED for chemotherapy coding.');
+    }
+
+    // CONFLICT: Hepatic encephalopathy without liver disease
+    if (ctx.conditions.neurology?.encephalopathy?.type === 'hepatic') {
+        if (!ctx.conditions.gastro?.liverDisease && !ctx.conditions.gastro?.cirrhosis) {
+            warnings.push('WARNING: Hepatic encephalopathy documented but no liver disease or cirrhosis. Consider documenting underlying liver condition.');
+        }
+    }
+
     // === WARNINGS (NOT HARD STOPS) ===
 
     // WARN: CKD + Diabetes but CKD not in diabetes complications
