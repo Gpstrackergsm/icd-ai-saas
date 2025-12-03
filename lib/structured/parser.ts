@@ -178,8 +178,129 @@ export function parseInput(text: string): ParseResult {
                 }
                 if (lowerValue.includes('pseudomonas')) context.conditions.respiratory!.pneumonia!.organism = 'pseudomonas';
                 else if (lowerValue.includes('mrsa')) context.conditions.respiratory!.pneumonia!.organism = 'mrsa';
-                else if (lowerValue.includes('e. coli')) context.conditions.respiratory!.pneumonia!.organism = 'e_coli';
+                else if (lowerValue.includes('e. coli') || lowerValue.includes('e.coli')) context.conditions.respiratory!.pneumonia!.organism = 'e_coli';
                 else errors.push(`Unknown organism: ${value}`);
+                break;
+
+            // Infections & Sepsis
+            case 'infection present':
+                if (!context.conditions.infection) context.conditions.infection = { present: false };
+                context.conditions.infection.present = parseBoolean(value);
+                break;
+            case 'infection site':
+                if (!context.conditions.infection) context.conditions.infection = { present: true };
+                if (lowerValue.includes('lung') || lowerValue.includes('pneumonia')) context.conditions.infection.site = 'lung';
+                else if (lowerValue.includes('urinary') || lowerValue.includes('uti')) context.conditions.infection.site = 'urinary';
+                else if (lowerValue.includes('blood')) context.conditions.infection.site = 'blood';
+                else if (lowerValue.includes('skin')) context.conditions.infection.site = 'skin';
+                else context.conditions.infection.site = 'other';
+                break;
+            case 'organism':
+                if (!context.conditions.infection) context.conditions.infection = { present: true };
+                if (lowerValue.includes('mrsa')) context.conditions.infection.organism = 'mrsa';
+                else if (lowerValue.includes('e. coli') || lowerValue.includes('e.coli')) context.conditions.infection.organism = 'e_coli';
+                else if (lowerValue.includes('pseudomonas')) context.conditions.infection.organism = 'pseudomonas';
+                else context.conditions.infection.organism = 'unspecified';
+                break;
+            case 'sepsis':
+                if (!context.conditions.infection) context.conditions.infection = { present: true };
+                if (!context.conditions.infection.sepsis) context.conditions.infection.sepsis = { present: false };
+                context.conditions.infection.sepsis.present = parseBoolean(value);
+                break;
+            case 'severe sepsis':
+                if (!context.conditions.infection) context.conditions.infection = { present: true };
+                if (!context.conditions.infection.sepsis) context.conditions.infection.sepsis = { present: true };
+                context.conditions.infection.sepsis.severe = parseBoolean(value);
+                break;
+            case 'septic shock':
+                if (!context.conditions.infection) context.conditions.infection = { present: true };
+                if (!context.conditions.infection.sepsis) context.conditions.infection.sepsis = { present: true };
+                context.conditions.infection.sepsis.shock = parseBoolean(value);
+                break;
+            case 'hospital-acquired':
+            case 'hai':
+                if (!context.conditions.infection) context.conditions.infection = { present: true };
+                context.conditions.infection.hospitalAcquired = parseBoolean(value);
+                break;
+
+            // Wounds & Ulcers
+            case 'ulcer present':
+            case 'wound present':
+                if (!context.conditions.wounds) context.conditions.wounds = { present: false };
+                context.conditions.wounds.present = parseBoolean(value);
+                break;
+            case 'ulcer type':
+            case 'wound type':
+                if (!context.conditions.wounds) context.conditions.wounds = { present: true };
+                if (lowerValue.includes('pressure')) context.conditions.wounds.type = 'pressure';
+                else if (lowerValue.includes('diabetic')) context.conditions.wounds.type = 'diabetic';
+                else if (lowerValue.includes('traumatic')) context.conditions.wounds.type = 'traumatic';
+                else if (lowerValue.includes('venous')) context.conditions.wounds.type = 'venous';
+                else if (lowerValue.includes('arterial')) context.conditions.wounds.type = 'arterial';
+                break;
+            case 'ulcer location':
+            case 'wound location':
+                if (!context.conditions.wounds) context.conditions.wounds = { present: true };
+                if (lowerValue.includes('sacral') || lowerValue.includes('sacrum')) context.conditions.wounds.location = 'sacral';
+                else if (lowerValue.includes('right') && lowerValue.includes('foot')) context.conditions.wounds.location = 'foot_right';
+                else if (lowerValue.includes('left') && lowerValue.includes('foot')) context.conditions.wounds.location = 'foot_left';
+                else if (lowerValue.includes('heel')) context.conditions.wounds.location = 'heel';
+                else if (lowerValue.includes('buttock')) context.conditions.wounds.location = 'buttock';
+                else context.conditions.wounds.location = 'other';
+                break;
+            case 'ulcer stage':
+            case 'pressure ulcer stage':
+            case 'stage':
+                if (!context.conditions.wounds) context.conditions.wounds = { present: true };
+                if (lowerValue.includes('1')) context.conditions.wounds.stage = 'stage1';
+                else if (lowerValue.includes('2')) context.conditions.wounds.stage = 'stage2';
+                else if (lowerValue.includes('3')) context.conditions.wounds.stage = 'stage3';
+                else if (lowerValue.includes('4')) context.conditions.wounds.stage = 'stage4';
+                else if (lowerValue.includes('unstageable')) context.conditions.wounds.stage = 'unstageable';
+                else if (lowerValue.includes('deep tissue')) context.conditions.wounds.stage = 'deep_tissue';
+                break;
+
+            // Injury & Trauma
+            case 'injury present':
+            case 'trauma present':
+                if (!context.conditions.injury) context.conditions.injury = { present: false };
+                context.conditions.injury.present = parseBoolean(value);
+                break;
+            case 'injury type':
+            case 'trauma type':
+                if (!context.conditions.injury) context.conditions.injury = { present: true };
+                if (lowerValue.includes('fracture')) context.conditions.injury.type = 'fracture';
+                else if (lowerValue.includes('open wound') || lowerValue.includes('laceration')) context.conditions.injury.type = 'open_wound';
+                else if (lowerValue.includes('burn')) context.conditions.injury.type = 'burn';
+                else if (lowerValue.includes('contusion')) context.conditions.injury.type = 'contusion';
+                break;
+            case 'body region':
+            case 'injury site':
+                if (!context.conditions.injury) context.conditions.injury = { present: true };
+                context.conditions.injury.bodyRegion = value; // Store as-is for flexibility
+                break;
+            case 'laterality':
+                if (!context.conditions.injury) context.conditions.injury = { present: true };
+                if (lowerValue.includes('left')) context.conditions.injury.laterality = 'left';
+                else if (lowerValue.includes('right')) context.conditions.injury.laterality = 'right';
+                else if (lowerValue.includes('bilateral')) context.conditions.injury.laterality = 'bilateral';
+                break;
+            case 'injury encounter type':
+            case 'encounter type for injury':
+                if (!context.conditions.injury) context.conditions.injury = { present: true };
+                if (lowerValue.includes('initial')) context.conditions.injury.encounterType = 'initial';
+                else if (lowerValue.includes('subsequent')) context.conditions.injury.encounterType = 'subsequent';
+                else if (lowerValue.includes('sequela')) context.conditions.injury.encounterType = 'sequela';
+                break;
+            case 'external cause':
+            case 'mechanism':
+                if (!context.conditions.injury) context.conditions.injury = { present: true };
+                if (!context.conditions.injury.externalCause) context.conditions.injury.externalCause = { present: true };
+                if (lowerValue.includes('fall')) context.conditions.injury.externalCause.mechanism = 'fall';
+                else if (lowerValue.includes('mvc') || lowerValue.includes('motor vehicle')) context.conditions.injury.externalCause.mechanism = 'mvc';
+                else if (lowerValue.includes('assault')) context.conditions.injury.externalCause.mechanism = 'assault';
+                else if (lowerValue.includes('sport')) context.conditions.injury.externalCause.mechanism = 'sports';
+                else context.conditions.injury.externalCause.mechanism = 'other';
                 break;
 
             default:

@@ -121,6 +121,73 @@ export function validateContext(ctx: PatientContext): ValidationResult {
         }
     }
 
+    // === HARD STOP 9: SEPSIS REQUIRES INFECTION SITE ===
+    if (ctx.conditions.infection?.sepsis?.present) {
+        if (!ctx.conditions.infection.site) {
+            errors.push('HARD STOP: Sepsis selected but no infection site specified. Infection Site (Lung, Blood, UTI, etc.) is REQUIRED for sepsis coding.');
+        }
+    }
+
+    // === HARD STOP 10: SEPTIC SHOCK REQUIRES SEPSIS ===
+    if (ctx.conditions.infection?.sepsis?.shock === true) {
+        if (!ctx.conditions.infection.sepsis.present) {
+            errors.push('HARD STOP: Septic shock selected but sepsis not documented. Sepsis = Yes is REQUIRED for septic shock.');
+        }
+    }
+
+    // === HARD STOP 11: SEVERE SEPSIS REQUIRES SEPSIS ===
+    if (ctx.conditions.infection?.sepsis?.severe === true) {
+        if (!ctx.conditions.infection.sepsis.present) {
+            errors.push('HARD STOP: Severe sepsis selected but sepsis not documented. Sepsis = Yes is REQUIRED for severe sepsis.');
+        }
+    }
+
+    // === HARD STOP 12: PRESSURE ULCER REQUIRES TYPE + LOCATION + STAGE ===
+    if (ctx.conditions.wounds?.present) {
+        const w = ctx.conditions.wounds;
+
+        if (!w.type) {
+            errors.push('HARD STOP: Wound/ulcer selected but no type specified. Ulcer Type (Pressure, Diabetic, Traumatic) is REQUIRED.');
+        }
+
+        if (!w.location) {
+            errors.push('HARD STOP: Wound/ulcer selected but no location specified. Location (Sacral, Foot, Heel, etc.) is REQUIRED.');
+        }
+
+        if (w.type === 'pressure' && !w.stage && !w.depth) {
+            errors.push('HARD STOP: Pressure ulcer selected but no stage specified. Stage (1-4, Unstageable, Deep tissue) is REQUIRED.');
+        }
+    }
+
+    // === HARD STOP 13: INJURY REQUIRES ENCOUNTER TYPE ===
+    if (ctx.conditions.injury?.present) {
+        const i = ctx.conditions.injury;
+
+        if (!i.encounterType) {
+            errors.push('HARD STOP: Injury selected but no encounter type specified. Encounter Type (Initial, Subsequent, Sequela) is REQUIRED for injury coding.');
+        }
+
+        if (!i.type) {
+            errors.push('HARD STOP: Injury selected but no injury type specified. Injury Type (Fracture, Open wound, Burn) is REQUIRED.');
+        }
+    }
+
+    // === CONFLICT DETECTION ===
+
+    // CONFLICT: Diabetic ulcer without diabetes
+    if (ctx.conditions.wounds?.type === 'diabetic') {
+        if (!ctx.conditions.diabetes) {
+            errors.push('CONFLICT: Diabetic ulcer selected but no diabetes documented. Diabetes Type is REQUIRED for diabetic ulcer.');
+        }
+    }
+
+    // CONFLICT: Septic shock without sepsis
+    if (ctx.conditions.infection?.sepsis?.shock === true) {
+        if (ctx.conditions.infection.sepsis.present === false) {
+            errors.push('CONFLICT: Septic shock = Yes but Sepsis = No. Cannot have septic shock without sepsis.');
+        }
+    }
+
     // === WARNINGS (NOT HARD STOPS) ===
 
     // WARN: CKD + Diabetes but CKD not in diabetes complications
@@ -135,6 +202,11 @@ export function validateContext(ctx: PatientContext): ValidationResult {
         if (!ctx.conditions.cardiovascular.hypertension) {
             warnings.push('WARNING: Heart failure with CKD typically requires hypertension documentation for I13.x combination code. Consider documenting hypertension if present.');
         }
+    }
+
+    // WARN: Infection without organism specified
+    if (ctx.conditions.infection?.present && !ctx.conditions.infection.organism) {
+        warnings.push('WARNING: Infection present but organism not specified. Consider documenting organism for more specific coding.');
     }
 
     return {
