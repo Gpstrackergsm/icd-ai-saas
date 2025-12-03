@@ -231,7 +231,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     // --- RESPIRATORY RULES ---
     if (ctx.conditions.respiratory?.pneumonia) {
         const r = ctx.conditions.respiratory;
-        const p = r.pneumonia;
+        const p = r.pneumonia!; // Non-null assertion safe because of if condition
         const pCode = mapPneumoniaOrganism(p.organism);
         codes.push({
             code: pCode,
