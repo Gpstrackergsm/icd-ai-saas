@@ -86,8 +86,16 @@ export function parseInput(text: string): ParseResult {
                 break;
 
             // Renal
+            case 'ckd present':
+                if (parseBoolean(value)) {
+                    if (!context.conditions.ckd) {
+                        // Create CKD object but DON'T set a default stage - let validation catch it
+                        context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
+                    }
+                }
+                break;
             case 'ckd stage':
-                if (!context.conditions.ckd) context.conditions.ckd = { stage: 3, onDialysis: false, aki: false, transplantStatus: false };
+                if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
                 if (value === '1') context.conditions.ckd.stage = 1;
                 else if (value === '2') context.conditions.ckd.stage = 2;
                 else if (value === '3') context.conditions.ckd.stage = 3;
@@ -97,13 +105,33 @@ export function parseInput(text: string): ParseResult {
                 else errors.push(`Invalid CKD stage: ${value}`);
                 break;
             case 'dialysis':
-                if (!context.conditions.ckd) context.conditions.ckd = { stage: 3, onDialysis: false, aki: false, transplantStatus: false };
-                context.conditions.ckd.onDialysis = parseBoolean(value);
+            case 'dialysis status':
+                if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
+                // Handle new format: None/Temporary/Chronic
+                if (lowerValue === 'none') {
+                    context.conditions.ckd.onDialysis = false;
+                    context.conditions.ckd.dialysisType = 'none';
+                } else if (lowerValue === 'temporary') {
+                    context.conditions.ckd.onDialysis = true;
+                    context.conditions.ckd.dialysisType = 'temporary';
+                } else if (lowerValue === 'chronic') {
+                    context.conditions.ckd.onDialysis = true;
+                    context.conditions.ckd.dialysisType = 'chronic';
+                } else {
+                    // Legacy Yes/No format
+                    context.conditions.ckd.onDialysis = parseBoolean(value);
+                }
                 break;
             case 'acute kidney injury':
             case 'aki':
-                if (!context.conditions.ckd) context.conditions.ckd = { stage: 3, onDialysis: false, aki: false, transplantStatus: false };
+            case 'aki present':
+                if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
                 context.conditions.ckd.aki = parseBoolean(value);
+                break;
+            case 'kidney transplant history':
+            case 'transplant':
+                if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
+                context.conditions.ckd.transplantStatus = parseBoolean(value);
                 break;
 
             // Cardiovascular
