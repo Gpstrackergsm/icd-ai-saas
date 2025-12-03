@@ -224,7 +224,6 @@ export default async function handler(req, res) {
 <body>
     <div class="container">
         <div class="header">
-            <div class="logo">🏥</div>
             <h1>ICD-10-CM Encoder</h1>
             <p class="subtitle">Clinical Coding Engine</p>
         </div>
