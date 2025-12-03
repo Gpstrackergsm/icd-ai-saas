@@ -127,11 +127,18 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         const hasCKD = !!ctx.conditions.ckd;
         const hasHF = !!c.heartFailure;
 
-        // RULE: HTN + HF + CKD → I13.0
+        // RULE: HTN + HF + CKD → I13.x
         if (c.hypertension && hasHF && hasCKD) {
+            const ckdStage = ctx.conditions.ckd?.stage;
+            const isStage5OrESRD = ckdStage === 5 || ckdStage === 'esrd';
+            const code = isStage5OrESRD ? 'I13.2' : 'I13.0';
+            const label = isStage5OrESRD
+                ? 'Hypertensive heart and chronic kidney disease with heart failure and with stage 5 chronic kidney disease, or end stage renal disease'
+                : 'Hypertensive heart and chronic kidney disease with heart failure and stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease';
+
             codes.push({
-                code: 'I13.0',
-                label: 'Hypertensive heart and chronic kidney disease with heart failure and stage 1 through stage 4 CKD, or unspecified CKD',
+                code: code,
+                label: label,
                 rationale: 'Combination code for HTN, HF, and CKD',
                 guideline: 'ICD-10-CM I.C.9.a.2',
                 trigger: 'Hypertension + Heart Failure + CKD',
