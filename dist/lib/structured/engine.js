@@ -239,17 +239,6 @@ function runStructuredRules(ctx) {
             trigger: 'Pneumonia + ' + (p.organism || 'unspecified organism'),
             rule: 'Organism-specific pneumonia code'
         });
-        // Add organism code if specific
-        if (p.organism === 'pseudomonas') {
-            codes.push({
-                code: 'B96.5',
-                label: 'Pseudomonas (aeruginosa) (mallei) (pseudomallei) as the cause of diseases classified elsewhere',
-                rationale: 'Bacterial organism code',
-                guideline: 'ICD-10-CM I.C.1',
-                trigger: 'Pneumonia Organism: Pseudomonas',
-                rule: 'Use additional code for organism'
-            });
-        }
     }
     // --- INFECTIONS & SEPSIS RULES ---
     if (ctx.conditions.infection) {

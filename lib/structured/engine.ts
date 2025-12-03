@@ -273,17 +273,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             rule: 'Organism-specific pneumonia code'
         });
 
-        // Add organism code if specific
-        if (p.organism === 'pseudomonas') {
-            codes.push({
-                code: 'B96.5',
-                label: 'Pseudomonas (aeruginosa) (mallei) (pseudomallei) as the cause of diseases classified elsewhere',
-                rationale: 'Bacterial organism code',
-                guideline: 'ICD-10-CM I.C.1',
-                trigger: 'Pneumonia Organism: Pseudomonas',
-                rule: 'Use additional code for organism'
-            });
-        }
+
     }
 
     // --- INFECTIONS & SEPSIS RULES ---
@@ -336,6 +326,8 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 rule: 'Unspecified sepsis code'
             });
         }
+
+
 
         // RULE: Add organism code (B96.x) ONLY if sepsis code does NOT already specify organism
         // Per ICD-10-CM: B96.x is redundant when A41.xx already identifies the organism
