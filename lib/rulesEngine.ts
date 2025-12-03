@@ -1,3 +1,4 @@
+
 import { applyExclusions } from './exclusionEngine.js';
 import { resolveDiabetes, DiabetesResolution, DiabetesAttributes } from './diabetesResolver.js';
 import { resolveRetinopathy } from './retinopathyResolver.js';
@@ -6,6 +7,15 @@ import { validateHierarchy } from './hierarchyValidator.js';
 import { scoreSequence, ScoredCode } from './scoringEngine.js';
 import { buildAuditTrail } from './auditEngine.js';
 import { flagHcc } from './hccEngine.js';
+import { resolveCardiovascular } from './cardiovascularResolver.js';
+import { resolveRenal } from './renalResolver.js';
+import { resolveInfection } from './infectionResolver.js';
+import { resolveGastro } from './gastroResolver.js';
+import { resolveRespiratory } from './respiratoryResolver.js';
+import { resolveNeoplasm } from './neoplasmResolver.js';
+import { resolveTrauma } from './traumaResolver.js';
+import { resolveObstetrics } from './obstetricsResolver.js';
+import { resolvePsychiatric } from './psychiatricResolver.js';
 
 export interface SequencedCode {
   code: string;
@@ -63,6 +73,7 @@ export function runRulesEngine(text: string): EngineResult {
 
   const sequence: SequencedCode[] = [];
 
+  // 1. Diabetes (Gold Standard)
   if (diabetes) {
     warnings.push(...(diabetes.warnings || []));
     sequence.push(diabetesEntry(diabetes));
@@ -95,6 +106,95 @@ export function runRulesEngine(text: string): EngineResult {
     }
   }
 
+  // 2. Cardiovascular
+  const cardio = resolveCardiovascular(text);
+  if (cardio) {
+    sequence.push({ code: cardio.code, label: cardio.label, triggeredBy: 'cardiovascular_resolution', hcc: false });
+    if (cardio.warnings) warnings.push(...cardio.warnings);
+  }
+
+  // 3. Renal
+  const renal = resolveRenal(text);
+  if (renal) {
+    sequence.push({ code: renal.code, label: renal.label, triggeredBy: 'renal_resolution', hcc: false });
+    if (renal.warnings) warnings.push(...renal.warnings);
+
+    // Add Dialysis Z99.2 if indicated
+    if (renal.attributes.on_dialysis) {
+      sequence.push({
+        code: 'Z99.2',
+        label: 'Dependence on renal dialysis',
+        triggeredBy: 'renal_resolution_dialysis',
+        hcc: true
+      });
+    }
+  }
+
+  // 4. Infection
+  const infection = resolveInfection(text);
+  if (infection) {
+    sequence.push({ code: infection.code, label: infection.label, triggeredBy: 'infection_resolution', hcc: false });
+    if (infection.warnings) warnings.push(...infection.warnings);
+  }
+
+  // 5. Gastrointestinal
+  const gastro = resolveGastro(text);
+  if (gastro) {
+    sequence.push({ code: gastro.code, label: gastro.label, triggeredBy: 'gastro_resolution', hcc: false });
+    if (gastro.warnings) warnings.push(...gastro.warnings);
+  }
+
+  // 6. Respiratory
+  const respiratory = resolveRespiratory(text);
+  if (respiratory) {
+    sequence.push({ code: respiratory.code, label: respiratory.label, triggeredBy: 'respiratory_resolution', hcc: false });
+    if (respiratory.warnings) warnings.push(...respiratory.warnings);
+  }
+
+  // 7. Neoplasm
+  const neoplasm = resolveNeoplasm(text);
+  if (neoplasm) {
+    sequence.push({ code: neoplasm.code, label: neoplasm.label, triggeredBy: 'neoplasm_resolution', hcc: false });
+    if (neoplasm.warnings) warnings.push(...neoplasm.warnings);
+  }
+
+  // 8. Trauma
+  const trauma = resolveTrauma(text);
+  if (trauma) {
+    sequence.push({ code: trauma.code, label: trauma.label, triggeredBy: 'trauma_resolution', hcc: false });
+    if (trauma.warnings) warnings.push(...trauma.warnings);
+  }
+
+  // 9. Obstetrics
+  const obstetrics = resolveObstetrics(text);
+  if (obstetrics) {
+    sequence.push({ code: obstetrics.code, label: obstetrics.label, triggeredBy: 'obstetrics_resolution', hcc: false });
+    if (obstetrics.warnings) warnings.push(...obstetrics.warnings);
+
+    // Add Z3A Weeks of Gestation
+    if (obstetrics.attributes.weeks) {
+      const w = obstetrics.attributes.weeks;
+      let z3a = 'Z3A.00';
+      if (w < 8) z3a = 'Z3A.01';
+      else if (w >= 8 && w <= 42) z3a = `Z3A.${w}`;
+      else if (w > 42) z3a = 'Z3A.49';
+
+      sequence.push({
+        code: z3a,
+        label: `Weeks of gestation of pregnancy, ${w} weeks`,
+        triggeredBy: 'obstetrics_weeks',
+        hcc: false
+      });
+    }
+  }
+
+  // 10. Psychiatric
+  const psych = resolvePsychiatric(text);
+  if (psych) {
+    sequence.push({ code: psych.code, label: psych.label, triggeredBy: 'psychiatric_resolution', hcc: false });
+    if (psych.warnings) warnings.push(...psych.warnings);
+  }
+
   // Drug-induced diabetes adverse effects: diabetes first then adverse-effect T code
   if (diabetes?.attributes.cause === 'drug' && /adverse effect/.test(text.toLowerCase())) {
     sequence.push({
@@ -123,7 +223,10 @@ export function runRulesEngine(text: string): EngineResult {
     }
   }
 
-  const exclusionResult = applyExclusions(sequence);
+  // Deduplicate sequence based on code
+  const uniqueSequence = sequence.filter((v, i, a) => a.findIndex(t => t.code === v.code) === i);
+
+  const exclusionResult = applyExclusions(uniqueSequence);
   warnings.push(...exclusionResult.errors);
 
   const hierarchyResult = validateHierarchy(exclusionResult.filtered);
