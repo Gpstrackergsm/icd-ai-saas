@@ -184,19 +184,24 @@
       diabetes: {
         label: 'Diabetes',
         fields: [
-          { key: 'Diabetes Type', type: 'select', label: 'Type', options: ['Type 1', 'Type 2', 'Drug-induced', 'Secondary'] },
-          { key: 'Diabetes Complication', type: 'multi-select', label: 'Complications', options: ['CKD', 'Foot Ulcer', 'Retinopathy', 'Neuropathy', 'Hypoglycemia'] },
+          { key: 'Diabetes Type', type: 'select', label: 'Type', options: ['Type 1', 'Type 2'], required: true },
+          {
+            key: 'Complications',
+            type: 'checkbox-group',
+            label: 'Complications',
+            options: ['Neuropathy', 'Nephropathy/CKD', 'Foot Ulcer', 'Retinopathy', 'Hypoglycemia']
+          },
           { key: 'Insulin Use', type: 'select', label: 'Insulin Use', options: ['Yes', 'No'] },
-          // Conditional fields could be handled, but keeping flat for now
-          { key: 'Ulcer Site', type: 'select', label: 'Ulcer Site', options: ['Left Foot', 'Right Foot', 'Other'] },
-          { key: 'Ulcer Severity', type: 'select', label: 'Ulcer Severity', options: ['Skin', 'Fat', 'Muscle', 'Bone'] }
+          // Conditional fields - shown only if Foot Ulcer selected
+          { key: 'Ulcer Site', type: 'select', label: 'Ulcer Site', options: ['Left Foot', 'Right Foot', 'Left Ankle', 'Right Ankle', 'Other'], required: 'if_foot_ulcer', showIf: 'Foot Ulcer' },
+          { key: 'Ulcer Severity', type: 'select', label: 'Ulcer Depth', options: ['Skin only', 'Fat layer exposed', 'Muscle exposed', 'Bone exposed'], required: 'if_foot_ulcer', showIf: 'Foot Ulcer' }
         ]
       },
       ckd: {
         label: 'Renal / CKD',
         fields: [
-          { key: 'CKD Stage', type: 'select', label: 'Stage', options: ['1', '2', '3', '4', '5', 'ESRD'] },
-          { key: 'Dialysis', type: 'select', label: 'On Dialysis', options: ['Yes', 'No'] },
+          { key: 'CKD Stage', type: 'select', label: 'CKD Stage', options: ['1', '2', '3', '4', '5', 'ESRD'], required: true },
+          { key: 'Dialysis', type: 'select', label: 'Dialysis Status', options: ['Yes', 'No'], required: 'if_esrd', showIf: 'ESRD' },
           { key: 'Acute Kidney Injury', type: 'select', label: 'AKI Present', options: ['Yes', 'No'] }
         ]
       },
@@ -343,16 +348,74 @@
       fieldsContainer.style.gap = '10px';
 
       config.fields.forEach(field => {
+        // Skip conditional fields if condition not met
+        if (field.showIf) {
+          const checkValue = formState[domainKey]?.['Complications'] || formState[domainKey]?.['CKD Stage'];
+          if (!checkValue || (!Array.isArray(checkValue) && checkValue !== field.showIf) || (Array.isArray(checkValue) && !checkValue.includes(field.showIf))) {
+            return; // Skip this field
+          }
+        }
+
         const fieldWrapper = document.createElement('div');
 
         const label = document.createElement('label');
-        label.textContent = field.label;
+        label.textContent = field.label + (field.required ? ' *' : '');
         label.style.fontSize = '12px';
         label.style.marginBottom = '4px';
-        label.style.color = '#64748b';
+        label.style.color = field.required ? '#dc2626' : '#64748b';
+        label.style.fontWeight = field.required ? '600' : 'normal';
 
         let input;
-        if (field.type === 'select') {
+        if (field.type === 'checkbox-group') {
+          // Create checkbox group
+          const checkboxContainer = document.createElement('div');
+          checkboxContainer.style.display = 'flex';
+          checkboxContainer.style.flexDirection = 'column';
+          checkboxContainer.style.gap = '6px';
+
+          if (!formState[domainKey][field.key]) {
+            formState[domainKey][field.key] = [];
+          }
+
+          field.options.forEach(opt => {
+            const checkWrapper = document.createElement('label');
+            checkWrapper.style.display = 'flex';
+            checkWrapper.style.alignItems = 'center';
+            checkWrapper.style.gap = '6px';
+            checkWrapper.style.fontSize = '13px';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.value = opt;
+            checkbox.checked = formState[domainKey][field.key].includes(opt); // Set initial checked state
+            checkbox.addEventListener('change', (e) => {
+              if (e.target.checked) {
+                if (!formState[domainKey][field.key].includes(opt)) {
+                  formState[domainKey][field.key].push(opt);
+                }
+              } else {
+                formState[domainKey][field.key] = formState[domainKey][field.key].filter(v => v !== opt);
+              }
+              updateNarrative();
+              // Re-render to show/hide conditional fields
+              const currentSection = document.querySelector(`[data-domain="${domainKey}"]`);
+              if (currentSection) {
+                const parent = currentSection.parentElement;
+                currentSection.remove();
+                renderFormSection(domainKey);
+              }
+            });
+
+            checkWrapper.appendChild(checkbox);
+            checkWrapper.appendChild(document.createTextNode(opt));
+            checkboxContainer.appendChild(checkWrapper);
+          });
+
+          fieldWrapper.appendChild(label);
+          fieldWrapper.appendChild(checkboxContainer);
+          fieldsContainer.appendChild(fieldWrapper);
+          return; // Skip further processing for this field type
+        } else if (field.type === 'select') {
           input = document.createElement('select');
           input.style.width = '100%';
           input.style.padding = '6px';
@@ -417,8 +480,16 @@
         if (formState[domain]) {
           const data = formState[domain];
           Object.keys(data).forEach(key => {
-            if (data[key]) {
-              lines.push(`${key}: ${data[key]}`);
+            const value = data[key];
+            if (value) {
+              // Handle arrays (checkbox groups)
+              if (Array.isArray(value)) {
+                if (value.length > 0) {
+                  lines.push(`${key}: ${value.join(', ')}`);
+                }
+              } else {
+                lines.push(`${key}: ${value}`);
+              }
             }
           });
         }
