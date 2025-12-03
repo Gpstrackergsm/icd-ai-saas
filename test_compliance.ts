@@ -3,24 +3,6 @@ import { runRulesEngine } from './lib/rulesEngine';
 const testCases = [
     {
         name: 'Specificity: Truncated Injury Code',
-        input: 'Fracture of femur',
-        // S72.91XA is 8 chars? No, S72.91XA is 7. S72.9 is 5.
-        // Resolver might return S72.91XA (valid) or S72.9 (invalid) depending on logic.
-        // Current traumaResolver tries to be specific, but let's test a case where it might fail or we force a short code.
-        // Actually, let's test a raw code that is short if possible, or rely on resolver outputting a short code if inputs are vague.
-        // "Fracture of femur" -> S72.91XA (7 chars) usually.
-        // Let's try "Injury" -> T14.90XA (8 chars? T14.90 is 6. XA makes 8? No. T14.90XA is 8. Wait. T14.90 is 6. +X+A = 8?)
-        // T14.90 is "Injury, unspecified". 7th char A. T14.90XA.
-        // Let's try to trigger a warning.
-        // "Neoplasm of breast" -> C50.919 (7 chars).
-        // "Neoplasm" -> C80.1 (5 chars). Valid.
-        // "Pneumonia" -> J18.9 (5 chars). Valid.
-        // "Heart failure" -> I50.9 (5 chars). Valid.
-
-        // Let's try a known "bad" code if we can force it, or just check that valid codes pass.
-        // If we input "Fracture", we get T14.8XXA.
-
-        // Let's test Laterality Warning
         input: 'Fracture of radius', // Unspecified side
         expectedWarning: 'requires laterality'
     },
