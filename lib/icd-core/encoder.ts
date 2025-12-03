@@ -8,6 +8,7 @@ import { getCode, initIcdData, searchIndex } from './dataSource';
 import { applyGuidelineRules } from './rulesEngine';
 import type { CandidateCode } from './models';
 import { extractClinicalConcepts, mapConceptsToCandidateCodes, normalizeText } from './nlpParser';
+import { runRulesEngine } from '../rulesEngine';
 
 export interface EncoderResultCode {
   code: string;
@@ -33,9 +34,9 @@ export interface EncoderResult {
 function computeRankingScore(candidate: CandidateCode): number {
   let score = candidate.baseScore;
   if (/^I1[123]/.test(candidate.code)) score += 1.5;
-  if (/^(E0[8]|E1[01]\.(2[12]|4|0))/.test(candidate.code)) score += 1.25;
-  if (/^N18\.[1-6]/.test(candidate.code)) score += 0.75;
-  if (/\.9$/.test(candidate.code)) score -= 0.5;
+  if (/^(E0[8]|E1[01]\\.(2[12]|4|0))/.test(candidate.code)) score += 1.25;
+  if (/^N18\\.[1-6]/.test(candidate.code)) score += 0.75;
+  if (/\\.9$/.test(candidate.code)) score -= 0.5;
   return Math.max(0, score);
 }
 
@@ -62,7 +63,7 @@ function applyChapterAwareness(candidates: CandidateCode[]): CandidateCode[] {
     if (details?.chapter?.toLowerCase().includes('endocrine') && candidate.code.startsWith('E')) {
       return { ...candidate, baseScore: candidate.baseScore + 0.25 };
     }
-    if (details?.chapter?.toLowerCase().includes('circulatory') && /^I\d/.test(candidate.code)) {
+    if (details?.chapter?.toLowerCase().includes('circulatory') && /^I\\d/.test(candidate.code)) {
       return { ...candidate, baseScore: candidate.baseScore + 0.25 };
     }
     return candidate;
@@ -117,12 +118,37 @@ function removeNonBillableWhenAlternatives(candidates: CandidateCode[]): Candida
 export function encodeDiagnosisText(text: string): EncoderResult {
   initIcdData();
   const normalized = normalizeText(text || '');
-  const concepts = extractClinicalConcepts(normalized);
 
-  let workingCandidates = mapConceptsToCandidateCodes(concepts);
-  workingCandidates = enrichWithSearchIndex(normalized, workingCandidates);
-  workingCandidates = applyChapterAwareness(workingCandidates);
-  workingCandidates = addHeuristicNeoplasmCandidates(normalized, workingCandidates);
+  // FIRST: Run new domain-specific resolvers
+  const domainResult = runRulesEngine(text);
+
+  // If domain resolvers found codes, use them as high-priority candidates
+  let workingCandidates: CandidateCode[] = [];
+
+  if (domainResult.sequence && domainResult.sequence.length > 0) {
+    workingCandidates = domainResult.sequence.map((seq, idx) => ({
+      code: seq.code,
+      reason: seq.note || seq.label || `Domain resolver: ${seq.triggeredBy}`,
+      baseScore: 12 - idx, // Primary gets highest score
+      conceptRefs: [seq.triggeredBy],
+      guidelineRule: seq.triggeredBy,
+    }));
+  }
+
+  // THEN: Run legacy NLP extraction as fallback/enrichment
+  const concepts = extractClinicalConcepts(normalized);
+  let nlpCandidates = mapConceptsToCandidateCodes(concepts);
+  nlpCandidates = enrichWithSearchIndex(normalized, nlpCandidates);
+  nlpCandidates = applyChapterAwareness(nlpCandidates);
+  nlpCandidates = addHeuristicNeoplasmCandidates(normalized, nlpCandidates);
+
+  // Merge: Domain codes take priority, NLP fills gaps
+  const domainCodes = new Set(workingCandidates.map(c => c.code));
+  nlpCandidates.forEach(candidate => {
+    if (!domainCodes.has(candidate.code)) {
+      workingCandidates.push(candidate);
+    }
+  });
 
   const ruleResult = applyGuidelineRules({ concepts, initialCandidates: workingCandidates });
   const baseCandidates = workingCandidates.filter((c) => !ruleResult.removedCodes.includes(c.code));
@@ -157,10 +183,13 @@ export function encodeDiagnosisText(text: string): EncoderResult {
 
   if (codes.length) codes[0].isPrimary = true;
 
+  // Merge warnings from both engines
+  const allWarnings = [...(domainResult.warnings || []), ...(ruleResult.warnings || [])];
+
   return {
     text: normalized,
     codes,
-    warnings: ruleResult.warnings,
+    warnings: allWarnings,
     errors: ruleResult.errors,
   };
 }
