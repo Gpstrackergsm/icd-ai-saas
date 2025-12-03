@@ -1,0 +1,65 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.applyExclusions = applyExclusions;
+const excludes1 = [
+    // Diabetes-specific Charcot joint excludes generic Charcot
+    ['E08.610', 'M14.6'],
+    ['E09.610', 'M14.6'],
+    ['E10.610', 'M14.6'],
+    ['E11.610', 'M14.6'],
+    ['E13.610', 'M14.6'],
+    // Diabetic neuropathy excludes generic neuropathy codes
+    ['E08.4', 'G50'], ['E08.4', 'G51'], ['E08.4', 'G52'], ['E08.4', 'G53'], ['E08.4', 'G54'],
+    ['E08.4', 'G55'], ['E08.4', 'G56'], ['E08.4', 'G57'], ['E08.4', 'G58'], ['E08.4', 'G59'],
+    ['E09.4', 'G50'], ['E09.4', 'G51'], ['E09.4', 'G52'], ['E09.4', 'G53'], ['E09.4', 'G54'],
+    ['E09.4', 'G55'], ['E09.4', 'G56'], ['E09.4', 'G57'], ['E09.4', 'G58'], ['E09.4', 'G59'],
+    ['E10.4', 'G50'], ['E10.4', 'G51'], ['E10.4', 'G52'], ['E10.4', 'G53'], ['E10.4', 'G54'],
+    ['E10.4', 'G55'], ['E10.4', 'G56'], ['E10.4', 'G57'], ['E10.4', 'G58'], ['E10.4', 'G59'],
+    ['E11.4', 'G50'], ['E11.4', 'G51'], ['E11.4', 'G52'], ['E11.4', 'G53'], ['E11.4', 'G54'],
+    ['E11.4', 'G55'], ['E11.4', 'G56'], ['E11.4', 'G57'], ['E11.4', 'G58'], ['E11.4', 'G59'],
+    ['E13.4', 'G50'], ['E13.4', 'G51'], ['E13.4', 'G52'], ['E13.4', 'G53'], ['E13.4', 'G54'],
+    ['E13.4', 'G55'], ['E13.4', 'G56'], ['E13.4', 'G57'], ['E13.4', 'G58'], ['E13.4', 'G59'],
+    // Hyperglycemia vs hypoglycemia mutual exclusion
+    ['E11.65', 'E11.64'], ['E10.65', 'E10.64'], ['E08.65', 'E08.64'], ['E09.65', 'E09.64'], ['E13.65', 'E13.64'],
+    // Hypertension (I10) excludes Hypertensive Heart (I11), CKD (I12), Heart&CKD (I13)
+    ['I11', 'I10'], ['I12', 'I10'], ['I13', 'I10'],
+    ['I13', 'I11'], ['I13', 'I12'], // I13 includes both
+    // COPD (J44) excludes simple Bronchitis (J40-J42) if specified as such (J44 includes chronic bronchitis)
+    ['J44', 'J40'], ['J44', 'J41'], ['J44', 'J42'],
+    // Depression: F32 (Major Depressive Disorder, Single) excludes F33 (Recurrent)
+    ['F32', 'F33'], ['F33', 'F32'],
+];
+const excludes2 = [
+    // Unspecified diabetes can coexist with specific complications (Excludes2)
+    ['E11.9', 'E11.65'], ['E10.9', 'E10.65'], ['E08.9', 'E08.65'], ['E09.9', 'E09.65'], ['E13.9', 'E13.65'],
+    // COPD with Asthma (J44 and J45 can coexist, but J44.x note says "Code also type of asthma")
+    // So this is NOT an Excludes1. It's allowed.
+    // Hypertension and Heart Failure (I10 and I50) - Allowed (Excludes2 in some contexts, but usually causal link I11 preferred)
+];
+function codeMatches(candidate, target) {
+    return candidate === target || candidate.startsWith(`${target}`);
+}
+function applyExclusions(sequence) {
+    const errors = [];
+    let filtered = [...sequence];
+    excludes1.forEach(([a, b]) => {
+        const hasA = filtered.some((c) => codeMatches(c.code, a));
+        const hasB = filtered.some((c) => codeMatches(c.code, b));
+        if (hasA && hasB) {
+            const preferred = a.startsWith('E') ? a : b;
+            filtered = filtered.filter((c) => codeMatches(c.code, preferred));
+            errors.push(`Excludes1: ${a} cannot be reported with ${b}; kept ${preferred}`);
+        }
+    });
+    excludes2.forEach(([a, b]) => {
+        const hasA = filtered.some((c) => codeMatches(c.code, a));
+        const hasB = filtered.some((c) => codeMatches(c.code, b));
+        if (hasA && hasB) {
+            filtered = filtered.map((item) => ({
+                ...item,
+                note: `${item.note ? `${item.note}; ` : ''}Excludes2 caution between ${a} and ${b}`,
+            }));
+        }
+    });
+    return { valid: errors.length === 0, errors, filtered };
+}

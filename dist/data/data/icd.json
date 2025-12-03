@@ -1,0 +1,283 @@
+[
+  {
+    "code": "I10",
+    "description": "Essential (primary) hypertension",
+    "synonyms": ["high blood pressure", "primary hypertension", "essential hypertension"]
+  },
+  {
+    "code": "E11.9",
+    "description": "Type 2 diabetes mellitus without complications",
+    "synonyms": ["type 2 diabetes", "adult onset diabetes", "non-insulin-dependent diabetes"]
+  },
+  {
+    "code": "E11.65",
+    "description": "Type 2 diabetes mellitus with hyperglycemia",
+    "synonyms": ["type 2 diabetes with hyperglycemia", "uncontrolled type 2 diabetes"]
+  },
+  {
+    "code": "E11.22",
+    "description": "Type 2 diabetes mellitus with diabetic chronic kidney disease",
+    "synonyms": ["diabetic CKD", "diabetic nephropathy", "type 2 diabetes kidney disease"]
+  },
+  {
+    "code": "E78.5",
+    "description": "Hyperlipidemia, unspecified",
+    "synonyms": ["high cholesterol", "lipid disorder", "dyslipidemia"]
+  },
+  {
+    "code": "E03.9",
+    "description": "Hypothyroidism, unspecified",
+    "synonyms": ["low thyroid", "hypothyroid", "thyroid hormone deficiency"]
+  },
+  {
+    "code": "J44.1",
+    "description": "Chronic obstructive pulmonary disease with (acute) exacerbation",
+    "desc": "Chronic obstructive pulmonary disease with (acute) exacerbation",
+    "synonyms": [
+      "copd exacerbation",
+      "acute copd",
+      "copd with flare up",
+      "chronic obstructive lung disease with acute exacerbation"
+    ]
+  },
+  {
+    "code": "J45.909",
+    "description": "Unspecified asthma, uncomplicated",
+    "synonyms": ["asthma", "bronchial asthma", "reactive airway disease"]
+  },
+  {
+    "code": "J06.9",
+    "description": "Acute upper respiratory infection, unspecified",
+    "synonyms": ["common cold", "URI", "upper respiratory infection"]
+  },
+  {
+    "code": "N18.4",
+    "description": "Chronic kidney disease, stage 4 (severe)",
+    "synonyms": ["CKD stage 4", "severe chronic kidney disease", "stage IV CKD"]
+  },
+  {
+    "code": "N18.3",
+    "description": "Chronic kidney disease, stage 3 (moderate)",
+    "synonyms": ["CKD stage 3", "moderate chronic kidney disease", "stage III CKD"]
+  },
+  {
+    "code": "N18.9",
+    "description": "Chronic kidney disease, unspecified",
+    "synonyms": ["CKD", "chronic renal failure", "chronic kidney disease"]
+  },
+  {
+    "code": "I21.9",
+    "description": "Acute myocardial infarction, unspecified",
+    "synonyms": ["heart attack", "AMI", "myocardial infarction"]
+  },
+  {
+    "code": "I25.10",
+    "description": "Atherosclerotic heart disease of native coronary artery without angina",
+    "synonyms": ["coronary artery disease", "CAD", "atherosclerotic heart disease"]
+  },
+  {
+    "code": "I50.9",
+    "description": "Heart failure, unspecified",
+    "synonyms": ["congestive heart failure", "CHF", "cardiac failure"]
+  },
+  {
+    "code": "I48.91",
+    "description": "Unspecified atrial fibrillation",
+    "synonyms": ["atrial fibrillation", "AF", "afib"]
+  },
+  {
+    "code": "K21.9",
+    "description": "Gastro-esophageal reflux disease without esophagitis",
+    "synonyms": ["GERD", "acid reflux", "heartburn"]
+  },
+  {
+    "code": "K52.9",
+    "description": "Noninfective gastroenteritis and colitis, unspecified",
+    "synonyms": ["gastroenteritis", "colitis", "stomach flu"]
+  },
+  {
+    "code": "R07.9",
+    "description": "Chest pain, unspecified",
+    "synonyms": ["chest pain", "thoracic pain", "unspecified chest pain"]
+  },
+  {
+    "code": "R51",
+    "description": "Headache",
+    "synonyms": ["headache", "cephalgia", "head pain"]
+  },
+  {
+    "code": "M54.5",
+    "description": "Low back pain",
+    "synonyms": ["lumbar pain", "backache", "lower back pain"]
+  },
+  {
+    "code": "M54.2",
+    "description": "Cervicalgia",
+    "synonyms": ["neck pain", "cervical pain", "neckache"]
+  },
+  {
+    "code": "M17.0",
+    "description": "Bilateral primary osteoarthritis of knee",
+    "synonyms": ["knee osteoarthritis", "bilateral knee OA", "degenerative knee joint disease"]
+  },
+  {
+    "code": "M17.11",
+    "description": "Unilateral primary osteoarthritis, right knee",
+    "synonyms": ["right knee osteoarthritis", "right knee OA", "right knee degenerative joint disease"]
+  },
+  {
+    "code": "M25.561",
+    "description": "Pain in right knee",
+    "synonyms": ["right knee pain", "knee discomfort", "arthralgia of right knee"]
+  },
+  {
+    "code": "G47.33",
+    "description": "Obstructive sleep apnea (adult) (pediatric)",
+    "synonyms": ["OSA", "sleep apnea", "obstructive sleep apnea"]
+  },
+  {
+    "code": "F33.2",
+    "description": "Major depressive disorder, recurrent severe without psychotic features",
+    "synonyms": ["recurrent depression", "severe depression", "MDD"]
+  },
+  {
+    "code": "F41.1",
+    "description": "Generalized anxiety disorder",
+    "synonyms": ["GAD", "chronic anxiety", "general anxiety"]
+  },
+  {
+    "code": "F32.9",
+    "description": "Major depressive disorder, single episode, unspecified",
+    "synonyms": ["depression", "major depression", "depressive episode"]
+  },
+  {
+    "code": "Z47.1",
+    "description": "Aftercare following joint replacement surgery",
+    "synonyms": ["joint replacement aftercare", "post joint replacement care", "prosthesis follow-up"]
+  },
+  {
+    "code": "Z79.4",
+    "description": "Long term (current) use of insulin",
+    "synonyms": ["insulin therapy", "on insulin", "long-term insulin use"]
+  },
+  {
+    "code": "Z79.01",
+    "description": "Long term (current) use of anticoagulants",
+    "synonyms": ["on blood thinners", "anticoagulant therapy", "warfarin use"]
+  },
+  {
+    "code": "Z79.899",
+    "description": "Other long term (current) drug therapy",
+    "synonyms": ["chronic medication use", "long-term drug therapy", "maintenance medication"]
+  },
+  {
+    "code": "Z00.00",
+    "description": "Encounter for general adult medical examination without abnormal findings",
+    "synonyms": ["annual physical", "wellness exam", "routine checkup"]
+  },
+  {
+    "code": "Z23",
+    "description": "Encounter for immunization",
+    "synonyms": ["vaccination", "immunization visit", "vaccine encounter"]
+  },
+  {
+    "code": "C50.911",
+    "description": "Malignant neoplasm of unspecified site of right female breast",
+    "synonyms": ["right breast cancer", "breast malignancy", "female breast neoplasm"]
+  },
+  {
+    "code": "C50.919",
+    "description": "Malignant neoplasm of unspecified site of unspecified female breast",
+    "synonyms": ["breast cancer", "breast carcinoma", "female breast malignancy"]
+  },
+  {
+    "code": "C34.90",
+    "description": "Malignant neoplasm of unspecified part of unspecified bronchus or lung",
+    "synonyms": ["lung cancer", "bronchogenic carcinoma", "pulmonary malignancy"]
+  },
+  {
+    "code": "C18.9",
+    "description": "Malignant neoplasm of colon, unspecified",
+    "synonyms": ["colon cancer", "colonic carcinoma", "colorectal malignancy"]
+  },
+  {
+    "code": "L03.116",
+    "description": "Cellulitis of left lower limb",
+    "synonyms": ["left leg cellulitis", "lower limb infection", "left lower extremity cellulitis"]
+  },
+  {
+    "code": "L03.90",
+    "description": "Cellulitis, unspecified",
+    "synonyms": ["cellulitis", "skin infection", "soft tissue infection"]
+  },
+  {
+    "code": "L89.152",
+    "description": "Pressure ulcer of sacral region, stage 2",
+    "synonyms": ["sacral pressure sore", "stage 2 decubitus", "sacral bedsore"]
+  },
+  {
+    "code": "L89.154",
+    "description": "Pressure ulcer of sacral region, stage 4",
+    "synonyms": ["stage 4 sacral ulcer", "sacral bedsore", "severe pressure ulcer"]
+  },
+  {
+    "code": "S72.001A",
+    "description": "Fracture of unspecified part of neck of right femur, initial encounter",
+    "synonyms": ["right hip fracture", "right femoral neck fracture", "initial hip fracture care"]
+  },
+  {
+    "code": "S72.002A",
+    "description": "Fracture of unspecified part of neck of left femur, initial encounter",
+    "synonyms": ["left hip fracture", "left femoral neck fracture", "initial left hip fracture care"]
+  },
+  {
+    "code": "T81.4XXA",
+    "description": "Infection following a procedure, initial encounter",
+    "synonyms": ["postoperative infection", "surgical site infection", "procedure infection"]
+  },
+  {
+    "code": "R73.03",
+    "description": "Prediabetes",
+    "synonyms": ["pre-diabetes", "impaired fasting glucose", "impaired glucose tolerance"]
+  },
+  {
+    "code": "R73.9",
+    "description": "Hyperglycemia, unspecified",
+    "synonyms": ["high blood sugar", "elevated glucose", "hyperglycemia"]
+  },
+  {
+    "code": "D64.9",
+    "description": "Anemia, unspecified",
+    "synonyms": ["anemia", "low hemoglobin", "blood deficiency"]
+  },
+  {
+    "code": "B34.9",
+    "description": "Viral infection, unspecified",
+    "synonyms": ["viral illness", "virus infection", "nonspecific viral infection"]
+  },
+  {
+    "code": "A41.9",
+    "description": "Sepsis, unspecified organism",
+    "synonyms": ["sepsis", "septicemia", "blood infection"]
+  },
+  {
+    "code": "Z12.11",
+    "description": "Encounter for screening for malignant neoplasm of colon",
+    "synonyms": ["colon cancer screening", "colorectal screening", "colonoscopy screening"]
+  },
+  {
+    "code": "Z12.31",
+    "description": "Encounter for screening mammogram for malignant neoplasm of breast",
+    "synonyms": ["screening mammogram", "breast cancer screening", "mammography screening"]
+  },
+  {
+    "code": "G30.9",
+    "description": "Alzheimer's disease, unspecified",
+    "synonyms": ["alzheimers", "alzheimers disease", "dementia due to alzheimer"]
+  },
+  {
+    "code": "M06.9",
+    "description": "Rheumatoid arthritis, unspecified",
+    "synonyms": ["rheumatoid arthritis", "RA", "chronic inflammatory arthritis"]
+  }
+]
