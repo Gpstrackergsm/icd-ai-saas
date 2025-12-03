@@ -84,12 +84,12 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             });
         }
 
-        // RULE: Retinopathy → E10.311 / E11.311
+        // RULE: Retinopathy → E10.319 / E11.319 (without macular edema unless explicitly documented)
         if (d.complications.includes('retinopathy')) {
             codes.push({
-                code: `${baseCode}.311`,
-                label: `${typeName} diabetes mellitus with unspecified diabetic retinopathy with macular edema`,
-                rationale: 'Diabetes with documented retinopathy complication',
+                code: `${baseCode}.319`,
+                label: `${typeName} diabetes mellitus with unspecified diabetic retinopathy without macular edema`,
+                rationale: 'Diabetes with documented retinopathy complication (macular edema not specified)',
                 guideline: 'ICD-10-CM I.C.4.a',
                 trigger: 'Diabetes Type + Retinopathy complication',
                 rule: 'Diabetes complication mapping'
@@ -168,16 +168,20 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 rule: 'HTN combination code logic'
             });
         }
-        // RULE: HTN only → I10
+        // RULE: HTN only → I10 (UNLESS patient is pregnant - then use O10-O16)
         else if (c.hypertension) {
-            codes.push({
-                code: 'I10',
-                label: 'Essential (primary) hypertension',
-                rationale: 'Uncomplicated hypertension',
-                guideline: 'ICD-10-CM I.C.9.a',
-                trigger: 'Hypertension documented',
-                rule: 'Uncomplicated hypertension'
-            });
+            // Check if patient is pregnant - if so, skip I10 (will be handled in OB/GYN section)
+            const isPregnant = !!ctx.conditions.obstetric?.pregnant;
+            if (!isPregnant) {
+                codes.push({
+                    code: 'I10',
+                    label: 'Essential (primary) hypertension',
+                    rationale: 'Uncomplicated hypertension',
+                    guideline: 'ICD-10-CM I.C.9.a',
+                    trigger: 'Hypertension documented',
+                    rule: 'Uncomplicated hypertension'
+                });
+            }
         }
 
         // RULE: Heart Failure (detailed)
@@ -321,14 +325,15 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             });
         }
 
-        // RULE: Add organism code (B96.x) if specific
-        if (inf.organism && inf.organism !== 'unspecified') {
+        // RULE: Add organism code (B96.x) ONLY if sepsis code does NOT already specify organism
+        // Per ICD-10-CM: B96.x is redundant when A41.xx already identifies the organism
+        if (inf.organism && inf.organism !== 'unspecified' && !inf.sepsis?.present) {
             const organismCode = mapOrganismCode(inf.organism);
             if (organismCode) {
                 codes.push({
                     code: organismCode,
                     label: `${inf.organism} as the cause of diseases classified elsewhere`,
-                    rationale: 'Organism identification code',
+                    rationale: 'Organism identification code (for non-sepsis infections)',
                     guideline: 'ICD-10-CM I.C.1',
                     trigger: `Organism: ${inf.organism}`,
                     rule: 'Use additional code for organism'
@@ -721,6 +726,27 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             if (ob.gestationalAge < 14) trimester = 1;
             else if (ob.gestationalAge < 28) trimester = 2;
             else trimester = 3;
+        }
+
+        // RULE: Hypertension in Pregnancy (O10-O16 range per ICD-10-CM I.C.15.b.1)
+        // Check if patient has hypertension documented
+        const hasHTN = !!ctx.conditions.cardiovascular?.hypertension;
+        if (hasHTN && !ob.preeclampsia) {
+            // Use O13.x for gestational hypertension (new-onset during pregnancy)
+            // In absence of documentation stating "pre-existing", default to gestational
+            let htnCode = 'O13.9'; // Unspecified trimester
+            if (trimester === 1) htnCode = 'O13.1';
+            else if (trimester === 2) htnCode = 'O13.2';
+            else if (trimester === 3) htnCode = 'O13.3';
+
+            codes.push({
+                code: htnCode,
+                label: `Gestational [pregnancy-induced] hypertension without significant proteinuria, ${trimester ? trimester + (trimester === 1 ? 'st' : trimester === 2 ? 'nd' : 'rd') + ' trimester' : 'unspecified trimester'}`,
+                rationale: 'Hypertension in pregnancy (per ICD-10-CM I.C.15.b.1)',
+                guideline: 'ICD-10-CM I.C.15.b.1',
+                trigger: `Hypertension + Pregnancy, Trimester: ${trimester}`,
+                rule: 'Pregnancy hypertension code (O10-O16 range)'
+            });
         }
 
         // RULE: Pregnancy State (Z33.1)
