@@ -149,6 +149,25 @@ export function runRulesEngine(text: string): EngineResult {
   if (respiratory) {
     sequence.push({ code: respiratory.code, label: respiratory.label, triggeredBy: 'respiratory_resolution', hcc: false });
     if (respiratory.warnings) warnings.push(...respiratory.warnings);
+
+    // Handle secondary respiratory conditions
+    if (respiratory.attributes.secondary_conditions) {
+      if (respiratory.attributes.secondary_conditions.includes('pneumonia')) {
+        sequence.push({ code: 'J18.9', label: 'Pneumonia, unspecified organism', triggeredBy: 'respiratory_secondary', hcc: false });
+      }
+      if (respiratory.attributes.secondary_conditions.includes('copd')) {
+        sequence.push({ code: 'J44.9', label: 'Chronic obstructive pulmonary disease, unspecified', triggeredBy: 'respiratory_secondary', hcc: true });
+      }
+      if (respiratory.attributes.secondary_conditions.includes('asthma')) {
+        sequence.push({ code: 'J45.909', label: 'Unspecified asthma, uncomplicated', triggeredBy: 'respiratory_secondary', hcc: false });
+      }
+      // If primary is Pneumonia/COPD but has Failure as secondary?
+      // The resolver logic prioritizes Failure, so Failure is usually primary.
+      // But if we add logic for Failure as secondary:
+      if (respiratory.attributes.secondary_conditions.includes('respiratory_failure')) {
+        sequence.push({ code: 'J96.90', label: 'Respiratory failure, unspecified', triggeredBy: 'respiratory_secondary', hcc: true });
+      }
+    }
   }
 
   // 7. Neoplasm
