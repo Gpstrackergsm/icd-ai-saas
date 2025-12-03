@@ -752,11 +752,15 @@
         if (results.length > 1) lines.push(`Item ${idx + 1}: ${res.text}`);
 
         if (res.primary) {
-          lines.push(`Primary: ${res.primary.code} — ${res.primary.description}`);
+          // Use 'label' for structured API, fallback to 'description' for old API
+          const primaryLabel = res.primary.label || res.primary.description;
+          lines.push(`Primary: ${res.primary.code} — ${primaryLabel}`);
         }
         if (res.secondary) {
           res.secondary.forEach((code) => {
-            lines.push(`Secondary: ${code.code} — ${code.description}`);
+            // Use 'label' for structured API, fallback to 'description' for old API
+            const secondaryLabel = code.label || code.description;
+            lines.push(`Secondary: ${code.code} — ${secondaryLabel}`);
           });
         }
         if (results.length > 1) lines.push(''); // spacer
