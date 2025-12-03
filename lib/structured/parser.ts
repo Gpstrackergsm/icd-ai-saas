@@ -31,16 +31,20 @@ export function parseInput(text: string): ParseResult {
         switch (key) {
             // Demographics
             case 'age':
-                const age = parseInt(value, 10);
-                if (isNaN(age)) errors.push(`Invalid age: ${value}`);
-                else context.demographics.age = age;
+                context.demographics.age = parseInt(value);
                 break;
             case 'gender':
-                if (['male', 'female'].includes(lowerValue)) context.demographics.gender = lowerValue as 'male' | 'female';
-                else errors.push(`Invalid gender: ${value}`);
+            case 'sex':
+                context.demographics.gender = lowerValue === 'male' ? 'male' : 'female';
                 break;
             case 'encounter type':
-                if (['initial', 'subsequent', 'sequela'].includes(lowerValue)) context.encounter.type = lowerValue as any;
+            case 'encounter':
+                if (lowerValue === 'inpatient') context.encounter.type = 'inpatient';
+                else if (lowerValue === 'outpatient') context.encounter.type = 'outpatient';
+                else if (lowerValue === 'ed') context.encounter.type = 'ed';
+                else if (lowerValue === 'initial') context.encounter.type = 'initial';
+                else if (lowerValue === 'subsequent') context.encounter.type = 'subsequent';
+                else if (lowerValue === 'sequela') context.encounter.type = 'sequela';
                 else errors.push(`Invalid encounter type: ${value}`);
                 break;
 
