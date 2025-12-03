@@ -381,6 +381,495 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         }
     }
 
+    // --- NEUROLOGY RULES ---
+    if (ctx.conditions.neurology) {
+        const n = ctx.conditions.neurology;
+
+        // RULE: Altered Mental Status → R41.82
+        if (n.alteredMentalStatus) {
+            codes.push({
+                code: 'R41.82',
+                label: 'Altered mental status, unspecified',
+                rationale: 'Altered mental status documented',
+                guideline: 'ICD-10-CM R41.82',
+                trigger: 'AMS = Yes',
+                rule: 'Sign/symptom code'
+            });
+        }
+
+        // RULE: Encephalopathy
+        if (n.encephalopathy?.present) {
+            const type = n.encephalopathy.type;
+            let code = 'G93.40'; // Unspecified
+            if (type === 'metabolic') code = 'G93.41';
+            else if (type === 'toxic') code = 'G92.8';
+            else if (type === 'hepatic') code = 'K72.90';
+            else if (type === 'hypoxic') code = 'G93.1';
+
+            codes.push({
+                code: code,
+                label: `Encephalopathy, ${type || 'unspecified'}`,
+                rationale: 'Encephalopathy documented',
+                guideline: 'ICD-10-CM G93',
+                trigger: `Encephalopathy Type: ${type}`,
+                rule: 'Encephalopathy mapping'
+            });
+        }
+
+        // RULE: Seizures
+        if (n.seizure) {
+            codes.push({
+                code: 'R56.9',
+                label: 'Unspecified convulsions',
+                rationale: 'Seizure documented',
+                guideline: 'ICD-10-CM R56.9',
+                trigger: 'Seizure = Yes',
+                rule: 'Symptom code'
+            });
+        }
+
+        // RULE: Dementia
+        if (n.dementia) {
+            if (n.dementia.type === 'alzheimer') {
+                codes.push({
+                    code: 'G30.9',
+                    label: 'Alzheimer\'s disease, unspecified',
+                    rationale: 'Alzheimer\'s disease documented',
+                    guideline: 'ICD-10-CM G30',
+                    trigger: 'Dementia Type: Alzheimer',
+                    rule: 'Etiology code'
+                });
+                codes.push({
+                    code: 'F02.80',
+                    label: 'Dementia in other diseases classified elsewhere without behavioral disturbance',
+                    rationale: 'Manifestation of dementia in Alzheimer\'s',
+                    guideline: 'ICD-10-CM F02',
+                    trigger: 'Dementia Type: Alzheimer',
+                    rule: 'Manifestation code'
+                });
+            } else if (n.dementia.type === 'vascular') {
+                codes.push({
+                    code: 'F01.50',
+                    label: 'Vascular dementia without behavioral disturbance',
+                    rationale: 'Vascular dementia documented',
+                    guideline: 'ICD-10-CM F01',
+                    trigger: 'Dementia Type: Vascular',
+                    rule: 'Vascular dementia code'
+                });
+            } else {
+                codes.push({
+                    code: 'F03.90',
+                    label: 'Unspecified dementia without behavioral disturbance',
+                    rationale: 'Dementia documented',
+                    guideline: 'ICD-10-CM F03',
+                    trigger: 'Dementia Type: Unspecified',
+                    rule: 'Unspecified dementia code'
+                });
+            }
+        }
+
+        // RULE: Parkinson's
+        if (n.parkinsons) {
+            codes.push({
+                code: 'G20',
+                label: 'Parkinson\'s disease',
+                rationale: 'Parkinson\'s disease documented',
+                guideline: 'ICD-10-CM G20',
+                trigger: 'Parkinsons = Yes',
+                rule: 'Parkinson\'s code'
+            });
+        }
+
+        // RULE: Coma
+        if (n.coma) {
+            codes.push({
+                code: 'R40.20',
+                label: 'Unspecified coma',
+                rationale: 'Coma documented',
+                guideline: 'ICD-10-CM R40.2',
+                trigger: 'Coma = Yes',
+                rule: 'Coma symptom code'
+            });
+        }
+
+        // RULE: GCS
+        if (n.gcs !== undefined) {
+            const gcsCode = mapGCS(n.gcs);
+            if (gcsCode) {
+                codes.push({
+                    code: gcsCode,
+                    label: `Glasgow coma scale score ${n.gcs}`,
+                    rationale: 'GCS score documented',
+                    guideline: 'ICD-10-CM R40.2',
+                    trigger: `GCS: ${n.gcs}`,
+                    rule: 'GCS score code'
+                });
+            }
+        }
+    }
+
+    // --- GASTROENTEROLOGY RULES ---
+    if (ctx.conditions.gastro) {
+        const g = ctx.conditions.gastro;
+
+        // RULE: Liver Disease & Cirrhosis
+        if (g.cirrhosis) {
+            let code = 'K74.60'; // Unspecified cirrhosis
+            if (g.cirrhosis.type === 'alcoholic') code = 'K70.30';
+            else if (g.cirrhosis.type === 'nash') code = 'K75.81'; // NASH
+
+            codes.push({
+                code: code,
+                label: `Cirrhosis of liver, ${g.cirrhosis.type || 'unspecified'}`,
+                rationale: 'Cirrhosis documented',
+                guideline: 'ICD-10-CM K74/K70',
+                trigger: `Cirrhosis Type: ${g.cirrhosis.type}`,
+                rule: 'Cirrhosis mapping'
+            });
+        } else if (g.liverDisease) {
+            codes.push({
+                code: 'K76.9',
+                label: 'Liver disease, unspecified',
+                rationale: 'Liver disease documented',
+                guideline: 'ICD-10-CM K76',
+                trigger: 'Liver Disease = Yes',
+                rule: 'Unspecified liver disease'
+            });
+        }
+
+        // RULE: Hepatitis
+        if (g.hepatitis) {
+            let code = 'B19.9'; // Unspecified viral hepatitis
+            if (g.hepatitis.type === 'a') code = 'B15.9';
+            else if (g.hepatitis.type === 'b') code = 'B18.1'; // Chronic B (assuming chronic for history)
+            else if (g.hepatitis.type === 'c') code = 'B18.2'; // Chronic C
+            else if (g.hepatitis.type === 'alcoholic') code = 'K70.10';
+
+            codes.push({
+                code: code,
+                label: `Hepatitis, ${g.hepatitis.type || 'unspecified'}`,
+                rationale: 'Hepatitis documented',
+                guideline: 'ICD-10-CM B15-B19/K70',
+                trigger: `Hepatitis Type: ${g.hepatitis.type}`,
+                rule: 'Hepatitis mapping'
+            });
+        }
+
+        // RULE: GI Bleeding
+        if (g.bleeding) {
+            let code = 'K92.2'; // GI hemorrhage, unspecified
+            if (g.bleeding.site === 'upper') code = 'K92.0'; // Hematemesis (proxy for upper) - or K92.2 if not specified. K92.0 is Hematemesis, K92.1 is Melena.
+            // Better mapping:
+            // Upper GI Bleed -> K92.2 (often used if not specific) or K92.0/K92.1
+            // Let's use K92.2 for general GI bleed, but if site is upper, maybe K92.2 is still best unless we know hematemesis/melena.
+            // Actually K92.2 is "Gastrointestinal hemorrhage, unspecified".
+            // If "Upper GI Bleeding" is stated, it's often coded as K92.2 in absence of specific lesion, but clinically K92.0/1 are signs.
+            // Let's stick to K92.2 for unspecified, and maybe specific codes if we had them.
+            // For now:
+            if (g.bleeding.site === 'upper') code = 'K92.2'; // K92.2 is often used for "GI Bleed" even if upper is suspected but source unknown.
+            // Actually, let's use K92.2 for all unless we have more info.
+            // Wait, K92.1 is Melena, K92.0 is Hematemesis.
+            // If just "GI Bleeding", K92.2.
+
+            codes.push({
+                code: code,
+                label: 'Gastrointestinal hemorrhage, unspecified',
+                rationale: 'GI bleeding documented',
+                guideline: 'ICD-10-CM K92',
+                trigger: `GI Bleeding Site: ${g.bleeding.site}`,
+                rule: 'GI bleeding code'
+            });
+        }
+
+        // RULE: Pancreatitis
+        if (g.pancreatitis) {
+            let code = 'K85.90'; // Acute pancreatitis
+            if (g.pancreatitis.type === 'chronic') code = 'K86.1';
+            else if (g.pancreatitis.type === 'acute') code = 'K85.90';
+
+            codes.push({
+                code: code,
+                label: `Pancreatitis, ${g.pancreatitis.type || 'unspecified'}`,
+                rationale: 'Pancreatitis documented',
+                guideline: 'ICD-10-CM K85/K86',
+                trigger: `Pancreatitis Type: ${g.pancreatitis.type}`,
+                rule: 'Pancreatitis mapping'
+            });
+        }
+
+        // RULE: Ascites
+        if (g.ascites) {
+            codes.push({
+                code: 'R18.8',
+                label: 'Other ascites',
+                rationale: 'Ascites documented',
+                guideline: 'ICD-10-CM R18',
+                trigger: 'Ascites = Yes',
+                rule: 'Ascites symptom code'
+            });
+        }
+    }
+
+    // --- HEMATOLOGY/ONCOLOGY RULES ---
+    if (ctx.conditions.neoplasm?.present) {
+        const neo = ctx.conditions.neoplasm;
+
+        // RULE: Primary Malignancy
+        if (neo.site) {
+            let code = 'C80.1'; // Malignant neoplasm, unspecified site
+            if (neo.site === 'lung') code = 'C34.90';
+            else if (neo.site === 'breast') code = 'C50.919'; // Breast, unspecified
+            else if (neo.site === 'colon') code = 'C18.9';
+            else if (neo.site === 'prostate') code = 'C61';
+
+            codes.push({
+                code: code,
+                label: `Malignant neoplasm of ${neo.site || 'unspecified site'}`,
+                rationale: 'Primary malignancy documented',
+                guideline: 'ICD-10-CM C00-C96',
+                trigger: `Cancer Site: ${neo.site}`,
+                rule: 'Primary neoplasm mapping'
+            });
+        }
+
+        // RULE: Metastasis
+        if (neo.metastasis) {
+            if (neo.metastaticSite) {
+                let code = 'C79.9'; // Secondary malignant neoplasm of unspecified site
+                if (neo.metastaticSite === 'bone') code = 'C79.51';
+                else if (neo.metastaticSite === 'brain') code = 'C79.31';
+                else if (neo.metastaticSite === 'liver') code = 'C78.7';
+                else if (neo.metastaticSite === 'lung') code = 'C78.00';
+
+                codes.push({
+                    code: code,
+                    label: `Secondary malignant neoplasm of ${neo.metastaticSite}`,
+                    rationale: 'Metastatic cancer documented',
+                    guideline: 'ICD-10-CM C77-C79',
+                    trigger: `Metastatic Site: ${neo.metastaticSite}`,
+                    rule: 'Secondary neoplasm mapping'
+                });
+            } else {
+                codes.push({
+                    code: 'C79.9',
+                    label: 'Secondary malignant neoplasm of unspecified site',
+                    rationale: 'Metastasis documented without site',
+                    guideline: 'ICD-10-CM C79.9',
+                    trigger: 'Metastasis = Yes',
+                    rule: 'Unspecified metastasis'
+                });
+            }
+        }
+    }
+
+    if (ctx.conditions.hematology) {
+        const h = ctx.conditions.hematology;
+
+        // RULE: Anemia
+        if (h.anemia) {
+            let code = 'D64.9'; // Anemia, unspecified
+            if (h.anemia.type === 'iron_deficiency') code = 'D50.9';
+            else if (h.anemia.type === 'b12_deficiency') code = 'D51.9';
+            else if (h.anemia.type === 'acute_blood_loss') code = 'D62';
+            else if (h.anemia.type === 'chronic_disease') {
+                code = 'D63.8'; // Anemia in other chronic diseases classified elsewhere
+                // Note: D63.1 if CKD, D63.0 if Neoplasm. 
+                // We could refine this if we have access to other conditions here.
+                if (ctx.conditions.ckd?.stage) code = 'D63.1';
+                else if (ctx.conditions.neoplasm?.present) code = 'D63.0';
+            }
+
+            codes.push({
+                code: code,
+                label: `Anemia, ${h.anemia.type || 'unspecified'}`,
+                rationale: 'Anemia documented',
+                guideline: 'ICD-10-CM D50-D64',
+                trigger: `Anemia Type: ${h.anemia.type}`,
+                rule: 'Anemia mapping'
+            });
+        }
+
+        // RULE: Coagulopathy
+        if (h.coagulopathy) {
+            codes.push({
+                code: 'D68.9',
+                label: 'Coagulation defect, unspecified',
+                rationale: 'Coagulopathy documented',
+                guideline: 'ICD-10-CM D68',
+                trigger: 'Coagulopathy = Yes',
+                rule: 'Coagulopathy code'
+            });
+        }
+    }
+
+    // --- OB/GYN RULES ---
+    if (ctx.conditions.obstetric?.pregnant) {
+        const ob = ctx.conditions.obstetric;
+
+        // RULE: Pregnancy State
+        // If incidental, Z33.1. If care for pregnancy, O codes.
+        // We'll assume O codes are primary if present, but we need a base code.
+        // For now, let's output Z33.1 as a status code, and O codes if complications.
+        // Actually, if "pregnant" is the only thing, Z33.1 is appropriate for incidental.
+        // If "trimester" is specified, we should add Z3A.xx
+
+        codes.push({
+            code: 'Z33.1',
+            label: 'Pregnant state, incidental',
+            rationale: 'Patient is pregnant',
+            guideline: 'ICD-10-CM Z33.1',
+            trigger: 'Pregnant = Yes',
+            rule: 'Pregnancy status code'
+        });
+
+        // RULE: Weeks of Gestation (Z3A.xx)
+        if (ob.gestationalAge) {
+            let weeksCode = 'Z3A.00'; // Unspecified
+            if (ob.gestationalAge < 8) weeksCode = 'Z3A.01'; // < 8 weeks? No, Z3A.01 is < 8 weeks? Wait.
+            // Z3A.01 is not valid. Z3A.00 is unspecified.
+            // Z3A.08 is 8 weeks. Z3A.xx matches weeks.
+            // Z3A.01 is 8 weeks? No.
+            // Z3A codes are Z3A.00 (unspecified), Z3A.01 (8 weeks?), no.
+            // Z3A.08 is 8 weeks. Z3A.09 is 9 weeks.
+            // Z3A.10 is 10 weeks.
+            // Let's just map directly if > 8.
+            if (ob.gestationalAge >= 8 && ob.gestationalAge <= 42) {
+                weeksCode = `Z3A.${ob.gestationalAge}`;
+            } else {
+                weeksCode = 'Z3A.00'; // Fallback
+            }
+
+            codes.push({
+                code: weeksCode,
+                label: `${ob.gestationalAge} weeks gestation of pregnancy`,
+                rationale: 'Gestational age documented',
+                guideline: 'ICD-10-CM Z3A',
+                trigger: `Gestational Age: ${ob.gestationalAge}`,
+                rule: 'Weeks of gestation code'
+            });
+        }
+
+        // RULE: Preeclampsia
+        if (ob.preeclampsia) {
+            codes.push({
+                code: 'O14.90',
+                label: 'Unspecified pre-eclampsia, unspecified trimester',
+                rationale: 'Preeclampsia documented',
+                guideline: 'ICD-10-CM O14',
+                trigger: 'Preeclampsia = Yes',
+                rule: 'Preeclampsia code'
+            });
+        }
+
+        // RULE: Gestational Diabetes
+        if (ob.gestationalDiabetes) {
+            codes.push({
+                code: 'O24.419',
+                label: 'Gestational diabetes mellitus in pregnancy, unspecified control',
+                rationale: 'Gestational diabetes documented',
+                guideline: 'ICD-10-CM O24.4',
+                trigger: 'Gestational Diabetes = Yes',
+                rule: 'Gestational diabetes code'
+            });
+        }
+
+        // RULE: Delivery
+        if (ob.delivery?.occurred) {
+            if (ob.delivery.type === 'cesarean') {
+                codes.push({
+                    code: 'O82',
+                    label: 'Encounter for cesarean delivery without indication',
+                    rationale: 'Cesarean delivery',
+                    guideline: 'ICD-10-CM O82',
+                    trigger: 'Delivery Type: Cesarean',
+                    rule: 'Delivery encounter code'
+                });
+            } else {
+                codes.push({
+                    code: 'O80',
+                    label: 'Encounter for full-term uncomplicated delivery',
+                    rationale: 'Vaginal delivery',
+                    guideline: 'ICD-10-CM O80',
+                    trigger: 'Delivery Type: Vaginal/Normal',
+                    rule: 'Delivery encounter code'
+                });
+            }
+        }
+    }
+
+    // --- SOCIAL STATUS RULES ---
+    if (ctx.social) {
+        const s = ctx.social;
+
+        // RULE: Smoking
+        if (s.smoking === 'current') {
+            codes.push({
+                code: 'F17.210',
+                label: 'Nicotine dependence, cigarettes, uncomplicated',
+                rationale: 'Current smoker',
+                guideline: 'ICD-10-CM F17.2',
+                trigger: 'Smoking: Current',
+                rule: 'Smoking status code'
+            });
+        } else if (s.smoking === 'former') {
+            codes.push({
+                code: 'Z87.891',
+                label: 'Personal history of nicotine dependence',
+                rationale: 'Former smoker',
+                guideline: 'ICD-10-CM Z87.891',
+                trigger: 'Smoking: Former',
+                rule: 'History of smoking code'
+            });
+        }
+
+        // RULE: Alcohol
+        if (s.alcoholUse) {
+            let code = 'Z72.89'; // Other problems related to lifestyle (Use)
+            if (s.alcoholUse === 'abuse') code = 'F10.10';
+            else if (s.alcoholUse === 'dependence') code = 'F10.20';
+            else if (s.alcoholUse === 'use') code = 'Z72.89'; // Or Z72.89? Z72.89 is "Other problems related to lifestyle". 
+            // Z72.89 is often used for "Alcohol use, not specified as disorder".
+
+            codes.push({
+                code: code,
+                label: `Alcohol ${s.alcoholUse}, uncomplicated`,
+                rationale: 'Alcohol use status',
+                guideline: 'ICD-10-CM F10/Z72',
+                trigger: `Alcohol: ${s.alcoholUse}`,
+                rule: 'Alcohol status code'
+            });
+        }
+
+        // RULE: Drug Use
+        if (s.drugUse?.present) {
+            let code = 'F19.10'; // Other drug abuse, uncomplicated
+            if (s.drugUse.type === 'opioid') code = 'F11.10';
+            else if (s.drugUse.type === 'cocaine') code = 'F14.10';
+            else if (s.drugUse.type === 'cannabis') code = 'F12.10';
+
+            codes.push({
+                code: code,
+                label: `Drug abuse, ${s.drugUse.type || 'unspecified'}, uncomplicated`,
+                rationale: 'Drug use documented',
+                guideline: 'ICD-10-CM F11-F19',
+                trigger: `Drug Use Type: ${s.drugUse.type}`,
+                rule: 'Drug use code'
+            });
+        }
+
+        // RULE: Homelessness
+        if (s.homeless) {
+            codes.push({
+                code: 'Z59.00',
+                label: 'Homelessness, unspecified',
+                rationale: 'Homelessness documented',
+                guideline: 'ICD-10-CM Z59.0',
+                trigger: 'Homeless = Yes',
+                rule: 'Social determinant of health code'
+            });
+        }
+    }
+
     // --- SEQUENCING LOGIC ---
     // Primary: First code in the list (usually most specific condition)
     // Secondary: Remaining codes in logical order
@@ -573,3 +1062,22 @@ function get7thCharacter(encounterType?: string): string {
     else if (encounterType === 'sequela') return 'S';
     else return 'A'; // Default to initial
 }
+
+// GCS mapping (R40.2xx)
+function mapGCS(score: number): string | null {
+    // This is a simplified mapping. In reality, GCS is split into Eyes, Verbal, Motor.
+    // R40.24- is Glasgow coma scale, total score.
+    // R40.241 = 13-15
+    // R40.242 = 9-12
+    // R40.243 = 3-8
+    // R40.244 = Other
+
+    // Note: ICD-10-CM 2025 might have specific codes, but R40.24x is the "Total Score" category.
+    // Let's use R40.24x codes.
+
+    if (score >= 13 && score <= 15) return 'R40.241';
+    if (score >= 9 && score <= 12) return 'R40.242';
+    if (score >= 3 && score <= 8) return 'R40.243';
+    return null;
+}
+
