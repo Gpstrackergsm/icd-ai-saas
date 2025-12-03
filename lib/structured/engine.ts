@@ -951,12 +951,33 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     }
 
     // --- SEQUENCING LOGIC ---
-    // Primary: First code in the list (usually most specific condition)
-    // Secondary: Remaining codes in logical order
+    // Per ICD-10-CM guidelines, certain conditions must be sequenced first:
+    // 1. Severe sepsis (R65.20/R65.21) - I.C.1.d.1.a
+    // 2. Sepsis codes (A41.xx, etc.)
+    // 3. Other acute conditions
+    // 4. Chronic conditions
+
+    let primary: StructuredCode | null = null;
+    let secondary: StructuredCode[] = [];
+
+    if (codes.length > 0) {
+        // Find severe sepsis code (R65.20 or R65.21)
+        const severeSepsisIndex = codes.findIndex(c => c.code === 'R65.20' || c.code === 'R65.21');
+
+        if (severeSepsisIndex !== -1) {
+            // Severe sepsis is primary
+            primary = codes[severeSepsisIndex];
+            secondary = [...codes.slice(0, severeSepsisIndex), ...codes.slice(severeSepsisIndex + 1)];
+        } else {
+            // Default: first code is primary
+            primary = codes[0];
+            secondary = codes.slice(1);
+        }
+    }
 
     return {
-        primary: codes.length > 0 ? codes[0] : null,
-        secondary: codes.length > 1 ? codes.slice(1) : [],
+        primary,
+        secondary,
         procedures,
         warnings,
         validationErrors
@@ -1027,9 +1048,9 @@ function mapHeartFailureCode(type: string, acuity: string): string {
 
 function mapPneumoniaOrganism(organism?: string): string {
     if (!organism) return 'J18.9';
-    const lower = organism.toLowerCase();
+    const lower = organism.toLowerCase().replace('_', ' ');
     if (lower.includes('pseudomonas')) return 'J15.1';
-    if (lower.includes('e. coli') || lower.includes('e.coli')) return 'J15.5';
+    if (lower.includes('e. coli') || lower.includes('e.coli') || lower.includes('e coli')) return 'J15.5';
     if (lower.includes('mrsa')) return 'J15.212';
     if (lower.includes('viral')) return 'J12.9';
     return 'J18.9';
