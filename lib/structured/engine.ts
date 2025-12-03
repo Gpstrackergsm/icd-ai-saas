@@ -168,11 +168,11 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 rule: 'HTN combination code logic'
             });
         }
-        // RULE: HTN only → I10 (UNLESS patient is pregnant - then use O10-O16)
+        // RULE: HTN only → I10 (UNLESS patient is pregnant/postpartum - then use O10-O16)
         else if (c.hypertension) {
-            // Check if patient is pregnant - if so, skip I10 (will be handled in OB/GYN section)
-            const isPregnant = !!ctx.conditions.obstetric?.pregnant;
-            if (!isPregnant) {
+            // Check if patient is pregnant OR postpartum - if so, skip I10 (will be handled in OB/GYN section)
+            const isPregnantOrPostpartum = !!(ctx.conditions.obstetric?.pregnant || ctx.conditions.obstetric?.postpartum);
+            if (!isPregnantOrPostpartum) {
                 codes.push({
                     code: 'I10',
                     label: 'Essential (primary) hypertension',
@@ -831,6 +831,48 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 guideline: 'ICD-10-CM Z3A',
                 trigger: `Gestational Age: ${ob.gestationalAge}`,
                 rule: 'Weeks of gestation code'
+            });
+        }
+    }
+
+    // --- POSTPARTUM RULES ---
+    if (ctx.conditions.obstetric?.postpartum) {
+        const ob = ctx.conditions.obstetric;
+
+        // RULE: Delivery codes (if delivery occurred)
+        if (ob.delivery?.occurred) {
+            if (ob.delivery.type === 'cesarean') {
+                codes.push({
+                    code: 'O82',
+                    label: 'Encounter for cesarean delivery without indication',
+                    rationale: 'Cesarean delivery (postpartum encounter)',
+                    guideline: 'ICD-10-CM O82',
+                    trigger: 'Postpartum + Delivery Type: Cesarean',
+                    rule: 'Delivery encounter code'
+                });
+            } else {
+                codes.push({
+                    code: 'O80',
+                    label: 'Encounter for full-term uncomplicated delivery',
+                    rationale: 'Vaginal delivery (postpartum encounter)',
+                    guideline: 'ICD-10-CM O80',
+                    trigger: 'Postpartum + Delivery Type: Vaginal/Normal',
+                    rule: 'Delivery encounter code'
+                });
+            }
+        }
+
+        // RULE: Postpartum Hypertension (O10-O16 range)
+        const hasHTN = !!ctx.conditions.cardiovascular?.hypertension;
+        if (hasHTN) {
+            // Use O13.9 for postpartum gestational hypertension
+            codes.push({
+                code: 'O13.9',
+                label: 'Gestational [pregnancy-induced] hypertension without significant proteinuria, unspecified trimester',
+                rationale: 'Hypertension in postpartum period (per ICD-10-CM I.C.15.b.1)',
+                guideline: 'ICD-10-CM I.C.15.b.1',
+                trigger: 'Hypertension + Postpartum',
+                rule: 'Postpartum hypertension code (O10-O16 range)'
             });
         }
     }

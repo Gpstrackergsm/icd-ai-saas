@@ -1,0 +1,392 @@
+================================================================================
+TEST: Test 1: Type 2 DM with Multiple Complications (72M)
+================================================================================
+
+--- Input ---
+Age: 72
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer, Neuropathy, Retinopathy
+Insulin Use: Yes
+Ulcer Site: Left Foot
+Ulcer Severity: Muscle
+CKD Present: Yes
+CKD Stage: 4
+Hypertension: Yes
+
+--- Generated Codes with ICD-10 Justification ---
+
+1. CODE: E11.621
+   Label: Type 2 diabetes mellitus with foot ulcer
+   ✓ Guideline: ICD-10-CM I.C.4.a
+   ✓ Rule: Diabetes complication mapping
+   ✓ Trigger: Diabetes Type + Foot Ulcer complication
+   ✓ Rationale: Diabetes with documented foot ulcer complication
+
+2. CODE: L97.523
+   Label: Non-pressure chronic ulcer of foot
+   ✓ Guideline: ICD-10-CM I.C.4.a
+   ✓ Rule: Ulcer manifestation code (use additional)
+   ✓ Trigger: Diabetes foot ulcer with site/severity
+   ✓ Rationale: Manifestation code for diabetic foot ulcer
+
+3. CODE: E11.42
+   Label: Type 2 diabetes mellitus with diabetic polyneuropathy
+   ✓ Guideline: ICD-10-CM I.C.4.a
+   ✓ Rule: Diabetes complication mapping
+   ✓ Trigger: Diabetes Type + Neuropathy complication
+   ✓ Rationale: Diabetes with documented neuropathy complication
+
+4. CODE: E11.319
+   Label: Type 2 diabetes mellitus with unspecified diabetic retinopathy without macular edema
+   ✓ Guideline: ICD-10-CM I.C.4.a
+   ✓ Rule: Diabetes complication mapping
+   ✓ Trigger: Diabetes Type + Retinopathy complication
+   ✓ Rationale: Diabetes with documented retinopathy complication (macular edema not specified)
+
+5. CODE: I12.9
+   Label: Hypertensive chronic kidney disease with stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease
+   ✓ Guideline: ICD-10-CM I.C.9.a.2
+   ✓ Rule: HTN combination code logic
+   ✓ Trigger: Hypertension + CKD
+   ✓ Rationale: Combination code for HTN and CKD
+
+6. CODE: N18.4
+   Label: Chronic kidney disease, stage 4
+   ✓ Guideline: ICD-10-CM I.C.14.a
+   ✓ Rule: CKD stage mapping
+   ✓ Trigger: CKD Stage: 4
+   ✓ Rationale: CKD stage explicitly documented
+
+
+================================================================================
+
+================================================================================
+TEST: Test 2: Septic Shock with Pneumonia and AKI (55F)
+================================================================================
+
+--- Input ---
+Age: 55
+Gender: Female
+Encounter Type: ED
+Infection Present: Yes
+Infection Site: Lung
+Organism: MRSA
+Sepsis: Yes
+Severe Sepsis: Yes
+Septic Shock: Yes
+Pneumonia: Yes
+Pneumonia Organism: MRSA
+AKI: Yes
+
+--- Generated Codes with ICD-10 Justification ---
+
+1. CODE: N17.9
+   Label: Acute kidney failure, unspecified
+   ✓ Guideline: ICD-10-CM I.C.14
+   ✓ Rule: AKI coding
+   ✓ Trigger: AKI Present = Yes
+   ✓ Rationale: Acute kidney injury documented
+
+2. CODE: J15.212
+   Label: Pneumonia
+   ✓ Guideline: ICD-10-CM I.C.10
+   ✓ Rule: Organism-specific pneumonia code
+   ✓ Trigger: Pneumonia + mrsa
+   ✓ Rationale: Pneumonia due to mrsa
+
+3. CODE: R65.21
+   Label: Severe sepsis with septic shock
+   ✓ Guideline: ICD-10-CM I.C.1.d.1
+   ✓ Rule: Septic shock code (highest priority for sepsis)
+   ✓ Trigger: Septic Shock = Yes
+   ✓ Rationale: Septic shock documented
+
+4. CODE: A41.02
+   Label: Sepsis due to mrsa
+   ✓ Guideline: ICD-10-CM I.C.1.d
+   ✓ Rule: Organism-specific sepsis code
+   ✓ Trigger: Sepsis + Organism: mrsa
+   ✓ Rationale: Sepsis with documented organism
+
+
+================================================================================
+
+================================================================================
+TEST: Test 3: Postpartum after C-Section with Anemia (32F)
+================================================================================
+
+--- Input ---
+Age: 32
+Gender: Female
+Encounter Type: Inpatient
+Postpartum: Yes
+Delivery: Yes
+Delivery Type: Cesarean
+Anemia: Yes
+Anemia Type: Blood Loss
+Hypertension: Yes
+
+--- Generated Codes with ICD-10 Justification ---
+
+1. CODE: I10
+   Label: Essential (primary) hypertension
+   ✓ Guideline: ICD-10-CM I.C.9.a
+   ✓ Rule: Uncomplicated hypertension
+   ✓ Trigger: Hypertension documented
+   ✓ Rationale: Uncomplicated hypertension
+
+2. CODE: D62
+   Label: Anemia, acute_blood_loss
+   ✓ Guideline: ICD-10-CM D50-D64
+   ✓ Rule: Anemia mapping
+   ✓ Trigger: Anemia Type: acute_blood_loss
+   ✓ Rationale: Anemia documented
+
+
+================================================================================
+
+================================================================================
+TEST: Test 4: Alcoholic Cirrhosis with Complications (58M)
+================================================================================
+
+--- Input ---
+Age: 58
+Gender: Male
+Encounter Type: Inpatient
+Cirrhosis: Yes
+Cirrhosis Type: Alcoholic
+Ascites: Yes
+Hepatitis: Yes
+Hepatitis Type: Alcoholic
+GI Bleeding: Yes
+Bleeding Site: Upper
+Encephalopathy: Yes
+Encephalopathy Type: Hepatic
+Alcohol Use: Dependence
+
+--- Generated Codes with ICD-10 Justification ---
+
+1. CODE: K72.90
+   Label: Encephalopathy, hepatic
+   ✓ Guideline: ICD-10-CM G93
+   ✓ Rule: Encephalopathy mapping
+   ✓ Trigger: Encephalopathy Type: hepatic
+   ✓ Rationale: Encephalopathy documented
+
+2. CODE: K70.30
+   Label: Cirrhosis of liver, alcoholic
+   ✓ Guideline: ICD-10-CM K74/K70
+   ✓ Rule: Cirrhosis mapping
+   ✓ Trigger: Cirrhosis Type: alcoholic
+   ✓ Rationale: Cirrhosis documented
+
+3. CODE: K70.10
+   Label: Hepatitis, alcoholic
+   ✓ Guideline: ICD-10-CM B15-B19/K70
+   ✓ Rule: Hepatitis mapping
+   ✓ Trigger: Hepatitis Type: alcoholic
+   ✓ Rationale: Hepatitis documented
+
+4. CODE: K92.2
+   Label: Gastrointestinal hemorrhage, unspecified
+   ✓ Guideline: ICD-10-CM K92
+   ✓ Rule: GI bleeding code
+   ✓ Trigger: GI Bleeding Site: upper
+   ✓ Rationale: GI bleeding documented
+
+5. CODE: R18.8
+   Label: Other ascites
+   ✓ Guideline: ICD-10-CM R18
+   ✓ Rule: Ascites symptom code
+   ✓ Trigger: Ascites = Yes
+   ✓ Rationale: Ascites documented
+
+6. CODE: F10.20
+   Label: Alcohol dependence, uncomplicated
+   ✓ Guideline: ICD-10-CM F10/Z72
+   ✓ Rule: Alcohol status code
+   ✓ Trigger: Alcohol: dependence
+   ✓ Rationale: Alcohol use status
+
+
+================================================================================
+
+================================================================================
+TEST: Test 5: Trauma Patient with Fracture and Pneumonia (28M)
+================================================================================
+
+--- Input ---
+Age: 28
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Injury Type: Fracture
+Body Region: Tibia
+Laterality: Left
+Injury Encounter Type: Initial
+External Cause: Fall
+Pneumonia: Yes
+Altered Mental Status: Yes
+GCS: 12
+
+--- Generated Codes with ICD-10 Justification ---
+
+1. CODE: J18.9
+   Label: Pneumonia
+   ✓ Guideline: ICD-10-CM I.C.10
+   ✓ Rule: Organism-specific pneumonia code
+   ✓ Trigger: Pneumonia + unspecified organism
+   ✓ Rationale: Pneumonia
+
+2. CODE: S82.202A
+   Label: fracture of Tibia
+   ✓ Guideline: ICD-10-CM I.C.19
+   ✓ Rule: Injury code with 7th character for encounter type
+   ✓ Trigger: Injury Type: fracture, Region: Tibia, Encounter: initial
+   ✓ Rationale: fracture with encounter type: initial
+
+3. CODE: W19.XXXA
+   Label: External cause: fall
+   ✓ Guideline: ICD-10-CM I.C.20
+   ✓ Rule: External cause code (use additional)
+   ✓ Trigger: External Cause: fall
+   ✓ Rationale: External cause of injury
+
+4. CODE: R41.82
+   Label: Altered mental status, unspecified
+   ✓ Guideline: ICD-10-CM R41.82
+   ✓ Rule: Sign/symptom code
+   ✓ Trigger: AMS = Yes
+   ✓ Rationale: Altered mental status documented
+
+5. CODE: R40.242
+   Label: Glasgow coma scale score 12
+   ✓ Guideline: ICD-10-CM R40.2
+   ✓ Rule: GCS score code
+   ✓ Trigger: GCS: 12
+   ✓ Rationale: GCS score documented
+
+
+================================================================================
+
+================================================================================
+TEST: Test 6: CHF with CKD and Diabetes (78F)
+================================================================================
+
+--- Input ---
+Age: 78
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Yes
+Heart Failure Type: Diastolic
+Heart Failure Acuity: Acute on Chronic
+CKD Present: Yes
+CKD Stage: 3
+Diabetes Type: Type 2
+Complications: Nephropathy
+Anemia: Yes
+Anemia Type: Chronic Disease
+
+--- Generated Codes with ICD-10 Justification ---
+
+1. CODE: E11.22
+   Label: Type 2 diabetes mellitus with diabetic chronic kidney disease
+   ✓ Guideline: ICD-10-CM I.C.4.a.6(b)
+   ✓ Rule: Diabetes complication mapping
+   ✓ Trigger: Diabetes Type + Nephropathy/CKD complication
+   ✓ Rationale: Diabetes with documented CKD complication
+
+2. CODE: I13.0
+   Label: Hypertensive heart and chronic kidney disease with heart failure and stage 1 through stage 4 CKD, or unspecified CKD
+   ✓ Guideline: ICD-10-CM I.C.9.a.2
+   ✓ Rule: HTN combination code logic
+   ✓ Trigger: Hypertension + Heart Failure + CKD
+   ✓ Rationale: Combination code for HTN, HF, and CKD
+
+3. CODE: I50.33
+   Label: Heart failure, diastolic, acute_on_chronic
+   ✓ Guideline: ICD-10-CM I.C.9
+   ✓ Rule: Heart failure specificity mapping
+   ✓ Trigger: Heart Failure Type: diastolic, Acuity: acute_on_chronic
+   ✓ Rationale: Specific heart failure type and acuity
+
+4. CODE: N18.30
+   Label: Chronic kidney disease, stage 3
+   ✓ Guideline: ICD-10-CM I.C.14.a
+   ✓ Rule: CKD stage mapping
+   ✓ Trigger: CKD Stage: 3
+   ✓ Rationale: CKD stage explicitly documented
+
+5. CODE: D63.1
+   Label: Anemia, chronic_disease
+   ✓ Guideline: ICD-10-CM D50-D64
+   ✓ Rule: Anemia mapping
+   ✓ Trigger: Anemia Type: chronic_disease
+   ✓ Rationale: Anemia documented
+
+
+================================================================================
+
+================================================================================
+TEST: Test 7: Metastatic Breast Cancer on Chemo (64F)
+================================================================================
+
+--- Input ---
+Age: 64
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+Cancer Site: Breast
+Metastasis: Yes
+Metastatic Site: Bone
+Chemotherapy: Yes
+Anemia: Yes
+Anemia Type: Chronic Disease
+Coagulopathy: Yes
+Neuropathy: Yes
+Smoking Status: Former
+Pack Years: 25
+
+--- Generated Codes with ICD-10 Justification ---
+
+1. CODE: C50.919
+   Label: Malignant neoplasm of breast
+   ✓ Guideline: ICD-10-CM C00-C96
+   ✓ Rule: Primary neoplasm mapping
+   ✓ Trigger: Cancer Site: breast
+   ✓ Rationale: Primary malignancy documented
+
+2. CODE: C79.51
+   Label: Secondary malignant neoplasm of bone
+   ✓ Guideline: ICD-10-CM C77-C79
+   ✓ Rule: Secondary neoplasm mapping
+   ✓ Trigger: Metastatic Site: bone
+   ✓ Rationale: Metastatic cancer documented
+
+3. CODE: D63.0
+   Label: Anemia, chronic_disease
+   ✓ Guideline: ICD-10-CM D50-D64
+   ✓ Rule: Anemia mapping
+   ✓ Trigger: Anemia Type: chronic_disease
+   ✓ Rationale: Anemia documented
+
+4. CODE: D68.9
+   Label: Coagulation defect, unspecified
+   ✓ Guideline: ICD-10-CM D68
+   ✓ Rule: Coagulopathy code
+   ✓ Trigger: Coagulopathy = Yes
+   ✓ Rationale: Coagulopathy documented
+
+5. CODE: Z87.891
+   Label: Personal history of nicotine dependence
+   ✓ Guideline: ICD-10-CM Z87.891
+   ✓ Rule: History of smoking code
+   ✓ Trigger: Smoking: Former
+   ✓ Rationale: Former smoker
+
+
+================================================================================
+
