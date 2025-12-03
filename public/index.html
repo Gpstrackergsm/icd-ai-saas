@@ -409,8 +409,30 @@
       config.fields.forEach(field => {
         // Skip conditional fields if condition not met
         if (field.showIf) {
-          const checkValue = formState[domainKey]?.['Complications'] || formState[domainKey]?.['CKD Stage'];
-          if (!checkValue || (!Array.isArray(checkValue) && checkValue !== field.showIf) || (Array.isArray(checkValue) && !checkValue.includes(field.showIf))) {
+          // Check if the condition is met
+          let conditionMet = false;
+
+          // For checkbox groups (like Complications), check if the value is in the array
+          const complicationsValue = formState[domainKey]?.['Complications'];
+          if (Array.isArray(complicationsValue) && complicationsValue.includes(field.showIf)) {
+            conditionMet = true;
+          }
+
+          // For select fields (like CKD Stage), check if the value matches
+          const ckdStageValue = formState[domainKey]?.['CKD Stage'];
+          if (ckdStageValue === field.showIf) {
+            conditionMet = true;
+          }
+
+          // For other select fields, check if value matches (supports pipe-separated values)
+          Object.keys(formState[domainKey] || {}).forEach(key => {
+            const value = formState[domainKey][key];
+            if (typeof value === 'string' && (value === field.showIf || field.showIf.includes(value))) {
+              conditionMet = true;
+            }
+          });
+
+          if (!conditionMet) {
             return; // Skip this field
           }
         }
