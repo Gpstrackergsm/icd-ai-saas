@@ -726,7 +726,7 @@
 
       try {
         const payload = await fetchPayload(
-          '/api/encode',
+          '/api/encode-structured',  // CHANGED: Use zero-assumption structured endpoint
           payloadBody,
           'Encoding failed'
         );
