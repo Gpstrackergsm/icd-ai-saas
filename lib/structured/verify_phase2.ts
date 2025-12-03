@@ -72,7 +72,7 @@ runTest('OB/GYN: Pregnant + 30 weeks + Preeclampsia', {
             preeclampsia: true
         }
     }
-}, ['Z33.1', 'Z3A.30', 'O14.90']);
+}, ['O14.93', 'Z3A.30']);
 
 // Test 5: Social (Current Smoker + Homeless)
 runTest('Social: Current Smoker + Homeless', {

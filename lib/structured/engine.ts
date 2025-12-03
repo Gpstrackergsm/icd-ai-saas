@@ -705,58 +705,43 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     // --- OB/GYN RULES ---
     if (ctx.conditions.obstetric?.pregnant) {
         const ob = ctx.conditions.obstetric;
+        const hasOCode = !!(ob.preeclampsia || ob.gestationalDiabetes || ob.delivery?.occurred);
 
-        // RULE: Pregnancy State
-        // If incidental, Z33.1. If care for pregnancy, O codes.
-        // We'll assume O codes are primary if present, but we need a base code.
-        // For now, let's output Z33.1 as a status code, and O codes if complications.
-        // Actually, if "pregnant" is the only thing, Z33.1 is appropriate for incidental.
-        // If "trimester" is specified, we should add Z3A.xx
+        // Calculate trimester if weeks are known
+        let trimester = ob.trimester;
+        if (!trimester && ob.gestationalAge) {
+            if (ob.gestationalAge < 14) trimester = 1;
+            else if (ob.gestationalAge < 28) trimester = 2;
+            else trimester = 3;
+        }
 
-        codes.push({
-            code: 'Z33.1',
-            label: 'Pregnant state, incidental',
-            rationale: 'Patient is pregnant',
-            guideline: 'ICD-10-CM Z33.1',
-            trigger: 'Pregnant = Yes',
-            rule: 'Pregnancy status code'
-        });
-
-        // RULE: Weeks of Gestation (Z3A.xx)
-        if (ob.gestationalAge) {
-            let weeksCode = 'Z3A.00'; // Unspecified
-            if (ob.gestationalAge < 8) weeksCode = 'Z3A.01'; // < 8 weeks? No, Z3A.01 is < 8 weeks? Wait.
-            // Z3A.01 is not valid. Z3A.00 is unspecified.
-            // Z3A.08 is 8 weeks. Z3A.xx matches weeks.
-            // Z3A.01 is 8 weeks? No.
-            // Z3A codes are Z3A.00 (unspecified), Z3A.01 (8 weeks?), no.
-            // Z3A.08 is 8 weeks. Z3A.09 is 9 weeks.
-            // Z3A.10 is 10 weeks.
-            // Let's just map directly if > 8.
-            if (ob.gestationalAge >= 8 && ob.gestationalAge <= 42) {
-                weeksCode = `Z3A.${ob.gestationalAge}`;
-            } else {
-                weeksCode = 'Z3A.00'; // Fallback
-            }
-
+        // RULE: Pregnancy State (Z33.1)
+        // ONLY if incidental (no O-codes)
+        if (!hasOCode) {
             codes.push({
-                code: weeksCode,
-                label: `${ob.gestationalAge} weeks gestation of pregnancy`,
-                rationale: 'Gestational age documented',
-                guideline: 'ICD-10-CM Z3A',
-                trigger: `Gestational Age: ${ob.gestationalAge}`,
-                rule: 'Weeks of gestation code'
+                code: 'Z33.1',
+                label: 'Pregnant state, incidental',
+                rationale: 'Patient is pregnant (incidental)',
+                guideline: 'ICD-10-CM Z33.1',
+                trigger: 'Pregnant = Yes, No complications',
+                rule: 'Pregnancy status code'
             });
         }
 
         // RULE: Preeclampsia
         if (ob.preeclampsia) {
+            let code = 'O14.90'; // Unspecified
+            if (trimester === 1) code = 'O14.91';
+            else if (trimester === 2) code = 'O14.92';
+            else if (trimester === 3) code = 'O14.93';
+            else code = 'O14.90';
+
             codes.push({
-                code: 'O14.90',
-                label: 'Unspecified pre-eclampsia, unspecified trimester',
+                code: code,
+                label: `Unspecified pre-eclampsia, ${trimester ? trimester + (trimester === 1 ? 'st' : trimester === 2 ? 'nd' : 'rd') + ' trimester' : 'unspecified trimester'}`,
                 rationale: 'Preeclampsia documented',
                 guideline: 'ICD-10-CM O14',
-                trigger: 'Preeclampsia = Yes',
+                trigger: `Preeclampsia = Yes, Trimester: ${trimester}`,
                 rule: 'Preeclampsia code'
             });
         }
@@ -794,6 +779,25 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     rule: 'Delivery encounter code'
                 });
             }
+        }
+
+        // RULE: Weeks of Gestation (Z3A.xx)
+        if (ob.gestationalAge) {
+            let weeksCode = 'Z3A.00'; // Unspecified
+            if (ob.gestationalAge >= 8 && ob.gestationalAge <= 42) {
+                weeksCode = `Z3A.${ob.gestationalAge}`;
+            } else {
+                weeksCode = 'Z3A.00'; // Fallback
+            }
+
+            codes.push({
+                code: weeksCode,
+                label: `${ob.gestationalAge} weeks gestation of pregnancy`,
+                rationale: 'Gestational age documented',
+                guideline: 'ICD-10-CM Z3A',
+                trigger: `Gestational Age: ${ob.gestationalAge}`,
+                rule: 'Weeks of gestation code'
+            });
         }
     }
 
