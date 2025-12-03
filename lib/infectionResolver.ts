@@ -1,11 +1,12 @@
-
 export interface InfectionAttributes {
-    type: 'sepsis' | 'bacteremia' | 'uti' | 'pneumonia' | 'other';
+    type: 'sepsis' | 'bacteremia' | 'uti' | 'pneumonia' | 'post_procedural_sepsis' | 'other';
     organism?: string;
     severe?: boolean;
     shock?: boolean;
     organ_dysfunction?: boolean;
     complicated?: boolean;
+    post_procedural?: boolean;
+    requires_sepsis_code?: boolean;
 }
 
 export interface InfectionResolution {
@@ -21,14 +22,37 @@ export function resolveInfection(text: string): InfectionResolution | undefined 
 
     const isSevere = /severe/.test(lower);
     const hasShock = /shock/.test(lower);
-    const organDysfunction = /organ dysfunction|failure/.test(lower);
+    const organDysfunction = /organ dysfunction|failure|acute/.test(lower);
+    const isPostProcedural = /post[- ]?procedural|following.*procedure|after.*surgery|post[- ]?op/.test(lower);
 
-    // 1. Sepsis / Severe Sepsis / Septic Shock
+    // Detect if pneumonia + organ failure + post-procedure = implied sepsis
+    const hasPneumonia = /pneumonia/.test(lower);
+    const hasRespiratoryFailure = /respiratory failure/.test(lower);
+    const impliedSepsis = isPostProcedural && hasPneumonia && (hasRespiratoryFailure || organDysfunction);
+
+    // 1. Post-Procedural Sepsis (T81.44XA) - HIGHEST PRIORITY
+    if (impliedSepsis || (isPostProcedural && /sepsis|septic/.test(lower))) {
+        return {
+            code: 'T81.44XA',
+            label: 'Sepsis following a procedure, initial encounter',
+            attributes: {
+                type: 'post_procedural_sepsis',
+                severe: isSevere || organDysfunction,
+                organ_dysfunction: organDysfunction,
+                post_procedural: true,
+                requires_sepsis_code: true // Flag to add A41.9 as secondary
+            },
+            warnings: [
+                'Code also A41.9 (Sepsis, unspecified organism) as secondary',
+                'Code also the specific infection (e.g., J18.9 for pneumonia)',
+                'Code also any organ dysfunction (e.g., J95.821 for respiratory failure)'
+            ]
+        };
+    }
+
+    // 2. Sepsis / Severe Sepsis / Septic Shock (Non-procedural)
     if (/sepsis|septic/.test(lower)) {
         if (hasShock) {
-            // R65.21 Severe sepsis with septic shock
-            // Note: Requires underlying infection code first. 
-            // We return R65.21 but warnings should state "Code underlying infection first"
             return {
                 code: 'R65.21',
                 label: 'Severe sepsis with septic shock',
@@ -44,8 +68,8 @@ export function resolveInfection(text: string): InfectionResolution | undefined 
                 warnings: ['Code first underlying infection', 'Use additional code to identify specific organ dysfunction']
             };
         }
+
         // Unspecified Sepsis (A41.9)
-        // If organism is specified, we should try to match it, but for now default to A41.9
         let code = 'A41.9';
         if (/e\.? coli|escherichia coli/.test(lower)) code = 'A41.51';
         if (/staph|staphylococcus/.test(lower)) {
@@ -53,7 +77,7 @@ export function resolveInfection(text: string): InfectionResolution | undefined 
                 if (/mrsa|methicillin resistant/.test(lower)) code = 'A41.02';
                 else code = 'A41.01';
             } else {
-                code = 'A41.2'; // Staph unspecified
+                code = 'A41.2';
             }
         }
 
@@ -65,7 +89,7 @@ export function resolveInfection(text: string): InfectionResolution | undefined 
         };
     }
 
-    // 2. Bacteremia (R78.81)
+    // 3. Bacteremia (R78.81)
     if (/bacteremia/.test(lower)) {
         return {
             code: 'R78.81',
@@ -75,11 +99,8 @@ export function resolveInfection(text: string): InfectionResolution | undefined 
         };
     }
 
-    // 3. UTI
+    // 4. UTI
     if (/uti|urinary tract infection/.test(lower)) {
-        // N39.0 is site unspecified. 
-        // If site is specified (cystitis, etc), logic would differ.
-        // Complicated vs Uncomplicated isn't a direct ICD distinction in N39.0 but affects clinical path.
         return {
             code: 'N39.0',
             label: 'Urinary tract infection, site not specified',

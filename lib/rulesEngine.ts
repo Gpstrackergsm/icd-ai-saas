@@ -135,6 +135,17 @@ export function runRulesEngine(text: string): EngineResult {
   if (infection) {
     sequence.push({ code: infection.code, label: infection.label, triggeredBy: 'infection_resolution', hcc: false });
     if (infection.warnings) warnings.push(...infection.warnings);
+
+    // Handle post-procedural sepsis sequencing
+    if (infection.attributes.requires_sepsis_code) {
+      // Add A41.9 (Sepsis, unspecified organism) as required secondary
+      sequence.push({
+        code: 'A41.9',
+        label: 'Sepsis, unspecified organism',
+        triggeredBy: 'infection_sepsis_code',
+        hcc: true
+      });
+    }
   }
 
   // 5. Gastrointestinal
