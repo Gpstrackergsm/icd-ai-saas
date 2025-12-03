@@ -252,9 +252,14 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         const r = ctx.conditions.respiratory;
         const p = r.pneumonia!; // Non-null assertion safe because of if condition
         const pCode = mapPneumoniaOrganism(p.organism);
+        let pLabel = 'Pneumonia';
+        if (pCode === 'J15.212') pLabel = 'Pneumonia due to Methicillin resistant Staphylococcus aureus';
+        else if (pCode === 'J15.5') pLabel = 'Pneumonia due to E. coli';
+        else if (pCode === 'J15.1') pLabel = 'Pneumonia due to Pseudomonas';
+
         codes.push({
             code: pCode,
-            label: 'Pneumonia',
+            label: pLabel,
             rationale: `Pneumonia${p.organism ? ' due to ' + p.organism : ''}`,
             guideline: 'ICD-10-CM I.C.10',
             trigger: 'Pneumonia + ' + (p.organism || 'unspecified organism'),
@@ -398,34 +403,34 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     if (ctx.conditions.neurology) {
         const n = ctx.conditions.neurology;
 
-        // RULE: Altered Mental Status → R41.82
-        if (n.alteredMentalStatus) {
+        // RULE: Encephalopathy
+        if (n.encephalopathy?.present) {
+            let code = 'G93.40'; // Unspecified
+            if (n.encephalopathy.type === 'metabolic') code = 'G93.41';
+            else if (n.encephalopathy.type === 'toxic') code = 'G92.8';
+            else if (n.encephalopathy.type === 'hepatic') code = 'K72.90'; // Hepatic failure without coma (often used for hepatic encephalopathy)
+            else if (n.encephalopathy.type === 'hypoxic') code = 'G93.1';
+
+            codes.push({
+                code: code,
+                label: `Encephalopathy, ${n.encephalopathy.type || 'unspecified'}`,
+                rationale: 'Encephalopathy documented',
+                guideline: 'ICD-10-CM G93',
+                trigger: `Encephalopathy Type: ${n.encephalopathy.type}`,
+                rule: 'Encephalopathy mapping'
+            });
+        }
+
+        // RULE: Altered Mental Status (AMS)
+        // Suppress AMS (R41.82) if Encephalopathy (G93.4x) is present, as encephalopathy is the definitive diagnosis
+        if (n.alteredMentalStatus && !n.encephalopathy?.present) {
             codes.push({
                 code: 'R41.82',
                 label: 'Altered mental status, unspecified',
                 rationale: 'Altered mental status documented',
                 guideline: 'ICD-10-CM R41.82',
-                trigger: 'AMS = Yes',
-                rule: 'Sign/symptom code'
-            });
-        }
-
-        // RULE: Encephalopathy
-        if (n.encephalopathy?.present) {
-            const type = n.encephalopathy.type;
-            let code = 'G93.40'; // Unspecified
-            if (type === 'metabolic') code = 'G93.41';
-            else if (type === 'toxic') code = 'G92.8';
-            else if (type === 'hepatic') code = 'K72.90';
-            else if (type === 'hypoxic') code = 'G93.1';
-
-            codes.push({
-                code: code,
-                label: `Encephalopathy, ${type || 'unspecified'}`,
-                rationale: 'Encephalopathy documented',
-                guideline: 'ICD-10-CM G93',
-                trigger: `Encephalopathy Type: ${type}`,
-                rule: 'Encephalopathy mapping'
+                trigger: 'Altered Mental Status: Yes',
+                rule: 'AMS mapping'
             });
         }
 
@@ -963,9 +968,19 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     if (codes.length > 0) {
         // Find severe sepsis code (R65.20 or R65.21)
         const severeSepsisIndex = codes.findIndex(c => c.code === 'R65.20' || c.code === 'R65.21');
+        // Find underlying infection code (e.g., A41.xx)
+        const infectionIndex = codes.findIndex(c => c.code.startsWith('A41') || c.code.startsWith('A40') || c.code.startsWith('A39'));
 
-        if (severeSepsisIndex !== -1) {
-            // Severe sepsis is primary
+        if (severeSepsisIndex !== -1 && infectionIndex !== -1) {
+            // SEQUENCING RULE: Underlying infection (A41.xx) FIRST, then Severe Sepsis (R65.2x)
+            // Move infection to primary
+            primary = codes[infectionIndex];
+
+            // Construct secondary list: Severe Sepsis must be first secondary
+            const otherCodes = codes.filter((_, i) => i !== severeSepsisIndex && i !== infectionIndex);
+            secondary = [codes[severeSepsisIndex], ...otherCodes];
+        } else if (severeSepsisIndex !== -1) {
+            // If only severe sepsis is present (unlikely with correct logic), make it primary
             primary = codes[severeSepsisIndex];
             secondary = [...codes.slice(0, severeSepsisIndex), ...codes.slice(severeSepsisIndex + 1)];
         } else {
