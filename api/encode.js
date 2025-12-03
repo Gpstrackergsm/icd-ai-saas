@@ -104,7 +104,7 @@ module.exports = async function handler(req, res) {
 
       // Restructure to primary/secondary format
       const allCodes = Array.isArray(output?.codes) ? output.codes : [];
-      const limitedCodes = allCodes.slice(0, 5);
+      const limitedCodes = allCodes.slice(0, 15);
 
       if (limitedCodes.length === 0) {
         return {

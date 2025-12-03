@@ -160,7 +160,7 @@ export function encodeDiagnosisText(text: string): EncoderResult {
 
   const postBillable = removeNonBillableWhenAlternatives(resolvedCandidates);
   const ranked = rankAndFilterCandidates(postBillable, ruleResult.reorderedCodes);
-  const limited = ranked.slice(0, Math.min(5, Math.max(3, ranked.length)));
+  const limited = ranked.slice(0, Math.min(15, Math.max(3, ranked.length)));
 
   const codes: EncoderResultCode[] = limited.map((candidate, index) => {
     const codeMeta = getCode(candidate.code);
