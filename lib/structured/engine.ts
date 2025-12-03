@@ -262,6 +262,125 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         }
     }
 
+    // --- INFECTIONS & SEPSIS RULES ---
+    if (ctx.conditions.infection) {
+        const inf = ctx.conditions.infection;
+
+        // RULE: Septic Shock → R65.21 (HIGHEST PRIORITY)
+        if (inf.sepsis?.shock) {
+            codes.push({
+                code: 'R65.21',
+                label: 'Severe sepsis with septic shock',
+                rationale: 'Septic shock documented',
+                guideline: 'ICD-10-CM I.C.1.d.1',
+                trigger: 'Septic Shock = Yes',
+                rule: 'Septic shock code (highest priority for sepsis)'
+            });
+        }
+        // RULE: Severe Sepsis → R65.20
+        else if (inf.sepsis?.severe) {
+            codes.push({
+                code: 'R65.20',
+                label: 'Severe sepsis without septic shock',
+                rationale: 'Severe sepsis documented without shock',
+                guideline: 'ICD-10-CM I.C.1.d.1',
+                trigger: 'Severe Sepsis = Yes',
+                rule: 'Severe sepsis code'
+            });
+        }
+
+        // RULE: Sepsis with organism → A41.x
+        if (inf.sepsis?.present && inf.organism) {
+            const sepsisCode = mapSepsisOrganism(inf.organism);
+            codes.push({
+                code: sepsisCode,
+                label: `Sepsis due to ${inf.organism}`,
+                rationale: 'Sepsis with documented organism',
+                guideline: 'ICD-10-CM I.C.1.d',
+                trigger: `Sepsis + Organism: ${inf.organism}`,
+                rule: 'Organism-specific sepsis code'
+            });
+        }
+        // RULE: Sepsis without organism → A41.9
+        else if (inf.sepsis?.present) {
+            codes.push({
+                code: 'A41.9',
+                label: 'Sepsis, unspecified organism',
+                rationale: 'Sepsis documented without organism specification',
+                guideline: 'ICD-10-CM I.C.1.d',
+                trigger: 'Sepsis = Yes, Organism not specified',
+                rule: 'Unspecified sepsis code'
+            });
+        }
+
+        // RULE: Add organism code (B96.x) if specific
+        if (inf.organism && inf.organism !== 'unspecified') {
+            const organismCode = mapOrganismCode(inf.organism);
+            if (organismCode) {
+                codes.push({
+                    code: organismCode,
+                    label: `${inf.organism} as the cause of diseases classified elsewhere`,
+                    rationale: 'Organism identification code',
+                    guideline: 'ICD-10-CM I.C.1',
+                    trigger: `Organism: ${inf.organism}`,
+                    rule: 'Use additional code for organism'
+                });
+            }
+        }
+    }
+
+    // --- WOUNDS & PRESSURE ULCERS RULES ---
+    if (ctx.conditions.wounds?.present) {
+        const w = ctx.conditions.wounds;
+
+        // RULE: Pressure Ulcer → L89.xxx
+        if (w.type === 'pressure' && w.location && w.stage) {
+            const ulcerCode = mapPressureUlcer(w.location, w.stage);
+            codes.push({
+                code: ulcerCode,
+                label: `Pressure ulcer of ${w.location}, ${w.stage}`,
+                rationale: 'Pressure ulcer with documented location and stage',
+                guideline: 'ICD-10-CM I.C.12.a',
+                trigger: `Pressure Ulcer: ${w.location}, Stage: ${w.stage}`,
+                rule: 'Pressure ulcer site and stage mapping'
+            });
+        }
+
+        // NOTE: Diabetic ulcers are handled in diabetes domain (E11.621 + L97.x)
+        // NOTE: Traumatic wounds are handled in injury domain (S codes)
+    }
+
+    // --- INJURY & TRAUMA RULES ---
+    if (ctx.conditions.injury?.present) {
+        const inj = ctx.conditions.injury;
+
+        // RULE: Injury → S/T code with 7th character
+        if (inj.type && inj.bodyRegion && inj.encounterType) {
+            const injuryCode = mapInjuryCode(inj.type, inj.bodyRegion, inj.laterality, inj.encounterType);
+            codes.push({
+                code: injuryCode,
+                label: `${inj.type} of ${inj.bodyRegion}`,
+                rationale: `${inj.type} with encounter type: ${inj.encounterType}`,
+                guideline: 'ICD-10-CM I.C.19',
+                trigger: `Injury Type: ${inj.type}, Region: ${inj.bodyRegion}, Encounter: ${inj.encounterType}`,
+                rule: 'Injury code with 7th character for encounter type'
+            });
+        }
+
+        // RULE: External Cause → W/X/Y code
+        if (inj.externalCause?.mechanism && inj.encounterType) {
+            const externalCode = mapExternalCause(inj.externalCause.mechanism, inj.encounterType);
+            codes.push({
+                code: externalCode,
+                label: `External cause: ${inj.externalCause.mechanism}`,
+                rationale: 'External cause of injury',
+                guideline: 'ICD-10-CM I.C.20',
+                trigger: `External Cause: ${inj.externalCause.mechanism}`,
+                rule: 'External cause code (use additional)'
+            });
+        }
+    }
+
     // --- SEQUENCING LOGIC ---
     // Primary: First code in the list (usually most specific condition)
     // Secondary: Remaining codes in logical order
@@ -345,4 +464,112 @@ function mapPneumoniaOrganism(organism?: string): string {
     if (lower.includes('mrsa')) return 'J15.212';
     if (lower.includes('viral')) return 'J12.9';
     return 'J18.9';
+}
+
+// Sepsis organism mapping (A41.x codes)
+function mapSepsisOrganism(organism: string): string {
+    const lower = organism.toLowerCase();
+    if (lower.includes('e. coli') || lower.includes('e.coli') || lower === 'e_coli') return 'A41.51';
+    if (lower.includes('pseudomonas')) return 'A41.52';
+    if (lower.includes('mrsa')) return 'A41.02';
+    if (lower.includes('staph') || lower.includes('staphylococcus')) return 'A41.2';
+    if (lower.includes('strep') || lower.includes('streptococcus')) return 'A40.9';
+    return 'A41.9'; // Unspecified
+}
+
+// Organism code mapping (B96.x codes)
+function mapOrganismCode(organism: string): string | null {
+    const lower = organism.toLowerCase();
+    if (lower.includes('e. coli') || lower.includes('e.coli') || lower === 'e_coli') return 'B96.20';
+    if (lower.includes('pseudomonas')) return 'B96.5';
+    if (lower.includes('mrsa')) return 'B95.62';
+    if (lower.includes('staph')) return 'B95.8';
+    if (lower.includes('strep')) return 'B95.5';
+    return null; // No specific organism code
+}
+
+// Pressure ulcer mapping (L89.xxx codes)
+function mapPressureUlcer(location: string, stage: string): string {
+    let base = 'L89.';
+
+    // Location mapping
+    const lower = location.toLowerCase();
+    if (lower.includes('sacral') || lower.includes('sacrum')) base += '15'; // Sacral
+    else if (lower.includes('heel')) base += '6'; // Heel
+    else if (lower.includes('buttock')) base += '3'; // Buttock
+    else if (lower.includes('hip')) base += '2'; // Hip
+    else if (lower.includes('ankle')) base += '5'; // Ankle
+    else if (lower.includes('elbow')) base += '0'; // Elbow
+    else base += '9'; // Other site
+
+    // Stage mapping
+    if (stage === 'stage1') return base + '1';
+    else if (stage === 'stage2') return base + '2';
+    else if (stage === 'stage3') return base + '3';
+    else if (stage === 'stage4') return base + '4';
+    else if (stage === 'unstageable') return base + '0';
+    else if (stage === 'deep_tissue') return base + '6';
+    else return base + '9'; // Unspecified
+}
+
+// Injury code mapping (S codes with 7th character)
+function mapInjuryCode(type: string, bodyRegion: string, laterality?: string, encounterType?: string): string {
+    let code = 'S00.00'; // Default unspecified
+    const seventh = get7thCharacter(encounterType);
+
+    // Simplified mapping - in production would need comprehensive body region mapping
+    const lower = bodyRegion.toLowerCase();
+
+    if (type === 'fracture') {
+        if (lower.includes('femur')) {
+            if (laterality === 'right') code = 'S72.301';
+            else if (laterality === 'left') code = 'S72.302';
+            else code = 'S72.309';
+        } else if (lower.includes('tibia')) {
+            if (laterality === 'right') code = 'S82.201';
+            else if (laterality === 'left') code = 'S82.202';
+            else code = 'S82.209';
+        } else if (lower.includes('humerus')) {
+            if (laterality === 'right') code = 'S42.301';
+            else if (laterality === 'left') code = 'S42.302';
+            else code = 'S42.309';
+        } else {
+            code = 'S02.0'; // Unspecified fracture
+        }
+    } else if (type === 'open_wound') {
+        if (lower.includes('arm')) {
+            if (laterality === 'right') code = 'S41.101';
+            else if (laterality === 'left') code = 'S41.102';
+            else code = 'S41.109';
+        } else if (lower.includes('leg')) {
+            if (laterality === 'right') code = 'S81.801';
+            else if (laterality === 'left') code = 'S81.802';
+            else code = 'S81.809';
+        } else {
+            code = 'S01.00'; // Unspecified open wound
+        }
+    } else if (type === 'burn') {
+        code = 'T20.0'; // Burn unspecified
+    }
+
+    return code + seventh;
+}
+
+// External cause mapping (W/X/Y codes)
+function mapExternalCause(mechanism: string, encounterType?: string): string {
+    const seventh = get7thCharacter(encounterType);
+
+    if (mechanism === 'fall') return 'W19.XXX' + seventh;
+    else if (mechanism === 'mvc') return 'V89.2XX' + seventh;
+    else if (mechanism === 'assault') return 'X99.9XX' + seventh;
+    else if (mechanism === 'sports') return 'W00.0XX' + seventh;
+    else return 'W00.0XX' + seventh; // Unspecified
+}
+
+// 7th character for encounter type
+function get7thCharacter(encounterType?: string): string {
+    if (encounterType === 'initial') return 'A';
+    else if (encounterType === 'subsequent') return 'D';
+    else if (encounterType === 'sequela') return 'S';
+    else return 'A'; // Default to initial
 }
