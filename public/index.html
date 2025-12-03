@@ -170,6 +170,267 @@
     const encodeResults = document.getElementById('encodeResults');
     let lastEncoded = null;
 
+    // --- FORM BUILDER LOGIC ---
+
+    // 1. Define Domain Schema Configuration
+    const domainConfig = {
+      demographics: {
+        label: 'Demographics',
+        fields: [
+          { key: 'Age', type: 'number', label: 'Age' },
+          { key: 'Gender', type: 'select', label: 'Gender', options: ['Male', 'Female'] }
+        ]
+      },
+      diabetes: {
+        label: 'Diabetes',
+        fields: [
+          { key: 'Diabetes Type', type: 'select', label: 'Type', options: ['Type 1', 'Type 2', 'Drug-induced', 'Secondary'] },
+          { key: 'Diabetes Complication', type: 'multi-select', label: 'Complications', options: ['CKD', 'Foot Ulcer', 'Retinopathy', 'Neuropathy', 'Hypoglycemia'] },
+          { key: 'Insulin Use', type: 'select', label: 'Insulin Use', options: ['Yes', 'No'] },
+          // Conditional fields could be handled, but keeping flat for now
+          { key: 'Ulcer Site', type: 'select', label: 'Ulcer Site', options: ['Left Foot', 'Right Foot', 'Other'] },
+          { key: 'Ulcer Severity', type: 'select', label: 'Ulcer Severity', options: ['Skin', 'Fat', 'Muscle', 'Bone'] }
+        ]
+      },
+      ckd: {
+        label: 'Renal / CKD',
+        fields: [
+          { key: 'CKD Stage', type: 'select', label: 'Stage', options: ['1', '2', '3', '4', '5', 'ESRD'] },
+          { key: 'Dialysis', type: 'select', label: 'On Dialysis', options: ['Yes', 'No'] },
+          { key: 'Acute Kidney Injury', type: 'select', label: 'AKI Present', options: ['Yes', 'No'] }
+        ]
+      },
+      cardio: {
+        label: 'Cardiovascular',
+        fields: [
+          { key: 'Hypertension', type: 'select', label: 'Hypertension', options: ['Yes', 'No'] },
+          { key: 'Heart Failure', type: 'select', label: 'Heart Failure', options: ['Yes', 'No'] },
+          { key: 'Heart Failure Type', type: 'select', label: 'HF Type', options: ['Systolic', 'Diastolic', 'Combined'] },
+          { key: 'Heart Failure Acuity', type: 'select', label: 'HF Acuity', options: ['Acute', 'Chronic', 'Acute on chronic'] }
+        ]
+      },
+      respiratory: {
+        label: 'Respiratory',
+        fields: [
+          { key: 'Pneumonia', type: 'select', label: 'Pneumonia', options: ['Yes', 'No'] },
+          { key: 'Pneumonia Organism', type: 'select', label: 'Organism', options: ['Pseudomonas', 'MRSA', 'E. coli', 'Viral', 'Unspecified'] }
+        ]
+      }
+    };
+
+    // State to hold current form values
+    let formState = {
+      demographics: { Age: '', Gender: '' } // Always present
+    };
+
+    // UI Elements
+    const builderContainer = document.createElement('div');
+    builderContainer.style.background = '#f1f5f9';
+    builderContainer.style.padding = '16px';
+    builderContainer.style.borderRadius = '8px';
+    builderContainer.style.marginBottom = '20px';
+    builderContainer.style.border = '1px solid #e2e8f0';
+
+    const builderTitle = document.createElement('h3');
+    builderTitle.textContent = 'Structured Scenario Builder';
+    builderTitle.style.marginTop = '0';
+    builderTitle.style.marginBottom = '12px';
+    builderTitle.style.fontSize = '16px';
+    builderContainer.appendChild(builderTitle);
+
+    // Container for active forms
+    const activeFormsContainer = document.createElement('div');
+    activeFormsContainer.style.display = 'flex';
+    activeFormsContainer.style.flexDirection = 'column';
+    activeFormsContainer.style.gap = '12px';
+    builderContainer.appendChild(activeFormsContainer);
+
+    // "Add Condition" Dropdown
+    const addConditionContainer = document.createElement('div');
+    addConditionContainer.style.marginTop = '16px';
+    addConditionContainer.style.borderTop = '1px solid #cbd5e1';
+    addConditionContainer.style.paddingTop = '12px';
+
+    const addLabel = document.createElement('label');
+    addLabel.textContent = '+ Add Condition:';
+    addLabel.style.display = 'inline-block';
+    addLabel.style.marginRight = '8px';
+    addLabel.style.fontSize = '14px';
+
+    const addSelect = document.createElement('select');
+    addSelect.style.padding = '6px';
+    addSelect.style.borderRadius = '4px';
+
+    const defaultOpt = document.createElement('option');
+    defaultOpt.text = 'Select domain...';
+    defaultOpt.value = '';
+    addSelect.appendChild(defaultOpt);
+
+    Object.keys(domainConfig).forEach(key => {
+      if (key === 'demographics') return; // Skip, already added
+      const opt = document.createElement('option');
+      opt.value = key;
+      opt.text = domainConfig[key].label;
+      addSelect.appendChild(opt);
+    });
+
+    addSelect.addEventListener('change', (e) => {
+      const domain = e.target.value;
+      if (domain) {
+        if (!formState[domain]) {
+          formState[domain] = {}; // Initialize state
+          renderFormSection(domain);
+          updateNarrative();
+        }
+        e.target.value = ''; // Reset
+      }
+    });
+
+    addConditionContainer.appendChild(addLabel);
+    addConditionContainer.appendChild(addSelect);
+    builderContainer.appendChild(addConditionContainer);
+
+    // Insert Builder into DOM
+    const encodePanel = document.getElementById('encodePanel');
+    const narrativeLabel = encodePanel.querySelector('label[for="narrative"]');
+    encodePanel.insertBefore(builderContainer, narrativeLabel);
+
+
+    // Helper: Render a Form Section
+    function renderFormSection(domainKey) {
+      const config = domainConfig[domainKey];
+      const section = document.createElement('div');
+      section.className = 'form-section';
+      section.style.background = '#fff';
+      section.style.padding = '12px';
+      section.style.borderRadius = '6px';
+      section.style.border = '1px solid #cbd5e1';
+      section.dataset.domain = domainKey;
+
+      // Header
+      const header = document.createElement('div');
+      header.style.display = 'flex';
+      header.style.justifyContent = 'space-between';
+      header.style.marginBottom = '8px';
+
+      const title = document.createElement('strong');
+      title.textContent = config.label;
+      header.appendChild(title);
+
+      if (domainKey !== 'demographics') {
+        const removeBtn = document.createElement('button');
+        removeBtn.textContent = '×';
+        removeBtn.style.padding = '0 6px';
+        removeBtn.style.fontSize = '16px';
+        removeBtn.style.background = 'transparent';
+        removeBtn.style.color = '#ef4444';
+        removeBtn.style.border = 'none';
+        removeBtn.style.cursor = 'pointer';
+        removeBtn.title = 'Remove condition';
+        removeBtn.onclick = () => {
+          delete formState[domainKey];
+          section.remove();
+          updateNarrative();
+        };
+        header.appendChild(removeBtn);
+      }
+      section.appendChild(header);
+
+      // Fields Container
+      const fieldsContainer = document.createElement('div');
+      fieldsContainer.style.display = 'grid';
+      fieldsContainer.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
+      fieldsContainer.style.gap = '10px';
+
+      config.fields.forEach(field => {
+        const fieldWrapper = document.createElement('div');
+
+        const label = document.createElement('label');
+        label.textContent = field.label;
+        label.style.fontSize = '12px';
+        label.style.marginBottom = '4px';
+        label.style.color = '#64748b';
+
+        let input;
+        if (field.type === 'select') {
+          input = document.createElement('select');
+          input.style.width = '100%';
+          input.style.padding = '6px';
+          input.style.borderRadius = '4px';
+          input.style.border = '1px solid #cbd5e1';
+
+          const empty = document.createElement('option');
+          empty.value = '';
+          empty.text = '-';
+          input.appendChild(empty);
+
+          field.options.forEach(opt => {
+            const o = document.createElement('option');
+            o.value = opt;
+            o.text = opt;
+            input.appendChild(o);
+          });
+        } else if (field.type === 'multi-select') {
+          // Simplified as text input for now, or simple select
+          // For better UX, let's use a select that appends to a list? 
+          // Or just a simple input for comma separation?
+          // Let's stick to simple text input for multi-select to save UI complexity for now
+          input = document.createElement('input');
+          input.type = 'text';
+          input.placeholder = 'e.g. CKD, Foot Ulcer';
+          input.style.width = '100%';
+          input.style.padding = '6px';
+          input.style.borderRadius = '4px';
+          input.style.border = '1px solid #cbd5e1';
+        } else {
+          input = document.createElement('input');
+          input.type = field.type;
+          input.style.width = '100%';
+          input.style.padding = '6px';
+          input.style.borderRadius = '4px';
+          input.style.border = '1px solid #cbd5e1';
+        }
+
+        // Event Listener
+        input.addEventListener('input', (e) => {
+          formState[domainKey][field.key] = e.target.value;
+          updateNarrative();
+        });
+
+        fieldWrapper.appendChild(label);
+        fieldWrapper.appendChild(input);
+        fieldsContainer.appendChild(fieldWrapper);
+      });
+
+      section.appendChild(fieldsContainer);
+      activeFormsContainer.appendChild(section);
+    }
+
+    // Helper: Update Narrative Textarea
+    function updateNarrative() {
+      const lines = [];
+
+      // Order: Demographics -> Diabetes -> Renal -> Cardio -> Respiratory
+      const order = ['demographics', 'diabetes', 'ckd', 'cardio', 'respiratory'];
+
+      order.forEach(domain => {
+        if (formState[domain]) {
+          const data = formState[domain];
+          Object.keys(data).forEach(key => {
+            if (data[key]) {
+              lines.push(`${key}: ${data[key]}`);
+            }
+          });
+        }
+      });
+
+      narrativeInput.value = lines.join('\n');
+    }
+
+    // Initialize with Demographics
+    renderFormSection('demographics');
+
+
     // Scenarios
     const scenarios = {
       complex: `Age: 67
@@ -243,7 +504,6 @@ CKD Stage: 3`
     scenarioContainer.appendChild(scenarioSelect);
 
     // Insert before the input label
-    const encodePanel = document.getElementById('encodePanel');
     const narrativeLabel = encodePanel.querySelector('label[for="narrative"]');
     encodePanel.insertBefore(scenarioContainer, narrativeLabel);
 
