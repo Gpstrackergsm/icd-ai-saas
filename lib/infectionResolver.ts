@@ -1,4 +1,5 @@
 
+
 export interface InfectionAttributes {
     type: 'sepsis' | 'bacteremia' | 'uti' | 'pneumonia' | 'post_procedural_sepsis' | 'urosepsis' | 'other';
     organism?: string;
@@ -14,10 +15,18 @@ export interface InfectionAttributes {
     source_label?: string;
 }
 
+export interface SecondaryCode {
+    code: string;
+    label: string;
+    type: 'shock' | 'source' | 'organism' | 'organ_dysfunction';
+}
+
+
 export interface InfectionResolution {
     code: string;
     label: string;
     attributes: InfectionAttributes;
+    secondary_codes?: SecondaryCode[];
     warnings?: string[];
 }
 
@@ -38,6 +47,33 @@ export function resolveInfection(text: string): InfectionResolution | undefined 
 
     // 1. Post-Procedural Sepsis (T81.44XA) - HIGHEST PRIORITY
     if (impliedSepsis || (isPostProcedural && /sepsis|septic/.test(lower))) {
+        const secondaryCodes: SecondaryCode[] = [];
+
+        // Add organ dysfunction if present
+        if (hasRespiratoryFailure) {
+            secondaryCodes.push({
+                code: 'J95.821',
+                label: 'Acute postprocedural respiratory failure',
+                type: 'organ_dysfunction'
+            });
+        }
+
+        // Always add A41.9 for post-procedural sepsis
+        secondaryCodes.push({
+            code: 'A41.9',
+            label: 'Sepsis, unspecified organism',
+            type: 'source'
+        });
+
+        // Add source infection
+        if (hasPneumonia) {
+            secondaryCodes.push({
+                code: 'J18.9',
+                label: 'Pneumonia, unspecified organism',
+                type: 'source'
+            });
+        }
+
         return {
             code: 'T81.44XA',
             label: 'Sepsis following a procedure, initial encounter',
@@ -46,12 +82,11 @@ export function resolveInfection(text: string): InfectionResolution | undefined 
                 severe: isSevere || organDysfunction,
                 organ_dysfunction: organDysfunction,
                 post_procedural: true,
-                requires_sepsis_code: true // Flag to add A41.9 as secondary
+                requires_sepsis_code: true
             },
+            secondary_codes: secondaryCodes,
             warnings: [
-                'Code also A41.9 (Sepsis, unspecified organism) as secondary',
-                'Code also the specific infection (e.g., J18.9 for pneumonia)',
-                'Code also any organ dysfunction (e.g., J95.821 for respiratory failure)'
+                'Post-procedural sepsis sequencing: T81.44XA → Organ dysfunction → A41.9 → Source infection'
             ]
         };
     }
@@ -61,41 +96,69 @@ export function resolveInfection(text: string): InfectionResolution | undefined 
     if (/sepsis|septic|urosepsis/.test(lower)) {
         // Determine organism
         let code = 'A41.9';
-        if (/e\\.? coli|escherichia coli/.test(lower)) code = 'A41.51';
+        let label = 'Sepsis, unspecified organism';
+
+
+        if (/e\.?\s?coli|escherichia\s+coli/i.test(lower)) {
+            code = 'A41.51';
+            label = 'Sepsis due to Escherichia coli [E. coli]';
+        }
         if (/staph|staphylococcus/.test(lower)) {
             if (/aureus/.test(lower)) {
-                if (/mrsa|methicillin resistant/.test(lower)) code = 'A41.02';
-                else code = 'A41.01';
+                if (/mrsa|methicillin resistant/.test(lower)) {
+                    code = 'A41.02';
+                    label = 'Sepsis due to Methicillin resistant Staphylococcus aureus';
+                } else {
+                    code = 'A41.01';
+                    label = 'Sepsis due to Methicillin susceptible Staphylococcus aureus';
+                }
             } else {
                 code = 'A41.2';
+                label = 'Sepsis due to unspecified staphylococcus';
             }
         }
 
-        // Detect source
-        let sourceCode: string | undefined;
-        let sourceLabel: string | undefined;
+        const secondaryCodes: SecondaryCode[] = [];
+
+        // Add R65.21 if shock is present
+        if (hasShock) {
+            secondaryCodes.push({
+                code: 'R65.21',
+                label: 'Severe sepsis with septic shock',
+                type: 'shock'
+            });
+        }
+
+        // Detect and add source
         if (hasUTI) {
-            sourceCode = 'N39.0';
-            sourceLabel = 'Urinary tract infection, site not specified';
+            secondaryCodes.push({
+                code: 'N39.0',
+                label: 'Urinary tract infection, site not specified',
+                type: 'source'
+            });
         } else if (hasPneumonia) {
-            sourceCode = 'J18.9';
-            sourceLabel = 'Pneumonia, unspecified organism';
+            secondaryCodes.push({
+                code: 'J18.9',
+                label: 'Pneumonia, unspecified organism',
+                type: 'source'
+            });
         }
 
         return {
             code,
-            label: 'Sepsis, unspecified organism',
+            label,
             attributes: {
                 type: hasUTI ? 'urosepsis' : 'sepsis',
                 severe: isSevere || hasShock,
                 shock: hasShock,
                 organ_dysfunction: hasShock || organDysfunction,
-                requires_shock_code: hasShock, // Flag to add R65.21
-                requires_source_code: !!sourceCode,
-                source_code: sourceCode,
-                source_label: sourceLabel
+                requires_shock_code: hasShock,
+                requires_source_code: secondaryCodes.some(sc => sc.type === 'source')
             },
-            warnings: hasShock ? ['Code also R65.21 (Severe sepsis with septic shock)', 'Code also localized infection source'] : []
+            secondary_codes: secondaryCodes,
+            warnings: hasShock ?
+                ['Sepsis with shock sequencing: A41.9 → R65.21 → Source infection per ICD-10-CM Guideline I.C.1.b'] :
+                []
         };
     }
 

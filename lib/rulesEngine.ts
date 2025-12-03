@@ -1,4 +1,5 @@
 
+import { applySequencingRules } from './sequencingRulesEngine.js';
 import { applyExclusions } from './exclusionEngine.js';
 import { resolveDiabetes, DiabetesResolution, DiabetesAttributes } from './diabetesResolver.js';
 import { resolveRetinopathy } from './retinopathyResolver.js';
@@ -157,14 +158,15 @@ export function runRulesEngine(text: string): EngineResult {
     sequence.push({ code: infection.code, label: infection.label, triggeredBy: 'infection_resolution', hcc: false });
     if (infection.warnings) warnings.push(...infection.warnings);
 
-    // Handle post-procedural sepsis sequencing
-    if (infection.attributes.requires_sepsis_code) {
-      // Add A41.9 (Sepsis, unspecified organism) as required secondary
-      sequence.push({
-        code: 'A41.9',
-        label: 'Sepsis, unspecified organism',
-        triggeredBy: 'infection_sepsis_code',
-        hcc: true
+    // Add secondary codes from infection resolver (shock, source, organism, organ dysfunction)
+    if (infection.secondary_codes) {
+      infection.secondary_codes.forEach(sc => {
+        sequence.push({
+          code: sc.code,
+          label: sc.label,
+          triggeredBy: `infection_${sc.type}`,
+          hcc: sc.code === 'R65.21' || sc.code === 'A41.9' // HCC for shock and sepsis
+        });
       });
     }
   }
@@ -304,7 +306,15 @@ export function runRulesEngine(text: string): EngineResult {
   // Deduplicate sequence based on code
   const uniqueSequence = sequence.filter((v, i, a) => a.findIndex(t => t.code === v.code) === i);
 
-  const exclusionResult = applyExclusions(uniqueSequence);
+  // Apply ICD-10-CM sequencing rules
+  const sequencingResult = applySequencingRules(uniqueSequence);
+  warnings.push(...sequencingResult.errors);
+  warnings.push(...sequencingResult.warnings);
+
+  // Use sequenced codes from sequencing engine
+  const sequencedCodes = sequencingResult.sequencedCodes;
+
+  const exclusionResult = applyExclusions(sequencedCodes);
   warnings.push(...exclusionResult.errors);
 
   const hierarchyResult = validateHierarchy(exclusionResult.filtered);
@@ -312,11 +322,14 @@ export function runRulesEngine(text: string): EngineResult {
 
   const withHcc = flagHcc(hierarchyResult.filtered);
   const scored = scoreSequence(withHcc, warnings);
+
+  // Build audit trail with sequencing rationale
   const audit = buildAuditTrail(scored, warnings);
+  sequencingResult.rationale.forEach(r => audit.push(`[SEQUENCING] ${r}`));
 
   const finalSequence = scored.map(({ score, ...rest }) => rest);
 
-  if (!hierarchyResult.valid || !exclusionResult.valid) {
+  if (!hierarchyResult.valid || !exclusionResult.valid || !sequencingResult.valid) {
     return { sequence: [], attributes, warnings, audit };
   }
 

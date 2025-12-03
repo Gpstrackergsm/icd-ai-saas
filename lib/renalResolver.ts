@@ -69,8 +69,8 @@ export function resolveRenal(text: string): RenalResolution | undefined {
         };
     }
 
-    // 3. UTI (Generic)
-    if (/uti|urinary tract infection/.test(lower) && !/pyelonephritis|cystitis/.test(lower)) {
+    // 3. UTI (Generic) - Skip if sepsis is present (let infection resolver handle it)
+    if (/uti|urinary tract infection/.test(lower) && !/pyelonephritis|cystitis|sepsis|septic|urosepsis/.test(lower)) {
         return {
             code: 'N39.0',
             label: 'Urinary tract infection, site not specified',
