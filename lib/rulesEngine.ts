@@ -214,6 +214,33 @@ export function runRulesEngine(text: string): EngineResult {
   if (trauma) {
     sequence.push({ code: trauma.code, label: trauma.label, triggeredBy: 'trauma_resolution', hcc: false });
     if (trauma.warnings) warnings.push(...trauma.warnings);
+
+    // Add secondary codes (pain, external cause) in correct order
+    if (trauma.secondary_codes) {
+      // Pain codes come first (after injury)
+      trauma.secondary_codes
+        .filter(sc => sc.type === 'pain')
+        .forEach(sc => {
+          sequence.push({
+            code: sc.code,
+            label: sc.label,
+            triggeredBy: 'trauma_pain',
+            hcc: false
+          });
+        });
+
+      // External cause codes come last
+      trauma.secondary_codes
+        .filter(sc => sc.type === 'external_cause')
+        .forEach(sc => {
+          sequence.push({
+            code: sc.code,
+            label: sc.label,
+            triggeredBy: 'trauma_external_cause',
+            hcc: false
+          });
+        });
+    }
   }
 
   // 9. Obstetrics

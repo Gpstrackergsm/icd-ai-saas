@@ -1,11 +1,14 @@
 
 export interface TraumaAttributes {
-    type: 'fracture' | 'injury' | 'burn' | 'none';
+    type: 'fracture' | 'injury' | 'burn' | 'pain' | 'external_cause' | 'none';
     site?: string;
     laterality?: 'left' | 'right' | 'bilateral' | 'unspecified';
     encounter?: 'initial' | 'subsequent' | 'sequela';
     open_closed?: 'open' | 'closed';
     displaced?: boolean;
+    has_pain?: boolean;
+    pain_type?: 'acute' | 'chronic' | 'post_traumatic';
+    external_cause?: string;
 }
 
 export interface TraumaResolution {
@@ -13,18 +16,19 @@ export interface TraumaResolution {
     label: string;
     attributes: TraumaAttributes;
     warnings?: string[];
+    secondary_codes?: Array<{ code: string; label: string; type: string }>;
 }
 
 export function resolveTrauma(text: string): TraumaResolution | undefined {
     const lower = text.toLowerCase();
     const warnings: string[] = [];
+    const secondary_codes: Array<{ code: string; label: string; type: string }> = [];
 
     // Encounter detection
-    let encounter: TraumaAttributes['encounter'] = 'initial'; // Default
+    let encounter: TraumaAttributes['encounter'] = 'initial';
     if (/subsequent|follow[- ]up|healing/.test(lower)) encounter = 'subsequent';
     if (/sequela|late effect/.test(lower)) encounter = 'sequela';
 
-    // Suffix mapping
     const suffix = encounter === 'initial' ? 'A' : encounter === 'subsequent' ? 'D' : 'S';
 
     // Laterality
@@ -33,63 +37,116 @@ export function resolveTrauma(text: string): TraumaResolution | undefined {
     if (/right/.test(lower)) laterality = 'right';
     if (/bilateral/.test(lower)) laterality = 'bilateral';
 
+    // Pain detection
+    const hasPain = /pain/.test(lower);
+    const acutePain = /acute.*pain|severe.*pain/.test(lower);
+    const chronicPain = /chronic.*pain/.test(lower);
+    const postTraumaticPain = /post[- ]?traumatic.*pain/.test(lower);
+
+    // External cause detection
+    const hasFall = /fall/.test(lower);
+    const fallSameLevel = /same level/.test(lower);
+
     // Fracture logic
     if (/fracture|broken/.test(lower)) {
         const open = /open/.test(lower) ? 'open' : 'closed';
         const displaced = /displaced/.test(lower) && !/nondisplaced/.test(lower);
 
-        // Simplified site mapping
-        let baseCode = 'S00.00'; // Placeholder
+        let baseCode = 'S00.00';
         let site = 'unspecified';
+        let label = 'Fracture';
 
-        if (/femur|thigh/.test(lower)) {
-            site = 'femur';
-            baseCode = 'S72.90X'; // Unspecified fracture of femur
-        } else if (/radius|forearm|wrist/.test(lower)) {
+        // Specific fracture types
+        // Colles' fracture (distal radius)
+        if (/distal radius|wrist.*radius|colles/.test(lower)) {
+            site = 'distal_radius';
+            const latCode = laterality === 'left' ? '2' : laterality === 'right' ? '1' : '9';
+            baseCode = `S52.53${latCode}${suffix}`;
+            label = "Colles' fracture of radius";
+        }
+        // Generic radius
+        else if (/radius|forearm/.test(lower) && !/distal/.test(lower)) {
             site = 'radius';
-            baseCode = 'S52.501'; // Unspecified fracture of lower end of radius
-            if (laterality === 'left') baseCode = 'S52.502';
-            if (laterality === 'right') baseCode = 'S52.501';
-            if (laterality === 'unspecified') baseCode = 'S52.509';
-        } else if (/hip/.test(lower)) {
+            const latCode = laterality === 'left' ? '2' : laterality === 'right' ? '1' : '9';
+            baseCode = `S52.50${latCode}${suffix}`;
+            label = 'Unspecified fracture of radius';
+        }
+        // Femur
+        else if (/femur|thigh/.test(lower)) {
+            site = 'femur';
+            baseCode = `S72.90X${suffix}`;
+            label = 'Unspecified fracture of femur';
+        }
+        // Hip
+        else if (/hip/.test(lower)) {
             site = 'hip';
-            baseCode = 'S72.001'; // Fracture of unspecified part of neck of femur
-            if (laterality === 'left') baseCode = 'S72.002';
-            if (laterality === 'right') baseCode = 'S72.001';
-            if (laterality === 'unspecified') baseCode = 'S72.009';
-        } else if (/rib/.test(lower)) {
+            const latCode = laterality === 'left' ? '2' : laterality === 'right' ? '1' : '9';
+            baseCode = `S72.00${latCode}${suffix}`;
+            label = 'Fracture of unspecified part of neck of femur';
+        }
+        // Rib
+        else if (/rib/.test(lower)) {
             site = 'rib';
-            baseCode = 'S22.39X'; // Fracture of one rib
-        } else {
-            // Generic fracture
-            baseCode = 'T14.8'; // Fracture of unspecified body region
-            // T14.8 does not take 7th character in the same way as S codes usually, but let's assume S code structure for standard trauma
-            // Actually T14.8xxA is valid.
+            baseCode = `S22.39X${suffix}`;
+            label = 'Fracture of one rib';
+        }
+        // Generic fracture
+        else {
+            baseCode = `T14.8XX${suffix}`;
+            label = 'Fracture of unspecified body region';
+            warnings.push('Fracture site not specified; using unspecified code');
         }
 
-        // Append suffix
-        // Note: Most fracture codes are 7 characters. 
-        // If baseCode is 5 chars (S72.90), we need placeholder 'X' then suffix -> S72.90XA
-        // If baseCode is 6 chars (S52.501), we add suffix -> S52.501A
-        // If baseCode is 3 chars (T14), T14.8xxA
+        // Add pain code if documented
+        if (hasPain) {
+            if (postTraumaticPain || acutePain) {
+                secondary_codes.push({
+                    code: 'G89.11',
+                    label: 'Acute pain due to trauma',
+                    type: 'pain'
+                });
+            } else if (chronicPain) {
+                secondary_codes.push({
+                    code: 'G89.21',
+                    label: 'Chronic pain due to trauma',
+                    type: 'pain'
+                });
+            }
+        }
 
-        let finalCode = baseCode;
-        if (baseCode.length === 3) finalCode = `${baseCode}.8XX${suffix}`; // T14 -> T14.8XXA
-        else if (baseCode.length === 5) finalCode = `${baseCode}X${suffix}`;
-        else if (baseCode.length === 6) finalCode = `${baseCode}${suffix}`;
-        else if (baseCode.endsWith('X')) finalCode = `${baseCode}${suffix}`; // Already has X placeholder
+        // Add external cause if documented
+        if (hasFall) {
+            let externalCode = 'W19.XXXA'; // Unspecified fall
+            if (fallSameLevel) {
+                externalCode = 'W18.30XA'; // Fall on same level, unspecified
+            }
+            secondary_codes.push({
+                code: externalCode,
+                label: 'Unspecified fall',
+                type: 'external_cause'
+            });
+        }
 
         return {
-            code: finalCode,
-            label: `Fracture of ${site}`,
-            attributes: { type: 'fracture', site, laterality, encounter, open_closed: open, displaced },
-            warnings: ['Verify open/closed status and specific anatomical location']
+            code: baseCode,
+            label,
+            attributes: {
+                type: 'fracture',
+                site,
+                laterality,
+                encounter,
+                open_closed: open,
+                displaced,
+                has_pain: hasPain,
+                pain_type: postTraumaticPain || acutePain ? 'acute' : chronicPain ? 'chronic' : undefined
+            },
+            warnings,
+            secondary_codes
         };
     }
 
     // General Injury
     if (/injury|trauma|wound|laceration|contusion/.test(lower)) {
-        // Generic fallback
         return {
             code: `T14.90X${suffix}`,
             label: 'Injury, unspecified',
