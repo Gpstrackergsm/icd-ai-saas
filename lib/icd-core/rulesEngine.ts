@@ -898,9 +898,11 @@ export function applyGuidelineRules(ctx: EncodingContext): RuleResult {
       warnings.push('Injury requires external cause code; added W19.XXXA.');
       markCandidate('W19.XXXA', 'Default external cause for fall/unspecified injury', 6, 'injury_external_cause', ['injury']);
     }
-    // enforce 7th character presence
+    // enforce 7th character presence ONLY for injury/trauma/obstetrics codes (S, T, O chapters)
     working = working.map((c) => {
-      if (/^[A-Z]\d{2}\.[A-Z0-9]{3}$/.test(c.code)) {
+      // Only add 7th character to S (injury), T (trauma/poisoning), or O (obstetrics) codes
+      // Pattern: S12.345, T14.567, O12.345 (6 chars after removing dot)
+      if (/^[STO]\d{2}\.[A-Z0-9]{3}$/.test(c.code)) {
         const updated = { ...c, code: `${c.code}A`, guidelineRule: c.guidelineRule ?? 'seventh_character_enforced' };
         return updated;
       }
