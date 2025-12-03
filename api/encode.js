@@ -4,7 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const MAX_TEXT_LENGTH = 500;
+const MAX_TEXT_LENGTH = 2000;
 
 let icdModule;
 let encoderModule;
@@ -88,7 +88,7 @@ module.exports = async function handler(req, res) {
     // Helper to process a single text item
     const processItem = async (text) => {
       if (!text || typeof text !== 'string') return null;
-      
+
       const trimmedText = text.trim();
       if (!trimmedText) return null;
 
