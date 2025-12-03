@@ -8,6 +8,20 @@ export interface HierarchyResult {
 
 function isBillable(code: string): boolean {
   const stripped = code.replace('.', '');
+
+  // Known 3-character billable codes (common ones)
+  const threeCharBillable = new Set([
+    'N10', // Acute pyelonephritis
+    'J13', // Pneumonia due to Streptococcus pneumoniae
+    'J14', // Pneumonia due to Hemophilus influenzae
+    'C61', // Malignant neoplasm of prostate
+    'E15', // Nondiabetic hypoglycemic coma
+    'I10', // Essential (primary) hypertension
+  ]);
+
+  if (threeCharBillable.has(code)) return true;
+
+  // Most codes need 4+ characters to be billable
   return stripped.length >= 4;
 }
 

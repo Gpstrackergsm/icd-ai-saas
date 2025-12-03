@@ -119,6 +119,27 @@ export function runRulesEngine(text: string): EngineResult {
     sequence.push({ code: renal.code, label: renal.label, triggeredBy: 'renal_resolution', hcc: false });
     if (renal.warnings) warnings.push(...renal.warnings);
 
+    // Add organism code if required
+    if (renal.attributes.requires_organism_code && renal.attributes.organism) {
+      const organismMap: Record<string, { code: string; label: string }> = {
+        'e_coli': { code: 'B96.20', label: 'Unspecified Escherichia coli [E. coli] as the cause of diseases classified elsewhere' },
+        'klebsiella': { code: 'B96.1', label: 'Klebsiella pneumoniae [K. pneumoniae] as the cause of diseases classified elsewhere' },
+        'proteus': { code: 'B96.4', label: 'Proteus (mirabilis) (morganii) as the cause of diseases classified elsewhere' },
+        'pseudomonas': { code: 'B96.5', label: 'Pseudomonas (aeruginosa) (mallei) (pseudomallei) as the cause of diseases classified elsewhere' },
+        'enterococcus': { code: 'B95.2', label: 'Enterococcus as the cause of diseases classified elsewhere' }
+      };
+
+      const organismInfo = organismMap[renal.attributes.organism];
+      if (organismInfo) {
+        sequence.push({
+          code: organismInfo.code,
+          label: organismInfo.label,
+          triggeredBy: 'renal_organism',
+          hcc: false
+        });
+      }
+    }
+
     // Add Dialysis Z99.2 if indicated
     if (renal.attributes.on_dialysis) {
       sequence.push({

@@ -1,10 +1,12 @@
-
 export interface RenalAttributes {
-    type: 'ckd' | 'esrd' | 'nephritis' | 'none';
+    type: 'ckd' | 'esrd' | 'nephritis' | 'pyelonephritis' | 'cystitis' | 'uti' | 'none';
     stage?: 1 | 2 | 3 | 4 | 5 | 'ESRD';
     on_dialysis?: boolean;
     transplant_status?: boolean;
     complication?: 'hypertension' | 'diabetes' | 'none';
+    acuity?: 'acute' | 'chronic' | 'unspecified';
+    organism?: string;
+    requires_organism_code?: boolean;
 }
 
 export interface RenalResolution {
@@ -17,6 +19,69 @@ export interface RenalResolution {
 export function resolveRenal(text: string): RenalResolution | undefined {
     const lower = text.toLowerCase();
     const warnings: string[] = [];
+
+    // Detect organism
+    let organism: string | undefined;
+    if (/e\.?\s?coli|escherichia coli/.test(lower)) organism = 'e_coli';
+    if (/klebsiella/.test(lower)) organism = 'klebsiella';
+    if (/proteus/.test(lower)) organism = 'proteus';
+    if (/pseudomonas/.test(lower)) organism = 'pseudomonas';
+    if (/enterococcus/.test(lower)) organism = 'enterococcus';
+
+    const isAcute = /acute/.test(lower);
+    const isChronic = /chronic/.test(lower);
+    const acuity = isAcute ? 'acute' : isChronic ? 'chronic' : 'unspecified';
+
+    // 1. Pyelonephritis (Kidney infection)
+    if (/pyelonephritis|kidney infection/.test(lower)) {
+        let code = 'N10'; // Acute pyelonephritis
+        if (isChronic) code = 'N11.9'; // Chronic pyelonephritis, unspecified
+
+        return {
+            code,
+            label: isAcute ? 'Acute pyelonephritis' : isChronic ? 'Chronic pyelonephritis' : 'Acute pyelonephritis',
+            attributes: {
+                type: 'pyelonephritis',
+                acuity,
+                organism,
+                requires_organism_code: !!organism
+            },
+            warnings: organism ? ['Use additional code B96.20 to identify E. coli as causative organism'] : ['Use additional code to identify infectious agent']
+        };
+    }
+
+    // 2. Cystitis (Bladder infection)
+    if (/cystitis|bladder infection/.test(lower)) {
+        let code = 'N30.00'; // Acute cystitis without hematuria
+        if (/hematuria|blood/.test(lower)) code = 'N30.01'; // Acute cystitis with hematuria
+        if (isChronic) code = /hematuria|blood/.test(lower) ? 'N30.11' : 'N30.10';
+
+        return {
+            code,
+            label: 'Cystitis',
+            attributes: {
+                type: 'cystitis',
+                acuity,
+                organism,
+                requires_organism_code: !!organism
+            },
+            warnings: organism ? ['Use additional code to identify infectious organism'] : []
+        };
+    }
+
+    // 3. UTI (Generic)
+    if (/uti|urinary tract infection/.test(lower) && !/pyelonephritis|cystitis/.test(lower)) {
+        return {
+            code: 'N39.0',
+            label: 'Urinary tract infection, site not specified',
+            attributes: {
+                type: 'uti',
+                organism,
+                requires_organism_code: !!organism
+            },
+            warnings: organism ? ['Use additional code to identify infectious organism'] : []
+        };
+    }
 
     // Detect Stage
     let stage: RenalAttributes['stage'] = undefined;
@@ -32,7 +97,7 @@ export function resolveRenal(text: string): RenalResolution | undefined {
     const hasHypertension = /hypertens|high blood pressure/.test(lower);
     const hasDiabetes = /diabet|dm/.test(lower);
 
-    // 1. ESRD
+    // 4. ESRD
     if (stage === 'ESRD') {
         return {
             code: 'N18.6',
@@ -42,26 +107,19 @@ export function resolveRenal(text: string): RenalResolution | undefined {
         };
     }
 
-    // 2. CKD Stages
+    // 5. CKD Stages
     if (/ckd|chronic kidney|renal disease|renal failure/.test(lower) || stage) {
         let code = 'N18.9';
         if (stage === 1) code = 'N18.1';
         if (stage === 2) code = 'N18.2';
-        if (stage === 3) code = 'N18.30'; // Unspecified stage 3
+        if (stage === 3) code = 'N18.30';
         if (stage === 4) code = 'N18.4';
         if (stage === 5) code = 'N18.5';
 
-        // Refine Stage 3
         if (stage === 3) {
             if (/3a/.test(lower)) code = 'N18.31';
             if (/3b/.test(lower)) code = 'N18.32';
         }
-
-        // Interaction with Hypertension (I12/I13) is handled in Cardiovascular or Rules Engine via combination logic.
-        // However, if this is the primary resolver, we should output the N code, and let the rules engine add I12 if HTN is present?
-        // The prompt says "Enforce 'stage always secondary'".
-        // If the user inputs "Hypertensive CKD", we want I12 as primary and N18 as secondary.
-        // If we return N18 here, the rules engine needs to know to sequence it.
 
         return {
             code,
@@ -71,7 +129,7 @@ export function resolveRenal(text: string): RenalResolution | undefined {
         };
     }
 
-    // 3. Dialysis Status (Z99.2) - standalone if mentioned
+    // 6. Dialysis Status (Z99.2)
     if (onDialysis) {
         return {
             code: 'Z99.2',
