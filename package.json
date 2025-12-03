@@ -1,7 +1,6 @@
 {
   "name": "icd-ai-saas",
   "private": true,
-  "type": "module",
   "scripts": {
     "build": "tsc && mkdir -p dist && cp -R data dist/data",
     "dev": "ts-node src/index.ts",

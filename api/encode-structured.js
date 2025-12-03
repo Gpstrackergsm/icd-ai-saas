@@ -1,8 +1,8 @@
-import { parseInput } from '../dist/lib/structured/parser.js';
-import { validateContext } from '../dist/lib/structured/validator.js';
-import { runStructuredRules } from '../dist/lib/structured/engine.js';
+const { parseInput } = require('../dist/lib/structured/parser.js');
+const { validateContext } = require('../dist/lib/structured/validator.js');
+const { runStructuredRules } = require('../dist/lib/structured/engine.js');
 
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
@@ -54,7 +54,8 @@ export default async function handler(req, res) {
         console.error('Structured encoding error:', error);
         return res.status(500).json({
             error: 'Internal server error',
-            message: error.message
+            message: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
         });
     }
-}
+};
