@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseInput = parseInput;
 function parseInput(text) {
+    var _a;
     const lines = text.split('\n').map(l => l.trim()).filter(l => l);
     const context = {
         demographics: {},
@@ -226,6 +227,14 @@ function parseInput(text) {
                     context.conditions.respiratory.pneumonia.organism = 'mrsa';
                 else if (lowerValue.includes('e. coli') || lowerValue.includes('e.coli'))
                     context.conditions.respiratory.pneumonia.organism = 'e_coli';
+                else if (lowerValue.includes('klebsiella'))
+                    context.conditions.respiratory.pneumonia.organism = 'klebsiella';
+                else if (lowerValue.includes('influenza'))
+                    context.conditions.respiratory.pneumonia.organism = 'influenza';
+                else if (lowerValue.includes('legionella'))
+                    context.conditions.respiratory.pneumonia.organism = 'legionella';
+                else if (lowerValue.includes('streptococcus') || lowerValue.includes('strep'))
+                    context.conditions.respiratory.pneumonia.organism = 'streptococcus';
                 else
                     errors.push(`Unknown organism: ${value}`);
                 break;
@@ -258,6 +267,30 @@ function parseInput(text) {
                     context.conditions.infection.organism = 'e_coli';
                 else if (lowerValue.includes('pseudomonas'))
                     context.conditions.infection.organism = 'pseudomonas';
+                else if (lowerValue.includes('staphylococcus') || lowerValue.includes('staph'))
+                    context.conditions.infection.organism = 'staphylococcus';
+                else if (lowerValue.includes('streptococcus') || lowerValue.includes('strep'))
+                    context.conditions.infection.organism = 'streptococcus';
+                else if (lowerValue.includes('klebsiella'))
+                    context.conditions.infection.organism = 'klebsiella';
+                else if (lowerValue.includes('enterococcus'))
+                    context.conditions.infection.organism = 'enterococcus';
+                else if (lowerValue.includes('proteus'))
+                    context.conditions.infection.organism = 'proteus';
+                else if (lowerValue.includes('candida'))
+                    context.conditions.infection.organism = 'candida';
+                else if (lowerValue.includes('bacteroides'))
+                    context.conditions.infection.organism = 'bacteroides';
+                else if (lowerValue.includes('enterobacter'))
+                    context.conditions.infection.organism = 'enterobacter';
+                else if (lowerValue.includes('serratia'))
+                    context.conditions.infection.organism = 'serratia';
+                else if (lowerValue.includes('acinetobacter'))
+                    context.conditions.infection.organism = 'acinetobacter';
+                else if (lowerValue.includes('legionella'))
+                    context.conditions.infection.organism = 'legionella';
+                else if (lowerValue.includes('influenza'))
+                    context.conditions.infection.organism = 'influenza';
                 else
                     context.conditions.infection.organism = 'unspecified';
                 break;
@@ -741,5 +774,17 @@ function parseInput(text) {
                 break;
         }
     });
+    // POST-PROCESSING: Sync Infection Organism to Pneumonia if site is Lung
+    if (((_a = context.conditions.infection) === null || _a === void 0 ? void 0 : _a.site) === 'lung' && context.conditions.infection.organism && context.conditions.infection.organism !== 'unspecified') {
+        if (!context.conditions.respiratory)
+            context.conditions.respiratory = {};
+        if (!context.conditions.respiratory.pneumonia)
+            context.conditions.respiratory.pneumonia = { type: 'unspecified' };
+        // Only override if pneumonia organism is unspecified
+        if (!context.conditions.respiratory.pneumonia.organism || context.conditions.respiratory.pneumonia.organism === 'unspecified') {
+            // Cast is safe because we updated the types in context.ts
+            context.conditions.respiratory.pneumonia.organism = context.conditions.infection.organism;
+        }
+    }
     return { context, errors };
 }

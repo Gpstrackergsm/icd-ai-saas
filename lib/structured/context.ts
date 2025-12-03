@@ -54,7 +54,7 @@ export interface PatientContext {
                 exacerbation?: boolean;
             };
             pneumonia?: {
-                organism?: 'pseudomonas' | 'e_coli' | 'mrsa' | 'mssa' | 'strep' | 'viral' | 'unspecified';
+                organism?: 'pseudomonas' | 'e_coli' | 'mrsa' | 'mssa' | 'strep' | 'viral' | 'klebsiella' | 'influenza' | 'legionella' | 'streptococcus' | 'haemophilus' | 'unspecified';
                 type: 'aspiration' | 'bacterial' | 'viral' | 'unspecified';
             };
             mechanicalVent?: {
@@ -65,7 +65,7 @@ export interface PatientContext {
         infection?: {
             present: boolean;
             site?: 'lung' | 'urinary' | 'blood' | 'skin' | 'other';
-            organism?: 'mrsa' | 'e_coli' | 'pseudomonas' | 'unspecified';
+            organism?: 'mrsa' | 'e_coli' | 'pseudomonas' | 'staphylococcus' | 'streptococcus' | 'klebsiella' | 'enterococcus' | 'proteus' | 'candida' | 'bacteroides' | 'enterobacter' | 'serratia' | 'acinetobacter' | 'legionella' | 'influenza' | 'unspecified';
             sepsis?: {
                 present: boolean;
                 severe?: boolean;

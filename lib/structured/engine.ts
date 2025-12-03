@@ -1066,6 +1066,11 @@ function mapPneumoniaOrganism(organism?: string): string {
     if (lower.includes('pseudomonas')) return 'J15.1';
     if (lower.includes('e. coli') || lower.includes('e.coli') || lower.includes('e coli')) return 'J15.5';
     if (lower.includes('mrsa')) return 'J15.212';
+    if (lower.includes('klebsiella')) return 'J15.0';
+    if (lower.includes('influenza')) return 'J11.0'; // Influenza with pneumonia, virus not identified
+    if (lower.includes('legionella')) return 'A48.1'; // Legionnaires' disease
+    if (lower.includes('streptococcus') || lower.includes('strep')) return 'J15.4'; // Other streptococcal pneumonia
+    if (lower.includes('haemophilus')) return 'J15.2';
     if (lower.includes('viral')) return 'J12.9';
     return 'J18.9';
 }
@@ -1073,11 +1078,20 @@ function mapPneumoniaOrganism(organism?: string): string {
 // Sepsis organism mapping (A41.x codes)
 function mapSepsisOrganism(organism: string): string {
     const lower = organism.toLowerCase();
+    // console.log(`DEBUG: mapSepsisOrganism('${organism}') -> lower: '${lower}'`);
     if (lower.includes('e. coli') || lower.includes('e.coli') || lower === 'e_coli') return 'A41.51';
     if (lower.includes('pseudomonas')) return 'A41.52';
     if (lower.includes('mrsa')) return 'A41.02';
-    if (lower.includes('staph') || lower.includes('staphylococcus')) return 'A41.2';
-    if (lower.includes('strep') || lower.includes('streptococcus')) return 'A40.9';
+    if (lower.includes('staph') || lower.includes('staphylococcus')) return 'A41.2'; // MSSA/Unspecified Staph
+    if (lower.includes('strep') || lower.includes('streptococcus')) return 'A40.9'; // Streptococcal sepsis, unspecified
+    if (lower.includes('klebsiella')) return 'A41.59'; // Other Gram-negative sepsis
+    if (lower.includes('enterococcus')) return 'A41.81';
+    if (lower.includes('proteus')) return 'A41.59'; // Other Gram-negative sepsis
+    if (lower.includes('candida')) return 'B37.7'; // Candidal sepsis
+    if (lower.includes('bacteroides') || lower.includes('anaerobe')) return 'A41.4'; // Sepsis due to anaerobes
+    if (lower.includes('enterobacter')) return 'A41.59'; // Other Gram-negative sepsis
+    if (lower.includes('serratia')) return 'A41.53';
+    if (lower.includes('acinetobacter')) return 'A41.59';
     return 'A41.9'; // Unspecified
 }
 
