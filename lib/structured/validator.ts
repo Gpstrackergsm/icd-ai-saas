@@ -10,17 +10,10 @@ export function validateContext(ctx: PatientContext): ValidationResult {
     const errors: string[] = [];
 
     // 1. Mutually Exclusive Conditions
-    if (ctx.conditions.diabetes) {
-        if (ctx.conditions.diabetes.type === 'type1' && ctx.conditions.diabetes.type === 'type2') {
-            // This is structurally impossible in our TS type, but good for logic check if type changed
-        }
-    }
+    // (Type system enforces single value for diabetes type and CKD stage, so no need to check for simultaneous conflicting values on the same field)
 
     // 2. Logical Conflicts
     if (ctx.conditions.ckd) {
-        if (ctx.conditions.ckd.stage === 'esrd' && ctx.conditions.ckd.stage === 3) {
-            // Impossible by type, but check logical consistency
-        }
         // Example: Dialysis without CKD/ESRD/AKI?
         // Actually Z99.2 can exist alone, but usually implies renal disease.
     }
