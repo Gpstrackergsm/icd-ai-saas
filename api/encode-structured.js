@@ -1,6 +1,6 @@
-import { parseInput } from '../lib/structured/parser.js';
-import { validateContext } from '../lib/structured/validator.js';
-import { runStructuredRules } from '../lib/structured/engine.js';
+import { parseInput } from '../dist/lib/structured/parser.js';
+import { validateContext } from '../dist/lib/structured/validator.js';
+import { runStructuredRules } from '../dist/lib/structured/engine.js';
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {
