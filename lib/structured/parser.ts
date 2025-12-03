@@ -53,16 +53,16 @@ export function parseInput(text: string): ParseResult {
                 else if (lowerValue.includes('secondary')) context.conditions.diabetes.type = 'secondary';
                 else errors.push(`Invalid diabetes type: ${value}`);
                 break;
-            case 'diabetes complication':
+            case 'complications':
                 if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
                 const comps = lowerValue.split(',').map(c => c.trim());
                 comps.forEach(c => {
-                    if (c === 'ckd') context.conditions.diabetes!.complications.push('ckd');
-                    else if (c.includes('ulcer')) context.conditions.diabetes!.complications.push('foot_ulcer');
+                    if (c === 'neuropathy') context.conditions.diabetes!.complications.push('neuropathy');
+                    else if (c.includes('nephropathy') || c.includes('ckd')) context.conditions.diabetes!.complications.push('ckd');
+                    else if (c.includes('foot ulcer')) context.conditions.diabetes!.complications.push('foot_ulcer');
                     else if (c.includes('retinopathy')) context.conditions.diabetes!.complications.push('retinopathy');
-                    else if (c.includes('neuropathy')) context.conditions.diabetes!.complications.push('neuropathy');
                     else if (c.includes('hypoglycemia')) context.conditions.diabetes!.complications.push('hypoglycemia');
-                    else errors.push(`Unknown diabetes complication: ${c}`);
+                    else if (c) errors.push(`Unknown diabetes complication: ${c}`);
                 });
                 break;
             case 'insulin use':
@@ -76,6 +76,7 @@ export function parseInput(text: string): ParseResult {
                 else context.conditions.diabetes.ulcerSite = 'other';
                 break;
             case 'ulcer severity':
+            case 'ulcer depth':
                 if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
                 if (lowerValue.includes('muscle')) context.conditions.diabetes.ulcerSeverity = 'muscle';
                 else if (lowerValue.includes('bone')) context.conditions.diabetes.ulcerSeverity = 'bone';

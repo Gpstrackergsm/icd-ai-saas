@@ -1,51 +1,76 @@
-
 import { parseInput } from './lib/structured/parser';
 import { validateContext } from './lib/structured/validator';
 import { runStructuredRules } from './lib/structured/engine';
 
 const input = `
-Age: 67
+Age: 65
 Gender: Female
-Hypertension: Yes
-Heart Failure: Yes
-Heart Failure Type: Systolic
-Heart Failure Acuity: Acute on chronic
 Diabetes Type: Type 2
-Diabetes Complication: CKD, Foot Ulcer
-Ulcer Site: Left Foot
-Ulcer Severity: Muscle
+Complications: Foot Ulcer, Nephropathy/CKD
+Ulcer Site: Right Foot
+Ulcer Depth: Muscle exposed
 CKD Stage: 4
-Dialysis: Yes
-Acute Kidney Injury: Yes
-Pneumonia: Yes
-Pneumonia Organism: Pseudomonas
+Dialysis: No
+Acute Kidney Injury: No
 `;
 
+console.log('=== PRODUCTION DIABETES/CKD ENGINE TEST ===\n');
+
 console.log('--- 1. PARSING INPUT ---');
-const { context, errors } = parseInput(input);
-if (errors.length > 0) {
-    console.error('Parsing Errors:', errors);
+const { context, errors: parseErrors } = parseInput(input);
+if (parseErrors.length > 0) {
+    console.error('❌ Parsing Errors:', parseErrors);
 } else {
-    console.log('Context:', JSON.stringify(context, null, 2));
+    console.log('✅ Context:', JSON.stringify(context, null, 2));
 }
 
 console.log('\n--- 2. VALIDATING CONTEXT ---');
 const validation = validateContext(context);
 if (!validation.valid) {
-    console.error('Validation Errors:', validation.errors);
+    console.error('❌ Validation Errors:', validation.errors);
 } else {
-    console.log('Validation: PASSED');
+    console.log('✅ Validation: PASSED');
+}
+if (validation.warnings.length > 0) {
+    console.log('⚠️  Warnings:', validation.warnings);
 }
 
-console.log('\n--- 3. RUNNING RULES ENGINE ---');
+console.log('\n--- 3. RUNNING PRODUCTION RULES ENGINE ---');
 const result = runStructuredRules(context);
 
-console.log('Primary:', result.primary?.code, '-', result.primary?.label);
-console.log('Secondary:');
-result.secondary.forEach(c => {
-    console.log(`  ${c.code} - ${c.label} [${c.rationale}]`);
-});
+if (result.primary) {
+    console.log('\n🎯 PRIMARY DIAGNOSIS:');
+    console.log(`  Code: ${result.primary.code}`);
+    console.log(`  Label: ${result.primary.label}`);
+    console.log(`  Trigger: ${result.primary.trigger}`);
+    console.log(`  Rule: ${result.primary.rule}`);
+    console.log(`  Rationale: ${result.primary.rationale}`);
+    console.log(`  Guideline: ${result.primary.guideline}`);
+}
+
+if (result.secondary.length > 0) {
+    console.log('\n📋 SECONDARY DIAGNOSES:');
+    result.secondary.forEach((code, i) => {
+        console.log(`\n  ${i + 1}. ${code.code} - ${code.label}`);
+        console.log(`     Trigger: ${code.trigger}`);
+        console.log(`     Rule: ${code.rule}`);
+        console.log(`     Rationale: ${code.rationale}`);
+        console.log(`     Guideline: ${code.guideline}`);
+    });
+}
+
+if (result.validationErrors.length > 0) {
+    console.log('\n❌ VALIDATION ERRORS:', result.validationErrors);
+}
 
 if (result.warnings.length > 0) {
-    console.log('Warnings:', result.warnings);
+    console.log('\n⚠️  WARNINGS:', result.warnings);
 }
+
+console.log('\n--- EXPECTED OUTPUT ---');
+console.log('Primary: E11.621 (Type 2 diabetes with foot ulcer)');
+console.log('Secondary:');
+console.log('  1. L97.513 (Right foot ulcer, muscle depth)');
+console.log('  2. E11.22 (Type 2 diabetes with CKD) - because Nephropathy/CKD selected');
+console.log('  3. N18.4 (CKD Stage 4)');
+console.log('\n=== TEST COMPLETE ===');
