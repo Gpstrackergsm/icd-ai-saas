@@ -298,9 +298,7 @@ function parseInput(text) {
                         context.conditions.diabetes.complications.push('ketoacidosis');
                     if (lowerValue.includes('foot ulcer')) {
                         context.conditions.diabetes.complications.push('foot_ulcer');
-                        if (!context.conditions.wounds)
-                            context.conditions.wounds = { present: true };
-                        context.conditions.wounds.type = 'diabetic';
+                        // Don't set wounds.present - diabetic foot ulcers are handled in diabetes section
                     }
                 }
                 // Fallback to specific logic if key matches specific cases below
