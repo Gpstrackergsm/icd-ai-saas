@@ -37,9 +37,19 @@ export function parseInput(text: string): ParseResult {
             case 'status':
             case 'complication':
             case 'complications':
+                // COPD exacerbation
+                if (lowerValue.includes('exacerbation') || lowerValue.includes('acute exacerbation')) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                    if (!context.conditions.respiratory.copd) {
+                        context.conditions.respiratory.copd = { present: true, withExacerbation: true };
+                    } else {
+                        context.conditions.respiratory.copd.withExacerbation = true;
+                    }
+                }
+
+            // Sepsis/Infection complications':
             case 'diabetes complications':
             case 'current admission':
-            case 'on dialysis':
             case 'active disease':
             case 'cause':
                 // Sepsis & Infection
@@ -82,12 +92,13 @@ export function parseInput(text: string): ParseResult {
                 }
 
                 // COPD
-                if (lowerValue.includes('copd') || lowerValue.includes('chronic obstructive')) {
+                if (lowerValue.includes('copd')) {
                     if (!context.conditions.respiratory) context.conditions.respiratory = {};
-                    context.conditions.respiratory.copd = { present: true };
-                    if (lowerValue.includes('exacerbation')) context.conditions.respiratory.copd.withExacerbation = true;
+                    context.conditions.respiratory.copd = { present: true, withExacerbation: false };
+                    if (lowerValue.includes('exacerbation') || lowerValue.includes('acute')) {
+                        context.conditions.respiratory.copd.withExacerbation = true;
+                    }
                 }
-
                 // Respiratory Failure
                 if (lowerValue.includes('respiratory failure')) {
                     if (!context.conditions.respiratory) context.conditions.respiratory = {};
@@ -134,11 +145,15 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.obstetric.pregnant = true;
                 }
 
-                // Neoplasm
-                if (lowerValue.includes('cancer') || lowerValue.includes('malignancy')) {
-                    if (!context.conditions.neoplasm) context.conditions.neoplasm = { present: true };
-                    if (lowerValue.includes('breast')) context.conditions.neoplasm.site = 'breast';
+                // Cancer
+                if (lowerValue.includes('cancer') || lowerValue.includes('carcinoma') || lowerValue.includes('neoplasm')) {
+                    if (!context.conditions.neoplasm) context.conditions.neoplasm = { present: true, active: true };
+                    // Check for history indicators
+                    if (lowerValue.includes('history') || lowerValue.includes('no evidence') || lowerValue.includes('ned')) {
+                        context.conditions.neoplasm.active = false;
+                    }
                     if (lowerValue.includes('lung')) context.conditions.neoplasm.site = 'lung';
+                    if (lowerValue.includes('breast')) context.conditions.neoplasm.site = 'breast';
                     if (lowerValue.includes('colon')) context.conditions.neoplasm.site = 'colon';
                     if (lowerValue.includes('prostate')) context.conditions.neoplasm.site = 'prostate';
                 }
@@ -394,8 +409,8 @@ export function parseInput(text: string): ParseResult {
                     // "On dialysis: Yes" implies chronic in this context
                     context.conditions.ckd.onDialysis = true;
                     context.conditions.ckd.dialysisType = 'chronic';
-                } else {
-                    // Legacy Yes/No format
+                } else if (key !== 'on dialysis') {
+                    // Legacy Yes/No format for 'dialysis' or 'dialysis status' keys
                     context.conditions.ckd.onDialysis = parseBoolean(value);
                 }
                 break;
@@ -721,9 +736,12 @@ export function parseInput(text: string): ParseResult {
                 else context.conditions.neoplasm.site = 'other';
                 break;
             case 'metastasis':
-            case 'metastatic':
-                if (!context.conditions.neoplasm) context.conditions.neoplasm = { present: true };
-                context.conditions.neoplasm.metastasis = parseBoolean(value);
+            case 'active disease':
+                if (!context.conditions.neoplasm) context.conditions.neoplasm = { present: true, active: true };
+                // If "Active disease: No" then it's history
+                if (lowerValue === 'no' || lowerValue === 'false') {
+                    context.conditions.neoplasm.active = false;
+                }
                 break;
             case 'metastatic site':
                 if (!context.conditions.neoplasm) context.conditions.neoplasm = { present: true, metastasis: true };

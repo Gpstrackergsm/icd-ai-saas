@@ -247,19 +247,16 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         }
 
         // RULE: Dialysis → Z99.2 (ONLY IF CHRONIC)
-        // COMMANDMENT: Never assume chronic dialysis
-        if (k.dialysisType === 'chronic' || (k.onDialysis && k.dialysisType === undefined)) {
-            // Only generate if explicitly chronic OR if onDialysis=true but no type specified (backward compat)
-            if (k.dialysisType === 'chronic') {
-                codes.push({
-                    code: 'Z99.2',
-                    label: 'Dependence on renal dialysis',
-                    rationale: 'Patient on chronic dialysis',
-                    guideline: 'ICD-10-CM I.C.21.c.3',
-                    trigger: 'Dialysis Type = Chronic',
-                    rule: 'Chronic dialysis status code'
-                });
-            }
+        // LAYER 6: Always add Z99.2 when on chronic dialysis
+        if (k.dialysisType === 'chronic') {
+            codes.push({
+                code: 'Z99.2',
+                label: 'Dependence on renal dialysis',
+                rationale: 'Patient on chronic dialysis',
+                guideline: 'ICD-10-CM I.C.21.c.3',
+                trigger: 'Dialysis Type = Chronic',
+                rule: 'Chronic dialysis status code'
+            });
         }
 
         // RULE: If dialysis is temporary, do NOT generate Z99.2
@@ -284,18 +281,24 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             trigger: 'Pneumonia + ' + (p.organism || 'unspecified organism'),
             rule: 'Organism-specific pneumonia code'
         });
-
-
     }
 
-    if (ctx.conditions.respiratory?.copd?.present) {
+    // --- RESPIRATORY RULES ---
+    if (ctx.conditions.respiratory?.copd) {
+        const copd = ctx.conditions.respiratory.copd;
+        // LAYER 5: COPD with exacerbation → J44.1, otherwise J44.9
+        const code = copd.withExacerbation ? 'J44.1' : 'J44.9';
+        const label = copd.withExacerbation
+            ? 'Chronic obstructive pulmonary disease with acute exacerbation'
+            : 'Chronic obstructive pulmonary disease, unspecified';
+
         codes.push({
-            code: 'J44.9',
-            label: 'Chronic obstructive pulmonary disease, unspecified',
-            rationale: 'COPD documented',
+            code: code,
+            label: label,
+            rationale: copd.withExacerbation ? 'COPD with acute exacerbation' : 'COPD documented',
             guideline: 'ICD-10-CM J44',
-            trigger: 'COPD = Yes',
-            rule: 'COPD code'
+            trigger: copd.withExacerbation ? 'COPD + Exacerbation' : 'COPD = Yes',
+            rule: 'COPD code with exacerbation specificity'
         });
     }
 
@@ -647,9 +650,12 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         const mh = ctx.conditions.mental_health;
 
         // RULE: Depression
+        // LAYER 5: Severity mapping for depression
         if (mh.depression) {
             let code = 'F32.9'; // Unspecified
             if (mh.depression.severity === 'severe') {
+                // Severe with psychotic features → F32.3
+                // Severe without psychotic features → F32.2
                 code = mh.depression.psychoticFeatures ? 'F32.3' : 'F32.2';
             } else if (mh.depression.severity === 'moderate') {
                 code = 'F32.1';
@@ -719,18 +725,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         // RULE: GI Bleeding
         if (g.bleeding) {
             let code = 'K92.2'; // GI hemorrhage, unspecified
-            if (g.bleeding.site === 'upper') code = 'K92.0'; // Hematemesis (proxy for upper) - or K92.2 if not specified. K92.0 is Hematemesis, K92.1 is Melena.
-            // Better mapping:
-            // Upper GI Bleed -> K92.2 (often used if not specific) or K92.0/K92.1
-            // Let's use K92.2 for general GI bleed, but if site is upper, maybe K92.2 is still best unless we know hematemesis/melena.
-            // Actually K92.2 is "Gastrointestinal hemorrhage, unspecified".
-            // If "Upper GI Bleeding" is stated, it's often coded as K92.2 in absence of specific lesion, but clinically K92.0/1 are signs.
-            // Let's stick to K92.2 for unspecified, and maybe specific codes if we had them.
-            // For now:
             if (g.bleeding.site === 'upper') code = 'K92.2'; // K92.2 is often used for "GI Bleed" even if upper is suspected but source unknown.
-            // Actually, let's use K92.2 for all unless we have more info.
-            // Wait, K92.1 is Melena, K92.0 is Hematemesis.
-            // If just "GI Bleeding", K92.2.
 
             codes.push({
                 code: code,
@@ -775,22 +770,41 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     if (ctx.conditions.neoplasm?.present) {
         const neo = ctx.conditions.neoplasm;
 
-        // RULE: Primary Malignancy
-        if (neo.site) {
-            let code = 'C80.1'; // Malignant neoplasm, unspecified site
-            if (neo.site === 'lung') code = 'C34.90';
-            else if (neo.site === 'breast') code = 'C50.919'; // Breast, unspecified
-            else if (neo.site === 'colon') code = 'C18.9';
-            else if (neo.site === 'prostate') code = 'C61';
+        // LAYER 4: History vs Active Cancer
+        if (neo.active === false) {
+            // History of cancer - use Z85.x codes
+            let code = 'Z85.9'; // Personal history of malignant neoplasm, unspecified
+            if (neo.site === 'lung') code = 'Z85.118';
+            else if (neo.site === 'breast') code = 'Z85.3';
+            else if (neo.site === 'colon') code = 'Z85.038';
+            else if (neo.site === 'prostate') code = 'Z85.46';
 
             codes.push({
                 code: code,
-                label: `Malignant neoplasm of ${neo.site || 'unspecified site'}`,
-                rationale: 'Primary malignancy documented',
-                guideline: 'ICD-10-CM C00-C96',
-                trigger: `Cancer Site: ${neo.site}`,
-                rule: 'Primary neoplasm mapping'
+                label: `Personal history of malignant neoplasm of ${neo.site || 'unspecified site'}`,
+                rationale: 'History of cancer, no active disease',
+                guideline: 'ICD-10-CM Z85',
+                trigger: 'Active Disease = No',
+                rule: 'Personal history of malignancy'
             });
+        } else {
+            // Active cancer - use C-codes
+            if (neo.site) {
+                let code = 'C80.1'; // Unspecified malignant neoplasm
+                if (neo.site === 'lung') code = 'C34.90';
+                else if (neo.site === 'breast') code = 'C50.919';
+                else if (neo.site === 'colon') code = 'C18.9';
+                else if (neo.site === 'prostate') code = 'C61';
+
+                codes.push({
+                    code: code,
+                    label: `Malignant neoplasm of ${neo.site}`,
+                    rationale: 'Primary malignancy documented',
+                    guideline: 'ICD-10-CM I.C.2',
+                    trigger: `Neoplasm Site: ${neo.site}`,
+                    rule: 'Primary neoplasm code'
+                });
+            }
         }
 
         // RULE: Metastasis

@@ -85,6 +85,7 @@ export interface PatientContext {
         };
         neoplasm?: {
             present: boolean;
+            active?: boolean; // true = current disease, false = history only
             site?: 'lung' | 'breast' | 'colon' | 'prostate' | 'other';
             primaryOrSecondary?: 'primary' | 'secondary';
             metastasis?: boolean;
