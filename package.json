@@ -8,13 +8,15 @@
     "test": "tsc && node dist/__tests__/medicalEngine.test.js"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.2",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/uuid": "^10.0.0",
-    "bcryptjs": "^3.0.3",
-    "jsonwebtoken": "^9.0.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.4.5",
-    "uuid": "^13.0.0"
+    "typescript": "^5.4.5"
   }
 }
