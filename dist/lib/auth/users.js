@@ -19,7 +19,7 @@ async function createUser(email, password, name) {
         .from('users')
         .select('*')
         .eq('email', email.toLowerCase())
-        .single();
+        .maybeSingle(); // Use maybeSingle() to avoid error when no user exists
     if (existingUser) {
         throw new Error('User already exists');
     }
@@ -46,8 +46,9 @@ async function findUserByEmail(email) {
         .from('users')
         .select('*')
         .eq('email', email.toLowerCase())
-        .single();
-    if (error || !data) {
+        .maybeSingle(); // Use maybeSingle() instead of single() to avoid error when no rows
+    if (error) {
+        console.error('Error finding user by email:', error);
         return null;
     }
     return data;
@@ -57,8 +58,9 @@ async function findUserById(id) {
         .from('users')
         .select('*')
         .eq('id', id)
-        .single();
-    if (error || !data) {
+        .maybeSingle(); // Use maybeSingle() instead of single()
+    if (error) {
+        console.error('Error finding user by id:', error);
         return null;
     }
     return data;

@@ -19,7 +19,7 @@ export async function createUser(email: string, password: string, name: string):
         .from('users')
         .select('*')
         .eq('email', email.toLowerCase())
-        .single();
+        .maybeSingle(); // Use maybeSingle() to avoid error when no user exists
 
     if (existingUser) {
         throw new Error('User already exists');
@@ -53,13 +53,14 @@ export async function findUserByEmail(email: string): Promise<User | null> {
         .from('users')
         .select('*')
         .eq('email', email.toLowerCase())
-        .single();
+        .maybeSingle(); // Use maybeSingle() instead of single() to avoid error when no rows
 
-    if (error || !data) {
+    if (error) {
+        console.error('Error finding user by email:', error);
         return null;
     }
 
-    return data as User;
+    return data as User | null;
 }
 
 export async function findUserById(id: string): Promise<User | null> {
@@ -67,13 +68,14 @@ export async function findUserById(id: string): Promise<User | null> {
         .from('users')
         .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle(); // Use maybeSingle() instead of single()
 
-    if (error || !data) {
+    if (error) {
+        console.error('Error finding user by id:', error);
         return null;
     }
 
-    return data as User;
+    return data as User | null;
 }
 
 export async function verifyPassword(plainPassword: string, hashedPassword: string): Promise<boolean> {
