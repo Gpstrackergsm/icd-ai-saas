@@ -64,8 +64,9 @@ export interface PatientContext {
         };
         infection?: {
             present: boolean;
-            site?: 'lung' | 'urinary' | 'blood' | 'skin' | 'other';
-            organism?: 'mrsa' | 'mssa' | 'e_coli' | 'pseudomonas' | 'staphylococcus' | 'streptococcus' | 'klebsiella' | 'enterococcus' | 'proteus' | 'candida' | 'bacteroides' | 'enterobacter' | 'serratia' | 'acinetobacter' | 'legionella' | 'influenza' | 'unspecified';
+            site?: 'lung' | 'urinary' | 'skin' | 'blood' | 'other';
+            organism?: 'unspecified' | 'e_coli' | 'pseudomonas' | 'mrsa' | 'mssa' | 'klebsiella' | 'strep' | 'staph' | 'candida' | 'legionella' | 'influenza' | 'enterococcus' | 'proteus' | 'bacteroides' | 'enterobacter' | 'serratia' | 'acinetobacter';
+            source?: string; // e.g., "urinary tract infection", "pneumonia", "cellulitis"
             sepsis?: {
                 present: boolean;
                 severe?: boolean;

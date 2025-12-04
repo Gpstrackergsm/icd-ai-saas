@@ -1237,6 +1237,34 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         }
     }
 
+    // CRITICAL FIX: Sepsis source infection validation
+    // If sepsis is present, ensure source infection code is included
+    const hasSepsis = finalCodes.some(c => c.code.startsWith('A41') || c.code.startsWith('A40'));
+    const hasR6520or21 = finalCodes.some(c => c.code === 'R65.20' || c.code === 'R65.21');
+
+    if (hasSepsis || hasR6520or21) {
+        // Check if source infection codes are present
+        const hasPneumonia = finalCodes.some(c => c.code.startsWith('J15') || c.code.startsWith('J18'));
+        const hasUTI = finalCodes.some(c => c.code === 'N39.0');
+        const hasCellulitis = finalCodes.some(c => c.code.startsWith('L03'));
+
+        // If infection context has source but no corresponding code, add it
+        if (ctx.conditions.infection?.source) {
+            const source = ctx.conditions.infection.source.toLowerCase();
+
+            if ((source.includes('uti') || source.includes('urinary')) && !hasUTI) {
+                finalCodes.push({
+                    code: 'N39.0',
+                    label: 'Urinary tract infection, site not specified',
+                    rationale: 'UTI documented as source of sepsis',
+                    guideline: 'ICD-10-CM N39.0',
+                    trigger: `Source: ${ctx.conditions.infection.source}`,
+                    rule: 'Sepsis source infection'
+                });
+            }
+        }
+    }
+
     // FIX 2: Stroke I63/I69 conflict - remove I63.x if I69.x present
     const hasI63 = finalCodes.some(c => c.code.startsWith('I63'));
     const hasI69 = finalCodes.some(c => c.code.startsWith('I69'));

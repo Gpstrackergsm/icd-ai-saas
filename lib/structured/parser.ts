@@ -34,6 +34,12 @@ export function parseInput(text: string): ParseResult {
             case 'history':
             case 'event':
             case 'source':
+                // Infection source
+                if (key === 'source' && lowerValue) {
+                    if (!context.conditions.infection) context.conditions.infection = { present: true };
+                    context.conditions.infection.source = value; // Store original value
+                }
+
             case 'status':
             case 'complication':
             case 'complications':
@@ -72,7 +78,7 @@ export function parseInput(text: string): ParseResult {
                     else if (lowerValue.includes('mssa')) context.conditions.infection.organism = 'mssa';
                     else if (lowerValue.includes('pseudomonas')) context.conditions.infection.organism = 'pseudomonas';
                     else if (lowerValue.includes('klebsiella')) context.conditions.infection.organism = 'klebsiella';
-                    else if (lowerValue.includes('streptococcus') || lowerValue.includes('strep')) context.conditions.infection.organism = 'streptococcus';
+                    else if (lowerValue.includes('streptococcus') || lowerValue.includes('strep')) context.conditions.infection.organism = 'strep';
                     else if (lowerValue.includes('proteus')) context.conditions.infection.organism = 'proteus';
                     else if (lowerValue.includes('enterococcus')) context.conditions.infection.organism = 'enterococcus';
                     else if (lowerValue.includes('candida')) context.conditions.infection.organism = 'candida';
@@ -507,8 +513,8 @@ export function parseInput(text: string): ParseResult {
                 else if (lowerValue.includes('e. coli') || lowerValue.includes('e.coli')) context.conditions.infection.organism = 'e_coli';
                 else if (lowerValue.includes('pseudomonas')) context.conditions.infection.organism = 'pseudomonas';
                 else if (lowerValue.includes('staphylococcus aureus') || lowerValue.includes('staph aureus')) context.conditions.infection.organism = 'mssa';
-                else if (lowerValue.includes('staphylococcus') || lowerValue.includes('staph')) context.conditions.infection.organism = 'staphylococcus';
-                else if (lowerValue.includes('streptococcus') || lowerValue.includes('strep')) context.conditions.infection.organism = 'streptococcus';
+                else if (lowerValue.includes('staphylococcus') || lowerValue.includes('staph')) context.conditions.infection.organism = 'staph';
+                else if (lowerValue.includes('streptococcus') || lowerValue.includes('strep')) context.conditions.infection.organism = 'strep';
                 else if (lowerValue.includes('klebsiella')) context.conditions.infection.organism = 'klebsiella';
                 else if (lowerValue.includes('enterococcus')) context.conditions.infection.organism = 'enterococcus';
                 else if (lowerValue.includes('proteus')) context.conditions.infection.organism = 'proteus';
