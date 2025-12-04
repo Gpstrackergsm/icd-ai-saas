@@ -1213,6 +1213,30 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         });
     }
 
+    // CRITICAL FIX: Organism-specific sepsis code enforcement
+    // If A41.9 is present AND organism is known, replace with organism-specific code
+    const a419Index = finalCodes.findIndex(c => c.code === 'A41.9');
+    if (a419Index >= 0) {
+        // Check multiple locations for organism
+        let organism = ctx.conditions.infection?.organism ||
+            ctx.conditions.respiratory?.pneumonia?.organism;
+
+        if (organism) {
+            const organismSepsisCode = mapSepsisOrganism(organism);
+
+            // Only replace if we have a specific code (not A41.9)
+            if (organismSepsisCode && organismSepsisCode !== 'A41.9') {
+                finalCodes[a419Index] = {
+                    ...finalCodes[a419Index],
+                    code: organismSepsisCode,
+                    label: `Sepsis due to ${organism}`,
+                    rationale: `Organism-specific sepsis code for ${organism}`,
+                    trigger: `Organism: ${organism}`
+                };
+            }
+        }
+    }
+
     // FIX 2: Stroke I63/I69 conflict - remove I63.x if I69.x present
     const hasI63 = finalCodes.some(c => c.code.startsWith('I63'));
     const hasI69 = finalCodes.some(c => c.code.startsWith('I69'));
