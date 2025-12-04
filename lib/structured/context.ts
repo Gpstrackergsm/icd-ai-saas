@@ -17,7 +17,7 @@ export interface PatientContext {
             insulinUse?: boolean;
         };
         ckd?: {
-            stage: 1 | 2 | 3 | 4 | 5 | 'esrd';
+            stage: '1' | '2' | '3' | '4' | '5' | 'esrd' | 'unspecified';
             onDialysis: boolean;
             dialysisType?: 'none' | 'temporary' | 'chronic';
             aki: boolean;
@@ -26,7 +26,8 @@ export interface PatientContext {
         cardiovascular?: {
             hypertension: boolean;
             secondaryHypertension?: boolean;
-            hypertensionCause?: 'renal' | 'endocrine' | 'other';
+            hypertensionCause?: 'renal' | 'endocrine';
+            heartDisease?: boolean; // For "Hypertensive Heart Disease" without HF
             heartFailure?: {
                 type: 'systolic' | 'diastolic' | 'combined' | 'unspecified';
                 acuity: 'acute' | 'chronic' | 'acute_on_chronic' | 'unspecified';
@@ -41,7 +42,7 @@ export interface PatientContext {
         };
         renal?: {
             ckd?: {
-                stage: '1' | '2' | '3' | '4' | '5' | 'unspecified';
+                stage: '1' | '2' | '3' | '4' | '5' | 'esrd' | 'unspecified';
             };
             aki?: boolean;
         };

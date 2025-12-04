@@ -42,9 +42,14 @@ export function parseInput(text: string): ParseResult {
                     if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
                     context.conditions.cardiovascular.hypertension = true;
 
-                    // Detect heart disease
-                    if (lowerValue.includes('heart')) {
+                    // Detect heart failure (NOT just "heart disease")
+                    // "Hypertensive Heart Disease" → I11.9 (no HF)
+                    // "Heart Failure" → I11.0 (with HF)
+                    if (lowerValue.includes('heart failure')) {
                         context.conditions.cardiovascular.heartFailure = { type: 'unspecified', acuity: 'unspecified' };
+                    } else if (lowerValue.includes('heart')) {
+                        // Set heartDisease flag for "Hypertensive Heart Disease" etc.
+                        context.conditions.cardiovascular.heartDisease = true;
                     }
 
                     // Detect CKD
@@ -235,8 +240,8 @@ export function parseInput(text: string): ParseResult {
                 }
                 if (lowerValue.includes('ckd') || lowerValue.includes('chronic kidney disease')) {
                     if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
-                    if (lowerValue.includes('stage 4')) context.conditions.ckd.stage = 4;
-                    if (lowerValue.includes('stage 5')) context.conditions.ckd.stage = 5;
+                    if (lowerValue.includes('stage 4')) context.conditions.ckd.stage = '4';
+                    if (lowerValue.includes('stage 5')) context.conditions.ckd.stage = '5';
                     if (lowerValue.includes('esrd')) context.conditions.ckd.stage = 'esrd';
                 }
                 if (lowerValue.includes('nephropathy')) {
@@ -533,11 +538,21 @@ export function parseInput(text: string): ParseResult {
                 else if (lowerValue === 'ed') context.encounter.type = 'ed';
                 else if (lowerValue === 'initial') context.encounter.type = 'initial';
                 else if (lowerValue === 'subsequent') context.encounter.type = 'subsequent';
-                else if (lowerValue === 'sequela') context.encounter.type = 'sequela';
                 else if (lowerValue === 'icu') context.encounter.type = 'inpatient';
                 else errors.push(`Invalid encounter type: ${value}`);
                 break;
-                if (lowerValue.trim() === 'none') break; // Ignore 'none'
+
+            case 'diabetes type':
+                if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
+                if (lowerValue === 'type 1') context.conditions.diabetes.type = 'type1';
+                else if (lowerValue === 'type 2') context.conditions.diabetes.type = 'type2';
+                else if (lowerValue.includes('drug')) context.conditions.diabetes.type = 'drug_induced';
+                else if (lowerValue.includes('secondary')) context.conditions.diabetes.type = 'secondary';
+                else errors.push(`Invalid diabetes type: ${value}`);
+                break;
+
+            case 'complications':
+            case 'diabetes complications':
                 const comps = lowerValue.split(',').map(c => c.trim());
                 comps.forEach(c => {
                     if (c === 'neuropathy') context.conditions.diabetes!.complications.push('neuropathy');
@@ -609,13 +624,21 @@ export function parseInput(text: string): ParseResult {
                 break;
             case 'ckd stage':
                 if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
-                if (value === '1') context.conditions.ckd.stage = 1;
-                else if (value === '2') context.conditions.ckd.stage = 2;
-                else if (value === '3') context.conditions.ckd.stage = 3;
-                else if (value === '4') context.conditions.ckd.stage = 4;
-                else if (value === '5') context.conditions.ckd.stage = 5;
-                else if (lowerValue === 'esrd') context.conditions.ckd.stage = 'esrd';
-                else errors.push(`Invalid CKD stage: ${value}`);
+                if (!context.conditions.renal) context.conditions.renal = {};
+                if (!context.conditions.renal.ckd) context.conditions.renal.ckd = { stage: 'unspecified' };
+
+                let stageVal = 'unspecified';
+                if (value === '1') stageVal = '1';
+                else if (value === '2') stageVal = '2';
+                else if (value === '3') stageVal = '3';
+                else if (value === '4') stageVal = '4';
+                else if (value === '5') stageVal = '5';
+                else if (lowerValue === 'esrd') stageVal = 'esrd';
+
+                if (stageVal !== 'unspecified') {
+                    context.conditions.ckd.stage = stageVal as any;
+                    context.conditions.renal.ckd.stage = stageVal as any;
+                }
                 break;
             case 'dialysis':
             case 'dialysis status':

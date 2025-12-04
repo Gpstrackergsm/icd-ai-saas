@@ -228,8 +228,51 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 trigger: 'Hypertension + Heart Failure + CKD',
                 rule: 'HTN combination code logic'
             });
+
+            // Add I50.9 heart failure code
+            codes.push({
+                code: 'I50.9',
+                label: 'Heart failure, unspecified',
+                rationale: 'Heart failure documented with HTN and CKD',
+                guideline: 'ICD-10-CM I.C.9.a.2',
+                trigger: 'Heart Failure',
+                rule: 'Heart failure code'
+            });
         }
-        // RULE: HTN + CKD → I12.x
+        // RULE: HTN + Heart Disease + CKD (WITHOUT HF) → I13.10/I13.11
+        else if (c.hypertension && c.heartDisease && hasCKD && !hasHF) {
+            const ckdStage = ctx.conditions.renal?.ckd?.stage || ctx.conditions.ckd?.stage;
+            const isStage5OrESRD = ckdStage === '5' || ckdStage === 'esrd';
+            const code = isStage5OrESRD ? 'I13.11' : 'I13.10';
+            const label = isStage5OrESRD
+                ? 'Hypertensive heart and chronic kidney disease without heart failure, with stage 5 chronic kidney disease, or end stage renal disease'
+                : 'Hypertensive heart and chronic kidney disease without heart failure, with stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease';
+
+            codes.push({
+                code: code,
+                label: label,
+                rationale: 'Combination code for HTN, heart disease, and CKD without heart failure',
+                guideline: 'ICD-10-CM I.C.9.a.2',
+                trigger: 'Hypertension + Heart Disease + CKD',
+                rule: 'HTN combination code logic'
+            });
+
+            // Add CKD stage code
+            const ckdCode = ckdStage === '1' ? 'N18.1' :
+                ckdStage === '2' ? 'N18.2' :
+                    ckdStage === '3' ? 'N18.3' :
+                        ckdStage === '4' ? 'N18.4' :
+                            ckdStage === '5' ? 'N18.5' : 'N18.9';
+            codes.push({
+                code: ckdCode,
+                label: `Chronic kidney disease, stage ${ckdStage}`,
+                rationale: 'CKD stage code required with I13.x',
+                guideline: 'ICD-10-CM I.C.9.a.2',
+                trigger: 'CKD Stage ' + ckdStage,
+                rule: 'CKD stage code'
+            });
+        }
+        // RULE: HTN + CKD (no heart involvement) → I12.x
         else if (c.hypertension && hasCKD) {
             // I12.0 = with stage 5 CKD or ESRD
             // I12.9 = with stage 1-4 or unspecified CKD
@@ -269,10 +312,31 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             codes.push({
                 code: 'I11.0',
                 label: 'Hypertensive heart disease with heart failure',
-                rationale: 'Combination code for HTN and HF',
+                rationale: 'HTN with documented heart failure',
                 guideline: 'ICD-10-CM I.C.9.a.1',
                 trigger: 'Hypertension + Heart Failure',
                 rule: 'HTN combination code logic'
+            });
+
+            // Add I50.9 heart failure code
+            codes.push({
+                code: 'I50.9',
+                label: 'Heart failure, unspecified',
+                rationale: 'Heart failure documented',
+                guideline: 'ICD-10-CM I.C.9.a.1',
+                trigger: 'Heart Failure',
+                rule: 'Heart failure code'
+            });
+        }
+        // RULE: HTN + Heart Disease (WITHOUT HF) → I11.9
+        else if (c.hypertension && c.heartDisease && !hasHF) {
+            codes.push({
+                code: 'I11.9',
+                label: 'Hypertensive heart disease without heart failure',
+                rationale: 'HTN with heart disease but no documented heart failure',
+                guideline: 'ICD-10-CM I.C.9.a.1',
+                trigger: 'Hypertension + Heart Disease',
+                rule: 'HTN heart disease code'
             });
         }
         // RULE: HTN only → I10 (UNLESS patient is pregnant/postpartum - then use O10-O16)
