@@ -144,6 +144,30 @@ export function parseInput(text: string): ParseResult {
 
                     context.conditions.respiratory.pneumonia = { organism, type };
                 }
+
+                // Sepsis (standalone or with other conditions)
+                if (lowerValue.includes('sepsis') || lowerValue.includes('septic')) {
+                    if (!context.conditions.infection) context.conditions.infection = { present: true };
+                    if (!context.conditions.infection.sepsis) context.conditions.infection.sepsis = { present: true };
+                    context.conditions.infection.sepsis.present = true;
+
+                    if (lowerValue.includes('shock')) context.conditions.infection.sepsis.shock = true;
+
+                    // Check for "secondary to" or "due to" for source
+                    if (lowerValue.includes('urinary') || lowerValue.includes('uti')) {
+                        context.conditions.infection.site = 'urinary';
+                    } else if (lowerValue.includes('pneumonia') || lowerValue.includes('lung')) {
+                        context.conditions.infection.site = 'lung';
+                        context.conditions.infection.source = 'pneumonia';
+                    }
+                }
+
+                // UTI (Standalone or with sepsis)
+                if (lowerValue.includes('urinary tract infection') || lowerValue.includes('uti')) {
+                    if (!context.conditions.infection) context.conditions.infection = { present: true };
+                    context.conditions.infection.site = 'urinary';
+                    context.conditions.infection.present = true;
+                }
                 break;
 
             case 'source':
@@ -247,6 +271,30 @@ export function parseInput(text: string): ParseResult {
                 if (lowerValue.includes('nephropathy')) {
                     if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
                     context.conditions.diabetes.complications.push('nephropathy'); // Changed from 'ckd' to 'nephropathy'
+                }
+
+                // Sepsis & Infection
+                if (lowerValue.includes('sepsis') || lowerValue.includes('septic')) {
+                    if (!context.conditions.infection) context.conditions.infection = { present: true };
+                    if (!context.conditions.infection.sepsis) context.conditions.infection.sepsis = { present: true };
+                    context.conditions.infection.sepsis.present = true;
+
+                    if (lowerValue.includes('shock')) context.conditions.infection.sepsis.shock = true;
+
+                    // Check for "secondary to" or "due to" for source
+                    if (lowerValue.includes('urinary') || lowerValue.includes('uti')) {
+                        context.conditions.infection.site = 'urinary';
+                    } else if (lowerValue.includes('pneumonia') || lowerValue.includes('lung')) {
+                        context.conditions.infection.site = 'lung';
+                        context.conditions.infection.source = 'pneumonia';
+                    }
+                }
+
+                // UTI (Standalone or with sepsis)
+                if (lowerValue.includes('urinary tract infection') || lowerValue.includes('uti')) {
+                    if (!context.conditions.infection) context.conditions.infection = { present: true };
+                    context.conditions.infection.site = 'urinary';
+                    context.conditions.infection.present = true;
                 }
 
                 // Gastro
