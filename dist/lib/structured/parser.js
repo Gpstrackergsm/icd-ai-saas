@@ -26,6 +26,113 @@ function parseInput(text) {
             case 'diagnosis':
             case 'history':
             case 'event':
+            case 'condition':
+            case 'conditions':
+            case 'diagnosis':
+                // Intelligent routing based on content
+                // Hypertension
+                if (lowerValue.includes('hypertension') || lowerValue.includes('hypertensive')) {
+                    if (!context.conditions.cardiovascular)
+                        context.conditions.cardiovascular = { hypertension: false };
+                    context.conditions.cardiovascular.hypertension = true;
+                    // Detect heart disease
+                    if (lowerValue.includes('heart')) {
+                        context.conditions.cardiovascular.heartFailure = { type: 'unspecified', acuity: 'unspecified' };
+                    }
+                    // Detect CKD
+                    if (lowerValue.includes('kidney') || lowerValue.includes('ckd')) {
+                        if (!context.conditions.renal)
+                            context.conditions.renal = {};
+                        context.conditions.renal.ckd = { stage: 'unspecified' };
+                        // Extract stage
+                        if (lowerValue.includes('stage 1'))
+                            context.conditions.renal.ckd.stage = '1';
+                        else if (lowerValue.includes('stage 2'))
+                            context.conditions.renal.ckd.stage = '2';
+                        else if (lowerValue.includes('stage 3'))
+                            context.conditions.renal.ckd.stage = '3';
+                        else if (lowerValue.includes('stage 4'))
+                            context.conditions.renal.ckd.stage = '4';
+                        else if (lowerValue.includes('stage 5'))
+                            context.conditions.renal.ckd.stage = '5';
+                    }
+                    // Detect secondary hypertension
+                    if (lowerValue.includes('secondary')) {
+                        context.conditions.cardiovascular.secondaryHypertension = true;
+                        if (lowerValue.includes('renal'))
+                            context.conditions.cardiovascular.hypertensionCause = 'renal';
+                    }
+                }
+                // COPD
+                if (lowerValue.includes('copd')) {
+                    if (!context.conditions.respiratory)
+                        context.conditions.respiratory = {};
+                    const withExacerbation = lowerValue.includes('exacerbation');
+                    const withInfection = lowerValue.includes('infection') || lowerValue.includes('respiratory infection');
+                    context.conditions.respiratory.copd = {
+                        present: true,
+                        withExacerbation: withExacerbation && !withInfection,
+                        withInfection: withInfection
+                    };
+                }
+                // Asthma
+                if (lowerValue.includes('asthma')) {
+                    if (!context.conditions.respiratory)
+                        context.conditions.respiratory = {};
+                    let severity = 'unspecified';
+                    let status = 'uncomplicated';
+                    // Severity
+                    if (lowerValue.includes('mild intermittent'))
+                        severity = 'mild_intermittent';
+                    else if (lowerValue.includes('mild persistent'))
+                        severity = 'mild_persistent';
+                    else if (lowerValue.includes('moderate'))
+                        severity = 'moderate_persistent';
+                    else if (lowerValue.includes('severe'))
+                        severity = 'severe_persistent';
+                    // Status
+                    if (lowerValue.includes('acute'))
+                        status = 'exacerbation';
+                    else if (lowerValue.includes('exacerbation'))
+                        status = 'exacerbation';
+                    else if (lowerValue.includes('status asthmaticus'))
+                        status = 'status_asthmaticus';
+                    context.conditions.respiratory.asthma = { severity, status };
+                }
+                // Pneumonia
+                if (lowerValue.includes('pneumonia') || lowerValue.includes('pneumonitis')) {
+                    if (!context.conditions.respiratory)
+                        context.conditions.respiratory = {};
+                    let organism;
+                    let type;
+                    // Organism
+                    if (lowerValue.includes('streptococcus') || lowerValue.includes('strep'))
+                        organism = 'strep_pneumoniae';
+                    else if (lowerValue.includes('bacterial')) {
+                        type = 'bacterial';
+                        organism = 'unspecified';
+                    }
+                    else if (lowerValue.includes('viral')) {
+                        type = 'viral';
+                        organism = 'viral';
+                    }
+                    else if (lowerValue.includes('aspiration'))
+                        type = 'aspiration';
+                    // COVID-19
+                    if (lowerValue.includes('covid')) {
+                        if (!context.conditions.infection)
+                            context.conditions.infection = { present: true };
+                        context.conditions.infection.covid19 = true;
+                    }
+                    // Sepsis
+                    if (lowerValue.includes('sepsis')) {
+                        if (!context.conditions.infection)
+                            context.conditions.infection = { present: true };
+                        context.conditions.infection.sepsis = { present: true };
+                    }
+                    context.conditions.respiratory.pneumonia = { organism, type };
+                }
+                break;
             case 'source':
                 // Infection source
                 if (key === 'source' && lowerValue) {
@@ -900,14 +1007,6 @@ function parseInput(text) {
                     context.conditions.infection.organism = 'bacteroides';
                 else if (lowerValue.includes('enterobacter'))
                     context.conditions.infection.organism = 'enterobacter';
-                else if (lowerValue.includes('serratia'))
-                    context.conditions.infection.organism = 'serratia';
-                else if (lowerValue.includes('acinetobacter'))
-                    context.conditions.infection.organism = 'acinetobacter';
-                else if (lowerValue.includes('legionella'))
-                    context.conditions.infection.organism = 'legionella';
-                else if (lowerValue.includes('influenza'))
-                    context.conditions.infection.organism = 'influenza';
                 else
                     context.conditions.infection.organism = 'unspecified';
                 break;

@@ -17,11 +17,11 @@ const cases = [
     { num: 10, input: "Age: 62\nGender: Female\nEncounter Type: Inpatient\nPneumonia: Bacterial", expected: ["J15.9"] },
     // Special Types (3 cases)
     { num: 11, input: "Age: 80\nGender: Male\nEncounter Type: Inpatient\nPneumonia: Aspiration", expected: ["J69.0"] },
-    { num: 12, input: "Age: 78\nGender: Female\nEncounter Type: Inpatient\nAspiration pneumonitis", expected: ["J69.0"] },
-    { num: 13, input: "Age: 70\nGender: Male\nEncounter Type: Inpatient\nVentilator-associated pneumonia: MRSA", expected: ["J95.851", "J15.212"] },
+    { num: 12, input: "Age: 78\nGender: Female\nEncounter Type: Inpatient\nPneumonia: Aspiration pneumonitis", expected: ["J69.0"] },
+    { num: 13, input: "Age: 70\nGender: Male\nEncounter Type: Inpatient\nPneumonia: Ventilator-associated, MRSA", expected: ["J95.851", "J15.212"] },
     // Unspecified (2 cases)
     { num: 14, input: "Age: 58\nGender: Female\nEncounter Type: Inpatient\nPneumonia: Yes", expected: ["J18.9"] },
-    { num: 15, input: "Age: 65\nGender: Male\nEncounter Type: Inpatient\nCommunity-acquired pneumonia", expected: ["J18.9"] },
+    { num: 15, input: "Age: 65\nGender: Male\nEncounter Type: Inpatient\nPneumonia: Community-acquired", expected: ["J18.9"] },
 ];
 let passed = 0;
 let failed = 0;

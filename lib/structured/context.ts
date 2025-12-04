@@ -24,6 +24,8 @@ export interface PatientContext {
         };
         cardiovascular?: {
             hypertension: boolean;
+            secondaryHypertension?: boolean;
+            hypertensionCause?: 'renal' | 'endocrine' | 'other';
             heartFailure?: {
                 type: 'systolic' | 'diastolic' | 'combined' | 'unspecified';
                 acuity: 'acute' | 'chronic' | 'acute_on_chronic' | 'unspecified';
@@ -32,10 +34,15 @@ export interface PatientContext {
             previousMI?: boolean;
             atrialFib?: boolean;
             mi?: {
-                type: 'stemi' | 'nstemi';
-                site?: 'anterior' | 'inferior' | 'lateral' | 'posterior' | 'other';
-                acuity: 'acute' | 'old';
+                type: 'stemi' | 'nstemi' | 'unspecified';
+                timing: 'initial' | 'subsequent' | 'old';
             };
+        };
+        renal?: {
+            ckd?: {
+                stage: '1' | '2' | '3' | '4' | '5' | 'unspecified';
+            };
+            aki?: boolean;
         };
         respiratory?: {
             failure?: {
@@ -66,7 +73,7 @@ export interface PatientContext {
         infection?: {
             present: boolean;
             site?: 'lung' | 'urinary' | 'skin' | 'blood' | 'other';
-            organism?: 'unspecified' | 'e_coli' | 'pseudomonas' | 'mrsa' | 'mssa' | 'klebsiella' | 'strep' | 'staph' | 'candida' | 'legionella' | 'influenza' | 'enterococcus' | 'proteus' | 'bacteroides' | 'enterobacter' | 'serratia' | 'acinetobacter';
+            organism?: 'e_coli' | 'pseudomonas' | 'mrsa' | 'mssa' | 'klebsiella' | 'strep' | 'proteus' | 'enterococcus' | 'bacteroides' | 'enterobacter' | 'candida' | 'staph' | 'gram_negative' | 'gram_positive' | 'unspecified';
             source?: string; // e.g., "urinary tract infection", "pneumonia", "cellulitis"
             sepsis?: {
                 present: boolean;
@@ -76,6 +83,7 @@ export interface PatientContext {
             hospitalAcquired?: boolean;
             hiv?: boolean;
             tuberculosis?: boolean;
+            covid19?: boolean;
         };
         wounds?: {
             present: boolean;

@@ -2,78 +2,102 @@ import { parseInput } from './lib/structured/parser';
 import { validateContext } from './lib/structured/validator';
 import { runStructuredRules } from './lib/structured/engine';
 
-const input = `
-Age: 42
-Gender: Male
-Encounter Type: Inpatient
-Complications: Nephropathy/CKD, Foot Ulcer, Retinopathy
-Diabetes Type: Type 2
-Insulin Use: Yes
-Ulcer Site: Right Foot
-Ulcer Severity: Muscle exposed
-`;
+const cases = [
+    // Diabetes Cases (5)
+    { num: 1, input: "Age: 52\nGender: Male\nEncounter Type: Outpatient\nDiabetes Type: Type 2\nComplications: None", expected: { primary: "E11.9", secondary: [] } },
+    { num: 2, input: "Age: 61\nGender: Female\nEncounter Type: Inpatient\nDiabetes Type: Type 2\nComplications: Neuropathy", expected: { primary: "E11.40", secondary: [] } },
+    { num: 3, input: "Age: 68\nGender: Male\nEncounter Type: Inpatient\nDiabetes Type: Type 2\nComplications: Chronic Kidney Disease", expected: { primary: "E11.22", secondary: [] } },
+    { num: 4, input: "Age: 57\nGender: Female\nEncounter Type: Outpatient\nDiabetes Type: Type 2\nComplications: Diabetic retinopathy with macular edema", expected: { primary: "E11.311", secondary: [] } },
+    { num: 5, input: "Age: 72\nGender: Male\nEncounter Type: Inpatient\nDiabetes Type: Type 2\nComplications: Foot ulcer\nUlcer Site: Right foot\nUlcer Depth: Fat exposed", expected: { primary: "E11.621", secondary: ["L97.513"] } },
 
-console.log('=== COMPREHENSIVE DIABETES TEST ===\n');
-console.log('Input:');
-console.log(input);
+    // Hypertension Cases (5)
+    { num: 6, input: "Age: 45\nGender: Male\nEncounter Type: Outpatient\nCondition: Primary Hypertension", expected: { primary: "I10", secondary: [] } },
+    { num: 7, input: "Age: 62\nGender: Female\nEncounter Type: Inpatient\nCondition: Hypertension with Chronic Kidney Disease Stage 3", expected: { primary: "I12.9", secondary: ["N18.3"] } },
+    { num: 8, input: "Age: 70\nGender: Male\nEncounter Type: Outpatient\nCondition: Hypertensive Heart Disease", expected: { primary: "I11.9", secondary: [] } },
+    { num: 9, input: "Age: 66\nGender: Female\nEncounter Type: Inpatient\nCondition: Hypertensive Heart and Chronic Kidney Disease\nCKD Stage: 4", expected: { primary: "I13.10", secondary: ["N18.4"] } },
+    { num: 10, input: "Age: 59\nGender: Male\nEncounter Type: Outpatient\nCondition: Secondary Hypertension due to renal disease", expected: { primary: "I15.1", secondary: [] } },
 
-console.log('\n--- 1. PARSING ---');
-const { context, errors: parseErrors } = parseInput(input);
-if (parseErrors.length > 0) {
-    console.error('❌ Parsing Errors:', parseErrors);
-} else {
-    console.log('✅ Parsed successfully');
-    console.log('Context:', JSON.stringify(context, null, 2));
-}
+    // COPD/Asthma Cases (5)
+    { num: 11, input: "Age: 64\nGender: Male\nEncounter Type: Outpatient\nCondition: COPD", expected: { primary: "J44.9", secondary: [] } },
+    { num: 12, input: "Age: 58\nGender: Female\nEncounter Type: Inpatient\nCondition: COPD with exacerbation", expected: { primary: "J44.1", secondary: [] } },
+    { num: 13, input: "Age: 39\nGender: Male\nEncounter Type: Outpatient\nCondition: Mild persistent asthma", expected: { primary: "J45.30", secondary: [] } },
+    { num: 14, input: "Age: 52\nGender: Female\nEncounter Type: Inpatient\nCondition: Acute severe asthma", expected: { primary: "J45.901", secondary: [] } },
+    { num: 15, input: "Age: 67\nGender: Male\nEncounter Type: Inpatient\nCondition: COPD with acute lower respiratory infection", expected: { primary: "J44.0", secondary: ["J22"] } },
 
-console.log('\n--- 2. VALIDATION ---');
-const validation = validateContext(context);
-if (!validation.valid) {
-    console.error('❌ Validation Errors:', validation.errors);
-} else {
-    console.log('✅ Validation: PASSED');
-}
-if (validation.warnings.length > 0) {
-    console.log('⚠️  Warnings:', validation.warnings);
-}
+    // Pneumonia Cases (5)
+    { num: 16, input: "Age: 71\nGender: Female\nEncounter Type: Inpatient\nCondition: Bacterial pneumonia", expected: { primary: "J15.9", secondary: [] } },
+    { num: 17, input: "Age: 48\nGender: Male\nEncounter Type: Outpatient\nCondition: Viral pneumonia", expected: { primary: "J12.9", secondary: [] } },
+    { num: 18, input: "Age: 65\nGender: Female\nEncounter Type: Inpatient\nCondition: Aspiration pneumonia", expected: { primary: "J69.0", secondary: [] } },
+    { num: 19, input: "Age: 82\nGender: Male\nEncounter Type: Inpatient\nCondition: Pneumonia due to COVID-19", expected: { primary: "U07.1", secondary: ["J12.82"] } },
+    { num: 20, input: "Age: 60\nGender: Female\nEncounter Type: Inpatient\nCondition: Pneumonia with sepsis\nOrganism: Streptococcus", expected: { primary: "A40.9", secondary: ["J15.4"] } },
+];
 
-console.log('\n--- 3. CODE GENERATION ---');
-const result = runStructuredRules(context);
+let passed = 0;
+let failed = 0;
+const failures: any[] = [];
 
-if (result.primary) {
-    console.log('\n🎯 PRIMARY DIAGNOSIS:');
-    console.log(`  Code: ${result.primary.code}`);
-    console.log(`  Label: ${result.primary.label}`);
-    console.log(`  Trigger: ${result.primary.trigger}`);
-    console.log(`  Rule: ${result.primary.rule}`);
-    console.log(`  Rationale: ${result.primary.rationale}`);
-    console.log(`  Guideline: ${result.primary.guideline}`);
-}
+console.log('🏥 COMPREHENSIVE ICD-10-CM ENCODER TEST\n');
+console.log('='.repeat(80));
 
-if (result.secondary.length > 0) {
-    console.log('\n📋 SECONDARY DIAGNOSES:');
-    result.secondary.forEach((code, i) => {
-        console.log(`\n  ${i + 1}. ${code.code} - ${code.label}`);
-        console.log(`     Trigger: ${code.trigger}`);
-        console.log(`     Rule: ${code.rule}`);
-        console.log(`     Rationale: ${code.rationale}`);
-        console.log(`     Guideline: ${code.guideline}`);
+cases.forEach(testCase => {
+    const { context, errors: parseErrors } = parseInput(testCase.input);
+    const validation = validateContext(context);
+
+    if (!validation.valid) {
+        console.log(`❌ CASE ${testCase.num}: VALIDATION FAILED`);
+        console.log(`   Errors: ${validation.errors.join(', ')}`);
+        failed++;
+        failures.push({ case: testCase.num, reason: 'Validation failed', errors: validation.errors });
+        return;
+    }
+
+    const result = runStructuredRules(context);
+    const primaryCode = result.primary?.code || '';
+    const secondaryCodes = result.secondary
+        .filter((c): c is NonNullable<typeof c> => c !== null && c !== undefined)
+        .map(c => c.code);
+
+    const primaryMatch = primaryCode === testCase.expected.primary;
+    const secondaryMatch = testCase.expected.secondary.every(exp => secondaryCodes.includes(exp)) &&
+        secondaryCodes.length === testCase.expected.secondary.length;
+
+    if (primaryMatch && secondaryMatch) {
+        console.log(`✅ CASE ${testCase.num}: PASS`);
+        console.log(`   Primary: ${primaryCode}${secondaryCodes.length > 0 ? ', Secondary: ' + secondaryCodes.join(', ') : ''}`);
+        passed++;
+    } else {
+        console.log(`❌ CASE ${testCase.num}: FAIL`);
+        console.log(`   Expected Primary: ${testCase.expected.primary}, Got: ${primaryCode}`);
+        if (testCase.expected.secondary.length > 0 || secondaryCodes.length > 0) {
+            console.log(`   Expected Secondary: ${testCase.expected.secondary.join(', ') || 'none'}`);
+            console.log(`   Got Secondary: ${secondaryCodes.join(', ') || 'none'}`);
+        }
+        failed++;
+        failures.push({
+            case: testCase.num,
+            expectedPrimary: testCase.expected.primary,
+            gotPrimary: primaryCode,
+            expectedSecondary: testCase.expected.secondary,
+            gotSecondary: secondaryCodes
+        });
+    }
+});
+
+console.log('\n' + '='.repeat(80));
+console.log(`📊 RESULTS: ${passed} passed, ${failed} failed out of ${cases.length} cases`);
+console.log(`📈 Success rate: ${Math.round(passed / cases.length * 100)}%`);
+
+if (failures.length > 0) {
+    console.log('\n❌ FAILED CASES:');
+    failures.forEach(f => {
+        console.log(`   Case ${f.case}: ${f.reason || 'Code mismatch'}`);
+        if (f.expectedPrimary) {
+            console.log(`      Expected: ${f.expectedPrimary} ${f.expectedSecondary?.length > 0 ? '+ ' + f.expectedSecondary.join(', ') : ''}`);
+            console.log(`      Got: ${f.gotPrimary} ${f.gotSecondary?.length > 0 ? '+ ' + f.gotSecondary.join(', ') : ''}`);
+        }
     });
 }
 
-if (result.validationErrors.length > 0) {
-    console.log('\n❌ VALIDATION ERRORS:', result.validationErrors);
+if (passed === cases.length) {
+    console.log('\n🎉 100% PASS RATE - ALL CASES PASSED!');
 }
-
-if (result.warnings.length > 0) {
-    console.log('\n⚠️  WARNINGS:', result.warnings);
-}
-
-console.log('\n--- EXPECTED CODES ---');
-console.log('✅ E11.621 (Type 2 DM with foot ulcer)');
-console.log('✅ L97.513 (Right foot ulcer, muscle depth)');
-console.log('✅ E11.22 (Type 2 DM with CKD) - because Nephropathy/CKD selected');
-console.log('✅ E11.311 (Type 2 DM with retinopathy)');
-console.log('Note: CKD stage not specified, so NO N18.x code should be generated');
-
-console.log('\n=== TEST COMPLETE ===');
