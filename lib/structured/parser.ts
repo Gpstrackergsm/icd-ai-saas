@@ -434,7 +434,13 @@ export function parseInput(text: string): ParseResult {
                 if (lowerValue.includes('diabetic') || lowerValue.includes('diabetes')) {
                     if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
                     if (lowerValue.includes('neuropathy')) context.conditions.diabetes.complications.push('neuropathy');
-                    if (lowerValue.includes('retinopathy')) context.conditions.diabetes.complications.push('retinopathy');
+                    if (lowerValue.includes('retinopathy')) {
+                        context.conditions.diabetes.complications.push('retinopathy');
+                        // Check for macular edema
+                        if (lowerValue.includes('macular edema') || lowerValue.includes('macular oedema')) {
+                            context.conditions.diabetes.macular_edema = true;
+                        }
+                    }
                     if (lowerValue.includes('ketoacidosis')) context.conditions.diabetes.complications.push('ketoacidosis');
                     if (lowerValue.includes('foot ulcer')) {
                         context.conditions.diabetes.complications.push('foot_ulcer');
@@ -531,19 +537,6 @@ export function parseInput(text: string): ParseResult {
                 else if (lowerValue === 'icu') context.encounter.type = 'inpatient';
                 else errors.push(`Invalid encounter type: ${value}`);
                 break;
-
-            // Diabetes
-            case 'diabetes type':
-                if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                if (lowerValue === 'type 1') context.conditions.diabetes.type = 'type1';
-                else if (lowerValue === 'type 2') context.conditions.diabetes.type = 'type2';
-                else if (lowerValue.includes('drug')) context.conditions.diabetes.type = 'drug_induced';
-                else if (lowerValue.includes('secondary')) context.conditions.diabetes.type = 'secondary';
-                else errors.push(`Invalid diabetes type: ${value}`);
-                break;
-                // case 'complications': // Merged above
-                // case 'diabetes complications': // Merged above
-                if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
                 if (lowerValue.trim() === 'none') break; // Ignore 'none'
                 const comps = lowerValue.split(',').map(c => c.trim());
                 comps.forEach(c => {
@@ -561,10 +554,15 @@ export function parseInput(text: string): ParseResult {
                         context.conditions.diabetes!.complications.push('foot_ulcer');
                         // Don't set wounds.present - handled in diabetes section
                     }
-                    else if (c.includes('retinopathy')) context.conditions.diabetes!.complications.push('retinopathy');
+                    else if (c.includes('retinopathy')) {
+                        context.conditions.diabetes!.complications.push('retinopathy');
+                        // Check for macular edema
+                        if (lowerValue.includes('macular edema') || lowerValue.includes('macular oedema')) {
+                            if (context.conditions.diabetes) context.conditions.diabetes.macular_edema = true;
+                        }
+                    }
                     else if (c.includes('hypoglycemia')) context.conditions.diabetes!.complications.push('hypoglycemia');
                     else if (c === 'ketoacidosis') context.conditions.diabetes!.complications.push('ketoacidosis');
-                    else if (c === 'hyperosmolar') context.conditions.diabetes!.complications.push('hyperosmolar');
                     else if (c === 'gangrene') context.conditions.diabetes!.complications.push('gangrene');
                     else if (c === 'amputation') context.conditions.diabetes!.complications.push('amputation');
                     else if (c === 'unspecified') context.conditions.diabetes!.complications.push('unspecified');
@@ -577,23 +575,29 @@ export function parseInput(text: string): ParseResult {
                 break;
             case 'ulcer site':
                 if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                if (lowerValue.includes('left') && lowerValue.includes('foot')) context.conditions.diabetes.ulcerSite = 'foot_left';
-                else if (lowerValue.includes('right') && lowerValue.includes('foot')) context.conditions.diabetes.ulcerSite = 'foot_right';
+                if (lowerValue.includes('left') && lowerValue.includes('foot')) context.conditions.diabetes.ulcerSite = 'left_foot';
+                else if (lowerValue.includes('right') && lowerValue.includes('foot')) context.conditions.diabetes.ulcerSite = 'right_foot';
                 else context.conditions.diabetes.ulcerSite = 'other';
                 break;
             case 'ulcer severity':
             case 'ulcer depth':
             case 'ulcer severity / ulcer depth':
-            case 'wound depth':
-                if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                if (lowerValue.includes('muscle')) context.conditions.diabetes.ulcerSeverity = 'muscle';
-                else if (lowerValue.includes('bone')) context.conditions.diabetes.ulcerSeverity = 'bone';
-                else if (lowerValue.includes('fat')) context.conditions.diabetes.ulcerSeverity = 'fat'; // Fat layer exposed = fat depth (L97.x12)
-                else if (lowerValue.includes('skin')) context.conditions.diabetes.ulcerSeverity = 'skin';
-                else context.conditions.diabetes.ulcerSeverity = 'unspecified';
+            case 'depth':
+                if (context.conditions.diabetes) {
+                    if (lowerValue.includes('bone') || lowerValue.includes('necrosis')) {
+                        context.conditions.diabetes.ulcerSeverity = 'bone';
+                    } else if (lowerValue.includes('muscle') || lowerValue.includes('fat exposed')) {
+                        // "Fat exposed" means muscle level in ICD-10-CM
+                        context.conditions.diabetes.ulcerSeverity = 'muscle';
+                    } else if (lowerValue.includes('fat') && !lowerValue.includes('exposed')) {
+                        context.conditions.diabetes.ulcerSeverity = 'fat';
+                    } else if (lowerValue.includes('skin') || lowerValue.includes('limited')) {
+                        context.conditions.diabetes.ulcerSeverity = 'skin';
+                    } else {
+                        context.conditions.diabetes.ulcerSeverity = 'unspecified';
+                    }
+                }
                 break;
-
-            // Renal
             case 'ckd present':
             case 'chronic kidney disease':
                 if (parseBoolean(value)) {
@@ -1198,13 +1202,13 @@ export function parseInput(text: string): ParseResult {
         // Sync Location
         if (context.conditions.wounds.location) {
             const loc = context.conditions.wounds.location;
-            if (loc === 'foot_right') context.conditions.diabetes.ulcerSite = 'foot_right';
-            else if (loc === 'foot_left') context.conditions.diabetes.ulcerSite = 'foot_left';
-            else if (loc === 'heel') context.conditions.diabetes.ulcerSite = 'foot_right'; // Default/Approximation, ideally check laterality
+            if (loc === 'foot_right') context.conditions.diabetes.ulcerSite = 'right_foot';
+            else if (loc === 'foot_left') context.conditions.diabetes.ulcerSite = 'left_foot';
+            else if (loc.includes('foot')) context.conditions.diabetes.ulcerSite = 'right_foot'; // Default/Approximation
             else context.conditions.diabetes.ulcerSite = 'other';
 
             // Refine heel mapping if laterality is known
-            if (loc === 'heel' && context.conditions.wounds.laterality === 'left') context.conditions.diabetes.ulcerSite = 'foot_left';
+            if (loc === 'heel' && context.conditions.wounds.laterality === 'left') context.conditions.diabetes.ulcerSite = 'left_foot';
         }
 
         // Sync Depth/Severity

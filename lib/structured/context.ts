@@ -9,9 +9,10 @@ export interface PatientContext {
     };
     conditions: {
         diabetes?: {
-            type: 'type1' | 'type2' | 'drug_induced' | 'secondary';
-            complications: Array<'ckd' | 'nephropathy' | 'foot_ulcer' | 'retinopathy' | 'neuropathy' | 'pad' | 'hypoglycemia' | 'hyperosmolarity' | 'ketoacidosis' | 'hyperosmolar' | 'gangrene' | 'amputation' | 'unspecified'>;
-            ulcerSite?: 'foot_left' | 'foot_right' | 'foot_bilateral' | 'ankle_left' | 'ankle_right' | 'other';
+            type: 'type1' | 'type2' | 'secondary' | 'drug_induced';
+            complications: ('retinopathy' | 'neuropathy' | 'nephropathy' | 'ckd' | 'foot_ulcer' | 'pad' | 'gangrene' | 'ketoacidosis' | 'hypoglycemia' | 'coma' | 'amputation' | 'unspecified')[];
+            macular_edema?: boolean; // For retinopathy with macular edema
+            ulcerSite?: 'right_foot' | 'left_foot' | 'right_toe' | 'left_toe' | 'heel' | 'other';
             ulcerSeverity?: 'skin' | 'fat' | 'muscle' | 'bone' | 'unspecified';
             insulinUse?: boolean;
         };

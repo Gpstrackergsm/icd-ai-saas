@@ -96,14 +96,22 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             });
         }
 
-        // RULE: Retinopathy → E10.319 / E11.319 (without macular edema unless explicitly documented)
+        // RULE: Retinopathy → E10.319 / E11.319 (or E10.311 / E11.311 with macular edema)
         if (d.complications.includes('retinopathy')) {
+            const withMacularEdema = d.macular_edema === true;
+            const code = withMacularEdema ? `${baseCode}.311` : `${baseCode}.319`;
+            const label = withMacularEdema
+                ? `${typeName} diabetes mellitus with unspecified diabetic retinopathy with macular edema`
+                : `${typeName} diabetes mellitus with unspecified diabetic retinopathy without macular edema`;
+
             codes.push({
-                code: `${baseCode}.319`,
-                label: `${typeName} diabetes mellitus with unspecified diabetic retinopathy without macular edema`,
-                rationale: 'Diabetes with documented retinopathy complication (macular edema not specified)',
+                code,
+                label,
+                rationale: withMacularEdema
+                    ? 'Diabetes with retinopathy and macular edema'
+                    : 'Diabetes with retinopathy without macular edema',
                 guideline: 'ICD-10-CM I.C.4.a',
-                trigger: 'Diabetes Type + Retinopathy complication',
+                trigger: 'Diabetes Type + Retinopathy complication' + (withMacularEdema ? ' + Macular Edema' : ''),
                 rule: 'Diabetes complication mapping'
             });
         }
