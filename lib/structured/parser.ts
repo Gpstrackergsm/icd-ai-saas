@@ -129,6 +129,12 @@ export function parseInput(text: string): ParseResult {
                     if (lowerValue.includes('sepsis')) {
                         if (!context.conditions.infection) context.conditions.infection = { present: true };
                         context.conditions.infection.sepsis = { present: true };
+
+                        // If pneumonia is mentioned, set infection site to lung
+                        if (lowerValue.includes('pneumonia')) {
+                            context.conditions.infection.site = 'lung';
+                            context.conditions.infection.source = 'pneumonia';
+                        }
                     }
 
                     context.conditions.respiratory.pneumonia = { organism, type };

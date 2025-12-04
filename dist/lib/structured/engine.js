@@ -1558,6 +1558,8 @@ function mapPneumoniaOrganism(organism) {
     switch (organism) {
         case 'strep_pneumoniae':
             return 'J13'; // Streptococcus pneumoniae
+        case 'strep': // Other streptococci
+            return 'J15.4';
         case 'h_influenzae':
             return 'J14'; // Haemophilus influenzae
         case 'klebsiella':
@@ -1780,6 +1782,7 @@ function getPneumoniaLabel(code, organism) {
         'J14': 'Pneumonia due to Haemophilus influenzae',
         'J15.0': 'Pneumonia due to Klebsiella pneumoniae',
         'J15.1': 'Pneumonia due to Pseudomonas',
+        'J15.4': 'Pneumonia due to other streptococci',
         'J15.211': 'Pneumonia due to Methicillin susceptible Staphylococcus aureus',
         'J15.212': 'Pneumonia due to Methicillin resistant Staphylococcus aureus',
         'J15.5': 'Pneumonia due to Escherichia coli',
