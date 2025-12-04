@@ -221,6 +221,42 @@ export function parseInput(text: string): ParseResult {
                     if (lowerValue.includes('psychotic')) context.conditions.mental_health.depression.psychoticFeatures = true;
                     if (lowerValue.includes('without psychotic')) context.conditions.mental_health.depression.psychoticFeatures = false;
                 }
+
+                // COPD detection (skip if key is 'status' or COPD already exists)
+                if (lowerValue.includes('copd') && key !== 'status' && !context.conditions.respiratory?.copd) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                    const withExacerbation = lowerValue.includes('exacerbation') || lowerValue.includes('exacerbated');
+                    const withInfection = lowerValue.includes('bronchitis') || lowerValue.includes('pneumonia') || lowerValue.includes('infection');
+
+                    context.conditions.respiratory.copd = {
+                        present: true,
+                        withExacerbation: withExacerbation && !withInfection,
+                        withInfection: withInfection
+                    };
+                }
+
+                // Asthma detection (skip if key is 'status' or asthma already exists)
+                if (lowerValue.includes('asthma') && !lowerValue.includes('copd') && key !== 'status' && !context.conditions.respiratory?.asthma) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
+
+                    // Parse severity
+                    let severity: 'mild_intermittent' | 'mild_persistent' | 'moderate_persistent' | 'severe_persistent' | 'unspecified' = 'unspecified';
+                    if (lowerValue.includes('mild intermittent')) severity = 'mild_intermittent';
+                    else if (lowerValue.includes('mild persistent')) severity = 'mild_persistent';
+                    else if (lowerValue.includes('moderate persistent') || lowerValue.includes('moderate')) severity = 'moderate_persistent';
+                    else if (lowerValue.includes('severe persistent') || lowerValue.includes('severe')) severity = 'severe_persistent';
+
+                    // Parse status
+                    let status: 'uncomplicated' | 'exacerbation' | 'status_asthmaticus' = 'uncomplicated';
+                    if (lowerValue.includes('status asthmaticus')) status = 'status_asthmaticus';
+                    else if (lowerValue.includes('exacerbation')) status = 'exacerbation';
+
+                    context.conditions.respiratory.asthma = {
+                        severity,
+                        status
+                    };
+                }
+
                 if (lowerValue.includes('heart failure')) {
                     if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
                     context.conditions.cardiovascular.heartFailure = { type: 'unspecified', acuity: 'unspecified' };
@@ -533,7 +569,50 @@ export function parseInput(text: string): ParseResult {
             case 'copd':
             case 'chronic obstructive pulmonary disease':
                 if (!context.conditions.respiratory) context.conditions.respiratory = {};
-                context.conditions.respiratory.copd = { present: parseBoolean(value) };
+                // Always parse COPD field - check for exacerbation/infection in value
+                const withExacerbation = lowerValue.includes('exacerbation') || lowerValue.includes('exacerbated');
+                const withInfection = lowerValue.includes('bronchitis') || lowerValue.includes('pneumonia') || lowerValue.includes('infection');
+
+                context.conditions.respiratory.copd = {
+                    present: true,
+                    withExacerbation: withExacerbation && !withInfection,
+                    withInfection: withInfection
+                };
+                break;
+            case 'asthma':
+                if (!context.conditions.respiratory) context.conditions.respiratory = {};
+
+                // Parse severity
+                let severity: 'mild_intermittent' | 'mild_persistent' | 'moderate_persistent' | 'severe_persistent' | 'unspecified' = 'unspecified';
+                if (lowerValue.includes('mild intermittent')) severity = 'mild_intermittent';
+                else if (lowerValue.includes('mild persistent')) severity = 'mild_persistent';
+                else if (lowerValue.includes('moderate persistent') || lowerValue.includes('moderate')) severity = 'moderate_persistent';
+                else if (lowerValue.includes('severe persistent') || lowerValue.includes('severe')) severity = 'severe_persistent';
+
+                // Parse status
+                let status: 'uncomplicated' | 'exacerbation' | 'status_asthmaticus' = 'uncomplicated';
+
+                context.conditions.respiratory.asthma = {
+                    severity,
+                    status
+                };
+                break;
+            case 'status':
+            case 'asthma status':
+                if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                if (!context.conditions.respiratory.asthma) {
+                    context.conditions.respiratory.asthma = { severity: 'unspecified', status: 'uncomplicated' };
+                }
+
+                // Update asthma status only
+                if (lowerValue.includes('status asthmaticus')) {
+                    context.conditions.respiratory.asthma.status = 'status_asthmaticus';
+                } else if (lowerValue.includes('exacerbation')) {
+                    context.conditions.respiratory.asthma.status = 'exacerbation';
+                } else if (parseBoolean(value)) {
+                    // "Status: Yes" means uncomplicated
+                    context.conditions.respiratory.asthma.status = 'uncomplicated';
+                }
                 break;
 
             // Infections & Sepsis

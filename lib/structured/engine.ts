@@ -343,6 +343,81 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         });
     }
 
+    // RULE: COPD (J44.x)
+    if (ctx.conditions.respiratory?.copd?.present) {
+        const copd = ctx.conditions.respiratory.copd;
+        let code = 'J44.9';
+        let label = 'Chronic obstructive pulmonary disease, unspecified';
+        let rationale = 'COPD without mention of exacerbation or infection';
+
+        if (copd.withInfection) {
+            code = 'J44.0';
+            label = 'Chronic obstructive pulmonary disease with (acute) lower respiratory infection';
+            rationale = 'COPD with documented infection (bronchitis, pneumonia)';
+        } else if (copd.withExacerbation) {
+            code = 'J44.1';
+            label = 'Chronic obstructive pulmonary disease with (acute) exacerbation';
+            rationale = 'COPD with acute exacerbation';
+        }
+
+        codes.push({
+            code,
+            label,
+            rationale,
+            guideline: 'ICD-10-CM I.C.10.a.1',
+            trigger: 'COPD',
+            rule: 'COPD code selection'
+        });
+    }
+
+    // RULE: Asthma (J45.x)
+    if (ctx.conditions.respiratory?.asthma) {
+        const asthma = ctx.conditions.respiratory.asthma;
+
+        // Map severity to code prefix
+        const severityMap: Record<string, string> = {
+            'mild_intermittent': '2',
+            'mild_persistent': '3',
+            'moderate_persistent': '4',
+            'severe_persistent': '5',
+            'unspecified': '909'
+        };
+
+        // Map status to code suffix
+        const statusMap: Record<string, string> = {
+            'uncomplicated': '0',
+            'exacerbation': '1',
+            'status_asthmaticus': '2'
+        };
+
+        const severityCode = severityMap[asthma.severity] || '909';
+        const statusCode = statusMap[asthma.status] || '9';
+
+        // Build code - unspecified asthma uses J45.90x format
+        const code = asthma.severity === 'unspecified'
+            ? `J45.90${statusCode}`
+            : `J45.${severityCode}${statusCode}`;
+
+        // Build label
+        const severityLabel = asthma.severity.replace(/_/g, ' ');
+        const statusLabel = asthma.status === 'uncomplicated' ? 'uncomplicated' :
+            asthma.status === 'exacerbation' ? 'with (acute) exacerbation' :
+                'with status asthmaticus';
+
+        const label = asthma.severity === 'unspecified'
+            ? `Unspecified asthma, ${statusLabel.replace('with (acute) exacerbation', 'with exacerbation')}`
+            : `${severityLabel.charAt(0).toUpperCase() + severityLabel.slice(1)} asthma, ${statusLabel}`;
+
+        codes.push({
+            code,
+            label,
+            rationale: `Asthma severity: ${severityLabel}, status: ${asthma.status}`,
+            guideline: 'ICD-10-CM I.C.10.a.2',
+            trigger: 'Asthma',
+            rule: 'Asthma code selection'
+        });
+    }
+
     // --- INFECTIONS & SEPSIS RULES ---
     if (ctx.conditions.infection) {
         const inf = ctx.conditions.infection;

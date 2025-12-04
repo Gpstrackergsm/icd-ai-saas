@@ -49,9 +49,8 @@ export interface PatientContext {
                 withExacerbation?: boolean;
             };
             asthma?: {
-                present: boolean;
-                severity?: 'mild' | 'moderate' | 'severe';
-                exacerbation?: boolean;
+                severity: 'mild_intermittent' | 'mild_persistent' | 'moderate_persistent' | 'severe_persistent' | 'unspecified';
+                status: 'uncomplicated' | 'exacerbation' | 'status_asthmaticus';
             };
             pneumonia?: {
                 organism?: 'pseudomonas' | 'e_coli' | 'mrsa' | 'mssa' | 'strep' | 'viral' | 'klebsiella' | 'influenza' | 'legionella' | 'streptococcus' | 'haemophilus' | 'unspecified';
