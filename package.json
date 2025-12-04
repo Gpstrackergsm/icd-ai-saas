@@ -8,6 +8,7 @@
     "test": "tsc && node dist/__tests__/medicalEngine.test.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.86.1",
     "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
     "uuid": "^9.0.0"

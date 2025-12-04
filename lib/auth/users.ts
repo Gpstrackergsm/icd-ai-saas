@@ -1,13 +1,7 @@
-import * as fs from 'fs';
-import * as path from 'path';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
+import { supabase } from './supabase';
 
-// Use /tmp directory on Vercel (serverless functions have read-only file system)
-const isVercel = process.env.VERCEL === '1';
-const USERS_FILE = isVercel
-    ? '/tmp/users.json'
-    : path.join(process.cwd(), 'data', 'users.json');
 const SALT_ROUNDS = 10;
 
 export interface User {
@@ -15,39 +9,19 @@ export interface User {
     email: string;
     password: string; // hashed
     name: string;
-    createdAt: string;
-    lastLogin?: string;
-}
-
-interface UsersData {
-    users: User[];
-}
-
-function readUsers(): UsersData {
-    try {
-        if (!fs.existsSync(USERS_FILE)) {
-            return { users: [] };
-        }
-        const data = fs.readFileSync(USERS_FILE, 'utf-8');
-        return JSON.parse(data);
-    } catch (error) {
-        return { users: [] };
-    }
-}
-
-function writeUsers(data: UsersData): void {
-    const dir = path.dirname(USERS_FILE);
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-    }
-    fs.writeFileSync(USERS_FILE, JSON.stringify(data, null, 2));
+    created_at: string;
+    last_login?: string;
 }
 
 export async function createUser(email: string, password: string, name: string): Promise<User> {
-    const data = readUsers();
-
     // Check if user already exists
-    if (data.users.find(u => u.email.toLowerCase() === email.toLowerCase())) {
+    const { data: existingUser } = await supabase
+        .from('users')
+        .select('*')
+        .eq('email', email.toLowerCase())
+        .single();
+
+    if (existingUser) {
         throw new Error('User already exists');
     }
 
@@ -60,36 +34,57 @@ export async function createUser(email: string, password: string, name: string):
         email: email.toLowerCase(),
         password: hashedPassword,
         name,
-        createdAt: new Date().toISOString()
+        created_at: new Date().toISOString()
     };
 
-    data.users.push(user);
-    writeUsers(data);
+    const { error } = await supabase
+        .from('users')
+        .insert([user]);
+
+    if (error) {
+        throw new Error(`Failed to create user: ${error.message}`);
+    }
 
     return user;
 }
 
-export function findUserByEmail(email: string): User | null {
-    const data = readUsers();
-    return data.users.find(u => u.email.toLowerCase() === email.toLowerCase()) || null;
+export async function findUserByEmail(email: string): Promise<User | null> {
+    const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('email', email.toLowerCase())
+        .single();
+
+    if (error || !data) {
+        return null;
+    }
+
+    return data as User;
 }
 
-export function findUserById(id: string): User | null {
-    const data = readUsers();
-    return data.users.find(u => u.id === id) || null;
+export async function findUserById(id: string): Promise<User | null> {
+    const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+    if (error || !data) {
+        return null;
+    }
+
+    return data as User;
 }
 
 export async function verifyPassword(plainPassword: string, hashedPassword: string): Promise<boolean> {
     return bcrypt.compare(plainPassword, hashedPassword);
 }
 
-export function updateLastLogin(userId: string): void {
-    const data = readUsers();
-    const user = data.users.find(u => u.id === userId);
-    if (user) {
-        user.lastLogin = new Date().toISOString();
-        writeUsers(data);
-    }
+export async function updateLastLogin(userId: string): Promise<void> {
+    await supabase
+        .from('users')
+        .update({ last_login: new Date().toISOString() })
+        .eq('id', userId);
 }
 
 export function sanitizeUser(user: User): Omit<User, 'password'> {
