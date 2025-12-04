@@ -9,25 +9,31 @@ module.exports = async function handler(req, res) {
     try {
         const { email, password } = req.body;
 
+        console.log('Login attempt for:', email);
+
         // Validation
         if (!email || !password) {
             return res.status(400).json({ error: 'Email and password are required' });
         }
 
         // Find user
-        const user = findUserByEmail(email);
+        const user = await findUserByEmail(email);
+        console.log('User found:', user ? 'yes' : 'no');
+
         if (!user) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
 
         // Verify password
         const isValid = await verifyPassword(password, user.password);
+        console.log('Password valid:', isValid);
+
         if (!isValid) {
             return res.status(401).json({ error: 'Invalid email or password' });
         }
 
         // Update last login
-        updateLastLogin(user.id);
+        await updateLastLogin(user.id);
 
         // Generate token
         const token = generateToken({
@@ -44,6 +50,10 @@ module.exports = async function handler(req, res) {
 
     } catch (error) {
         console.error('Login error:', error);
-        return res.status(500).json({ error: 'Internal server error' });
+        console.error('Error stack:', error.stack);
+        return res.status(500).json({
+            error: 'Internal server error',
+            message: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
     }
 };
