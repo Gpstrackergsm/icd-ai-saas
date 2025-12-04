@@ -133,7 +133,7 @@ export function parseInput(text: string): ParseResult {
                 }
                 if (lowerValue.includes('nephropathy')) {
                     if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                    context.conditions.diabetes.complications.push('ckd');
+                    context.conditions.diabetes.complications.push('nephropathy'); // Changed from 'ckd' to 'nephropathy'
                 }
 
                 // Gastro
@@ -237,7 +237,7 @@ export function parseInput(text: string): ParseResult {
                     if (lowerValue.includes('iron deficiency')) context.conditions.hematology.anemia.type = 'iron_deficiency';
                 }
 
-                // Diabetes Complications (Generic)
+                // Diabetes Complications (Generic) - removed nephropathy/ckd as they're handled in complications section
                 if (lowerValue.includes('diabetic') || lowerValue.includes('diabetes')) {
                     if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
                     if (lowerValue.includes('neuropathy')) context.conditions.diabetes.complications.push('neuropathy');
@@ -395,7 +395,7 @@ export function parseInput(text: string): ParseResult {
                 if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
                 if (lowerValue.includes('muscle')) context.conditions.diabetes.ulcerSeverity = 'muscle';
                 else if (lowerValue.includes('bone')) context.conditions.diabetes.ulcerSeverity = 'bone';
-                else if (lowerValue.includes('fat')) context.conditions.diabetes.ulcerSeverity = 'muscle'; // Fat layer exposed = muscle necrosis (L97.x13)
+                else if (lowerValue.includes('fat')) context.conditions.diabetes.ulcerSeverity = 'fat'; // Fat layer exposed = fat depth (L97.x12)
                 else if (lowerValue.includes('skin')) context.conditions.diabetes.ulcerSeverity = 'skin';
                 else context.conditions.diabetes.ulcerSeverity = 'unspecified';
                 break;

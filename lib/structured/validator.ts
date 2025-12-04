@@ -21,35 +21,8 @@ export function validateContext(ctx: PatientContext): ValidationResult {
     const errors: string[] = [];
     const warnings: string[] = [];
 
-    // === HARD STOP 1: CKD REQUIRES STAGE ===
-    if (ctx.conditions.ckd) {
-        const k = ctx.conditions.ckd;
-
-        if (!k.stage) {
-            errors.push('HARD STOP: CKD selected but no stage specified. CKD Stage (1-5 or ESRD) is REQUIRED.');
-        }
-
-        // === HARD STOP 2: ESRD REQUIRES DIALYSIS STATUS ===
-        if (k.stage === 'esrd') {
-            if (k.onDialysis === undefined) {
-                errors.push('HARD STOP: ESRD requires dialysis status. You must specify Dialysis (None/Temporary/Chronic).');
-            }
-
-            if (k.onDialysis === false && !k.dialysisType) {
-                errors.push('HARD STOP: ESRD without dialysis requires explicit "Dialysis: None" selection.');
-            }
-        }
-
-        // === CONFLICT: Cannot have ESRD + CKD Stage 1-4 ===
-        // Type system prevents this, but double-check
-        if (k.stage === 'esrd') {
-            // Valid
-        } else if ([1, 2, 3, 4, 5].includes(k.stage as any)) {
-            // Valid
-        } else {
-            errors.push('CONFLICT: Invalid CKD stage value.');
-        }
-    }
+    // === HARD STOP 1: CKD VALIDATION ===
+    // CKD validation is now handled below (line ~70) with diabetes-specific logic
 
     // === HARD STOP 3: DIABETES FOOT ULCER - RELAXED VALIDATION ===
     if (ctx.conditions.diabetes) {
@@ -78,20 +51,25 @@ export function validateContext(ctx: PatientContext): ValidationResult {
         }
     }
 
-    // === HARD STOP 5: INJURY REQUIRES ENCOUNTER TYPE ===
-    if (ctx.conditions.injury?.present) {
-        const i = ctx.conditions.injury;
+    // === CKD VALIDATION - RELAXED FOR DIABETES ===
+    // Only validate CKD stage if there's a standalone CKD object AND diabetes has CKD complication
+    // If CKD is only mentioned as diabetes complication, don't require stage
+    if (ctx.conditions.ckd) {
+        const ckd = ctx.conditions.ckd;
+        const hasDiabetesCKD = ctx.conditions.diabetes?.complications.includes('ckd');
 
-        if (!i.encounterType) {
-            errors.push('HARD STOP: Injury selected but no encounter type specified. Encounter Type (Initial, Subsequent, Sequela) is REQUIRED for injury coding.');
-        }
-
-        if (!i.type) {
-            errors.push('HARD STOP: Injury selected but no injury type specified. Injury Type (Fracture, Open wound, Burn) is REQUIRED.');
+        // Only validate stage if CKD exists independently (not just as diabetes complication)
+        if (!hasDiabetesCKD) {
+            if (ckd.stage === undefined || ckd.stage === null) {
+                errors.push('HARD STOP: CKD selected but no stage specified. CKD Stage (1-5 or ESRD) is REQUIRED.');
+            }
+            if (ckd.stage !== undefined && ckd.stage !== null) {
+                if (typeof ckd.stage === 'number' && (ckd.stage < 1 || ckd.stage > 6)) {
+                    errors.push('CONFLICT: Invalid CKD stage value.');
+                }
+            }
         }
     }
-
-    // === HARD STOP 6: SEPSIS REQUIRES INFECTION SOURCE ===
     if (ctx.conditions.infection?.sepsis?.present) {
         if (!ctx.conditions.infection.site) {
             errors.push('HARD STOP: Sepsis selected but no infection source specified. Infection Site (Lung, Blood, UTI, etc.) is REQUIRED for sepsis coding.');

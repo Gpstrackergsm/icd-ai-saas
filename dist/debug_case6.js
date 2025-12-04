@@ -1,0 +1,12 @@
+"use strict";
+var _a;
+Object.defineProperty(exports, "__esModule", { value: true });
+const parser_1 = require("./lib/structured/parser");
+const validator_1 = require("./lib/structured/validator");
+const test6 = "Age: 65\nGender: Female\nEncounter Type: Inpatient\nDiabetes Type: Type 2\nComplications: Chronic Kidney Disease";
+console.log('Test 6:');
+const { context } = (0, parser_1.parseInput)(test6);
+console.log('Diabetes complications:', (_a = context.conditions.diabetes) === null || _a === void 0 ? void 0 : _a.complications);
+console.log('CKD object:', context.conditions.ckd);
+const validation = (0, validator_1.validateContext)(context);
+console.log('\nValidation:', validation);

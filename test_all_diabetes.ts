@@ -9,7 +9,7 @@ const cases = [
     { num: 4, input: "Age: 52\nGender: Female\nEncounter Type: Outpatient\nDiabetes Type: Type 2\nComplications: Retinopathy", expected: ["E11.319"] },
     { num: 5, input: "Age: 58\nGender: Male\nEncounter Type: Outpatient\nDiabetes Type: Type 2\nComplications: Neuropathy", expected: ["E11.40"] },
     { num: 6, input: "Age: 65\nGender: Female\nEncounter Type: Inpatient\nDiabetes Type: Type 2\nComplications: Chronic Kidney Disease", expected: ["E11.22"] },
-    { num: 7, input: "Age: 70\nGender: Male\nEncounter Type: Inpatient\nDiabetes Type: Type 2\nComplications: Foot Ulcer\nUlcer Site: Right Foot\nUlcer Severity: Fat layer exposed", expected: ["E11.621", "L97.513"] },
+    { num: 7, input: "Age: 70\nGender: Male\nEncounter Type: Inpatient\nDiabetes Type: Type 2\nComplications: Foot Ulcer\nUlcer Site: Right Foot\nUlcer Severity: Fat layer exposed", expected: ["E11.621", "L97.512"] },
     { num: 8, input: "Age: 48\nGender: Female\nEncounter Type: Outpatient\nDiabetes Type: Type 2\nComplications: Nephropathy", expected: ["E11.21"] },
     { num: 11, input: "Age: 55\nGender: Female\nEncounter Type: Outpatient\nDiabetes Type: Type 2\nComplications: Chronic Kidney Disease, Retinopathy", expected: ["E11.22", "E11.319"] },
     { num: 12, input: "Age: 59\nGender: Male\nEncounter Type: Inpatient\nDiabetes Type: Type 2\nComplications: Neuropathy, Foot Ulcer\nUlcer Site: Left Foot\nUlcer Severity: Fat layer exposed", expected: ["E11.621", "E11.40", "L97.522"] },
