@@ -33,11 +33,15 @@ function parseInput(text) {
                         context.conditions.infection = { present: true };
                     context.conditions.infection.source = value; // Store original value
                 }
+                break; // Added break to prevent fallthrough from 'source'
             case 'status':
+                // 'status' might be handled elsewhere or might not have specific logic here.
+                // For now, we just break to prevent it from falling through to 'complication' logic.
+                break;
             case 'complication':
             case 'complications':
-                // COPD exacerbation
-                if (lowerValue.includes('exacerbation') || lowerValue.includes('acute exacerbation')) {
+                // COPD exacerbation (skip if key is 'status' to avoid false positives)
+                if ((lowerValue.includes('exacerbation') || lowerValue.includes('acute exacerbation')) && key.toLowerCase() !== 'status') {
                     if (!context.conditions.respiratory)
                         context.conditions.respiratory = {};
                     if (!context.conditions.respiratory.copd) {
@@ -269,7 +273,7 @@ function parseInput(text) {
                         context.conditions.mental_health.depression.psychoticFeatures = false;
                 }
                 // COPD detection (skip if key is 'status' or COPD already exists)
-                if (lowerValue.includes('copd') && key !== 'status' && !((_a = context.conditions.respiratory) === null || _a === void 0 ? void 0 : _a.copd)) {
+                if (lowerValue.includes('copd') && key.toLowerCase() !== 'status' && !((_a = context.conditions.respiratory) === null || _a === void 0 ? void 0 : _a.copd)) {
                     if (!context.conditions.respiratory)
                         context.conditions.respiratory = {};
                     const withExacerbation = lowerValue.includes('exacerbation') || lowerValue.includes('exacerbated');
@@ -281,7 +285,7 @@ function parseInput(text) {
                     };
                 }
                 // Asthma detection (skip if key is 'status' or asthma already exists)
-                if (lowerValue.includes('asthma') && !lowerValue.includes('copd') && key !== 'status' && !((_b = context.conditions.respiratory) === null || _b === void 0 ? void 0 : _b.asthma)) {
+                if (lowerValue.includes('asthma') && !lowerValue.includes('copd') && key.toLowerCase() !== 'status' && !((_b = context.conditions.respiratory) === null || _b === void 0 ? void 0 : _b.asthma)) {
                     if (!context.conditions.respiratory)
                         context.conditions.respiratory = {};
                     // Parse severity

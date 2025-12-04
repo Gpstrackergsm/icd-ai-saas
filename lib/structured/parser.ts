@@ -39,12 +39,17 @@ export function parseInput(text: string): ParseResult {
                     if (!context.conditions.infection) context.conditions.infection = { present: true };
                     context.conditions.infection.source = value; // Store original value
                 }
+                break; // Added break to prevent fallthrough from 'source'
 
             case 'status':
+                // 'status' might be handled elsewhere or might not have specific logic here.
+                // For now, we just break to prevent it from falling through to 'complication' logic.
+                break;
+
             case 'complication':
             case 'complications':
-                // COPD exacerbation
-                if (lowerValue.includes('exacerbation') || lowerValue.includes('acute exacerbation')) {
+                // COPD exacerbation (skip if key is 'status' to avoid false positives)
+                if ((lowerValue.includes('exacerbation') || lowerValue.includes('acute exacerbation')) && key.toLowerCase() !== 'status') {
                     if (!context.conditions.respiratory) context.conditions.respiratory = {};
                     if (!context.conditions.respiratory.copd) {
                         context.conditions.respiratory.copd = { present: true, withExacerbation: true };
@@ -223,7 +228,7 @@ export function parseInput(text: string): ParseResult {
                 }
 
                 // COPD detection (skip if key is 'status' or COPD already exists)
-                if (lowerValue.includes('copd') && key !== 'status' && !context.conditions.respiratory?.copd) {
+                if (lowerValue.includes('copd') && key.toLowerCase() !== 'status' && !context.conditions.respiratory?.copd) {
                     if (!context.conditions.respiratory) context.conditions.respiratory = {};
                     const withExacerbation = lowerValue.includes('exacerbation') || lowerValue.includes('exacerbated');
                     const withInfection = lowerValue.includes('bronchitis') || lowerValue.includes('pneumonia') || lowerValue.includes('infection');
@@ -236,7 +241,7 @@ export function parseInput(text: string): ParseResult {
                 }
 
                 // Asthma detection (skip if key is 'status' or asthma already exists)
-                if (lowerValue.includes('asthma') && !lowerValue.includes('copd') && key !== 'status' && !context.conditions.respiratory?.asthma) {
+                if (lowerValue.includes('asthma') && !lowerValue.includes('copd') && key.toLowerCase() !== 'status' && !context.conditions.respiratory?.asthma) {
                     if (!context.conditions.respiratory) context.conditions.respiratory = {};
 
                     // Parse severity
