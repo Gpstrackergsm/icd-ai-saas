@@ -273,6 +273,13 @@ function parseInput(text) {
                         context.conditions.cardiovascular = { hypertension: false };
                     context.conditions.cardiovascular.heartFailure = { type: 'unspecified', acuity: 'unspecified' };
                 }
+                // Detect HTN from free text
+                if (lowerValue.includes('high blood pressure') || lowerValue.includes('htn on medication') ||
+                    lowerValue.includes('hypertensive urgency') || lowerValue.includes('hypertensive emergency')) {
+                    if (!context.conditions.cardiovascular)
+                        context.conditions.cardiovascular = { hypertension: false };
+                    context.conditions.cardiovascular.hypertension = true;
+                }
                 if (lowerValue.includes('hypertension') || lowerValue.includes('hypertensive')) {
                     if (!context.conditions.cardiovascular)
                         context.conditions.cardiovascular = { hypertension: false };
@@ -578,10 +585,30 @@ function parseInput(text) {
                 context.conditions.cardiovascular.hypertension = parseBoolean(value);
                 break;
             case 'heart failure':
+            case 'hf':
+            case 'chf':
                 if (!context.conditions.cardiovascular)
                     context.conditions.cardiovascular = { hypertension: false };
-                if (parseBoolean(value)) {
-                    context.conditions.cardiovascular.heartFailure = { type: 'unspecified', acuity: 'unspecified' };
+                if (parseBoolean(value) || value.toLowerCase() !== 'no') {
+                    // Parse type and acuity from value
+                    const lv = value.toLowerCase();
+                    let type = 'unspecified';
+                    let acuity = 'unspecified';
+                    // Detect type
+                    if (lv.includes('systolic'))
+                        type = 'systolic';
+                    else if (lv.includes('diastolic'))
+                        type = 'diastolic';
+                    else if (lv.includes('combined'))
+                        type = 'combined';
+                    // Detect acuity
+                    if (lv.includes('acute on chronic') || lv.includes('acute-on-chronic'))
+                        acuity = 'acute_on_chronic';
+                    else if (lv.includes('acute'))
+                        acuity = 'acute';
+                    else if (lv.includes('chronic'))
+                        acuity = 'chronic';
+                    context.conditions.cardiovascular.heartFailure = { type, acuity };
                 }
                 break;
             case 'heart failure type':
