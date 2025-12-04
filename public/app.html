@@ -706,10 +706,44 @@
           itemContainer.appendChild(warnCard);
         }
 
+        if (result.validationErrors?.length) {
+          const errCard = document.createElement('div');
+          errCard.className = 'card';
+          errCard.style.borderLeft = '4px solid #dc2626';
+          errCard.style.background = '#fee2e2';
+          const title = document.createElement('div');
+          title.className = 'code';
+          title.style.color = '#dc2626';
+          title.textContent = 'Validation Failed';
+          errCard.appendChild(title);
+
+          const errList = document.createElement('ul');
+          errList.style.margin = '8px 0';
+          errList.style.paddingLeft = '20px';
+          result.validationErrors.forEach(err => {
+            const li = document.createElement('li');
+            li.textContent = err;
+            li.style.color = '#991b1b';
+            li.style.marginBottom = '4px';
+            errList.appendChild(li);
+          });
+          errCard.appendChild(errList);
+          itemContainer.appendChild(errCard);
+        }
+
         if (result.errors?.length) {
           const errCard = document.createElement('div');
           errCard.className = 'card';
-          errCard.innerHTML = `<div class="code">Errors</div><div class="desc">${result.errors.join('<br/>')}</div>`;
+          errCard.style.borderLeft = '4px solid #dc2626';
+          const title = document.createElement('div');
+          title.className = 'code';
+          title.style.color = '#dc2626';
+          title.textContent = 'Errors';
+          errCard.appendChild(title);
+          const desc = document.createElement('div');
+          desc.className = 'desc';
+          desc.innerHTML = result.errors.join('<br/>');
+          errCard.appendChild(desc);
           itemContainer.appendChild(errCard);
         }
 
