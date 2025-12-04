@@ -307,25 +307,6 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         });
     }
 
-    // --- RESPIRATORY RULES ---
-    if (ctx.conditions.respiratory?.copd) {
-        const copd = ctx.conditions.respiratory.copd;
-        // LAYER 5: COPD with exacerbation → J44.1, otherwise J44.9
-        const code = copd.withExacerbation ? 'J44.1' : 'J44.9';
-        const label = copd.withExacerbation
-            ? 'Chronic obstructive pulmonary disease with acute exacerbation'
-            : 'Chronic obstructive pulmonary disease, unspecified';
-
-        codes.push({
-            code: code,
-            label: label,
-            rationale: copd.withExacerbation ? 'COPD with acute exacerbation' : 'COPD documented',
-            guideline: 'ICD-10-CM J44',
-            trigger: copd.withExacerbation ? 'COPD + Exacerbation' : 'COPD = Yes',
-            rule: 'COPD code with exacerbation specificity'
-        });
-    }
-
     if (ctx.conditions.respiratory?.failure) {
         const rf = ctx.conditions.respiratory.failure;
         let code = 'J96.90'; // Unspecified
@@ -350,6 +331,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         let label = 'Chronic obstructive pulmonary disease, unspecified';
         let rationale = 'COPD without mention of exacerbation or infection';
 
+        // Priority: infection > exacerbation > unspecified
         if (copd.withInfection) {
             code = 'J44.0';
             label = 'Chronic obstructive pulmonary disease with (acute) lower respiratory infection';
@@ -393,9 +375,9 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         const severityCode = severityMap[asthma.severity] || '909';
         const statusCode = statusMap[asthma.status] || '9';
 
-        // Build code - unspecified asthma uses J45.90x format
+        // Build code - unspecified asthma uses J45.90x format with special handling
         const code = asthma.severity === 'unspecified'
-            ? `J45.90${statusCode}`
+            ? (asthma.status === 'uncomplicated' ? 'J45.909' : `J45.90${statusCode}`)
             : `J45.${severityCode}${statusCode}`;
 
         // Build label

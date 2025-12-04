@@ -33,10 +33,6 @@ function parseInput(text) {
                         context.conditions.infection = { present: true };
                     context.conditions.infection.source = value; // Store original value
                 }
-                break; // Added break to prevent fallthrough from 'source'
-            case 'status':
-                // 'status' might be handled elsewhere or might not have specific logic here.
-                // For now, we just break to prevent it from falling through to 'complication' logic.
                 break;
             case 'complication':
             case 'complications':

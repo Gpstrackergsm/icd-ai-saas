@@ -1,15 +1,14 @@
 import { parseInput } from './lib/structured/parser';
 
-const test6 = "Age: 65\nGender: Female\nEncounter Type: Inpatient\nDiabetes Type: Type 2\nComplications: Nephropathy/CKD";
-const test12 = "Age: 59\nGender: Male\nEncounter Type: Inpatient\nDiabetes Type: Type 2\nComplications: Neuropathy, Foot Ulcer\nUlcer Site: Left Foot\nUlcer Severity: Fat layer exposed";
+const test4 = "Age: 72\nGender: Female\nEncounter Type: Inpatient\nCOPD: With acute bronchitis";
+const test19 = "Age: 30\nGender: Female\nEncounter Type: Outpatient\nAsthma: Yes";
 
-console.log('Test 6 (Nephropathy/CKD):');
-const { context: ctx6 } = parseInput(test6);
-console.log('Diabetes complications:', ctx6.conditions.diabetes?.complications);
-console.log('CKD:', ctx6.conditions.ckd);
+console.log('Test 4 (COPD with acute bronchitis):');
+const { context: ctx4 } = parseInput(test4);
+console.log('COPD:', JSON.stringify(ctx4.conditions.respiratory?.copd, null, 2));
+console.log('Expected: J44.0 only (not J44.9 + J44.0)');
 
-console.log('\nTest 12 (Left foot ulcer):');
-const { context: ctx12 } = parseInput(test12);
-console.log('Ulcer site:', ctx12.conditions.diabetes?.ulcerSite);
-console.log('Ulcer severity:', ctx12.conditions.diabetes?.ulcerSeverity);
-console.log('Expected: L97.522 (left foot, fat layer)');
+console.log('\nTest 19 (Unspecified asthma):');
+const { context: ctx19 } = parseInput(test19);
+console.log('Asthma:', JSON.stringify(ctx19.conditions.respiratory?.asthma, null, 2));
+console.log('Expected: J45.909 (not J45.900)');
