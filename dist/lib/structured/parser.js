@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.parseInput = parseInput;
 function parseInput(text) {
-    var _a;
+    var _a, _b;
     const lines = text.split('\n').map(l => l.trim()).filter(l => l);
     const context = {
         demographics: {},
@@ -63,8 +63,11 @@ function parseInput(text) {
                     errors.push(`Invalid diabetes type: ${value}`);
                 break;
             case 'complications':
+            case 'diabetes complications':
                 if (!context.conditions.diabetes)
                     context.conditions.diabetes = { type: 'type2', complications: [] };
+                if (lowerValue.trim() === 'none')
+                    break; // Ignore 'none'
                 const comps = lowerValue.split(',').map(c => c.trim());
                 comps.forEach(c => {
                     if (c === 'neuropathy')
@@ -77,6 +80,16 @@ function parseInput(text) {
                         context.conditions.diabetes.complications.push('retinopathy');
                     else if (c.includes('hypoglycemia'))
                         context.conditions.diabetes.complications.push('hypoglycemia');
+                    else if (c === 'ketoacidosis')
+                        context.conditions.diabetes.complications.push('ketoacidosis');
+                    else if (c === 'hyperosmolar')
+                        context.conditions.diabetes.complications.push('hyperosmolar');
+                    else if (c === 'gangrene')
+                        context.conditions.diabetes.complications.push('gangrene');
+                    else if (c === 'amputation')
+                        context.conditions.diabetes.complications.push('amputation');
+                    else if (c === 'unspecified')
+                        context.conditions.diabetes.complications.push('unspecified');
                     else if (c)
                         errors.push(`Unknown diabetes complication: ${c}`);
                 });
@@ -98,6 +111,8 @@ function parseInput(text) {
                 break;
             case 'ulcer severity':
             case 'ulcer depth':
+            case 'ulcer severity / ulcer depth':
+            case 'wound depth':
                 if (!context.conditions.diabetes)
                     context.conditions.diabetes = { type: 'type2', complications: [] };
                 if (lowerValue.includes('muscle'))
@@ -787,6 +802,28 @@ function parseInput(text) {
         if (!context.conditions.respiratory.pneumonia.organism || context.conditions.respiratory.pneumonia.organism === 'unspecified') {
             // Cast is safe because we updated the types in context.ts
             context.conditions.respiratory.pneumonia.organism = context.conditions.infection.organism;
+        }
+    }
+    // POST-PROCESSING: Sync Diabetic Ulcer Data
+    if (((_b = context.conditions.wounds) === null || _b === void 0 ? void 0 : _b.type) === 'diabetic' && context.conditions.diabetes) {
+        // Sync Location
+        if (context.conditions.wounds.location) {
+            const loc = context.conditions.wounds.location;
+            if (loc === 'foot_right')
+                context.conditions.diabetes.ulcerSite = 'foot_right';
+            else if (loc === 'foot_left')
+                context.conditions.diabetes.ulcerSite = 'foot_left';
+            else if (loc === 'heel')
+                context.conditions.diabetes.ulcerSite = 'foot_right'; // Default/Approximation, ideally check laterality
+            else
+                context.conditions.diabetes.ulcerSite = 'other';
+            // Refine heel mapping if laterality is known
+            if (loc === 'heel' && context.conditions.wounds.laterality === 'left')
+                context.conditions.diabetes.ulcerSite = 'foot_left';
+        }
+        // Sync Depth/Severity
+        if (context.conditions.wounds.depth) {
+            context.conditions.diabetes.ulcerSeverity = context.conditions.wounds.depth;
         }
     }
     return { context, errors };
