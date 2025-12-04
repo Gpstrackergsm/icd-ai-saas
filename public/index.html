@@ -2,831 +2,198 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ICD-10-CM Encoder</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0fdf4;
-      color: #1e293b;
-      margin: 0;
-      padding: 0;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - ICD-10-CM Encoder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #1e293b;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
 
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 32px 16px 48px;
-    }
+        .container {
+            max-width: 420px;
+            width: 100%;
+            padding: 20px;
+        }
 
-    h1 {
-      font-size: 28px;
-      margin-bottom: 16px;
-      color: #0f172a;
-    }
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
 
-    .panel {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-      padding: 20px;
-    }
+        h1 {
+            font-size: 28px;
+            margin: 0 0 8px;
+            color: #0f172a;
+            text-align: center;
+        }
 
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 32px;
+            font-size: 14px;
+        }
 
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #334155;
+            font-size: 14px;
+        }
 
-    .input-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
 
-    textarea,
-    input[type="text"] {
-      flex: 1;
-      min-width: 220px;
-      padding: 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 16px;
-      resize: vertical;
-      min-height: 120px;
-    }
+        input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
 
-    button {
-      background: #22c55e;
-      color: #fff;
-      border: none;
-      padding: 12px 18px;
-      border-radius: 8px;
-      font-size: 15px;
-      cursor: pointer;
-      transition: background 0.15s ease;
-    }
+        button {
+            width: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
 
-    button:hover {
-      background: #16a34a;
-    }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+        }
 
-    button.secondary {
-      background: #64748b;
-    }
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
 
-    button.secondary:hover {
-      background: #475569;
-    }
+        .error {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
 
-    .status {
-      margin-top: 12px;
-      color: #475569;
-      min-height: 20px;
-    }
+        .error.show {
+            display: block;
+        }
 
-    .results {
-      margin-top: 20px;
-      display: grid;
-      gap: 12px;
-    }
+        .link {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 14px;
+            color: #64748b;
+        }
 
-    .card {
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 14px;
-      background: #f8fafc;
-    }
+        .link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
 
-    .code {
-      font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 6px;
-    }
-
-    .desc {
-      margin: 4px 0;
-      color: #334155;
-    }
-
-    .synonyms {
-      font-size: 13px;
-      color: #64748b;
-    }
-
-    .actions {
-      margin-top: 16px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .pill {
-      display: inline-block;
-      padding: 4px 8px;
-      background: #dcfce7;
-      color: #166534;
-      border-radius: 6px;
-      font-size: 12px;
-      margin-right: 6px;
-    }
-  </style>
+        .link a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
-  <div class="container">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-      <h1 style="margin: 0;">ICD-10-CM Encoder</h1>
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <span id="userEmail" style="font-size: 14px; color: #64748b;"></span>
-        <button id="logoutBtn" class="secondary" style="padding: 8px 16px; font-size: 14px;">Logout</button>
-      </div>
-    </div>
-    <div class="panel">
+    <div class="container">
+        <div class="card">
+            <h1>Welcome Back</h1>
+            <p class="subtitle">Sign in to access the ICD-10-CM Encoder</p>
 
-      <div id="encodePanel">
-        <label for="narrative">Encoder: clinical narrative</label>
-        <div class="input-row">
-          <textarea id="narrative" name="narrative"
-            placeholder="e.g., Type 2 diabetes with CKD stage 4 and hypertension"></textarea>
-          <button id="encodeBtn">Encode</button>
+            <div id="error" class="error"></div>
+
+            <form id="loginForm">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required autocomplete="email" />
+
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required autocomplete="current-password" />
+
+                <button type="submit" id="loginBtn">Sign In</button>
+            </form>
+
+            <div class="link">
+                Don't have an account? <a href="/signup.html">Sign up</a>
+            </div>
         </div>
-        <div class="actions">
-          <button id="copyEncodeBtn" class="secondary" disabled>Copy codes</button>
-        </div>
-        <div id="encodeStatus" class="status"></div>
-        <div id="encodeResults" class="results"></div>
-      </div>
     </div>
-  </div>
 
-  <script>
-    // Authentication check
-    (async function checkAuth() {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        window.location.href = '/login.html';
-        return;
-      }
+    <script>
+        const form = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const errorDiv = document.getElementById('error');
 
-      try {
-        const response = await fetch('/api/auth/verify', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-        if (!response.ok) {
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
-          window.location.href = '/login.html';
-          return;
-        }
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
 
-        const data = await response.json();
-        document.getElementById('userEmail').textContent = data.user.email;
-      } catch (error) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.href = '/login.html';
-      }
-    })();
+            errorDiv.classList.remove('show');
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'Signing in...';
 
-    // Logout functionality
-    document.getElementById('logoutBtn').addEventListener('click', () => {
-      localStorage.removeItem('token');
-      localStorage.removeItem('user');
-      window.location.href = '/login.html';
-    });
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
 
-    // Encoder tab logic
-    const narrativeInput = document.getElementById('narrative');
-    const encodeBtn = document.getElementById('encodeBtn');
-    const copyEncodeBtn = document.getElementById('copyEncodeBtn');
-    const encodeStatus = document.getElementById('encodeStatus');
-    const encodeResults = document.getElementById('encodeResults');
-    let lastEncoded = null;
+                const data = await response.json();
 
-    // --- FORM BUILDER LOGIC ---
-
-    // 1. Define Domain Schema Configuration
-    const domainConfig = {
-      demographics: {
-        label: 'Demographics',
-        fields: [
-          { key: 'Age', type: 'number', label: 'Age' },
-          { key: 'Gender', type: 'select', label: 'Gender', options: ['Male', 'Female'] },
-          { key: 'Encounter Type', type: 'select', label: 'Encounter', options: ['Inpatient', 'Outpatient', 'ED', 'Initial', 'Subsequent'] }
-        ]
-      },
-      diabetes: {
-        label: 'Diabetes',
-        fields: [
-          { key: 'Diabetes Type', type: 'select', label: 'Type', options: ['None', 'Type 1', 'Type 2'], required: true },
-          {
-            key: 'Complications',
-            type: 'checkbox-group',
-            label: 'Complications',
-            options: ['Neuropathy', 'Nephropathy/CKD', 'Foot Ulcer', 'Retinopathy', 'Hypoglycemia']
-          },
-          { key: 'Insulin Use', type: 'select', label: 'Insulin Use', options: ['Yes', 'No'] },
-          // Conditional fields - shown only if Foot Ulcer selected
-          { key: 'Ulcer Site', type: 'select', label: 'Ulcer Site', options: ['Left Foot', 'Right Foot', 'Left Ankle', 'Right Ankle', 'Other'], required: 'if_foot_ulcer', showIf: 'Foot Ulcer' },
-          { key: 'Ulcer Severity', type: 'select', label: 'Ulcer Depth', options: ['Skin only', 'Fat layer exposed', 'Muscle exposed', 'Bone exposed'], required: 'if_foot_ulcer', showIf: 'Foot Ulcer' }
-        ]
-      },
-      ckd: {
-        label: 'Renal / CKD',
-        fields: [
-          { key: 'CKD Present', type: 'select', label: 'CKD Present', options: ['Yes', 'No'] },
-          { key: 'CKD Stage', type: 'select', label: 'CKD Stage', options: ['1', '2', '3', '4', '5', 'ESRD'], required: true, showIf: 'Yes' },
-          { key: 'Dialysis', type: 'select', label: 'Dialysis', options: ['None', 'Temporary', 'Chronic'], showIf: 'ESRD' },
-          { key: 'Acute Kidney Injury', type: 'select', label: 'AKI', options: ['Yes', 'No'] },
-          { key: 'Kidney Transplant History', type: 'select', label: 'Transplant', options: ['Yes', 'No'] }
-        ]
-      },
-      cardio: {
-        label: 'Cardiovascular',
-        fields: [
-          { key: 'Hypertension', type: 'select', label: 'Hypertension', options: ['Yes', 'No'] },
-          { key: 'Heart Failure', type: 'select', label: 'Heart Failure', options: ['None', 'Systolic', 'Diastolic', 'Combined'] },
-          { key: 'Heart Failure Acuity', type: 'select', label: 'HF Acuity', options: ['Acute', 'Chronic', 'Acute on chronic'], showIf: 'Systolic|Diastolic|Combined' },
-          { key: 'Ischemic Heart Disease', type: 'select', label: 'CAD/IHD', options: ['Yes', 'No'] },
-          { key: 'Previous MI', type: 'select', label: 'Prior MI', options: ['Yes', 'No'] },
-          { key: 'Atrial Fibrillation', type: 'select', label: 'AFib', options: ['Yes', 'No'] }
-        ]
-      },
-      respiratory: {
-        label: 'Respiratory',
-        fields: [
-          { key: 'Respiratory Failure', type: 'select', label: 'Resp Failure', options: ['None', 'Acute', 'Chronic', 'Acute on chronic'] },
-          { key: 'COPD', type: 'select', label: 'COPD', options: ['None', 'With infection', 'With exacerbation', 'With both'] },
-          { key: 'Asthma', type: 'select', label: 'Asthma', options: ['Yes', 'No'] },
-          { key: 'Mechanical Ventilation', type: 'select', label: 'Mech Vent', options: ['Yes', 'No'] },
-          { key: 'Ventilation Duration', type: 'number', label: 'Vent Hours', showIf: 'Yes' },
-          { key: 'Pneumonia', type: 'select', label: 'Pneumonia', options: ['Yes', 'No'] },
-          { key: 'Pneumonia Organism', type: 'select', label: 'Organism', options: ['Pseudomonas', 'MRSA', 'E. coli', 'Viral', 'Unspecified'], showIf: 'Yes' }
-        ]
-      },
-      infection: {
-        label: 'Infections',
-        fields: [
-          { key: 'Infection Present', type: 'select', label: 'Infection', options: ['Yes', 'No'] },
-          { key: 'Infection Site', type: 'select', label: 'Site', options: ['Lung', 'Urinary tract', 'Blood', 'Skin', 'Other'], showIf: 'Yes' },
-          { key: 'Organism', type: 'select', label: 'Organism', options: ['MRSA', 'E. coli', 'Pseudomonas', 'Not specified'], showIf: 'Yes' },
-          { key: 'Sepsis', type: 'select', label: 'Sepsis', options: ['Yes', 'No'] },
-          { key: 'Septic Shock', type: 'select', label: 'Septic Shock', options: ['Yes', 'No'], showIf: 'Yes' },
-          { key: 'Hospital-Acquired', type: 'select', label: 'HAI', options: ['Yes', 'No'], showIf: 'Yes' }
-        ]
-      },
-      wounds: {
-        label: 'Wounds / Ulcers',
-        fields: [
-          { key: 'Ulcer Present', type: 'select', label: 'Ulcer/Wound', options: ['Yes', 'No'] },
-          { key: 'Ulcer Type', type: 'select', label: 'Type', options: ['Pressure', 'Diabetic', 'Traumatic'], required: true, showIf: 'Yes' },
-          { key: 'Ulcer Location', type: 'select', label: 'Location', options: ['Sacral', 'Right foot', 'Left foot', 'Heel', 'Other'], required: true, showIf: 'Yes' },
-          { key: 'Ulcer Stage', type: 'select', label: 'Stage/Depth', options: ['Stage 1', 'Stage 2', 'Stage 3', 'Stage 4', 'Muscle necrosis', 'Bone necrosis'], required: true, showIf: 'Yes' }
-        ]
-      },
-      neoplasm: {
-        label: 'Neoplasm / Cancer',
-        fields: [
-          { key: 'Cancer Present', type: 'select', label: 'Cancer', options: ['Yes', 'No'] },
-          { key: 'Cancer Site', type: 'text', label: 'Site', showIf: 'Yes' },
-          { key: 'Primary or Secondary', type: 'select', label: 'Type', options: ['Primary', 'Secondary'], showIf: 'Yes' },
-          { key: 'Metastasis', type: 'select', label: 'Metastasis', options: ['Yes', 'No'], showIf: 'Yes' },
-          { key: 'Active Treatment', type: 'select', label: 'Active Tx', options: ['Yes', 'No'], showIf: 'Yes' }
-        ]
-      },
-      injury: {
-        label: 'Injury / Trauma',
-        fields: [
-          { key: 'Injury Present', type: 'select', label: 'Injury', options: ['Yes', 'No'] },
-          { key: 'Injury Type', type: 'select', label: 'Type', options: ['Fracture', 'Open wound', 'Burn'], required: true, showIf: 'Yes' },
-          { key: 'Body Region', type: 'text', label: 'Body Region', showIf: 'Yes' },
-          { key: 'Laterality', type: 'select', label: 'Laterality', options: ['Left', 'Right', 'Bilateral'], showIf: 'Yes' },
-          { key: 'Injury Encounter Type', type: 'select', label: 'Encounter', options: ['Initial', 'Subsequent', 'Sequela'], required: true, showIf: 'Yes' },
-          { key: 'External Cause', type: 'select', label: 'Ext Cause', options: ['Fall', 'MVC', 'Assault', 'Sports', 'Other'], showIf: 'Yes' }
-        ]
-      },
-      social: {
-        label: 'Social / Lifestyle',
-        fields: [
-          { key: 'Smoking', type: 'select', label: 'Smoking', options: ['Never', 'Current', 'Former'] },
-          { key: 'Alcohol Use', type: 'select', label: 'Alcohol', options: ['None', 'Yes'] },
-          { key: 'Drug Use', type: 'select', label: 'Drug Use', options: ['None', 'Yes'] }
-        ]
-      }
-    };
-
-    // State to hold current form values
-    let formState = {
-      demographics: { Age: '', Gender: '' } // Always present
-    };
-
-    // UI Elements
-    const builderContainer = document.createElement('div');
-    builderContainer.style.background = '#f1f5f9';
-    builderContainer.style.padding = '16px';
-    builderContainer.style.borderRadius = '8px';
-    builderContainer.style.marginBottom = '20px';
-    builderContainer.style.border = '1px solid #e2e8f0';
-
-    const builderTitle = document.createElement('h3');
-    builderTitle.textContent = 'Structured Scenario Builder';
-    builderTitle.style.marginTop = '0';
-    builderTitle.style.marginBottom = '12px';
-    builderTitle.style.fontSize = '16px';
-    builderContainer.appendChild(builderTitle);
-
-    // Container for active forms
-    const activeFormsContainer = document.createElement('div');
-    activeFormsContainer.style.display = 'flex';
-    activeFormsContainer.style.flexDirection = 'column';
-    activeFormsContainer.style.gap = '12px';
-    builderContainer.appendChild(activeFormsContainer);
-
-    // "Add Condition" Dropdown
-    const addConditionContainer = document.createElement('div');
-    addConditionContainer.style.marginTop = '16px';
-    addConditionContainer.style.borderTop = '1px solid #cbd5e1';
-    addConditionContainer.style.paddingTop = '12px';
-
-    const addLabel = document.createElement('label');
-    addLabel.textContent = '+ Add Condition:';
-    addLabel.style.display = 'inline-block';
-    addLabel.style.marginRight = '8px';
-    addLabel.style.fontSize = '14px';
-
-    const addSelect = document.createElement('select');
-    addSelect.style.padding = '6px';
-    addSelect.style.borderRadius = '4px';
-
-    const defaultOpt = document.createElement('option');
-    defaultOpt.text = 'Select domain...';
-    defaultOpt.value = '';
-    addSelect.appendChild(defaultOpt);
-
-    Object.keys(domainConfig).forEach(key => {
-      if (key === 'demographics') return; // Skip, already added
-      const opt = document.createElement('option');
-      opt.value = key;
-      opt.text = domainConfig[key].label;
-      addSelect.appendChild(opt);
-    });
-
-    addSelect.addEventListener('change', (e) => {
-      const domain = e.target.value;
-      if (domain) {
-        if (!formState[domain]) {
-          formState[domain] = {}; // Initialize state
-          renderFormSection(domain);
-          updateNarrative();
-        }
-        e.target.value = ''; // Reset
-      }
-    });
-
-    addConditionContainer.appendChild(addLabel);
-    addConditionContainer.appendChild(addSelect);
-    builderContainer.appendChild(addConditionContainer);
-
-    // Insert Builder into DOM
-    const encodePanel = document.getElementById('encodePanel');
-    const narrativeLabel = encodePanel.querySelector('label[for="narrative"]');
-    encodePanel.insertBefore(builderContainer, narrativeLabel);
-
-
-    // Helper: Render a Form Section
-    function renderFormSection(domainKey) {
-      const config = domainConfig[domainKey];
-      const section = document.createElement('div');
-      section.className = 'form-section';
-      section.style.background = '#fff';
-      section.style.padding = '12px';
-      section.style.borderRadius = '6px';
-      section.style.border = '1px solid #cbd5e1';
-      section.dataset.domain = domainKey;
-
-      // Header
-      const header = document.createElement('div');
-      header.style.display = 'flex';
-      header.style.justifyContent = 'space-between';
-      header.style.marginBottom = '8px';
-
-      const title = document.createElement('strong');
-      title.textContent = config.label;
-      header.appendChild(title);
-
-      if (domainKey !== 'demographics') {
-        const removeBtn = document.createElement('button');
-        removeBtn.textContent = '×';
-        removeBtn.style.padding = '0 6px';
-        removeBtn.style.fontSize = '16px';
-        removeBtn.style.background = 'transparent';
-        removeBtn.style.color = '#ef4444';
-        removeBtn.style.border = 'none';
-        removeBtn.style.cursor = 'pointer';
-        removeBtn.title = 'Remove condition';
-        removeBtn.onclick = () => {
-          delete formState[domainKey];
-          section.remove();
-          updateNarrative();
-        };
-        header.appendChild(removeBtn);
-      }
-      section.appendChild(header);
-
-      // Fields Container
-      const fieldsContainer = document.createElement('div');
-      fieldsContainer.style.display = 'grid';
-      fieldsContainer.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
-      fieldsContainer.style.gap = '10px';
-
-      config.fields.forEach(field => {
-        // Skip conditional fields if condition not met
-        if (field.showIf) {
-          // Check if the condition is met
-          let conditionMet = false;
-
-          // For checkbox groups (like Complications), check if the value is in the array
-          const complicationsValue = formState[domainKey]?.['Complications'];
-          if (Array.isArray(complicationsValue) && complicationsValue.includes(field.showIf)) {
-            conditionMet = true;
-          }
-
-          // For select fields (like CKD Stage), check if the value matches
-          const ckdStageValue = formState[domainKey]?.['CKD Stage'];
-          if (ckdStageValue === field.showIf) {
-            conditionMet = true;
-          }
-
-          // For other select fields, check if value matches (supports pipe-separated values)
-          Object.keys(formState[domainKey] || {}).forEach(key => {
-            const value = formState[domainKey][key];
-            if (typeof value === 'string' && (value === field.showIf || field.showIf.includes(value))) {
-              conditionMet = true;
-            }
-          });
-
-          if (!conditionMet) {
-            return; // Skip this field
-          }
-        }
-
-        const fieldWrapper = document.createElement('div');
-
-        const label = document.createElement('label');
-        label.textContent = field.label + (field.required ? ' *' : '');
-        label.style.fontSize = '12px';
-        label.style.marginBottom = '4px';
-        label.style.color = field.required ? '#dc2626' : '#64748b';
-        label.style.fontWeight = field.required ? '600' : 'normal';
-
-        let input;
-        if (field.type === 'checkbox-group') {
-          // Create checkbox group
-          const checkboxContainer = document.createElement('div');
-          checkboxContainer.style.display = 'flex';
-          checkboxContainer.style.flexDirection = 'column';
-          checkboxContainer.style.gap = '6px';
-
-          if (!formState[domainKey][field.key]) {
-            formState[domainKey][field.key] = [];
-          }
-
-          field.options.forEach(opt => {
-            const checkWrapper = document.createElement('label');
-            checkWrapper.style.display = 'flex';
-            checkWrapper.style.alignItems = 'center';
-            checkWrapper.style.gap = '6px';
-            checkWrapper.style.fontSize = '13px';
-
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.value = opt;
-            checkbox.checked = formState[domainKey][field.key].includes(opt); // Set initial checked state
-            checkbox.addEventListener('change', (e) => {
-              if (e.target.checked) {
-                if (!formState[domainKey][field.key].includes(opt)) {
-                  formState[domainKey][field.key].push(opt);
+                if (!response.ok) {
+                    throw new Error(data.error || 'Login failed');
                 }
-              } else {
-                formState[domainKey][field.key] = formState[domainKey][field.key].filter(v => v !== opt);
-              }
-              updateNarrative();
-              // Re-render to show/hide conditional fields
-              const currentSection = document.querySelector(`[data-domain="${domainKey}"]`);
-              if (currentSection) {
-                const parent = currentSection.parentElement;
-                currentSection.remove();
-                renderFormSection(domainKey);
-              }
-            });
 
-            checkWrapper.appendChild(checkbox);
-            checkWrapper.appendChild(document.createTextNode(opt));
-            checkboxContainer.appendChild(checkWrapper);
-          });
+                // Store token
+                localStorage.setItem('token', data.token);
+                localStorage.setItem('user', JSON.stringify(data.user));
 
-          fieldWrapper.appendChild(label);
-          fieldWrapper.appendChild(checkboxContainer);
-          fieldsContainer.appendChild(fieldWrapper);
-          return; // Skip further processing for this field type
-        } else if (field.type === 'select') {
-          input = document.createElement('select');
-          input.style.width = '100%';
-          input.style.padding = '6px';
-          input.style.borderRadius = '4px';
-          input.style.border = '1px solid #cbd5e1';
+                // Redirect to main app
+                window.location.href = '/app.html';
 
-          const empty = document.createElement('option');
-          empty.value = '';
-          empty.text = '-';
-          input.appendChild(empty);
-
-          field.options.forEach(opt => {
-            const o = document.createElement('option');
-            o.value = opt;
-            o.text = opt;
-            input.appendChild(o);
-          });
-        } else if (field.type === 'multi-select') {
-          // Simplified as text input for now, or simple select
-          // For better UX, let's use a select that appends to a list? 
-          // Or just a simple input for comma separation?
-          // Let's stick to simple text input for multi-select to save UI complexity for now
-          input = document.createElement('input');
-          input.type = 'text';
-          input.placeholder = 'e.g. CKD, Foot Ulcer';
-          input.style.width = '100%';
-          input.style.padding = '6px';
-          input.style.borderRadius = '4px';
-          input.style.border = '1px solid #cbd5e1';
-        } else {
-          input = document.createElement('input');
-          input.type = field.type;
-          input.style.width = '100%';
-          input.style.padding = '6px';
-          input.style.borderRadius = '4px';
-          input.style.border = '1px solid #cbd5e1';
-        }
-
-        // Event Listener
-        input.addEventListener('input', (e) => {
-          formState[domainKey][field.key] = e.target.value;
-          updateNarrative();
+            } catch (error) {
+                errorDiv.textContent = error.message;
+                errorDiv.classList.add('show');
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'Sign In';
+            }
         });
-
-        fieldWrapper.appendChild(label);
-        fieldWrapper.appendChild(input);
-        fieldsContainer.appendChild(fieldWrapper);
-      });
-
-      section.appendChild(fieldsContainer);
-      activeFormsContainer.appendChild(section);
-    }
-
-    // Helper: Update Narrative Textarea
-    function updateNarrative() {
-      const lines = [];
-
-      // Order: Demographics -> Diabetes -> Renal -> Cardio -> Respiratory
-      const order = ['demographics', 'diabetes', 'ckd', 'cardio', 'respiratory'];
-
-      order.forEach(domain => {
-        if (formState[domain]) {
-          const data = formState[domain];
-          Object.keys(data).forEach(key => {
-            const value = data[key];
-            if (value) {
-              // Handle arrays (checkbox groups)
-              if (Array.isArray(value)) {
-                if (value.length > 0) {
-                  lines.push(`${key}: ${value.join(', ')}`);
-                }
-              } else {
-                lines.push(`${key}: ${value}`);
-              }
-            }
-          });
-        }
-      });
-
-      narrativeInput.value = lines.join('\n');
-    }
-
-    // Initialize with Demographics
-    renderFormSection('demographics');
-
-
-
-    function renderEncodeResults(payload) {
-      encodeResults.innerHTML = '';
-
-      // Normalize payload to array
-      const results = Array.isArray(payload) ? payload : [payload];
-
-      if (!results.length) {
-        encodeResults.innerHTML = '<p>No results returned.</p>';
-        return;
-      }
-
-      const fragment = document.createDocumentFragment();
-
-      results.forEach((result, index) => {
-        // Container for this result item
-        const itemContainer = document.createElement('div');
-        itemContainer.className = 'result-item';
-        itemContainer.style.marginBottom = '24px';
-
-        // Header for the item if batch
-        if (results.length > 1) {
-          const header = document.createElement('h3');
-          header.textContent = `Item ${index + 1}: ${result.text}`;
-          header.style.fontSize = '16px';
-          header.style.color = '#334155';
-          header.style.marginBottom = '12px';
-          header.style.borderBottom = '1px solid #e2e8f0';
-          header.style.paddingBottom = '8px';
-          itemContainer.appendChild(header);
-        }
-
-        if (!result.primary && (!result.secondary || !result.secondary.length)) {
-          const noCode = document.createElement('div');
-          noCode.className = 'card';
-          noCode.textContent = 'No codes suggested.';
-          itemContainer.appendChild(noCode);
-        } else {
-          const createCard = (code, type) => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            if (type === 'Primary') {
-              card.style.borderLeft = '4px solid #22c55e';
-            }
-
-            const codeEl = document.createElement('div');
-            codeEl.className = 'code';
-            codeEl.textContent = `${type}: ${code.code}`;
-
-            const desc = document.createElement('div');
-            desc.className = 'desc';
-            desc.textContent = code.description || '';
-
-            const reason = document.createElement('div');
-            reason.className = 'synonyms';
-            reason.textContent = `Rationale: ${code.rationale}`;
-
-            card.appendChild(codeEl);
-            card.appendChild(desc);
-            card.appendChild(reason);
-            return card;
-          };
-
-          if (result.primary) {
-            itemContainer.appendChild(createCard(result.primary, 'Primary'));
-          }
-
-          if (result.secondary && result.secondary.length) {
-            result.secondary.forEach((code) => {
-              itemContainer.appendChild(createCard(code, 'Secondary'));
-            });
-          }
-        }
-
-        if (result.warnings?.length) {
-          const warnCard = document.createElement('div');
-          warnCard.className = 'card';
-          warnCard.innerHTML = `<div class="code">Warnings</div><div class="desc">${result.warnings.join('<br/>')}</div>`;
-          itemContainer.appendChild(warnCard);
-        }
-
-        if (result.errors?.length) {
-          const errCard = document.createElement('div');
-          errCard.className = 'card';
-          errCard.innerHTML = `<div class="code">Errors</div><div class="desc">${result.errors.join('<br/>')}</div>`;
-          itemContainer.appendChild(errCard);
-        }
-
-        fragment.appendChild(itemContainer);
-      });
-
-      encodeResults.appendChild(fragment);
-      copyEncodeBtn.disabled = false;
-    }
-
-    async function fetchPayload(url, body, defaultError, token) {
-      const headers = { 'Content-Type': 'application/json' };
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-
-      const response = await fetch(url, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(body),
-      });
-
-      const data = await response.json().catch(() => ({}));
-      const message =
-        data?.error?.message || data?.message || data?.error || defaultError;
-
-      if (!response.ok || data?.success === false) {
-        throw new Error(message);
-      }
-
-      return data?.data ?? data;
-    }
-
-    async function performEncode() {
-      const text = narrativeInput.value.trim();
-      encodeResults.innerHTML = '';
-      encodeStatus.textContent = '';
-      copyEncodeBtn.disabled = true;
-
-      if (!text) {
-        encodeStatus.textContent = 'Please enter a clinical narrative.';
-        return;
-      }
-
-      encodeBtn.disabled = true;
-      encodeStatus.textContent = 'Encoding…';
-
-      // Check for numbered list
-      // Regex looks for lines starting with a number followed by dot, paren, or space
-      const lines = text.split(/\r?\n/).filter(l => l.trim());
-      const isBatch = lines.length > 1 && lines.every(l => /^\d+[\.\)\s]/.test(l.trim()));
-
-      let payloadBody = {};
-      if (isBatch) {
-        // Extract text after the number
-        const items = lines.map(l => l.replace(/^\d+[\.\)\s]\s*/, '').trim());
-        payloadBody = { items };
-      } else {
-        payloadBody = { text };
-      }
-
-      try {
-        const token = localStorage.getItem('token');
-        const payload = await fetchPayload(
-          '/api/encode-structured',  // CHANGED: Use zero-assumption structured endpoint
-          payloadBody,
-          'Encoding failed',
-          token
-        );
-        lastEncoded = payload;
-        renderEncodeResults(payload);
-
-        const count = Array.isArray(payload) ? payload.length : 1;
-        encodeStatus.textContent = `Processed ${count} item(s).`;
-      } catch (err) {
-        encodeStatus.textContent = err.message || 'Unable to encode right now.';
-      } finally {
-        encodeBtn.disabled = false;
-      }
-    }
-
-    async function copyEncodedCodes() {
-      if (!lastEncoded) return;
-
-      const results = Array.isArray(lastEncoded) ? lastEncoded : [lastEncoded];
-      const lines = [];
-
-      results.forEach((res, idx) => {
-        if (results.length > 1) lines.push(`Item ${idx + 1}: ${res.text}`);
-
-        if (res.primary) {
-          // Use 'label' for structured API, fallback to 'description' for old API
-          const primaryLabel = res.primary.label || res.primary.description;
-          lines.push(`Primary: ${res.primary.code} — ${primaryLabel}`);
-        }
-        if (res.secondary) {
-          res.secondary.forEach((code) => {
-            // Use 'label' for structured API, fallback to 'description' for old API
-            const secondaryLabel = code.label || code.description;
-            lines.push(`Secondary: ${code.code} — ${secondaryLabel}`);
-          });
-        }
-        if (results.length > 1) lines.push(''); // spacer
-      });
-
-      if (!lines.length) return;
-
-      try {
-        await navigator.clipboard.writeText(lines.join('\n'));
-        encodeStatus.textContent = 'Codes copied to clipboard.';
-      } catch (err) {
-        encodeStatus.textContent = 'Unable to copy codes.';
-      }
-    }
-
-    encodeBtn.addEventListener('click', performEncode);
-    copyEncodeBtn.addEventListener('click', copyEncodedCodes);
-  </script>
+    </script>
 </body>
 
 </html>
