@@ -39,7 +39,7 @@ export interface PatientContext {
         };
         respiratory?: {
             failure?: {
-                type: 'none' | 'acute' | 'chronic' | 'acute_on_chronic';
+                type: 'none' | 'acute' | 'chronic' | 'acute_on_chronic' | 'unspecified';
                 withHypoxia?: boolean;
                 withHypercapnia?: boolean;
             };
@@ -72,6 +72,8 @@ export interface PatientContext {
                 shock?: boolean;
             };
             hospitalAcquired?: boolean;
+            hiv?: boolean;
+            tuberculosis?: boolean;
         };
         wounds?: {
             present: boolean;
@@ -114,6 +116,22 @@ export interface PatientContext {
             parkinsons?: boolean;
             coma?: boolean;
             gcs?: number;
+            stroke?: boolean;
+            hemiplegia?: {
+                side: 'left' | 'right' | 'unspecified';
+            };
+        };
+        musculoskeletal?: {
+            osteoporosis?: boolean;
+            pathologicalFracture?: {
+                site: 'femur' | 'other';
+            };
+        };
+        mental_health?: {
+            depression?: {
+                severity: 'mild' | 'moderate' | 'severe';
+                psychoticFeatures?: boolean;
+            };
         };
         gastro?: {
             liverDisease?: boolean;

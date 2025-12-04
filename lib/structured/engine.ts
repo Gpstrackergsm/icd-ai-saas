@@ -96,6 +96,18 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             });
         }
 
+        // RULE: Ketoacidosis → E10.10 / E11.10
+        if (d.complications.includes('ketoacidosis')) {
+            codes.push({
+                code: `${baseCode}.10`,
+                label: `${typeName} diabetes mellitus with ketoacidosis without coma`,
+                rationale: 'Diabetes with documented ketoacidosis complication',
+                guideline: 'ICD-10-CM I.C.4.a',
+                trigger: 'Diabetes Type + Ketoacidosis complication',
+                rule: 'Diabetes complication mapping'
+            });
+        }
+
         // RULE: Hypoglycemia → E10.649 / E11.649
         if (d.complications.includes('hypoglycemia')) {
             codes.push({
@@ -287,6 +299,23 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         });
     }
 
+    if (ctx.conditions.respiratory?.failure) {
+        const rf = ctx.conditions.respiratory.failure;
+        let code = 'J96.90'; // Unspecified
+        if (rf.type === 'acute') code = 'J96.00';
+        else if (rf.type === 'chronic') code = 'J96.10';
+        else if (rf.type === 'acute_on_chronic') code = 'J96.20';
+
+        codes.push({
+            code: code,
+            label: `Respiratory failure, ${rf.type || 'unspecified'}`,
+            rationale: 'Respiratory failure documented',
+            guideline: 'ICD-10-CM J96',
+            trigger: `Respiratory Failure Type: ${rf.type}`,
+            rule: 'Respiratory failure code'
+        });
+    }
+
     // --- INFECTIONS & SEPSIS RULES ---
     if (ctx.conditions.infection) {
         const inf = ctx.conditions.infection;
@@ -354,6 +383,31 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     rule: 'Use additional code for organism'
                 });
             }
+        }
+
+
+        // RULE: HIV
+        if (inf.hiv) {
+            codes.push({
+                code: 'B20',
+                label: 'Human immunodeficiency virus [HIV] disease',
+                rationale: 'HIV positive documented',
+                guideline: 'ICD-10-CM B20',
+                trigger: 'HIV Positive',
+                rule: 'HIV code'
+            });
+        }
+
+        // RULE: Tuberculosis
+        if (inf.tuberculosis) {
+            codes.push({
+                code: 'A15.0',
+                label: 'Tuberculosis of lung',
+                rationale: 'Active tuberculosis documented',
+                guideline: 'ICD-10-CM A15',
+                trigger: 'Active Tuberculosis',
+                rule: 'TB code'
+            });
         }
     }
 
@@ -508,6 +562,34 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             });
         }
 
+        // RULE: Stroke
+        if (n.stroke) {
+            codes.push({
+                code: 'I63.9',
+                label: 'Cerebral infarction, unspecified',
+                rationale: 'Ischemic stroke documented',
+                guideline: 'ICD-10-CM I63',
+                trigger: 'Stroke = Yes',
+                rule: 'Stroke code'
+            });
+        }
+
+        // RULE: Hemiplegia
+        if (n.hemiplegia) {
+            let code = 'I69.359'; // Unspecified side
+            if (n.hemiplegia.side === 'right') code = 'I69.351';
+            else if (n.hemiplegia.side === 'left') code = 'I69.352';
+
+            codes.push({
+                code: code,
+                label: `Hemiplegia and hemiparesis following cerebral infarction affecting ${n.hemiplegia.side} side`,
+                rationale: 'Hemiplegia documented as sequela of stroke',
+                guideline: 'ICD-10-CM I69.35',
+                trigger: `Hemiplegia Side: ${n.hemiplegia.side}`,
+                rule: 'Hemiplegia sequela code'
+            });
+        }
+
         // RULE: Coma
         if (n.coma) {
             codes.push({
@@ -535,6 +617,57 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             }
         }
     }
+
+    // --- MUSCULOSKELETAL RULES ---
+    if (ctx.conditions.musculoskeletal) {
+        const m = ctx.conditions.musculoskeletal;
+
+        // RULE: Osteoporosis
+        if (m.osteoporosis) {
+            let code = 'M81.0'; // Age-related osteoporosis without current pathological fracture
+            if (m.pathologicalFracture) {
+                code = 'M80.08XA'; // Osteoporosis with pathological fracture of other site
+                if (m.pathologicalFracture.site === 'femur') code = 'M80.051A'; // Right femur? Unspecified side -> M80.059A
+                else code = 'M80.08XA';
+            }
+
+            codes.push({
+                code: code,
+                label: 'Osteoporosis with pathological fracture',
+                rationale: 'Osteoporosis with fracture documented',
+                guideline: 'ICD-10-CM M80',
+                trigger: 'Osteoporosis + Fracture',
+                rule: 'Osteoporosis code'
+            });
+        }
+    }
+
+    // --- MENTAL HEALTH RULES ---
+    if (ctx.conditions.mental_health) {
+        const mh = ctx.conditions.mental_health;
+
+        // RULE: Depression
+        if (mh.depression) {
+            let code = 'F32.9'; // Unspecified
+            if (mh.depression.severity === 'severe') {
+                code = mh.depression.psychoticFeatures ? 'F32.3' : 'F32.2';
+            } else if (mh.depression.severity === 'moderate') {
+                code = 'F32.1';
+            } else if (mh.depression.severity === 'mild') {
+                code = 'F32.0';
+            }
+
+            codes.push({
+                code: code,
+                label: `Major depressive disorder, single episode, ${mh.depression.severity}${mh.depression.psychoticFeatures ? ' with psychotic features' : ''}`,
+                rationale: 'Major depressive disorder documented',
+                guideline: 'ICD-10-CM F32',
+                trigger: `Depression Severity: ${mh.depression.severity}`,
+                rule: 'Depression code'
+            });
+        }
+    }
+
 
     // --- GASTROENTEROLOGY RULES ---
     if (ctx.conditions.gastro) {
@@ -687,6 +820,17 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     rule: 'Unspecified metastasis'
                 });
             }
+        }
+        // RULE: Chemotherapy Admission
+        if (neo.chemotherapy) {
+            codes.push({
+                code: 'Z51.11',
+                label: 'Encounter for antineoplastic chemotherapy',
+                rationale: 'Admission for chemotherapy',
+                guideline: 'ICD-10-CM Z51.11',
+                trigger: 'Chemotherapy Admission',
+                rule: 'Chemotherapy encounter code'
+            });
         }
     }
 
@@ -1322,4 +1466,5 @@ function mapGCS(score: number): string | null {
     if (score >= 3 && score <= 8) return 'R40.243';
     return null;
 }
+
 

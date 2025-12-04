@@ -29,6 +29,254 @@ export function parseInput(text: string): ParseResult {
         const lowerValue = value.toLowerCase();
 
         switch (key) {
+            // Generic Diagnosis/History Parsing
+            case 'diagnosis':
+            case 'history':
+            case 'event':
+            case 'source':
+            case 'status':
+            case 'complication':
+            case 'complications':
+            case 'diabetes complications':
+            case 'current admission':
+            case 'on dialysis':
+            case 'active disease':
+            case 'cause':
+                // Sepsis & Infection
+                if (lowerValue.includes('sepsis')) {
+                    if (!context.conditions.infection) context.conditions.infection = { present: true };
+                    if (!context.conditions.infection.sepsis) context.conditions.infection.sepsis = { present: true };
+                    if (lowerValue.includes('severe')) context.conditions.infection.sepsis.severe = true;
+                    if (lowerValue.includes('shock')) context.conditions.infection.sepsis.shock = true;
+
+                    // Organism extraction
+                    if (lowerValue.includes('e. coli') || lowerValue.includes('escherichia coli')) context.conditions.infection.organism = 'e_coli';
+                    else if (lowerValue.includes('mrsa')) context.conditions.infection.organism = 'mrsa';
+                    else if (lowerValue.includes('mssa')) context.conditions.infection.organism = 'mssa';
+                    else if (lowerValue.includes('pseudomonas')) context.conditions.infection.organism = 'pseudomonas';
+                    else if (lowerValue.includes('klebsiella')) context.conditions.infection.organism = 'klebsiella';
+                    else if (lowerValue.includes('streptococcus') || lowerValue.includes('strep')) context.conditions.infection.organism = 'streptococcus';
+                    else if (lowerValue.includes('proteus')) context.conditions.infection.organism = 'proteus';
+                    else if (lowerValue.includes('enterococcus')) context.conditions.infection.organism = 'enterococcus';
+                    else if (lowerValue.includes('candida')) context.conditions.infection.organism = 'candida';
+                    else if (lowerValue.includes('bacteroides')) context.conditions.infection.organism = 'bacteroides';
+                    else if (lowerValue.includes('enterobacter')) context.conditions.infection.organism = 'enterobacter';
+                }
+                if (lowerValue.includes('septic shock')) {
+                    if (!context.conditions.infection) context.conditions.infection = { present: true };
+                    if (!context.conditions.infection.sepsis) context.conditions.infection.sepsis = { present: true };
+                    context.conditions.infection.sepsis.shock = true;
+                }
+
+                // Pneumonia
+                if (lowerValue.includes('pneumonia')) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                    context.conditions.respiratory.pneumonia = { type: 'unspecified' };
+                    if (lowerValue.includes('mrsa')) context.conditions.respiratory.pneumonia.organism = 'mrsa';
+                    else if (lowerValue.includes('mssa')) context.conditions.respiratory.pneumonia.organism = 'mssa';
+                    else if (lowerValue.includes('pseudomonas')) context.conditions.respiratory.pneumonia.organism = 'pseudomonas';
+                    else if (lowerValue.includes('klebsiella')) context.conditions.respiratory.pneumonia.organism = 'klebsiella';
+                    else if (lowerValue.includes('e. coli')) context.conditions.respiratory.pneumonia.organism = 'e_coli';
+                    else if (lowerValue.includes('influenza')) context.conditions.respiratory.pneumonia.organism = 'influenza';
+                    else if (lowerValue.includes('legionella')) context.conditions.respiratory.pneumonia.organism = 'legionella';
+                }
+
+                // COPD
+                if (lowerValue.includes('copd') || lowerValue.includes('chronic obstructive')) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                    context.conditions.respiratory.copd = { present: true };
+                    if (lowerValue.includes('exacerbation')) context.conditions.respiratory.copd.withExacerbation = true;
+                }
+
+                // Respiratory Failure
+                if (lowerValue.includes('respiratory failure')) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                    if (!context.conditions.respiratory.failure) context.conditions.respiratory.failure = { type: 'unspecified' };
+                    if (lowerValue.includes('acute')) context.conditions.respiratory.failure.type = 'acute';
+                    if (lowerValue.includes('chronic')) context.conditions.respiratory.failure.type = 'chronic';
+                }
+
+                // Renal / CKD / AKI
+                if (lowerValue.includes('kidney failure') || lowerValue.includes('renal failure') || lowerValue.includes('aki') || lowerValue.includes('acute kidney injury')) {
+                    if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
+                    if (lowerValue.includes('acute')) context.conditions.ckd.aki = true;
+                }
+                if (lowerValue.includes('ckd') || lowerValue.includes('chronic kidney disease')) {
+                    if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
+                    if (lowerValue.includes('stage 4')) context.conditions.ckd.stage = 4;
+                    if (lowerValue.includes('stage 5')) context.conditions.ckd.stage = 5;
+                    if (lowerValue.includes('esrd')) context.conditions.ckd.stage = 'esrd';
+                }
+                if (lowerValue.includes('nephropathy')) {
+                    if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
+                    context.conditions.diabetes.complications.push('ckd');
+                }
+
+                // Gastro
+                if (lowerValue.includes('cirrhosis')) {
+                    if (!context.conditions.gastro) context.conditions.gastro = {};
+                    context.conditions.gastro.cirrhosis = { type: 'unspecified' };
+                    if (lowerValue.includes('alcoholic')) context.conditions.gastro.cirrhosis.type = 'alcoholic';
+                }
+                if (lowerValue.includes('ascites')) {
+                    if (!context.conditions.gastro) context.conditions.gastro = {};
+                    context.conditions.gastro.ascites = true;
+                }
+
+                // OB/GYN
+                if (lowerValue.includes('preeclampsia')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    context.conditions.obstetric.preeclampsia = true;
+                    context.conditions.obstetric.pregnant = true;
+                }
+                if (lowerValue.includes('pregnant') || lowerValue.includes('pregnancy')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    context.conditions.obstetric.pregnant = true;
+                }
+
+                // Neoplasm
+                if (lowerValue.includes('cancer') || lowerValue.includes('malignancy')) {
+                    if (!context.conditions.neoplasm) context.conditions.neoplasm = { present: true };
+                    if (lowerValue.includes('breast')) context.conditions.neoplasm.site = 'breast';
+                    if (lowerValue.includes('lung')) context.conditions.neoplasm.site = 'lung';
+                    if (lowerValue.includes('colon')) context.conditions.neoplasm.site = 'colon';
+                    if (lowerValue.includes('prostate')) context.conditions.neoplasm.site = 'prostate';
+                }
+                if (lowerValue.includes('chemotherapy')) {
+                    if (!context.conditions.neoplasm) context.conditions.neoplasm = { present: true };
+                    context.conditions.neoplasm.chemotherapy = true;
+                }
+
+                // Neurology
+                if (lowerValue.includes('alzheimer')) {
+                    if (!context.conditions.neurology) context.conditions.neurology = {};
+                    context.conditions.neurology.dementia = { type: 'alzheimer' };
+                }
+                if (lowerValue.includes('stroke')) {
+                    if (!context.conditions.neurology) context.conditions.neurology = {};
+                    context.conditions.neurology.stroke = true;
+                }
+                if (lowerValue.includes('hemiplegia')) {
+                    if (!context.conditions.neurology) context.conditions.neurology = {};
+                    context.conditions.neurology.hemiplegia = { side: 'unspecified' };
+                    if (lowerValue.includes('right')) context.conditions.neurology.hemiplegia.side = 'right';
+                    if (lowerValue.includes('left')) context.conditions.neurology.hemiplegia.side = 'left';
+                }
+
+                // Infection (HIV/TB)
+                if (lowerValue.includes('hiv')) {
+                    if (!context.conditions.infection) context.conditions.infection = { present: true };
+                    context.conditions.infection.hiv = true;
+                }
+                if (lowerValue.includes('tuberculosis')) {
+                    if (!context.conditions.infection) context.conditions.infection = { present: true };
+                    context.conditions.infection.tuberculosis = true;
+                }
+
+                // Musculoskeletal
+                if (lowerValue.includes('osteoporosis')) {
+                    if (!context.conditions.musculoskeletal) context.conditions.musculoskeletal = {};
+                    context.conditions.musculoskeletal.osteoporosis = true;
+                }
+                if (lowerValue.includes('fracture') && lowerValue.includes('pathological')) {
+                    if (!context.conditions.musculoskeletal) context.conditions.musculoskeletal = {};
+                    context.conditions.musculoskeletal.pathologicalFracture = { site: 'other' };
+                    if (lowerValue.includes('femur')) context.conditions.musculoskeletal.pathologicalFracture.site = 'femur';
+                }
+
+                // Mental Health
+                if (lowerValue.includes('depressive') || lowerValue.includes('depression')) {
+                    if (!context.conditions.mental_health) context.conditions.mental_health = {};
+                    context.conditions.mental_health.depression = { severity: 'moderate' }; // Default
+                    if (lowerValue.includes('severe')) context.conditions.mental_health.depression.severity = 'severe';
+                    if (lowerValue.includes('mild')) context.conditions.mental_health.depression.severity = 'mild';
+                    if (lowerValue.includes('psychotic')) context.conditions.mental_health.depression.psychoticFeatures = true;
+                    if (lowerValue.includes('without psychotic')) context.conditions.mental_health.depression.psychoticFeatures = false;
+                }
+                if (lowerValue.includes('heart failure')) {
+                    if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
+                    context.conditions.cardiovascular.heartFailure = { type: 'unspecified', acuity: 'unspecified' };
+                }
+                if (lowerValue.includes('hypertension') || lowerValue.includes('hypertensive')) {
+                    if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
+                    context.conditions.cardiovascular.hypertension = true;
+                }
+
+                // Hematology
+                if (lowerValue.includes('anemia')) {
+                    if (!context.conditions.hematology) context.conditions.hematology = {};
+                    context.conditions.hematology.anemia = { type: 'unspecified' };
+                    if (lowerValue.includes('iron deficiency')) context.conditions.hematology.anemia.type = 'iron_deficiency';
+                }
+
+                // Diabetes Complications (Generic)
+                if (lowerValue.includes('diabetic') || lowerValue.includes('diabetes')) {
+                    if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
+                    if (lowerValue.includes('neuropathy')) context.conditions.diabetes.complications.push('neuropathy');
+                    if (lowerValue.includes('retinopathy')) context.conditions.diabetes.complications.push('retinopathy');
+                    if (lowerValue.includes('ketoacidosis')) context.conditions.diabetes.complications.push('ketoacidosis');
+                    if (lowerValue.includes('foot ulcer')) {
+                        context.conditions.diabetes.complications.push('foot_ulcer');
+                        if (!context.conditions.wounds) context.conditions.wounds = { present: true };
+                        context.conditions.wounds.type = 'diabetic';
+                    }
+                }
+
+                // Fallback to specific logic if key matches specific cases below
+                if (key === 'complications' || key === 'diabetes complications') {
+                    // Existing logic for complications key will run below if we don't break
+                    // But we should probably let it fall through or handle it here.
+                    // The switch case will execute this block for 'complications'.
+                    // We need to ensure we don't double parse or skip the specific diabetes logic below.
+                    // Actually, the specific 'complications' case below is unreachable if we match here.
+                    // So we must include the specific logic here or merge them.
+                    // Let's merge the specific diabetes logic here.
+                    if (lowerValue.trim() === 'none') break;
+                    const comps = lowerValue.split(',').map(c => c.trim());
+                    comps.forEach(c => {
+                        const lc = c.toLowerCase();
+                        if (lc === 'neuropathy' || lc.includes('polyneuropathy')) {
+                            if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
+                            context.conditions.diabetes.complications.push('neuropathy');
+                        }
+                        else if (lc.includes('nephropathy') || lc.includes('ckd')) {
+                            if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
+                            context.conditions.diabetes.complications.push('ckd');
+                        }
+                        else if (lc.includes('foot ulcer')) {
+                            if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
+                            context.conditions.diabetes.complications.push('foot_ulcer');
+                            if (!context.conditions.wounds) context.conditions.wounds = { present: true };
+                            context.conditions.wounds.type = 'diabetic';
+                        }
+                        else if (lc.includes('retinopathy')) {
+                            if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
+                            context.conditions.diabetes.complications.push('retinopathy');
+                        }
+                        else if (lc.includes('ketoacidosis')) {
+                            if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
+                            context.conditions.diabetes.complications.push('ketoacidosis');
+                        }
+                        else if (lc.includes('ascites')) { // Handle ascites in complications
+                            if (!context.conditions.gastro) context.conditions.gastro = {};
+                            context.conditions.gastro.ascites = true;
+                        }
+                        else if (lc.includes('respiratory failure')) {
+                            if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                            context.conditions.respiratory.failure = { type: 'acute' }; // Default to acute if in complications
+                        }
+                        else if (lc.includes('kidney failure') || lc.includes('aki')) {
+                            if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
+                            context.conditions.ckd.aki = true;
+                        }
+                        else if (lc.includes('heart failure')) {
+                            if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
+                            context.conditions.cardiovascular.heartFailure = { type: 'unspecified', acuity: 'unspecified' };
+                        }
+                    });
+                }
+                break;
+
             // Demographics
             case 'inpatient':
             case 'icu':
@@ -62,8 +310,8 @@ export function parseInput(text: string): ParseResult {
                 else if (lowerValue.includes('secondary')) context.conditions.diabetes.type = 'secondary';
                 else errors.push(`Invalid diabetes type: ${value}`);
                 break;
-            case 'complications':
-            case 'diabetes complications':
+                // case 'complications': // Merged above
+                // case 'diabetes complications': // Merged above
                 if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
                 if (lowerValue.trim() === 'none') break; // Ignore 'none'
                 const comps = lowerValue.split(',').map(c => c.trim());
@@ -130,6 +378,7 @@ export function parseInput(text: string): ParseResult {
             case 'dialysis':
             case 'dialysis status':
             case 'dialysis / dialysis status':
+            case 'on dialysis':
                 if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
                 // Handle new format: None/Temporary/Chronic
                 if (lowerValue === 'none') {
@@ -139,6 +388,10 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.ckd.onDialysis = true;
                     context.conditions.ckd.dialysisType = 'temporary';
                 } else if (lowerValue === 'chronic') {
+                    context.conditions.ckd.onDialysis = true;
+                    context.conditions.ckd.dialysisType = 'chronic';
+                } else if (key === 'on dialysis' && parseBoolean(value)) {
+                    // "On dialysis: Yes" implies chronic in this context
                     context.conditions.ckd.onDialysis = true;
                     context.conditions.ckd.dialysisType = 'chronic';
                 } else {
