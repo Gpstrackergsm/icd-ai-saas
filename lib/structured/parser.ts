@@ -100,8 +100,8 @@ export function parseInput(text: string): ParseResult {
                     else if (lowerValue.includes('pseudomonas')) context.conditions.respiratory.pneumonia.organism = 'pseudomonas';
                     else if (lowerValue.includes('klebsiella')) context.conditions.respiratory.pneumonia.organism = 'klebsiella';
                     else if (lowerValue.includes('e. coli')) context.conditions.respiratory.pneumonia.organism = 'e_coli';
-                    else if (lowerValue.includes('influenza')) context.conditions.respiratory.pneumonia.organism = 'influenza';
-                    else if (lowerValue.includes('legionella')) context.conditions.respiratory.pneumonia.organism = 'legionella';
+                    else if (lowerValue.includes('mycoplasma')) context.conditions.respiratory.pneumonia.organism = 'mycoplasma';
+                    else if (lowerValue.includes('viral')) context.conditions.respiratory.pneumonia.organism = 'viral';
                 }
 
                 // COPD
@@ -233,6 +233,47 @@ export function parseInput(text: string): ParseResult {
                         withExacerbation: withExacerbation && !withInfection,
                         withInfection: withInfection
                     };
+                }
+
+                // Pneumonia detection (skip if key is 'status')
+                if ((lowerValue.includes('pneumonia') || lowerValue.includes('pneumonitis')) && key.toLowerCase() !== 'status') {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                    if (!context.conditions.respiratory.pneumonia) {
+                        let organism: 'strep_pneumoniae' | 'h_influenzae' | 'klebsiella' | 'pseudomonas' |
+                            'mssa' | 'mrsa' | 'e_coli' | 'mycoplasma' | 'viral' | 'unspecified' | undefined;
+                        let type: 'aspiration' | 'bacterial' | 'viral' | 'unspecified' | undefined;
+                        let ventilatorAssociated = false;
+
+                        // Organism detection
+                        if (lowerValue.includes('streptococcus pneumoniae') || lowerValue.includes('strep pneumoniae')) organism = 'strep_pneumoniae';
+                        else if (lowerValue.includes('haemophilus') || lowerValue.includes('h. influenzae')) organism = 'h_influenzae';
+                        else if (lowerValue.includes('klebsiella')) organism = 'klebsiella';
+                        else if (lowerValue.includes('pseudomonas')) organism = 'pseudomonas';
+                        else if (lowerValue.includes('mssa')) organism = 'mssa';
+                        else if (lowerValue.includes('mrsa')) organism = 'mrsa';
+                        else if (lowerValue.includes('e. coli') || lowerValue.includes('e.coli')) organism = 'e_coli';
+                        else if (lowerValue.includes('mycoplasma')) organism = 'mycoplasma';
+                        else if (lowerValue.includes('viral')) organism = 'viral';
+
+                        // Type detection
+                        if (lowerValue.includes('aspiration')) type = 'aspiration';
+                        else if (lowerValue.includes('bacterial')) {
+                            type = 'bacterial';
+                            if (!organism) organism = 'unspecified';
+                        } else if (lowerValue.includes('viral')) {
+                            type = 'viral';
+                            if (!organism) organism = 'viral';
+                        }
+
+                        // VAP detection
+                        if (lowerValue.includes('ventilator')) ventilatorAssociated = true;
+
+                        context.conditions.respiratory.pneumonia = {
+                            organism,
+                            type,
+                            ventilatorAssociated
+                        };
+                    }
                 }
 
                 // Asthma detection (skip if key is 'status' or asthma already exists)
@@ -549,7 +590,55 @@ export function parseInput(text: string): ParseResult {
             // Respiratory
             case 'pneumonia':
                 if (!context.conditions.respiratory) context.conditions.respiratory = {};
-                if (parseBoolean(value)) context.conditions.respiratory.pneumonia = { type: 'unspecified' };
+
+                // Parse organism and type from value
+                let organism: 'strep_pneumoniae' | 'h_influenzae' | 'klebsiella' | 'pseudomonas' |
+                    'mssa' | 'mrsa' | 'e_coli' | 'mycoplasma' | 'viral' | 'unspecified' | undefined;
+                let type: 'aspiration' | 'bacterial' | 'viral' | 'unspecified' | undefined;
+                let ventilatorAssociated = false;
+
+                // Organism detection
+                if (lowerValue.includes('streptococcus pneumoniae') || lowerValue.includes('strep pneumoniae')) {
+                    organism = 'strep_pneumoniae';
+                } else if (lowerValue.includes('haemophilus influenzae') || lowerValue.includes('h. influenzae') || lowerValue.includes('h influenzae')) {
+                    organism = 'h_influenzae';
+                } else if (lowerValue.includes('klebsiella')) {
+                    organism = 'klebsiella';
+                } else if (lowerValue.includes('pseudomonas')) {
+                    organism = 'pseudomonas';
+                } else if (lowerValue.includes('mssa') || lowerValue.includes('methicillin susceptible')) {
+                    organism = 'mssa';
+                } else if (lowerValue.includes('mrsa') || lowerValue.includes('methicillin resistant')) {
+                    organism = 'mrsa';
+                } else if (lowerValue.includes('e. coli') || lowerValue.includes('e.coli') || lowerValue.includes('escherichia coli')) {
+                    organism = 'e_coli';
+                } else if (lowerValue.includes('mycoplasma')) {
+                    organism = 'mycoplasma';
+                } else if (lowerValue.includes('viral')) {
+                    organism = 'viral';
+                }
+
+                // Type detection
+                if (lowerValue.includes('aspiration')) {
+                    type = 'aspiration';
+                } else if (lowerValue.includes('bacterial')) {
+                    type = 'bacterial';
+                    if (!organism) organism = 'unspecified';
+                } else if (lowerValue.includes('viral')) {
+                    type = 'viral';
+                    if (!organism) organism = 'viral';
+                }
+
+                // Ventilator-associated detection
+                if (lowerValue.includes('ventilator') || lowerValue.includes('vap')) {
+                    ventilatorAssociated = true;
+                }
+
+                context.conditions.respiratory.pneumonia = {
+                    organism,
+                    type,
+                    ventilatorAssociated
+                };
                 break;
             case 'pneumonia organism':
                 if (!context.conditions.respiratory?.pneumonia) {
@@ -558,14 +647,12 @@ export function parseInput(text: string): ParseResult {
                 }
                 if (lowerValue.includes('pseudomonas')) context.conditions.respiratory!.pneumonia!.organism = 'pseudomonas';
                 else if (lowerValue.includes('mrsa')) context.conditions.respiratory!.pneumonia!.organism = 'mrsa';
+                else if (lowerValue.includes('mssa')) context.conditions.respiratory!.pneumonia!.organism = 'mssa';
                 else if (lowerValue.includes('e. coli') || lowerValue.includes('e.coli')) context.conditions.respiratory!.pneumonia!.organism = 'e_coli';
                 else if (lowerValue.includes('klebsiella')) context.conditions.respiratory!.pneumonia!.organism = 'klebsiella';
-                else if (lowerValue.includes('influenza')) context.conditions.respiratory!.pneumonia!.organism = 'influenza';
-                else if (lowerValue.includes('legionella')) context.conditions.respiratory!.pneumonia!.organism = 'legionella';
-                else if (lowerValue.includes('streptococcus') || lowerValue.includes('strep')) context.conditions.respiratory!.pneumonia!.organism = 'streptococcus';
-                else errors.push(`Unknown organism: ${value}`);
+                else if (lowerValue.includes('mycoplasma')) context.conditions.respiratory!.pneumonia!.organism = 'mycoplasma';
+                else if (lowerValue.includes('viral')) context.conditions.respiratory!.pneumonia!.organism = 'viral';
                 break;
-
             case 'copd':
             case 'chronic obstructive pulmonary disease':
                 if (!context.conditions.respiratory) context.conditions.respiratory = {};

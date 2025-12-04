@@ -53,8 +53,10 @@ export interface PatientContext {
                 status: 'uncomplicated' | 'exacerbation' | 'status_asthmaticus';
             };
             pneumonia?: {
-                organism?: 'pseudomonas' | 'e_coli' | 'mrsa' | 'mssa' | 'strep' | 'viral' | 'klebsiella' | 'influenza' | 'legionella' | 'streptococcus' | 'haemophilus' | 'unspecified';
-                type: 'aspiration' | 'bacterial' | 'viral' | 'unspecified';
+                organism?: 'strep_pneumoniae' | 'h_influenzae' | 'klebsiella' | 'pseudomonas' |
+                'mssa' | 'mrsa' | 'e_coli' | 'mycoplasma' | 'viral' | 'unspecified';
+                type?: 'aspiration' | 'bacterial' | 'viral' | 'unspecified';
+                ventilatorAssociated?: boolean;
             };
             mechanicalVent?: {
                 present: boolean;

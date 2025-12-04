@@ -290,21 +290,44 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     // --- RESPIRATORY RULES ---
     if (ctx.conditions.respiratory?.pneumonia) {
         const r = ctx.conditions.respiratory;
-        const p = r.pneumonia!; // Non-null assertion safe because of if condition
-        const pCode = mapPneumoniaOrganism(p.organism);
-        let pLabel = 'Pneumonia';
-        if (pCode === 'J15.212') pLabel = 'Pneumonia due to Methicillin resistant Staphylococcus aureus';
-        else if (pCode === 'J15.5') pLabel = 'Pneumonia due to E. coli';
-        else if (pCode === 'J15.1') pLabel = 'Pneumonia due to Pseudomonas';
+        const p = r.pneumonia!;
 
-        codes.push({
-            code: pCode,
-            label: pLabel,
-            rationale: `Pneumonia${p.organism ? ' due to ' + p.organism : ''}`,
-            guideline: 'ICD-10-CM I.C.10',
-            trigger: 'Pneumonia + ' + (p.organism || 'unspecified organism'),
-            rule: 'Organism-specific pneumonia code'
-        });
+        // Aspiration pneumonia takes precedence
+        if (p.type === 'aspiration') {
+            codes.push({
+                code: 'J69.0',
+                label: 'Pneumonitis due to inhalation of food and vomit',
+                rationale: 'Aspiration pneumonia/pneumonitis documented',
+                guideline: 'ICD-10-CM I.C.10.d',
+                trigger: 'Aspiration pneumonia',
+                rule: 'Aspiration pneumonia code'
+            });
+        } else {
+            // Ventilator-associated pneumonia
+            if (p.ventilatorAssociated) {
+                codes.push({
+                    code: 'J95.851',
+                    label: 'Ventilator associated pneumonia',
+                    rationale: 'Ventilator-associated pneumonia documented',
+                    guideline: 'ICD-10-CM I.C.10.d',
+                    trigger: 'VAP',
+                    rule: 'VAP code'
+                });
+            }
+
+            // Organism-specific code
+            const pCode = mapPneumoniaOrganism(p.organism);
+            const pLabel = getPneumoniaLabel(pCode, p.organism);
+
+            codes.push({
+                code: pCode,
+                label: pLabel,
+                rationale: `Pneumonia${p.organism ? ' due to ' + p.organism.replace(/_/g, ' ') : ', unspecified organism'}`,
+                guideline: 'ICD-10-CM I.C.10.d',
+                trigger: 'Pneumonia + ' + (p.organism || 'unspecified organism'),
+                rule: 'Organism-specific pneumonia code'
+            });
+        }
     }
 
     if (ctx.conditions.respiratory?.failure) {
@@ -1500,18 +1523,32 @@ function mapHeartFailureCode(type: string, acuity: string): string {
 }
 
 function mapPneumoniaOrganism(organism?: string): string {
-    if (!organism) return 'J18.9';
-    const lower = organism.toLowerCase().replace('_', ' ');
-    if (lower.includes('pseudomonas')) return 'J15.1';
-    if (lower.includes('e. coli') || lower.includes('e.coli') || lower.includes('e coli')) return 'J15.5';
-    if (lower.includes('mrsa')) return 'J15.212';
-    if (lower.includes('klebsiella')) return 'J15.0';
-    if (lower.includes('influenza')) return 'J11.0'; // Influenza with pneumonia, virus not identified
-    if (lower.includes('legionella')) return 'A48.1'; // Legionnaires' disease
-    if (lower.includes('streptococcus') || lower.includes('strep')) return 'J15.4'; // Other streptococcal pneumonia
-    if (lower.includes('haemophilus')) return 'J15.2';
-    if (lower.includes('viral')) return 'J12.9';
-    return 'J18.9';
+    if (!organism) return 'J18.9'; // Unspecified
+
+    switch (organism) {
+        case 'strep_pneumoniae':
+            return 'J13'; // Streptococcus pneumoniae
+        case 'h_influenzae':
+            return 'J14'; // Haemophilus influenzae
+        case 'klebsiella':
+            return 'J15.0'; // Klebsiella pneumoniae
+        case 'pseudomonas':
+            return 'J15.1'; // Pseudomonas
+        case 'mssa':
+            return 'J15.211'; // MSSA
+        case 'mrsa':
+            return 'J15.212'; // MRSA
+        case 'e_coli':
+            return 'J15.5'; // E. coli
+        case 'mycoplasma':
+            return 'J15.7'; // Mycoplasma pneumoniae
+        case 'viral':
+            return 'J12.9'; // Viral pneumonia, unspecified
+        case 'unspecified':
+            return 'J15.9'; // Bacterial pneumonia, unspecified
+        default:
+            return 'J18.9'; // Pneumonia, unspecified organism
+    }
 }
 
 // Sepsis organism mapping (A41.x codes)
@@ -1654,3 +1691,20 @@ function mapGCS(score: number): string | null {
 }
 
 
+
+function getPneumoniaLabel(code: string, organism?: string): string {
+    const labels: Record<string, string> = {
+        'J13': 'Pneumonia due to Streptococcus pneumoniae',
+        'J14': 'Pneumonia due to Haemophilus influenzae',
+        'J15.0': 'Pneumonia due to Klebsiella pneumoniae',
+        'J15.1': 'Pneumonia due to Pseudomonas',
+        'J15.211': 'Pneumonia due to Methicillin susceptible Staphylococcus aureus',
+        'J15.212': 'Pneumonia due to Methicillin resistant Staphylococcus aureus',
+        'J15.5': 'Pneumonia due to Escherichia coli',
+        'J15.7': 'Pneumonia due to Mycoplasma pneumoniae',
+        'J15.9': 'Unspecified bacterial pneumonia',
+        'J12.9': 'Viral pneumonia, unspecified',
+        'J18.9': 'Pneumonia, unspecified organism'
+    };
+    return labels[code] || 'Pneumonia';
+}
