@@ -160,13 +160,53 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     // --- CARDIOVASCULAR RULES ---
     if (ctx.conditions.cardiovascular) {
         const c = ctx.conditions.cardiovascular;
-        const hasCKD = !!ctx.conditions.ckd;
+        const hasCKD = !!(ctx.conditions.renal?.ckd || ctx.conditions.ckd);
         const hasHF = !!c.heartFailure;
 
+        // RULE: Secondary Hypertension → I15.x (takes precedence)
+        if (c.secondaryHypertension) {
+            let code = 'I15.9'; // Unspecified
+            let label = 'Secondary hypertension, unspecified';
+
+            if (c.hypertensionCause === 'renal') {
+                code = 'I15.1';
+                label = 'Hypertension secondary to other renal disorders';
+            } else if (c.hypertensionCause === 'endocrine') {
+                code = 'I15.2';
+                label = 'Hypertension secondary to endocrine disorders';
+            }
+
+            codes.push({
+                code: code,
+                label: label,
+                rationale: `Secondary hypertension${c.hypertensionCause ? ' due to ' + c.hypertensionCause + ' disease' : ''}`,
+                guideline: 'ICD-10-CM I.C.9.a.6',
+                trigger: 'Secondary Hypertension',
+                rule: 'Secondary hypertension code'
+            });
+
+            // Add CKD code if present
+            if (hasCKD) {
+                const ckdStage = ctx.conditions.renal?.ckd?.stage || ctx.conditions.ckd?.stage || 'unspecified';
+                const ckdCode = ckdStage === '1' ? 'N18.1' :
+                    ckdStage === '2' ? 'N18.2' :
+                        ckdStage === '3' ? 'N18.3' :
+                            ckdStage === '4' ? 'N18.4' :
+                                ckdStage === '5' ? 'N18.5' : 'N18.9';
+                codes.push({
+                    code: ckdCode,
+                    label: `Chronic kidney disease, stage ${ckdStage}`,
+                    rationale: 'CKD documented with secondary hypertension',
+                    guideline: 'ICD-10-CM I.C.14',
+                    trigger: 'CKD Stage ' + ckdStage,
+                    rule: 'CKD stage code'
+                });
+            }
+        }
         // RULE: HTN + HF + CKD → I13.x
-        if (c.hypertension && hasHF && hasCKD) {
-            const ckdStage = ctx.conditions.ckd?.stage;
-            const isStage5OrESRD = ckdStage === 5 || ckdStage === 'esrd';
+        else if (c.hypertension && hasHF && hasCKD) {
+            const ckdStage = ctx.conditions.renal?.ckd?.stage || ctx.conditions.ckd?.stage;
+            const isStage5OrESRD = ckdStage === '5' || ckdStage === 'esrd';
             const code = isStage5OrESRD ? 'I13.2' : 'I13.0';
             const label = isStage5OrESRD
                 ? 'Hypertensive heart and chronic kidney disease with heart failure and with stage 5 chronic kidney disease, or end stage renal disease'
@@ -185,9 +225,9 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         else if (c.hypertension && hasCKD) {
             // I12.0 = with stage 5 CKD or ESRD
             // I12.9 = with stage 1-4 or unspecified CKD
-            const ckdStage = ctx.conditions.ckd?.stage;
-            const code = (ckdStage === 5 || ckdStage === 'esrd') ? 'I12.0' : 'I12.9';
-            const label = (ckdStage === 5 || ckdStage === 'esrd')
+            const ckdStage = ctx.conditions.renal?.ckd?.stage || ctx.conditions.ckd?.stage;
+            const code = (ckdStage === '5' || ckdStage === 'esrd') ? 'I12.0' : 'I12.9';
+            const label = (ckdStage === '5' || ckdStage === 'esrd')
                 ? 'Hypertensive chronic kidney disease with stage 5 chronic kidney disease or end stage renal disease'
                 : 'Hypertensive chronic kidney disease with stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease';
 
@@ -198,6 +238,21 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 guideline: 'ICD-10-CM I.C.9.a.2',
                 trigger: 'Hypertension + CKD',
                 rule: 'HTN combination code logic'
+            });
+
+            // Add CKD stage code as secondary
+            const ckdCode = ckdStage === '1' ? 'N18.1' :
+                ckdStage === '2' ? 'N18.2' :
+                    ckdStage === '3' ? 'N18.3' :
+                        ckdStage === '4' ? 'N18.4' :
+                            ckdStage === '5' ? 'N18.5' : 'N18.9';
+            codes.push({
+                code: ckdCode,
+                label: `Chronic kidney disease, stage ${ckdStage}`,
+                rationale: 'CKD stage code required with I12.x',
+                guideline: 'ICD-10-CM I.C.9.a.2',
+                trigger: 'CKD Stage ' + ckdStage,
+                rule: 'CKD stage code'
             });
         }
         // RULE: HTN + HF → I11.0
@@ -288,7 +343,27 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     }
 
     // --- RESPIRATORY RULES ---
-    if (ctx.conditions.respiratory?.pneumonia) {
+    // COVID-19 pneumonia (takes precedence)
+    if (ctx.conditions.infection?.covid19 && ctx.conditions.respiratory?.pneumonia) {
+        codes.push({
+            code: 'U07.1',
+            label: 'COVID-19',
+            rationale: 'COVID-19 infection documented',
+            guideline: 'ICD-10-CM I.C.1.g.1',
+            trigger: 'COVID-19',
+            rule: 'COVID-19 code'
+        });
+        codes.push({
+            code: 'J12.82',
+            label: 'Pneumonia due to coronavirus disease 2019',
+            rationale: 'Pneumonia manifestation of COVID-19',
+            guideline: 'ICD-10-CM I.C.1.g.1',
+            trigger: 'COVID-19 + Pneumonia',
+            rule: 'COVID-19 pneumonia manifestation'
+        });
+    }
+    // Regular pneumonia
+    else if (ctx.conditions.respiratory?.pneumonia) {
         const r = ctx.conditions.respiratory;
         const p = r.pneumonia!;
 

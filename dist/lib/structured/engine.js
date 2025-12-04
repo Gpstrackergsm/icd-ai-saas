@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.runStructuredRules = runStructuredRules;
 function runStructuredRules(ctx) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17, _18, _19, _20, _21, _22, _23, _24, _25, _26, _27, _28, _29;
     const codes = [];
     const warnings = [];
     const validationErrors = [];
@@ -132,12 +132,50 @@ function runStructuredRules(ctx) {
     // --- CARDIOVASCULAR RULES ---
     if (ctx.conditions.cardiovascular) {
         const c = ctx.conditions.cardiovascular;
-        const hasCKD = !!ctx.conditions.ckd;
+        const hasCKD = !!(((_a = ctx.conditions.renal) === null || _a === void 0 ? void 0 : _a.ckd) || ctx.conditions.ckd);
         const hasHF = !!c.heartFailure;
+        // RULE: Secondary Hypertension → I15.x (takes precedence)
+        if (c.secondaryHypertension) {
+            let code = 'I15.9'; // Unspecified
+            let label = 'Secondary hypertension, unspecified';
+            if (c.hypertensionCause === 'renal') {
+                code = 'I15.1';
+                label = 'Hypertension secondary to other renal disorders';
+            }
+            else if (c.hypertensionCause === 'endocrine') {
+                code = 'I15.2';
+                label = 'Hypertension secondary to endocrine disorders';
+            }
+            codes.push({
+                code: code,
+                label: label,
+                rationale: `Secondary hypertension${c.hypertensionCause ? ' due to ' + c.hypertensionCause + ' disease' : ''}`,
+                guideline: 'ICD-10-CM I.C.9.a.6',
+                trigger: 'Secondary Hypertension',
+                rule: 'Secondary hypertension code'
+            });
+            // Add CKD code if present
+            if (hasCKD) {
+                const ckdStage = ((_c = (_b = ctx.conditions.renal) === null || _b === void 0 ? void 0 : _b.ckd) === null || _c === void 0 ? void 0 : _c.stage) || ((_d = ctx.conditions.ckd) === null || _d === void 0 ? void 0 : _d.stage) || 'unspecified';
+                const ckdCode = ckdStage === '1' ? 'N18.1' :
+                    ckdStage === '2' ? 'N18.2' :
+                        ckdStage === '3' ? 'N18.3' :
+                            ckdStage === '4' ? 'N18.4' :
+                                ckdStage === '5' ? 'N18.5' : 'N18.9';
+                codes.push({
+                    code: ckdCode,
+                    label: `Chronic kidney disease, stage ${ckdStage}`,
+                    rationale: 'CKD documented with secondary hypertension',
+                    guideline: 'ICD-10-CM I.C.14',
+                    trigger: 'CKD Stage ' + ckdStage,
+                    rule: 'CKD stage code'
+                });
+            }
+        }
         // RULE: HTN + HF + CKD → I13.x
-        if (c.hypertension && hasHF && hasCKD) {
-            const ckdStage = (_a = ctx.conditions.ckd) === null || _a === void 0 ? void 0 : _a.stage;
-            const isStage5OrESRD = ckdStage === 5 || ckdStage === 'esrd';
+        else if (c.hypertension && hasHF && hasCKD) {
+            const ckdStage = ((_f = (_e = ctx.conditions.renal) === null || _e === void 0 ? void 0 : _e.ckd) === null || _f === void 0 ? void 0 : _f.stage) || ((_g = ctx.conditions.ckd) === null || _g === void 0 ? void 0 : _g.stage);
+            const isStage5OrESRD = ckdStage === '5' || ckdStage === 'esrd';
             const code = isStage5OrESRD ? 'I13.2' : 'I13.0';
             const label = isStage5OrESRD
                 ? 'Hypertensive heart and chronic kidney disease with heart failure and with stage 5 chronic kidney disease, or end stage renal disease'
@@ -155,9 +193,9 @@ function runStructuredRules(ctx) {
         else if (c.hypertension && hasCKD) {
             // I12.0 = with stage 5 CKD or ESRD
             // I12.9 = with stage 1-4 or unspecified CKD
-            const ckdStage = (_b = ctx.conditions.ckd) === null || _b === void 0 ? void 0 : _b.stage;
-            const code = (ckdStage === 5 || ckdStage === 'esrd') ? 'I12.0' : 'I12.9';
-            const label = (ckdStage === 5 || ckdStage === 'esrd')
+            const ckdStage = ((_j = (_h = ctx.conditions.renal) === null || _h === void 0 ? void 0 : _h.ckd) === null || _j === void 0 ? void 0 : _j.stage) || ((_k = ctx.conditions.ckd) === null || _k === void 0 ? void 0 : _k.stage);
+            const code = (ckdStage === '5' || ckdStage === 'esrd') ? 'I12.0' : 'I12.9';
+            const label = (ckdStage === '5' || ckdStage === 'esrd')
                 ? 'Hypertensive chronic kidney disease with stage 5 chronic kidney disease or end stage renal disease'
                 : 'Hypertensive chronic kidney disease with stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease';
             codes.push({
@@ -167,6 +205,20 @@ function runStructuredRules(ctx) {
                 guideline: 'ICD-10-CM I.C.9.a.2',
                 trigger: 'Hypertension + CKD',
                 rule: 'HTN combination code logic'
+            });
+            // Add CKD stage code as secondary
+            const ckdCode = ckdStage === '1' ? 'N18.1' :
+                ckdStage === '2' ? 'N18.2' :
+                    ckdStage === '3' ? 'N18.3' :
+                        ckdStage === '4' ? 'N18.4' :
+                            ckdStage === '5' ? 'N18.5' : 'N18.9';
+            codes.push({
+                code: ckdCode,
+                label: `Chronic kidney disease, stage ${ckdStage}`,
+                rationale: 'CKD stage code required with I12.x',
+                guideline: 'ICD-10-CM I.C.9.a.2',
+                trigger: 'CKD Stage ' + ckdStage,
+                rule: 'CKD stage code'
             });
         }
         // RULE: HTN + HF → I11.0
@@ -183,7 +235,7 @@ function runStructuredRules(ctx) {
         // RULE: HTN only → I10 (UNLESS patient is pregnant/postpartum - then use O10-O16)
         else if (c.hypertension) {
             // Check if patient is pregnant OR postpartum - if so, skip I10 (will be handled in OB/GYN section)
-            const isPregnantOrPostpartum = !!(((_c = ctx.conditions.obstetric) === null || _c === void 0 ? void 0 : _c.pregnant) || ((_d = ctx.conditions.obstetric) === null || _d === void 0 ? void 0 : _d.postpartum));
+            const isPregnantOrPostpartum = !!(((_l = ctx.conditions.obstetric) === null || _l === void 0 ? void 0 : _l.pregnant) || ((_m = ctx.conditions.obstetric) === null || _m === void 0 ? void 0 : _m.postpartum));
             if (!isPregnantOrPostpartum) {
                 codes.push({
                     code: 'I10',
@@ -250,7 +302,27 @@ function runStructuredRules(ctx) {
         // RULE: If dialysis is none, do NOT generate Z99.2
     }
     // --- RESPIRATORY RULES ---
-    if ((_e = ctx.conditions.respiratory) === null || _e === void 0 ? void 0 : _e.pneumonia) {
+    // COVID-19 pneumonia (takes precedence)
+    if (((_o = ctx.conditions.infection) === null || _o === void 0 ? void 0 : _o.covid19) && ((_p = ctx.conditions.respiratory) === null || _p === void 0 ? void 0 : _p.pneumonia)) {
+        codes.push({
+            code: 'U07.1',
+            label: 'COVID-19',
+            rationale: 'COVID-19 infection documented',
+            guideline: 'ICD-10-CM I.C.1.g.1',
+            trigger: 'COVID-19',
+            rule: 'COVID-19 code'
+        });
+        codes.push({
+            code: 'J12.82',
+            label: 'Pneumonia due to coronavirus disease 2019',
+            rationale: 'Pneumonia manifestation of COVID-19',
+            guideline: 'ICD-10-CM I.C.1.g.1',
+            trigger: 'COVID-19 + Pneumonia',
+            rule: 'COVID-19 pneumonia manifestation'
+        });
+    }
+    // Regular pneumonia
+    else if ((_q = ctx.conditions.respiratory) === null || _q === void 0 ? void 0 : _q.pneumonia) {
         const r = ctx.conditions.respiratory;
         const p = r.pneumonia;
         // Aspiration pneumonia takes precedence
@@ -289,7 +361,7 @@ function runStructuredRules(ctx) {
             });
         }
     }
-    if ((_f = ctx.conditions.respiratory) === null || _f === void 0 ? void 0 : _f.failure) {
+    if ((_r = ctx.conditions.respiratory) === null || _r === void 0 ? void 0 : _r.failure) {
         const rf = ctx.conditions.respiratory.failure;
         let code = 'J96.90'; // Unspecified
         if (rf.type === 'acute')
@@ -308,7 +380,7 @@ function runStructuredRules(ctx) {
         });
     }
     // RULE: COPD (J44.x)
-    if ((_h = (_g = ctx.conditions.respiratory) === null || _g === void 0 ? void 0 : _g.copd) === null || _h === void 0 ? void 0 : _h.present) {
+    if ((_t = (_s = ctx.conditions.respiratory) === null || _s === void 0 ? void 0 : _s.copd) === null || _t === void 0 ? void 0 : _t.present) {
         const copd = ctx.conditions.respiratory.copd;
         let code = 'J44.9';
         let label = 'Chronic obstructive pulmonary disease, unspecified';
@@ -334,7 +406,7 @@ function runStructuredRules(ctx) {
         });
     }
     // RULE: Asthma (J45.x)
-    if ((_j = ctx.conditions.respiratory) === null || _j === void 0 ? void 0 : _j.asthma) {
+    if ((_u = ctx.conditions.respiratory) === null || _u === void 0 ? void 0 : _u.asthma) {
         const asthma = ctx.conditions.respiratory.asthma;
         // Map severity to code prefix
         const severityMap = {
@@ -377,7 +449,7 @@ function runStructuredRules(ctx) {
     if (ctx.conditions.infection) {
         const inf = ctx.conditions.infection;
         // RULE: Septic Shock → R65.21 (HIGHEST PRIORITY)
-        if ((_k = inf.sepsis) === null || _k === void 0 ? void 0 : _k.shock) {
+        if ((_v = inf.sepsis) === null || _v === void 0 ? void 0 : _v.shock) {
             codes.push({
                 code: 'R65.21',
                 label: 'Severe sepsis with septic shock',
@@ -388,7 +460,7 @@ function runStructuredRules(ctx) {
             });
         }
         // RULE: Severe Sepsis → R65.20
-        else if ((_l = inf.sepsis) === null || _l === void 0 ? void 0 : _l.severe) {
+        else if ((_w = inf.sepsis) === null || _w === void 0 ? void 0 : _w.severe) {
             codes.push({
                 code: 'R65.20',
                 label: 'Severe sepsis without septic shock',
@@ -399,7 +471,7 @@ function runStructuredRules(ctx) {
             });
         }
         // RULE: Sepsis with organism → A41.x
-        if (((_m = inf.sepsis) === null || _m === void 0 ? void 0 : _m.present) && inf.organism) {
+        if (((_x = inf.sepsis) === null || _x === void 0 ? void 0 : _x.present) && inf.organism) {
             const sepsisCode = mapSepsisOrganism(inf.organism);
             codes.push({
                 code: sepsisCode,
@@ -411,7 +483,7 @@ function runStructuredRules(ctx) {
             });
         }
         // RULE: Sepsis without organism → A41.9
-        else if ((_o = inf.sepsis) === null || _o === void 0 ? void 0 : _o.present) {
+        else if ((_y = inf.sepsis) === null || _y === void 0 ? void 0 : _y.present) {
             codes.push({
                 code: 'A41.9',
                 label: 'Sepsis, unspecified organism',
@@ -423,7 +495,7 @@ function runStructuredRules(ctx) {
         }
         // RULE: Add organism code (B96.x) ONLY if sepsis code does NOT already specify organism
         // Per ICD-10-CM: B96.x is redundant when A41.xx already identifies the organism
-        if (inf.organism && inf.organism !== 'unspecified' && !((_p = inf.sepsis) === null || _p === void 0 ? void 0 : _p.present)) {
+        if (inf.organism && inf.organism !== 'unspecified' && !((_z = inf.sepsis) === null || _z === void 0 ? void 0 : _z.present)) {
             const organismCode = mapOrganismCode(inf.organism);
             if (organismCode) {
                 codes.push({
@@ -460,7 +532,7 @@ function runStructuredRules(ctx) {
         }
     }
     // --- WOUNDS & PRESSURE ULCERS RULES ---
-    if ((_q = ctx.conditions.wounds) === null || _q === void 0 ? void 0 : _q.present) {
+    if ((_0 = ctx.conditions.wounds) === null || _0 === void 0 ? void 0 : _0.present) {
         const w = ctx.conditions.wounds;
         // RULE: Pressure Ulcer → L89.xxx
         if (w.type === 'pressure' && w.location && w.stage) {
@@ -478,7 +550,7 @@ function runStructuredRules(ctx) {
         // NOTE: Traumatic wounds are handled in injury domain (S codes)
     }
     // --- INJURY & TRAUMA RULES ---
-    if ((_r = ctx.conditions.injury) === null || _r === void 0 ? void 0 : _r.present) {
+    if ((_1 = ctx.conditions.injury) === null || _1 === void 0 ? void 0 : _1.present) {
         const inj = ctx.conditions.injury;
         // RULE: Injury → S/T code with 7th character
         if (inj.type && inj.bodyRegion && inj.encounterType) {
@@ -493,7 +565,7 @@ function runStructuredRules(ctx) {
             });
         }
         // RULE: External Cause → W/X/Y code
-        if (((_s = inj.externalCause) === null || _s === void 0 ? void 0 : _s.mechanism) && inj.encounterType) {
+        if (((_2 = inj.externalCause) === null || _2 === void 0 ? void 0 : _2.mechanism) && inj.encounterType) {
             const externalCode = mapExternalCause(inj.externalCause.mechanism, inj.encounterType);
             codes.push({
                 code: externalCode,
@@ -509,7 +581,7 @@ function runStructuredRules(ctx) {
     if (ctx.conditions.neurology) {
         const n = ctx.conditions.neurology;
         // RULE: Encephalopathy
-        if ((_t = n.encephalopathy) === null || _t === void 0 ? void 0 : _t.present) {
+        if ((_3 = n.encephalopathy) === null || _3 === void 0 ? void 0 : _3.present) {
             let code = 'G93.40'; // Unspecified
             if (n.encephalopathy.type === 'metabolic')
                 code = 'G93.41';
@@ -530,7 +602,7 @@ function runStructuredRules(ctx) {
         }
         // RULE: Altered Mental Status (AMS)
         // Suppress AMS (R41.82) if Encephalopathy (G93.4x) is present, as encephalopathy is the definitive diagnosis
-        if (n.alteredMentalStatus && !((_u = n.encephalopathy) === null || _u === void 0 ? void 0 : _u.present)) {
+        if (n.alteredMentalStatus && !((_4 = n.encephalopathy) === null || _4 === void 0 ? void 0 : _4.present)) {
             codes.push({
                 code: 'R41.82',
                 label: 'Altered mental status, unspecified',
@@ -799,7 +871,7 @@ function runStructuredRules(ctx) {
         }
     }
     // --- HEMATOLOGY/ONCOLOGY RULES ---
-    if ((_v = ctx.conditions.neoplasm) === null || _v === void 0 ? void 0 : _v.present) {
+    if ((_5 = ctx.conditions.neoplasm) === null || _5 === void 0 ? void 0 : _5.present) {
         const neo = ctx.conditions.neoplasm;
         // LAYER 4: History vs Active Cancer
         if (neo.active === false) {
@@ -903,9 +975,9 @@ function runStructuredRules(ctx) {
                 code = 'D63.8'; // Anemia in other chronic diseases classified elsewhere
                 // Note: D63.1 if CKD, D63.0 if Neoplasm. 
                 // We could refine this if we have access to other conditions here.
-                if ((_w = ctx.conditions.ckd) === null || _w === void 0 ? void 0 : _w.stage)
+                if ((_6 = ctx.conditions.ckd) === null || _6 === void 0 ? void 0 : _6.stage)
                     code = 'D63.1';
-                else if ((_x = ctx.conditions.neoplasm) === null || _x === void 0 ? void 0 : _x.present)
+                else if ((_7 = ctx.conditions.neoplasm) === null || _7 === void 0 ? void 0 : _7.present)
                     code = 'D63.0';
             }
             codes.push({
@@ -930,9 +1002,9 @@ function runStructuredRules(ctx) {
         }
     }
     // --- OB/GYN RULES ---
-    if ((_y = ctx.conditions.obstetric) === null || _y === void 0 ? void 0 : _y.pregnant) {
+    if ((_8 = ctx.conditions.obstetric) === null || _8 === void 0 ? void 0 : _8.pregnant) {
         const ob = ctx.conditions.obstetric;
-        const hasOCode = !!(ob.preeclampsia || ob.gestationalDiabetes || ((_z = ob.delivery) === null || _z === void 0 ? void 0 : _z.occurred));
+        const hasOCode = !!(ob.preeclampsia || ob.gestationalDiabetes || ((_9 = ob.delivery) === null || _9 === void 0 ? void 0 : _9.occurred));
         // Calculate trimester if weeks are known
         let trimester = ob.trimester;
         if (!trimester && ob.gestationalAge) {
@@ -945,7 +1017,7 @@ function runStructuredRules(ctx) {
         }
         // RULE: Hypertension in Pregnancy (O10-O16 range per ICD-10-CM I.C.15.b.1)
         // Check if patient has hypertension documented
-        const hasHTN = !!((_0 = ctx.conditions.cardiovascular) === null || _0 === void 0 ? void 0 : _0.hypertension);
+        const hasHTN = !!((_10 = ctx.conditions.cardiovascular) === null || _10 === void 0 ? void 0 : _10.hypertension);
         if (hasHTN && !ob.preeclampsia) {
             // Use O13.x for gestational hypertension (new-onset during pregnancy)
             // In absence of documentation stating "pre-existing", default to gestational
@@ -1009,7 +1081,7 @@ function runStructuredRules(ctx) {
             });
         }
         // RULE: Delivery
-        if ((_1 = ob.delivery) === null || _1 === void 0 ? void 0 : _1.occurred) {
+        if ((_11 = ob.delivery) === null || _11 === void 0 ? void 0 : _11.occurred) {
             if (ob.delivery.type === 'cesarean') {
                 codes.push({
                     code: 'O82',
@@ -1051,10 +1123,10 @@ function runStructuredRules(ctx) {
         }
     }
     // --- POSTPARTUM RULES ---
-    if ((_2 = ctx.conditions.obstetric) === null || _2 === void 0 ? void 0 : _2.postpartum) {
+    if ((_12 = ctx.conditions.obstetric) === null || _12 === void 0 ? void 0 : _12.postpartum) {
         const ob = ctx.conditions.obstetric;
         // RULE: Delivery codes (if delivery occurred)
-        if ((_3 = ob.delivery) === null || _3 === void 0 ? void 0 : _3.occurred) {
+        if ((_13 = ob.delivery) === null || _13 === void 0 ? void 0 : _13.occurred) {
             if (ob.delivery.type === 'cesarean') {
                 codes.push({
                     code: 'O82',
@@ -1077,7 +1149,7 @@ function runStructuredRules(ctx) {
             }
         }
         // RULE: Postpartum Hypertension (O10-O16 range)
-        const hasHTN = !!((_4 = ctx.conditions.cardiovascular) === null || _4 === void 0 ? void 0 : _4.hypertension);
+        const hasHTN = !!((_14 = ctx.conditions.cardiovascular) === null || _14 === void 0 ? void 0 : _14.hypertension);
         if (hasHTN) {
             // Use O13.9 for postpartum gestational hypertension
             codes.push({
@@ -1134,7 +1206,7 @@ function runStructuredRules(ctx) {
             });
         }
         // RULE: Drug Use
-        if ((_5 = s.drugUse) === null || _5 === void 0 ? void 0 : _5.present) {
+        if ((_15 = s.drugUse) === null || _15 === void 0 ? void 0 : _15.present) {
             let code = 'F19.10'; // Other drug abuse, uncomplicated
             if (s.drugUse.type === 'opioid')
                 code = 'F11.10';
@@ -1181,7 +1253,7 @@ function runStructuredRules(ctx) {
     // RULE A1: Dialysis & Z99.2
     // If Z99.2 is present, verify dialysis status is chronic
     const hasZ992 = finalCodes.some(c => c.code === 'Z99.2');
-    const isChronicDialysis = ((_6 = ctx.conditions.ckd) === null || _6 === void 0 ? void 0 : _6.dialysisType) === 'chronic';
+    const isChronicDialysis = ((_16 = ctx.conditions.ckd) === null || _16 === void 0 ? void 0 : _16.dialysisType) === 'chronic';
     if (hasZ992 && !isChronicDialysis) {
         // Violation: Z99.2 without chronic dialysis
         // Remove Z99.2
@@ -1203,7 +1275,7 @@ function runStructuredRules(ctx) {
     // RULE B1: AKI (N17.9)
     // N17.9 allowed ONLY if AKI = Yes
     const hasN179 = finalCodes.some(c => c.code === 'N17.9');
-    const isAKIPresent = !!((_7 = ctx.conditions.ckd) === null || _7 === void 0 ? void 0 : _7.aki);
+    const isAKIPresent = !!((_17 = ctx.conditions.ckd) === null || _17 === void 0 ? void 0 : _17.aki);
     if (hasN179 && !isAKIPresent) {
         finalCodes = finalCodes.filter(c => c.code !== 'N17.9');
         validationErrors.push('Invariant Violation: N17.9 removed because AKI is not present');
@@ -1211,7 +1283,7 @@ function runStructuredRules(ctx) {
     // RULE B2: Encephalopathy (G93.x)
     // G93.x allowed ONLY if Encephalopathy = Yes
     const hasEncephalopathyCode = finalCodes.some(c => c.code.startsWith('G93') || c.code === 'G92.8' || c.code === 'K72.90');
-    const isEncephalopathyPresent = !!((_9 = (_8 = ctx.conditions.neurology) === null || _8 === void 0 ? void 0 : _8.encephalopathy) === null || _9 === void 0 ? void 0 : _9.present);
+    const isEncephalopathyPresent = !!((_19 = (_18 = ctx.conditions.neurology) === null || _18 === void 0 ? void 0 : _18.encephalopathy) === null || _19 === void 0 ? void 0 : _19.present);
     if (hasEncephalopathyCode && !isEncephalopathyPresent) {
         finalCodes = finalCodes.filter(c => !(c.code.startsWith('G93') || c.code === 'G92.8' || c.code === 'K72.90'));
         validationErrors.push('Invariant Violation: Encephalopathy code removed because Encephalopathy is not present');
@@ -1219,8 +1291,8 @@ function runStructuredRules(ctx) {
     // RULE C1: Sepsis Severity & R65.x
     // R65.2x allowed ONLY if Severe Sepsis = Yes OR Septic Shock = Yes
     const hasR65 = finalCodes.some(c => c.code.startsWith('R65.2'));
-    const isSevere = !!((_11 = (_10 = ctx.conditions.infection) === null || _10 === void 0 ? void 0 : _10.sepsis) === null || _11 === void 0 ? void 0 : _11.severe);
-    const isShock = !!((_13 = (_12 = ctx.conditions.infection) === null || _12 === void 0 ? void 0 : _12.sepsis) === null || _13 === void 0 ? void 0 : _13.shock);
+    const isSevere = !!((_21 = (_20 = ctx.conditions.infection) === null || _20 === void 0 ? void 0 : _20.sepsis) === null || _21 === void 0 ? void 0 : _21.severe);
+    const isShock = !!((_23 = (_22 = ctx.conditions.infection) === null || _22 === void 0 ? void 0 : _22.sepsis) === null || _23 === void 0 ? void 0 : _23.shock);
     if (hasR65 && !isSevere && !isShock) {
         finalCodes = finalCodes.filter(c => !c.code.startsWith('R65.2'));
         validationErrors.push('Invariant Violation: R65.2x removed because neither Severe Sepsis nor Septic Shock is present');
@@ -1245,8 +1317,8 @@ function runStructuredRules(ctx) {
     const a419Index = finalCodes.findIndex(c => c.code === 'A41.9');
     if (a419Index >= 0) {
         // Check multiple locations for organism
-        let organism = ((_14 = ctx.conditions.infection) === null || _14 === void 0 ? void 0 : _14.organism) ||
-            ((_16 = (_15 = ctx.conditions.respiratory) === null || _15 === void 0 ? void 0 : _15.pneumonia) === null || _16 === void 0 ? void 0 : _16.organism);
+        let organism = ((_24 = ctx.conditions.infection) === null || _24 === void 0 ? void 0 : _24.organism) ||
+            ((_26 = (_25 = ctx.conditions.respiratory) === null || _25 === void 0 ? void 0 : _25.pneumonia) === null || _26 === void 0 ? void 0 : _26.organism);
         if (organism) {
             const organismSepsisCode = mapSepsisOrganism(organism);
             // Only replace if we have a specific code (not A41.9)
@@ -1271,7 +1343,7 @@ function runStructuredRules(ctx) {
         const hasUTI = finalCodes.some(c => c.code === 'N39.0');
         const hasCellulitis = finalCodes.some(c => c.code.startsWith('L03'));
         // If infection context has source but no corresponding code, add it
-        if ((_17 = ctx.conditions.infection) === null || _17 === void 0 ? void 0 : _17.source) {
+        if ((_27 = ctx.conditions.infection) === null || _27 === void 0 ? void 0 : _27.source) {
             const source = ctx.conditions.infection.source.toLowerCase();
             if ((source.includes('uti') || source.includes('urinary')) && !hasUTI) {
                 finalCodes.push({
@@ -1293,7 +1365,7 @@ function runStructuredRules(ctx) {
     }
     // FIX 3: Iron deficiency anemia - check context for chronic blood loss
     const d509Index = finalCodes.findIndex(c => c.code === 'D50.9');
-    if (d509Index >= 0 && ((_19 = (_18 = ctx.conditions.hematology) === null || _18 === void 0 ? void 0 : _18.anemia) === null || _19 === void 0 ? void 0 : _19.type) === 'iron_deficiency') {
+    if (d509Index >= 0 && ((_29 = (_28 = ctx.conditions.hematology) === null || _28 === void 0 ? void 0 : _28.anemia) === null || _29 === void 0 ? void 0 : _29.type) === 'iron_deficiency') {
         // Check if cause is chronic blood loss
         if (ctx.conditions.hematology.anemia.cause === 'chronic_blood_loss') {
             finalCodes[d509Index] = {
