@@ -276,6 +276,17 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
     }
 
+    if (ctx.conditions.respiratory?.copd?.present) {
+        codes.push({
+            code: 'J44.9',
+            label: 'Chronic obstructive pulmonary disease, unspecified',
+            rationale: 'COPD documented',
+            guideline: 'ICD-10-CM J44',
+            trigger: 'COPD = Yes',
+            rule: 'COPD code'
+        });
+    }
+
     // --- INFECTIONS & SEPSIS RULES ---
     if (ctx.conditions.infection) {
         const inf = ctx.conditions.infection;
@@ -994,6 +1005,8 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             rule: 'Invariant A1'
         });
     }
+
+
 
     // RULE B1: AKI (N17.9)
     // N17.9 allowed ONLY if AKI = Yes

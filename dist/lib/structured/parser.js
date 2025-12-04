@@ -23,6 +23,10 @@ function parseInput(text) {
         const lowerValue = value.toLowerCase();
         switch (key) {
             // Demographics
+            case 'inpatient':
+            case 'icu':
+                context.encounter.type = 'inpatient';
+                break;
             case 'age':
                 context.demographics.age = parseInt(value);
                 break;
@@ -44,6 +48,8 @@ function parseInput(text) {
                     context.encounter.type = 'subsequent';
                 else if (lowerValue === 'sequela')
                     context.encounter.type = 'sequela';
+                else if (lowerValue === 'icu')
+                    context.encounter.type = 'inpatient';
                 else
                     errors.push(`Invalid encounter type: ${value}`);
                 break;
@@ -74,8 +80,12 @@ function parseInput(text) {
                         context.conditions.diabetes.complications.push('neuropathy');
                     else if (c.includes('nephropathy') || c.includes('ckd'))
                         context.conditions.diabetes.complications.push('ckd');
-                    else if (c.includes('foot ulcer'))
+                    else if (c.includes('foot ulcer')) {
                         context.conditions.diabetes.complications.push('foot_ulcer');
+                        if (!context.conditions.wounds)
+                            context.conditions.wounds = { present: true };
+                        context.conditions.wounds.type = 'diabetic';
+                    }
                     else if (c.includes('retinopathy'))
                         context.conditions.diabetes.complications.push('retinopathy');
                     else if (c.includes('hypoglycemia'))
@@ -128,6 +138,7 @@ function parseInput(text) {
                 break;
             // Renal
             case 'ckd present':
+            case 'chronic kidney disease':
                 if (parseBoolean(value)) {
                     if (!context.conditions.ckd) {
                         // Create CKD object but DON'T set a default stage - let validation catch it
@@ -255,6 +266,12 @@ function parseInput(text) {
                 else
                     errors.push(`Unknown organism: ${value}`);
                 break;
+            case 'copd':
+            case 'chronic obstructive pulmonary disease':
+                if (!context.conditions.respiratory)
+                    context.conditions.respiratory = {};
+                context.conditions.respiratory.copd = { present: parseBoolean(value) };
+                break;
             // Infections & Sepsis
             case 'infection present':
                 if (!context.conditions.infection)
@@ -343,9 +360,13 @@ function parseInput(text) {
             // Wounds & Ulcers
             case 'ulcer present':
             case 'wound present':
+            case 'pressure ulcer':
                 if (!context.conditions.wounds)
                     context.conditions.wounds = { present: false };
                 context.conditions.wounds.present = parseBoolean(value);
+                if (key === 'pressure ulcer' && parseBoolean(value)) {
+                    context.conditions.wounds.type = 'pressure';
+                }
                 break;
             case 'ulcer type':
             case 'wound type':

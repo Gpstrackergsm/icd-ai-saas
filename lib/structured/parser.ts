@@ -30,6 +30,10 @@ export function parseInput(text: string): ParseResult {
 
         switch (key) {
             // Demographics
+            case 'inpatient':
+            case 'icu':
+                context.encounter.type = 'inpatient';
+                break;
             case 'age':
                 context.demographics.age = parseInt(value);
                 break;
@@ -45,6 +49,7 @@ export function parseInput(text: string): ParseResult {
                 else if (lowerValue === 'initial') context.encounter.type = 'initial';
                 else if (lowerValue === 'subsequent') context.encounter.type = 'subsequent';
                 else if (lowerValue === 'sequela') context.encounter.type = 'sequela';
+                else if (lowerValue === 'icu') context.encounter.type = 'inpatient';
                 else errors.push(`Invalid encounter type: ${value}`);
                 break;
 
@@ -65,7 +70,11 @@ export function parseInput(text: string): ParseResult {
                 comps.forEach(c => {
                     if (c === 'neuropathy') context.conditions.diabetes!.complications.push('neuropathy');
                     else if (c.includes('nephropathy') || c.includes('ckd')) context.conditions.diabetes!.complications.push('ckd');
-                    else if (c.includes('foot ulcer')) context.conditions.diabetes!.complications.push('foot_ulcer');
+                    else if (c.includes('foot ulcer')) {
+                        context.conditions.diabetes!.complications.push('foot_ulcer');
+                        if (!context.conditions.wounds) context.conditions.wounds = { present: true };
+                        context.conditions.wounds.type = 'diabetic';
+                    }
                     else if (c.includes('retinopathy')) context.conditions.diabetes!.complications.push('retinopathy');
                     else if (c.includes('hypoglycemia')) context.conditions.diabetes!.complications.push('hypoglycemia');
                     else if (c === 'ketoacidosis') context.conditions.diabetes!.complications.push('ketoacidosis');
@@ -100,6 +109,7 @@ export function parseInput(text: string): ParseResult {
 
             // Renal
             case 'ckd present':
+            case 'chronic kidney disease':
                 if (parseBoolean(value)) {
                     if (!context.conditions.ckd) {
                         // Create CKD object but DON'T set a default stage - let validation catch it
@@ -197,6 +207,12 @@ export function parseInput(text: string): ParseResult {
                 else errors.push(`Unknown organism: ${value}`);
                 break;
 
+            case 'copd':
+            case 'chronic obstructive pulmonary disease':
+                if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                context.conditions.respiratory.copd = { present: parseBoolean(value) };
+                break;
+
             // Infections & Sepsis
             case 'infection present':
                 if (!context.conditions.infection) context.conditions.infection = { present: false };
@@ -254,8 +270,12 @@ export function parseInput(text: string): ParseResult {
             // Wounds & Ulcers
             case 'ulcer present':
             case 'wound present':
+            case 'pressure ulcer':
                 if (!context.conditions.wounds) context.conditions.wounds = { present: false };
                 context.conditions.wounds.present = parseBoolean(value);
+                if (key === 'pressure ulcer' && parseBoolean(value)) {
+                    context.conditions.wounds.type = 'pressure';
+                }
                 break;
             case 'ulcer type':
             case 'wound type':
