@@ -46,7 +46,11 @@ const fs = __importStar(require("fs"));
 const path = __importStar(require("path"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const uuid_1 = require("uuid");
-const USERS_FILE = path.join(process.cwd(), 'data', 'users.json');
+// Use /tmp directory on Vercel (serverless functions have read-only file system)
+const isVercel = process.env.VERCEL === '1';
+const USERS_FILE = isVercel
+    ? '/tmp/users.json'
+    : path.join(process.cwd(), 'data', 'users.json');
 const SALT_ROUNDS = 10;
 function readUsers() {
     try {

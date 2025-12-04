@@ -3,7 +3,11 @@ import * as path from 'path';
 import bcrypt from 'bcryptjs';
 import { v4 as uuidv4 } from 'uuid';
 
-const USERS_FILE = path.join(process.cwd(), 'data', 'users.json');
+// Use /tmp directory on Vercel (serverless functions have read-only file system)
+const isVercel = process.env.VERCEL === '1';
+const USERS_FILE = isVercel
+    ? '/tmp/users.json'
+    : path.join(process.cwd(), 'data', 'users.json');
 const SALT_ROUNDS = 10;
 
 export interface User {
