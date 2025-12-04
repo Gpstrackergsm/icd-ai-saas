@@ -233,6 +233,7 @@
             label: 'Complications',
             options: ['Neuropathy', 'Nephropathy/CKD', 'Foot Ulcer', 'Retinopathy', 'Hypoglycemia']
           },
+          { key: 'CKD Stage', type: 'select', label: 'CKD Stage', options: ['1', '2', '3', '4', '5', 'ESRD'], showIf: 'Nephropathy/CKD' },
           { key: 'Insulin Use', type: 'select', label: 'Insulin Use', options: ['Yes', 'No'] },
           // Conditional fields - shown only if Foot Ulcer selected
           { key: 'Ulcer Site', type: 'select', label: 'Ulcer Site', options: ['Left Foot', 'Right Foot', 'Left Ankle', 'Right Ankle', 'Other'], required: 'if_foot_ulcer', showIf: 'Foot Ulcer' },
