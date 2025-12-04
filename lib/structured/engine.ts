@@ -1195,6 +1195,45 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         validationErrors.push('Invariant Violation: R65.2x removed because neither Severe Sepsis nor Septic Shock is present');
     }
 
+    // === CRITICAL VALIDATION FIXES (User-Requested) ===
+
+    // FIX 1: Sepsis validation - ensure A41.x present when R65.2x exists
+    const hasR6520 = finalCodes.some(c => c.code === 'R65.20');
+    const hasR6521 = finalCodes.some(c => c.code === 'R65.21');
+    const hasSepsisCode = finalCodes.some(c => c.code.startsWith('A41') || c.code.startsWith('A40'));
+
+    if ((hasR6520 || hasR6521) && !hasSepsisCode) {
+        finalCodes.push({
+            code: 'A41.9',
+            label: 'Sepsis, unspecified organism',
+            rationale: 'Severe sepsis/septic shock requires underlying sepsis code',
+            guideline: 'ICD-10-CM I.C.1.d',
+            trigger: 'R65.2x present without A41.x',
+            rule: 'Sepsis validation fix'
+        });
+    }
+
+    // FIX 2: Stroke I63/I69 conflict - remove I63.x if I69.x present
+    const hasI63 = finalCodes.some(c => c.code.startsWith('I63'));
+    const hasI69 = finalCodes.some(c => c.code.startsWith('I69'));
+
+    if (hasI63 && hasI69) {
+        finalCodes = finalCodes.filter(c => !c.code.startsWith('I63'));
+    }
+
+    // FIX 3: Iron deficiency anemia - check context for chronic blood loss
+    const d509Index = finalCodes.findIndex(c => c.code === 'D50.9');
+    if (d509Index >= 0 && ctx.conditions.hematology?.anemia?.type === 'iron_deficiency') {
+        // Check if cause is chronic blood loss
+        if (ctx.conditions.hematology.anemia.cause === 'chronic_blood_loss') {
+            finalCodes[d509Index] = {
+                ...finalCodes[d509Index],
+                code: 'D50.0',
+                label: 'Iron deficiency anemia secondary to blood loss (chronic)'
+            };
+        }
+    }
+
     // --- SEQUENCING LOGIC (PRIORITY SORT) ---
     // 1. Primary infection / sepsis code (A40, A41, B37.7, A48.1, A41.89)
     // 2. R65.2x (if present)

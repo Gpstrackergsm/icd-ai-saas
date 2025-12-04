@@ -52,6 +52,13 @@ export function parseInput(text: string): ParseResult {
             case 'current admission':
             case 'active disease':
             case 'cause':
+                // Anemia cause
+                if (key === 'cause' && lowerValue.includes('blood loss')) {
+                    if (!context.conditions.hematology) context.conditions.hematology = {};
+                    if (!context.conditions.hematology.anemia) context.conditions.hematology.anemia = { type: 'iron_deficiency' };
+                    context.conditions.hematology.anemia.cause = 'chronic_blood_loss';
+                }
+
                 // Sepsis & Infection
                 if (lowerValue.includes('sepsis')) {
                     if (!context.conditions.infection) context.conditions.infection = { present: true };

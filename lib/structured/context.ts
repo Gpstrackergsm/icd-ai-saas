@@ -152,7 +152,8 @@ export interface PatientContext {
         };
         hematology?: {
             anemia?: {
-                type: 'iron_deficiency' | 'b12_deficiency' | 'chronic_disease' | 'acute_blood_loss' | 'unspecified';
+                type: 'unspecified' | 'iron_deficiency' | 'b12_deficiency' | 'chronic_disease' | 'acute_blood_loss';
+                cause?: 'chronic_blood_loss' | 'other';
             };
             coagulopathy?: boolean;
         };
