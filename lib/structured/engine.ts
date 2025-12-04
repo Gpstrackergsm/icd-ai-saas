@@ -60,6 +60,18 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             }
         }
 
+        // RULE: Nephropathy (without CKD) → E10.21 / E11.21
+        if (d.complications.includes('nephropathy')) {
+            codes.push({
+                code: `${baseCode}.21`,
+                label: `${typeName} diabetes mellitus with diabetic nephropathy`,
+                rationale: 'Diabetes with documented nephropathy complication',
+                guideline: 'ICD-10-CM I.C.4.a',
+                trigger: 'Diabetes Type + Nephropathy complication',
+                rule: 'Diabetes complication mapping'
+            });
+        }
+
         // RULE: CKD → E10.22 / E11.22 (separate from ulcer)
         if (d.complications.includes('ckd')) {
             codes.push({
@@ -72,12 +84,12 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             });
         }
 
-        // RULE: Neuropathy → E10.42 / E11.42
+        // RULE: Neuropathy → E10.40 / E11.40 (unspecified neuropathy as default)
         if (d.complications.includes('neuropathy')) {
             codes.push({
-                code: `${baseCode}.42`,
-                label: `${typeName} diabetes mellitus with diabetic polyneuropathy`,
-                rationale: 'Diabetes with documented neuropathy complication',
+                code: `${baseCode}.40`, // Changed from E10.42 / E11.42 - use unspecified neuropathy as default
+                label: `${typeName} diabetes mellitus with diabetic neuropathy, unspecified`,
+                rationale: 'Diabetes with documented neuropathy complication (unspecified)',
                 guideline: 'ICD-10-CM I.C.4.a',
                 trigger: 'Diabetes Type + Neuropathy complication',
                 rule: 'Diabetes complication mapping'
@@ -92,6 +104,18 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 rationale: 'Diabetes with documented retinopathy complication (macular edema not specified)',
                 guideline: 'ICD-10-CM I.C.4.a',
                 trigger: 'Diabetes Type + Retinopathy complication',
+                rule: 'Diabetes complication mapping'
+            });
+        }
+
+        // Hypoglycemia
+        if (d.complications.includes('hypoglycemia')) {
+            codes.push({
+                code: `${baseCode}.649`,
+                label: `${typeName} diabetes mellitus with hypoglycemia without coma`,
+                rationale: 'Diabetes with hypoglycemia without coma',
+                guideline: 'ICD-10-CM I.C.4.a',
+                trigger: 'Diabetes Type + Hypoglycemia complication',
                 rule: 'Diabetes complication mapping'
             });
         }

@@ -1,0 +1,15 @@
+"use strict";
+var _a, _b, _c;
+Object.defineProperty(exports, "__esModule", { value: true });
+const parser_1 = require("./lib/structured/parser");
+const test6 = "Age: 65\nGender: Female\nEncounter Type: Inpatient\nDiabetes Type: Type 2\nComplications: Nephropathy/CKD";
+const test12 = "Age: 59\nGender: Male\nEncounter Type: Inpatient\nDiabetes Type: Type 2\nComplications: Neuropathy, Foot Ulcer\nUlcer Site: Left Foot\nUlcer Severity: Fat layer exposed";
+console.log('Test 6 (Nephropathy/CKD):');
+const { context: ctx6 } = (0, parser_1.parseInput)(test6);
+console.log('Diabetes complications:', (_a = ctx6.conditions.diabetes) === null || _a === void 0 ? void 0 : _a.complications);
+console.log('CKD:', ctx6.conditions.ckd);
+console.log('\nTest 12 (Left foot ulcer):');
+const { context: ctx12 } = (0, parser_1.parseInput)(test12);
+console.log('Ulcer site:', (_b = ctx12.conditions.diabetes) === null || _b === void 0 ? void 0 : _b.ulcerSite);
+console.log('Ulcer severity:', (_c = ctx12.conditions.diabetes) === null || _c === void 0 ? void 0 : _c.ulcerSeverity);
+console.log('Expected: L97.522 (left foot, fat layer)');

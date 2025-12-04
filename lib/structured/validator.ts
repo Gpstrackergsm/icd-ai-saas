@@ -51,23 +51,24 @@ export function validateContext(ctx: PatientContext): ValidationResult {
         }
     }
 
-    // === HARD STOP 3: DIABETES FOOT ULCER REQUIRES SITE + SEVERITY ===
+    // === HARD STOP 3: DIABETES FOOT ULCER - RELAXED VALIDATION ===
     if (ctx.conditions.diabetes) {
         const d = ctx.conditions.diabetes;
 
+        // Foot ulcer validation - make site/severity optional
         if (d.complications.includes('foot_ulcer')) {
             if (!d.ulcerSite) {
-                errors.push('HARD STOP: Foot ulcer selected but no site specified. Ulcer Site (Left Foot, Right Foot, etc.) is REQUIRED.');
+                warnings.push('Foot ulcer site not specified. Will use unspecified location.');
             }
             if (!d.ulcerSeverity) {
-                errors.push('HARD STOP: Foot ulcer selected but no severity/depth specified. Ulcer Depth (Skin, Fat, Muscle, Bone) is REQUIRED.');
+                warnings.push('Foot ulcer depth not specified. Will use unspecified depth.');
             }
         }
 
-        // === CONFLICT: Cannot have ulcer fields without foot ulcer ===
+        // Warn if ulcer fields without foot ulcer
         if (!d.complications.includes('foot_ulcer')) {
             if (d.ulcerSite || d.ulcerSeverity) {
-                errors.push('CONFLICT: Ulcer site/severity specified but "Foot Ulcer" not selected in complications.');
+                warnings.push('Ulcer site/severity specified but Foot Ulcer not in complications.');
             }
         }
 

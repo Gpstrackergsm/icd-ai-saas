@@ -320,10 +320,20 @@ function parseInput(text) {
                                 context.conditions.diabetes = { type: 'type2', complications: [] };
                             context.conditions.diabetes.complications.push('neuropathy');
                         }
-                        else if (lc.includes('nephropathy') || lc.includes('ckd')) {
+                        else if (lc.includes('nephropathy') || lc.includes('ckd') || lc.includes('chronic kidney disease')) {
                             if (!context.conditions.diabetes)
                                 context.conditions.diabetes = { type: 'type2', complications: [] };
-                            context.conditions.diabetes.complications.push('ckd');
+                            // Distinguish: "Nephropathy" alone → nephropathy, "CKD" or "Chronic Kidney Disease" → ckd
+                            if (lc.includes('ckd') || lc.includes('chronic kidney disease')) {
+                                context.conditions.diabetes.complications.push('ckd');
+                                // Create CKD object for explicit CKD
+                                if (!context.conditions.ckd)
+                                    context.conditions.ckd = { stage: undefined, onDialysis: false, aki: false, transplantStatus: false };
+                            }
+                            else {
+                                // Just "nephropathy" without CKD
+                                context.conditions.diabetes.complications.push('nephropathy');
+                            }
                         }
                         else if (lc.includes('foot ulcer')) {
                             if (!context.conditions.diabetes)
@@ -335,6 +345,11 @@ function parseInput(text) {
                             if (!context.conditions.diabetes)
                                 context.conditions.diabetes = { type: 'type2', complications: [] };
                             context.conditions.diabetes.complications.push('retinopathy');
+                        }
+                        else if (lc.includes('hypoglycemia')) {
+                            if (!context.conditions.diabetes)
+                                context.conditions.diabetes = { type: 'type2', complications: [] };
+                            context.conditions.diabetes.complications.push('hypoglycemia');
                         }
                         else if (lc.includes('ketoacidosis')) {
                             if (!context.conditions.diabetes)
@@ -420,8 +435,17 @@ function parseInput(text) {
                 comps.forEach(c => {
                     if (c === 'neuropathy')
                         context.conditions.diabetes.complications.push('neuropathy');
-                    else if (c.includes('nephropathy') || c.includes('ckd'))
-                        context.conditions.diabetes.complications.push('ckd');
+                    else if (c.includes('nephropathy') || c.includes('ckd') || c.includes('chronic kidney disease')) {
+                        // Distinguish: "Nephropathy" alone → nephropathy, "CKD" or "Chronic Kidney Disease" → ckd
+                        if (c.includes('ckd') || c.includes('chronic kidney disease')) {
+                            context.conditions.diabetes.complications.push('ckd');
+                            if (!context.conditions.ckd)
+                                context.conditions.ckd = { stage: undefined, onDialysis: false, aki: false, transplantStatus: false };
+                        }
+                        else {
+                            context.conditions.diabetes.complications.push('nephropathy');
+                        }
+                    }
                     else if (c.includes('foot ulcer')) {
                         context.conditions.diabetes.complications.push('foot_ulcer');
                         // Don't set wounds.present - handled in diabetes section
@@ -470,7 +494,7 @@ function parseInput(text) {
                 else if (lowerValue.includes('bone'))
                     context.conditions.diabetes.ulcerSeverity = 'bone';
                 else if (lowerValue.includes('fat'))
-                    context.conditions.diabetes.ulcerSeverity = 'fat';
+                    context.conditions.diabetes.ulcerSeverity = 'muscle'; // Fat layer exposed = muscle necrosis (L97.x13)
                 else if (lowerValue.includes('skin'))
                     context.conditions.diabetes.ulcerSeverity = 'skin';
                 else

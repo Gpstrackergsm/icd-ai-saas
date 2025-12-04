@@ -10,7 +10,7 @@ export interface PatientContext {
     conditions: {
         diabetes?: {
             type: 'type1' | 'type2' | 'drug_induced' | 'secondary';
-            complications: Array<'ckd' | 'foot_ulcer' | 'retinopathy' | 'neuropathy' | 'pad' | 'hypoglycemia' | 'hyperosmolarity' | 'ketoacidosis' | 'hyperosmolar' | 'gangrene' | 'amputation' | 'unspecified'>;
+            complications: Array<'ckd' | 'nephropathy' | 'foot_ulcer' | 'retinopathy' | 'neuropathy' | 'pad' | 'hypoglycemia' | 'hyperosmolarity' | 'ketoacidosis' | 'hyperosmolar' | 'gangrene' | 'amputation' | 'unspecified'>;
             ulcerSite?: 'foot_left' | 'foot_right' | 'foot_bilateral' | 'ankle_left' | 'ankle_right' | 'other';
             ulcerSeverity?: 'skin' | 'fat' | 'muscle' | 'bone' | 'unspecified';
             insulinUse?: boolean;
