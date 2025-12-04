@@ -1,0 +1,14 @@
+"use strict";
+var _a;
+Object.defineProperty(exports, "__esModule", { value: true });
+const parser_1 = require("./lib/structured/parser");
+const engine_1 = require("./lib/structured/engine");
+const input1 = "Age: 52\nGender: Male\nEncounter: Outpatient\nDiabetes Type: Type 2\nComplications: None";
+const { context } = (0, parser_1.parseInput)(input1);
+console.log('Case 1 - Simple Type 2 Diabetes');
+console.log('Diabetes:', JSON.stringify(context.conditions.diabetes, null, 2));
+const result = (0, engine_1.runStructuredRules)(context);
+console.log('\nResult:');
+console.log('  Primary:', (_a = result.primary) === null || _a === void 0 ? void 0 : _a.code);
+console.log('  Secondary:', result.secondary.map(c => c === null || c === void 0 ? void 0 : c.code));
+console.log('\nExpected: E11.9');

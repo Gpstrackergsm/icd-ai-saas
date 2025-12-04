@@ -1540,6 +1540,9 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         // 5.5 Diabetic Ulcer Manifestation (L97) - sequenced after Diabetes
         if (code.startsWith('L97')) return 55;
 
+        // 5.6 Hypertension -  should come before standalone CKD
+        if (code.startsWith('I10') || code.startsWith('I11') || code.startsWith('I12') || code.startsWith('I13') || code.startsWith('I15')) return 56;
+
         // 6. CKD
         if (code.startsWith('N18')) return 60;
 
