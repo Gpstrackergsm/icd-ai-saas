@@ -329,9 +329,7 @@ function parseInput(text) {
                             if (!context.conditions.diabetes)
                                 context.conditions.diabetes = { type: 'type2', complications: [] };
                             context.conditions.diabetes.complications.push('foot_ulcer');
-                            if (!context.conditions.wounds)
-                                context.conditions.wounds = { present: true };
-                            context.conditions.wounds.type = 'diabetic';
+                            // Don't set wounds.present - handled in diabetes section
                         }
                         else if (lc.includes('retinopathy')) {
                             if (!context.conditions.diabetes)
@@ -426,9 +424,7 @@ function parseInput(text) {
                         context.conditions.diabetes.complications.push('ckd');
                     else if (c.includes('foot ulcer')) {
                         context.conditions.diabetes.complications.push('foot_ulcer');
-                        if (!context.conditions.wounds)
-                            context.conditions.wounds = { present: true };
-                        context.conditions.wounds.type = 'diabetic';
+                        // Don't set wounds.present - handled in diabetes section
                     }
                     else if (c.includes('retinopathy'))
                         context.conditions.diabetes.complications.push('retinopathy');
