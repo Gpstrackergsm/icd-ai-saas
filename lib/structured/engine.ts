@@ -231,6 +231,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 ? 'Hypertensive chronic kidney disease with stage 5 chronic kidney disease or end stage renal disease'
                 : 'Hypertensive chronic kidney disease with stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease';
 
+            // HTN code FIRST (primary)
             codes.push({
                 code: code,
                 label: label,
@@ -240,7 +241,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 rule: 'HTN combination code logic'
             });
 
-            // Add CKD stage code as secondary
+            // CKD stage code SECOND (secondary)
             const ckdCode = ckdStage === '1' ? 'N18.1' :
                 ckdStage === '2' ? 'N18.2' :
                     ckdStage === '3' ? 'N18.3' :
@@ -313,7 +314,8 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         }
 
         // RULE: CKD Stage → N18.x
-        if (k.stage) {
+        // SKIP if HTN is present (HTN+CKD uses combination codes I12.x/I13.x)
+        if (k.stage && !ctx.conditions.cardiovascular?.hypertension) {
             const ckdCode = mapCKDStage(k.stage);
             codes.push({
                 code: ckdCode,
@@ -340,6 +342,23 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
         // RULE: If dialysis is temporary, do NOT generate Z99.2
         // RULE: If dialysis is none, do NOT generate Z99.2
+    }
+
+    // Also check renal.ckd location
+    if (ctx.conditions.renal?.ckd) {
+        const ckd = ctx.conditions.renal.ckd;
+        // SKIP if HTN is present (HTN+CKD uses combination codes I12.x/I13.x)
+        if (ckd.stage && !ctx.conditions.cardiovascular?.hypertension) {
+            const ckdCode = mapCKDStage(ckd.stage);
+            codes.push({
+                code: ckdCode,
+                label: `Chronic kidney disease, stage ${ckd.stage}`,
+                rationale: 'CKD stage explicitly documented',
+                guideline: 'ICD-10-CM I.C.14.a',
+                trigger: `CKD Stage: ${ckd.stage}`,
+                rule: 'CKD stage mapping'
+            });
+        }
     }
 
     // --- RESPIRATORY RULES ---
@@ -448,6 +467,18 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             trigger: 'COPD',
             rule: 'COPD code selection'
         });
+
+        // Add J22 for acute lower respiratory infection with COPD
+        if (copd.withInfection) {
+            codes.push({
+                code: 'J22',
+                label: 'Unspecified acute lower respiratory infection',
+                rationale: 'Acute lower respiratory infection documented with COPD',
+                guideline: 'ICD-10-CM I.C.10.a.1',
+                trigger: 'COPD + Infection',
+                rule: 'Acute lower respiratory infection code'
+            });
+        }
     }
 
     // RULE: Asthma (J45.x)

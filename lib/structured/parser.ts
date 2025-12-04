@@ -85,16 +85,17 @@ export function parseInput(text: string): ParseResult {
                     let severity: 'mild_intermittent' | 'mild_persistent' | 'moderate_persistent' | 'severe_persistent' | 'unspecified' = 'unspecified';
                     let status: 'uncomplicated' | 'exacerbation' | 'status_asthmaticus' = 'uncomplicated';
 
-                    // Severity
-                    if (lowerValue.includes('mild intermittent')) severity = 'mild_intermittent';
-                    else if (lowerValue.includes('mild persistent')) severity = 'mild_persistent';
-                    else if (lowerValue.includes('moderate')) severity = 'moderate_persistent';
-                    else if (lowerValue.includes('severe')) severity = 'severe_persistent';
-
-                    // Status
+                    // Status first (to avoid confusing "acute severe" with "severe persistent")
                     if (lowerValue.includes('acute')) status = 'exacerbation';
                     else if (lowerValue.includes('exacerbation')) status = 'exacerbation';
                     else if (lowerValue.includes('status asthmaticus')) status = 'status_asthmaticus';
+
+                    // Severity (only if not just "acute severe" which means unspecified with exacerbation)
+                    if (lowerValue.includes('mild intermittent')) severity = 'mild_intermittent';
+                    else if (lowerValue.includes('mild persistent')) severity = 'mild_persistent';
+                    else if (lowerValue.includes('moderate')) severity = 'moderate_persistent';
+                    else if (lowerValue.includes('severe persistent')) severity = 'severe_persistent';
+                    // Don't set severity to severe_persistent for "acute severe" or just "severe"
 
                     context.conditions.respiratory.asthma = { severity, status };
                 }
