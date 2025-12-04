@@ -1,11 +1,16 @@
 const { parseInput } = require('../dist/lib/structured/parser.js');
 const { validateContext } = require('../dist/lib/structured/validator.js');
 const { runStructuredRules } = require('../dist/lib/structured/engine.js');
+const { requireAuth } = require('../dist/lib/auth/middleware.js');
 
 module.exports = async function handler(req, res) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
+
+    // Authentication check
+    const auth = await requireAuth(req, res);
+    if (!auth) return; // requireAuth already sent error response
 
     try {
         const { text } = req.body;
@@ -48,14 +53,10 @@ module.exports = async function handler(req, res) {
             context: context // Include parsed context for debugging
         };
 
-        return res.status(200).json(response);
+        return res.status(200).json({ success: true, data: response });
 
     } catch (error) {
-        console.error('Structured encoding error:', error);
-        return res.status(500).json({
-            error: 'Internal server error',
-            message: error.message,
-            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
-        });
+        console.error('Encoding error:', error);
+        return res.status(500).json({ error: 'Internal server error' });
     }
 };

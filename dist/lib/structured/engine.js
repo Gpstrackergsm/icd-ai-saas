@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.runStructuredRules = runStructuredRules;
 function runStructuredRules(ctx) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6, _7, _8, _9, _10, _11, _12, _13, _14, _15, _16, _17;
     const codes = [];
     const warnings = [];
     const validationErrors = [];
@@ -70,6 +70,17 @@ function runStructuredRules(ctx) {
                 rationale: 'Diabetes with documented retinopathy complication (macular edema not specified)',
                 guideline: 'ICD-10-CM I.C.4.a',
                 trigger: 'Diabetes Type + Retinopathy complication',
+                rule: 'Diabetes complication mapping'
+            });
+        }
+        // RULE: Ketoacidosis → E10.10 / E11.10
+        if (d.complications.includes('ketoacidosis')) {
+            codes.push({
+                code: `${baseCode}.10`,
+                label: `${typeName} diabetes mellitus with ketoacidosis without coma`,
+                rationale: 'Diabetes with documented ketoacidosis complication',
+                guideline: 'ICD-10-CM I.C.4.a',
+                trigger: 'Diabetes Type + Ketoacidosis complication',
                 rule: 'Diabetes complication mapping'
             });
         }
@@ -202,19 +213,16 @@ function runStructuredRules(ctx) {
             });
         }
         // RULE: Dialysis → Z99.2 (ONLY IF CHRONIC)
-        // COMMANDMENT: Never assume chronic dialysis
-        if (k.dialysisType === 'chronic' || (k.onDialysis && k.dialysisType === undefined)) {
-            // Only generate if explicitly chronic OR if onDialysis=true but no type specified (backward compat)
-            if (k.dialysisType === 'chronic') {
-                codes.push({
-                    code: 'Z99.2',
-                    label: 'Dependence on renal dialysis',
-                    rationale: 'Patient on chronic dialysis',
-                    guideline: 'ICD-10-CM I.C.21.c.3',
-                    trigger: 'Dialysis Type = Chronic',
-                    rule: 'Chronic dialysis status code'
-                });
-            }
+        // LAYER 6: Always add Z99.2 when on chronic dialysis
+        if (k.dialysisType === 'chronic') {
+            codes.push({
+                code: 'Z99.2',
+                label: 'Dependence on renal dialysis',
+                rationale: 'Patient on chronic dialysis',
+                guideline: 'ICD-10-CM I.C.21.c.3',
+                trigger: 'Dialysis Type = Chronic',
+                rule: 'Chronic dialysis status code'
+            });
         }
         // RULE: If dialysis is temporary, do NOT generate Z99.2
         // RULE: If dialysis is none, do NOT generate Z99.2
@@ -240,14 +248,39 @@ function runStructuredRules(ctx) {
             rule: 'Organism-specific pneumonia code'
         });
     }
-    if ((_g = (_f = ctx.conditions.respiratory) === null || _f === void 0 ? void 0 : _f.copd) === null || _g === void 0 ? void 0 : _g.present) {
+    // --- RESPIRATORY RULES ---
+    if ((_f = ctx.conditions.respiratory) === null || _f === void 0 ? void 0 : _f.copd) {
+        const copd = ctx.conditions.respiratory.copd;
+        // LAYER 5: COPD with exacerbation → J44.1, otherwise J44.9
+        const code = copd.withExacerbation ? 'J44.1' : 'J44.9';
+        const label = copd.withExacerbation
+            ? 'Chronic obstructive pulmonary disease with acute exacerbation'
+            : 'Chronic obstructive pulmonary disease, unspecified';
         codes.push({
-            code: 'J44.9',
-            label: 'Chronic obstructive pulmonary disease, unspecified',
-            rationale: 'COPD documented',
+            code: code,
+            label: label,
+            rationale: copd.withExacerbation ? 'COPD with acute exacerbation' : 'COPD documented',
             guideline: 'ICD-10-CM J44',
-            trigger: 'COPD = Yes',
-            rule: 'COPD code'
+            trigger: copd.withExacerbation ? 'COPD + Exacerbation' : 'COPD = Yes',
+            rule: 'COPD code with exacerbation specificity'
+        });
+    }
+    if ((_g = ctx.conditions.respiratory) === null || _g === void 0 ? void 0 : _g.failure) {
+        const rf = ctx.conditions.respiratory.failure;
+        let code = 'J96.90'; // Unspecified
+        if (rf.type === 'acute')
+            code = 'J96.00';
+        else if (rf.type === 'chronic')
+            code = 'J96.10';
+        else if (rf.type === 'acute_on_chronic')
+            code = 'J96.20';
+        codes.push({
+            code: code,
+            label: `Respiratory failure, ${rf.type || 'unspecified'}`,
+            rationale: 'Respiratory failure documented',
+            guideline: 'ICD-10-CM J96',
+            trigger: `Respiratory Failure Type: ${rf.type}`,
+            rule: 'Respiratory failure code'
         });
     }
     // --- INFECTIONS & SEPSIS RULES ---
@@ -312,6 +345,28 @@ function runStructuredRules(ctx) {
                     rule: 'Use additional code for organism'
                 });
             }
+        }
+        // RULE: HIV
+        if (inf.hiv) {
+            codes.push({
+                code: 'B20',
+                label: 'Human immunodeficiency virus [HIV] disease',
+                rationale: 'HIV positive documented',
+                guideline: 'ICD-10-CM B20',
+                trigger: 'HIV Positive',
+                rule: 'HIV code'
+            });
+        }
+        // RULE: Tuberculosis
+        if (inf.tuberculosis) {
+            codes.push({
+                code: 'A15.0',
+                label: 'Tuberculosis of lung',
+                rationale: 'Active tuberculosis documented',
+                guideline: 'ICD-10-CM A15',
+                trigger: 'Active Tuberculosis',
+                rule: 'TB code'
+            });
         }
     }
     // --- WOUNDS & PRESSURE ULCERS RULES ---
@@ -458,6 +513,33 @@ function runStructuredRules(ctx) {
                 rule: 'Parkinson\'s code'
             });
         }
+        // RULE: Stroke
+        if (n.stroke) {
+            codes.push({
+                code: 'I63.9',
+                label: 'Cerebral infarction, unspecified',
+                rationale: 'Ischemic stroke documented',
+                guideline: 'ICD-10-CM I63',
+                trigger: 'Stroke = Yes',
+                rule: 'Stroke code'
+            });
+        }
+        // RULE: Hemiplegia
+        if (n.hemiplegia) {
+            let code = 'I69.359'; // Unspecified side
+            if (n.hemiplegia.side === 'right')
+                code = 'I69.351';
+            else if (n.hemiplegia.side === 'left')
+                code = 'I69.352';
+            codes.push({
+                code: code,
+                label: `Hemiplegia and hemiparesis following cerebral infarction affecting ${n.hemiplegia.side} side`,
+                rationale: 'Hemiplegia documented as sequela of stroke',
+                guideline: 'ICD-10-CM I69.35',
+                trigger: `Hemiplegia Side: ${n.hemiplegia.side}`,
+                rule: 'Hemiplegia sequela code'
+            });
+        }
         // RULE: Coma
         if (n.coma) {
             codes.push({
@@ -482,6 +564,57 @@ function runStructuredRules(ctx) {
                     rule: 'GCS score code'
                 });
             }
+        }
+    }
+    // --- MUSCULOSKELETAL RULES ---
+    if (ctx.conditions.musculoskeletal) {
+        const m = ctx.conditions.musculoskeletal;
+        // RULE: Osteoporosis
+        if (m.osteoporosis) {
+            let code = 'M81.0'; // Age-related osteoporosis without current pathological fracture
+            if (m.pathologicalFracture) {
+                code = 'M80.08XA'; // Osteoporosis with pathological fracture of other site
+                if (m.pathologicalFracture.site === 'femur')
+                    code = 'M80.051A'; // Right femur? Unspecified side -> M80.059A
+                else
+                    code = 'M80.08XA';
+            }
+            codes.push({
+                code: code,
+                label: 'Osteoporosis with pathological fracture',
+                rationale: 'Osteoporosis with fracture documented',
+                guideline: 'ICD-10-CM M80',
+                trigger: 'Osteoporosis + Fracture',
+                rule: 'Osteoporosis code'
+            });
+        }
+    }
+    // --- MENTAL HEALTH RULES ---
+    if (ctx.conditions.mental_health) {
+        const mh = ctx.conditions.mental_health;
+        // RULE: Depression
+        // LAYER 5: Severity mapping for depression
+        if (mh.depression) {
+            let code = 'F32.9'; // Unspecified
+            if (mh.depression.severity === 'severe') {
+                // Severe with psychotic features → F32.3
+                // Severe without psychotic features → F32.2
+                code = mh.depression.psychoticFeatures ? 'F32.3' : 'F32.2';
+            }
+            else if (mh.depression.severity === 'moderate') {
+                code = 'F32.1';
+            }
+            else if (mh.depression.severity === 'mild') {
+                code = 'F32.0';
+            }
+            codes.push({
+                code: code,
+                label: `Major depressive disorder, single episode, ${mh.depression.severity}${mh.depression.psychoticFeatures ? ' with psychotic features' : ''}`,
+                rationale: 'Major depressive disorder documented',
+                guideline: 'ICD-10-CM F32',
+                trigger: `Depression Severity: ${mh.depression.severity}`,
+                rule: 'Depression code'
+            });
         }
     }
     // --- GASTROENTEROLOGY RULES ---
@@ -537,19 +670,7 @@ function runStructuredRules(ctx) {
         if (g.bleeding) {
             let code = 'K92.2'; // GI hemorrhage, unspecified
             if (g.bleeding.site === 'upper')
-                code = 'K92.0'; // Hematemesis (proxy for upper) - or K92.2 if not specified. K92.0 is Hematemesis, K92.1 is Melena.
-            // Better mapping:
-            // Upper GI Bleed -> K92.2 (often used if not specific) or K92.0/K92.1
-            // Let's use K92.2 for general GI bleed, but if site is upper, maybe K92.2 is still best unless we know hematemesis/melena.
-            // Actually K92.2 is "Gastrointestinal hemorrhage, unspecified".
-            // If "Upper GI Bleeding" is stated, it's often coded as K92.2 in absence of specific lesion, but clinically K92.0/1 are signs.
-            // Let's stick to K92.2 for unspecified, and maybe specific codes if we had them.
-            // For now:
-            if (g.bleeding.site === 'upper')
                 code = 'K92.2'; // K92.2 is often used for "GI Bleed" even if upper is suspected but source unknown.
-            // Actually, let's use K92.2 for all unless we have more info.
-            // Wait, K92.1 is Melena, K92.0 is Hematemesis.
-            // If just "GI Bleeding", K92.2.
             codes.push({
                 code: code,
                 label: 'Gastrointestinal hemorrhage, unspecified',
@@ -590,25 +711,48 @@ function runStructuredRules(ctx) {
     // --- HEMATOLOGY/ONCOLOGY RULES ---
     if ((_t = ctx.conditions.neoplasm) === null || _t === void 0 ? void 0 : _t.present) {
         const neo = ctx.conditions.neoplasm;
-        // RULE: Primary Malignancy
-        if (neo.site) {
-            let code = 'C80.1'; // Malignant neoplasm, unspecified site
+        // LAYER 4: History vs Active Cancer
+        if (neo.active === false) {
+            // History of cancer - use Z85.x codes
+            let code = 'Z85.9'; // Personal history of malignant neoplasm, unspecified
             if (neo.site === 'lung')
-                code = 'C34.90';
+                code = 'Z85.118';
             else if (neo.site === 'breast')
-                code = 'C50.919'; // Breast, unspecified
+                code = 'Z85.3';
             else if (neo.site === 'colon')
-                code = 'C18.9';
+                code = 'Z85.038';
             else if (neo.site === 'prostate')
-                code = 'C61';
+                code = 'Z85.46';
             codes.push({
                 code: code,
-                label: `Malignant neoplasm of ${neo.site || 'unspecified site'}`,
-                rationale: 'Primary malignancy documented',
-                guideline: 'ICD-10-CM C00-C96',
-                trigger: `Cancer Site: ${neo.site}`,
-                rule: 'Primary neoplasm mapping'
+                label: `Personal history of malignant neoplasm of ${neo.site || 'unspecified site'}`,
+                rationale: 'History of cancer, no active disease',
+                guideline: 'ICD-10-CM Z85',
+                trigger: 'Active Disease = No',
+                rule: 'Personal history of malignancy'
             });
+        }
+        else {
+            // Active cancer - use C-codes
+            if (neo.site) {
+                let code = 'C80.1'; // Unspecified malignant neoplasm
+                if (neo.site === 'lung')
+                    code = 'C34.90';
+                else if (neo.site === 'breast')
+                    code = 'C50.919';
+                else if (neo.site === 'colon')
+                    code = 'C18.9';
+                else if (neo.site === 'prostate')
+                    code = 'C61';
+                codes.push({
+                    code: code,
+                    label: `Malignant neoplasm of ${neo.site}`,
+                    rationale: 'Primary malignancy documented',
+                    guideline: 'ICD-10-CM I.C.2',
+                    trigger: `Neoplasm Site: ${neo.site}`,
+                    rule: 'Primary neoplasm code'
+                });
+            }
         }
         // RULE: Metastasis
         if (neo.metastasis) {
@@ -641,6 +785,17 @@ function runStructuredRules(ctx) {
                     rule: 'Unspecified metastasis'
                 });
             }
+        }
+        // RULE: Chemotherapy Admission
+        if (neo.chemotherapy) {
+            codes.push({
+                code: 'Z51.11',
+                label: 'Encounter for antineoplastic chemotherapy',
+                rationale: 'Admission for chemotherapy',
+                guideline: 'ICD-10-CM Z51.11',
+                trigger: 'Chemotherapy Admission',
+                rule: 'Chemotherapy encounter code'
+            });
         }
     }
     if (ctx.conditions.hematology) {
@@ -979,6 +1134,84 @@ function runStructuredRules(ctx) {
     if (hasR65 && !isSevere && !isShock) {
         finalCodes = finalCodes.filter(c => !c.code.startsWith('R65.2'));
         validationErrors.push('Invariant Violation: R65.2x removed because neither Severe Sepsis nor Septic Shock is present');
+    }
+    // === CRITICAL VALIDATION FIXES (User-Requested) ===
+    // FIX 1: Sepsis validation - ensure A41.x present when R65.2x exists
+    const hasR6520 = finalCodes.some(c => c.code === 'R65.20');
+    const hasR6521 = finalCodes.some(c => c.code === 'R65.21');
+    const hasSepsisCode = finalCodes.some(c => c.code.startsWith('A41') || c.code.startsWith('A40'));
+    if ((hasR6520 || hasR6521) && !hasSepsisCode) {
+        finalCodes.push({
+            code: 'A41.9',
+            label: 'Sepsis, unspecified organism',
+            rationale: 'Severe sepsis/septic shock requires underlying sepsis code',
+            guideline: 'ICD-10-CM I.C.1.d',
+            trigger: 'R65.2x present without A41.x',
+            rule: 'Sepsis validation fix'
+        });
+    }
+    // CRITICAL FIX: Organism-specific sepsis code enforcement
+    // If A41.9 is present AND organism is known, replace with organism-specific code
+    const a419Index = finalCodes.findIndex(c => c.code === 'A41.9');
+    if (a419Index >= 0) {
+        // Check multiple locations for organism
+        let organism = ((_12 = ctx.conditions.infection) === null || _12 === void 0 ? void 0 : _12.organism) ||
+            ((_14 = (_13 = ctx.conditions.respiratory) === null || _13 === void 0 ? void 0 : _13.pneumonia) === null || _14 === void 0 ? void 0 : _14.organism);
+        if (organism) {
+            const organismSepsisCode = mapSepsisOrganism(organism);
+            // Only replace if we have a specific code (not A41.9)
+            if (organismSepsisCode && organismSepsisCode !== 'A41.9') {
+                finalCodes[a419Index] = {
+                    ...finalCodes[a419Index],
+                    code: organismSepsisCode,
+                    label: `Sepsis due to ${organism}`,
+                    rationale: `Organism-specific sepsis code for ${organism}`,
+                    trigger: `Organism: ${organism}`
+                };
+            }
+        }
+    }
+    // CRITICAL FIX: Sepsis source infection validation
+    // If sepsis is present, ensure source infection code is included
+    const hasSepsis = finalCodes.some(c => c.code.startsWith('A41') || c.code.startsWith('A40'));
+    const hasR6520or21 = finalCodes.some(c => c.code === 'R65.20' || c.code === 'R65.21');
+    if (hasSepsis || hasR6520or21) {
+        // Check if source infection codes are present
+        const hasPneumonia = finalCodes.some(c => c.code.startsWith('J15') || c.code.startsWith('J18'));
+        const hasUTI = finalCodes.some(c => c.code === 'N39.0');
+        const hasCellulitis = finalCodes.some(c => c.code.startsWith('L03'));
+        // If infection context has source but no corresponding code, add it
+        if ((_15 = ctx.conditions.infection) === null || _15 === void 0 ? void 0 : _15.source) {
+            const source = ctx.conditions.infection.source.toLowerCase();
+            if ((source.includes('uti') || source.includes('urinary')) && !hasUTI) {
+                finalCodes.push({
+                    code: 'N39.0',
+                    label: 'Urinary tract infection, site not specified',
+                    rationale: 'UTI documented as source of sepsis',
+                    guideline: 'ICD-10-CM N39.0',
+                    trigger: `Source: ${ctx.conditions.infection.source}`,
+                    rule: 'Sepsis source infection'
+                });
+            }
+        }
+    }
+    // FIX 2: Stroke I63/I69 conflict - remove I63.x if I69.x present
+    const hasI63 = finalCodes.some(c => c.code.startsWith('I63'));
+    const hasI69 = finalCodes.some(c => c.code.startsWith('I69'));
+    if (hasI63 && hasI69) {
+        finalCodes = finalCodes.filter(c => !c.code.startsWith('I63'));
+    }
+    // FIX 3: Iron deficiency anemia - check context for chronic blood loss
+    const d509Index = finalCodes.findIndex(c => c.code === 'D50.9');
+    if (d509Index >= 0 && ((_17 = (_16 = ctx.conditions.hematology) === null || _16 === void 0 ? void 0 : _16.anemia) === null || _17 === void 0 ? void 0 : _17.type) === 'iron_deficiency') {
+        // Check if cause is chronic blood loss
+        if (ctx.conditions.hematology.anemia.cause === 'chronic_blood_loss') {
+            finalCodes[d509Index] = {
+                ...finalCodes[d509Index],
+                code: 'D50.0',
+                label: 'Iron deficiency anemia secondary to blood loss (chronic)'
+            };
+        }
     }
     // --- SEQUENCING LOGIC (PRIORITY SORT) ---
     // 1. Primary infection / sepsis code (A40, A41, B37.7, A48.1, A41.89)

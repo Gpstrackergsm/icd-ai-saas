@@ -141,7 +141,13 @@
 
 <body>
   <div class="container">
-    <h1>ICD-10-CM Encoder</h1>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h1 style="margin: 0;">ICD-10-CM Encoder</h1>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span id="userEmail" style="font-size: 14px; color: #64748b;"></span>
+        <button id="logoutBtn" class="secondary" style="padding: 8px 16px; font-size: 14px;">Logout</button>
+      </div>
+    </div>
     <div class="panel">
 
       <div id="encodePanel">
@@ -161,6 +167,41 @@
   </div>
 
   <script>
+    // Authentication check
+    (async function checkAuth() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        window.location.href = '/login.html';
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/auth/verify', {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/login.html';
+          return;
+        }
+
+        const data = await response.json();
+        document.getElementById('userEmail').textContent = data.user.email;
+      } catch (error) {
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        window.location.href = '/login.html';
+      }
+    })();
+
+    // Logout functionality
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/login.html';
+    });
 
     // Encoder tab logic
     const narrativeInput = document.getElementById('narrative');
@@ -678,10 +719,15 @@
       copyEncodeBtn.disabled = false;
     }
 
-    async function fetchPayload(url, body, defaultError) {
+    async function fetchPayload(url, body, defaultError, token) {
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
       const response = await fetch(url, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         body: JSON.stringify(body),
       });
 
@@ -725,10 +771,12 @@
       }
 
       try {
+        const token = localStorage.getItem('token');
         const payload = await fetchPayload(
           '/api/encode-structured',  // CHANGED: Use zero-assumption structured endpoint
           payloadBody,
-          'Encoding failed'
+          'Encoding failed',
+          token
         );
         lastEncoded = payload;
         renderEncodeResults(payload);
