@@ -155,6 +155,7 @@ function parseInput(text) {
                 break;
             case 'dialysis':
             case 'dialysis status':
+            case 'dialysis / dialysis status':
                 if (!context.conditions.ckd)
                     context.conditions.ckd = { stage: undefined, onDialysis: false, aki: false, transplantStatus: false };
                 // Handle new format: None/Temporary/Chronic

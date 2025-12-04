@@ -119,6 +119,7 @@ export function parseInput(text: string): ParseResult {
                 break;
             case 'dialysis':
             case 'dialysis status':
+            case 'dialysis / dialysis status':
                 if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
                 // Handle new format: None/Temporary/Chronic
                 if (lowerValue === 'none') {

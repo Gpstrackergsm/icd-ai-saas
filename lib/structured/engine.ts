@@ -968,54 +968,121 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             uniqueCodes.set(c.code, c);
         }
     });
-    const finalCodes = Array.from(uniqueCodes.values());
+    let finalCodes = Array.from(uniqueCodes.values());
 
-    // --- SEQUENCING LOGIC ---
-    // Per ICD-10-CM guidelines, certain conditions must be sequenced first:
-    // 1. Underlying infection (A40, A41, B37.7, A48.1, etc.) - I.C.1.d.1.a
-    // 2. Severe sepsis (R65.20/R65.21)
-    // 3. Other acute conditions
-    // 4. Chronic conditions
+    // --- INVARIANT ENFORCEMENT ---
+
+    // RULE A1: Dialysis & Z99.2
+    // If Z99.2 is present, verify dialysis status is chronic
+    const hasZ992 = finalCodes.some(c => c.code === 'Z99.2');
+    const isChronicDialysis = ctx.conditions.ckd?.dialysisType === 'chronic';
+
+    if (hasZ992 && !isChronicDialysis) {
+        // Violation: Z99.2 without chronic dialysis
+        // Remove Z99.2
+        finalCodes = finalCodes.filter(c => c.code !== 'Z99.2');
+        validationErrors.push('Invariant Violation: Z99.2 removed because Dialysis Status is not Chronic');
+    } else if (!hasZ992 && isChronicDialysis) {
+        // Violation: Chronic dialysis without Z99.2 (should have been added by rules, but force add if missing)
+        // This is a safety net
+        finalCodes.push({
+            code: 'Z99.2',
+            label: 'Dependence on renal dialysis',
+            rationale: 'Patient on chronic dialysis (Invariant Enforcement)',
+            guideline: 'ICD-10-CM I.C.21.c.3',
+            trigger: 'Dialysis Type = Chronic',
+            rule: 'Invariant A1'
+        });
+    }
+
+    // RULE B1: AKI (N17.9)
+    // N17.9 allowed ONLY if AKI = Yes
+    const hasN179 = finalCodes.some(c => c.code === 'N17.9');
+    const isAKIPresent = !!ctx.conditions.ckd?.aki;
+    if (hasN179 && !isAKIPresent) {
+        finalCodes = finalCodes.filter(c => c.code !== 'N17.9');
+        validationErrors.push('Invariant Violation: N17.9 removed because AKI is not present');
+    }
+
+    // RULE B2: Encephalopathy (G93.x)
+    // G93.x allowed ONLY if Encephalopathy = Yes
+    const hasEncephalopathyCode = finalCodes.some(c => c.code.startsWith('G93') || c.code === 'G92.8' || c.code === 'K72.90');
+    const isEncephalopathyPresent = !!ctx.conditions.neurology?.encephalopathy?.present;
+    if (hasEncephalopathyCode && !isEncephalopathyPresent) {
+        finalCodes = finalCodes.filter(c => !(c.code.startsWith('G93') || c.code === 'G92.8' || c.code === 'K72.90'));
+        validationErrors.push('Invariant Violation: Encephalopathy code removed because Encephalopathy is not present');
+    }
+
+    // RULE C1: Sepsis Severity & R65.x
+    // R65.2x allowed ONLY if Severe Sepsis = Yes OR Septic Shock = Yes
+    const hasR65 = finalCodes.some(c => c.code.startsWith('R65.2'));
+    const isSevere = !!ctx.conditions.infection?.sepsis?.severe;
+    const isShock = !!ctx.conditions.infection?.sepsis?.shock;
+
+    if (hasR65 && !isSevere && !isShock) {
+        finalCodes = finalCodes.filter(c => !c.code.startsWith('R65.2'));
+        validationErrors.push('Invariant Violation: R65.2x removed because neither Severe Sepsis nor Septic Shock is present');
+    }
+
+    // --- SEQUENCING LOGIC (PRIORITY SORT) ---
+    // 1. Primary infection / sepsis code (A40, A41, B37.7, A48.1, A41.89)
+    // 2. R65.2x (if present)
+    // 3. Organ dysfunction codes (N17.9, G93.x, J96.x, etc.)
+    // 4. Local infection source (pneumonia, UTI, skin, etc.)
+    // 5. Diabetes with complications (E08–E13)
+    // 6. CKD staging (N18.x)
+    // 7. Status codes (Z99.2, etc.)
+    // 8. Other chronic conditions
+
+    const getPriority = (c: StructuredCode): number => {
+        const code = c.code;
+        // 1. Primary Sepsis
+        if (code.startsWith('A40') || code.startsWith('A41') || code === 'B37.7' || code === 'A48.1') return 10;
+
+        // 2. Severe Sepsis
+        if (code.startsWith('R65.2')) return 20;
+
+        // 3. Organ Dysfunction
+        if (code.startsWith('N17') || code.startsWith('G93') || code.startsWith('J96') || code === 'G92.8' || code === 'K72.90') return 30;
+
+        // 4. Local Infection (Pneumonia J13-J18, UTI N39, Skin L00-L08, etc.)
+        if (code.startsWith('J13') || code.startsWith('J14') || code.startsWith('J15') || code.startsWith('J16') || code.startsWith('J18') || code.startsWith('J11')) return 40; // Pneumonia/Flu
+        if (code.startsWith('N30') || code.startsWith('N39')) return 40; // UTI
+        if (code.startsWith('L0') || code.startsWith('L89')) return 45; // Skin/Ulcer (L97 is handled after diabetes)
+        // Wait, L97 is diabetic ulcer manifestation. User said "Diabetes with complications ... E08-E13". L97 usually goes with E code.
+        // Let's put L97 with Diabetes group or slightly after. User list: "Diabetes with complications...".
+        // Actually, L97 is a "manifestation" code, usually sequenced after the etiology (E11).
+        // So L97 should be > Diabetes.
+
+        // 5. Diabetes
+        if (code.startsWith('E08') || code.startsWith('E09') || code.startsWith('E10') || code.startsWith('E11') || code.startsWith('E13')) return 50;
+
+        // 5.5 Diabetic Ulcer Manifestation (L97) - sequenced after Diabetes
+        if (code.startsWith('L97')) return 55;
+
+        // 6. CKD
+        if (code.startsWith('N18')) return 60;
+
+        // 7. Status Codes
+        if (code.startsWith('Z99')) return 70;
+
+        // 8. Others
+        return 80;
+    };
+
+    finalCodes.sort((a, b) => {
+        const pA = getPriority(a);
+        const pB = getPriority(b);
+        if (pA !== pB) return pA - pB;
+        return 0; // Keep original order if same priority
+    });
 
     let primary: StructuredCode | null = null;
     let secondary: StructuredCode[] = [];
 
     if (finalCodes.length > 0) {
-        // Find severe sepsis code (R65.20 or R65.21)
-        const severeSepsisIndex = finalCodes.findIndex(c => c.code === 'R65.20' || c.code === 'R65.21');
-
-        // Find underlying infection code (Sepsis codes)
-        // Expanded to include B37 (Candidal), A48 (Legionella), etc.
-        const infectionIndex = finalCodes.findIndex(c =>
-            c.code.startsWith('A40') ||
-            c.code.startsWith('A41') ||
-            c.code.startsWith('A39') ||
-            c.code.startsWith('A42') ||
-            c.code === 'A48.1' ||
-            c.code === 'B37.7'
-        );
-
-        if (severeSepsisIndex !== -1 && infectionIndex !== -1) {
-            // SEQUENCING RULE: Underlying infection FIRST, then Severe Sepsis (R65.2x)
-            // Move infection to primary
-            primary = finalCodes[infectionIndex];
-
-            // Construct secondary list: Severe Sepsis must be first secondary
-            const otherCodes = finalCodes.filter((_, i) => i !== severeSepsisIndex && i !== infectionIndex);
-            secondary = [finalCodes[severeSepsisIndex], ...otherCodes];
-        } else if (infectionIndex !== -1) {
-            // If sepsis is present but no severe sepsis, sepsis is primary
-            primary = finalCodes[infectionIndex];
-            secondary = finalCodes.filter((_, i) => i !== infectionIndex);
-        } else if (severeSepsisIndex !== -1) {
-            // If only severe sepsis is present (unlikely with correct logic), make it primary
-            primary = finalCodes[severeSepsisIndex];
-            secondary = finalCodes.filter((_, i) => i !== severeSepsisIndex);
-        } else {
-            // Default: first code is primary
-            primary = finalCodes[0];
-            secondary = finalCodes.slice(1);
-        }
+        primary = finalCodes[0];
+        secondary = finalCodes.slice(1);
     }
 
     return {
