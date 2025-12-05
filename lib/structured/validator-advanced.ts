@@ -305,7 +305,10 @@ export function applyComprehensiveMedicalRules(
 
     // Rule 7-8: COPD "With both" → J44.0 + J44.1 TOGETHER
     const copdType = lower.match(/copd:\s*([^\n]+)/i)?.[1]?.toLowerCase();
-    if (copdType === 'with both') {
+    const hasPneumonia = lower.includes('pneumonia: yes');
+
+    // CRITICAL FIX: When COPD has BOTH infection AND exacerbation, code BOTH J44.0 and J44.1
+    if (copdType === 'with both' || (copdType === 'with exacerbation' && hasPneumonia) || (copdType === 'with infection' && lower.includes('exacerbation'))) {
         const hasJ440 = correctedCodes.some(c => c.code === 'J44.0');
         const hasJ441 = correctedCodes.some(c => c.code === 'J44.1');
 
@@ -323,12 +326,28 @@ export function applyComprehensiveMedicalRules(
                 isPrimary: false
             });
         }
+    } else if (copdType === 'with exacerbation') {
+        if (!correctedCodes.some(c => c.code === 'J44.1')) {
+            correctedCodes.push({
+                code: 'J44.1',
+                label: 'COPD with acute exacerbation',
+                isPrimary: false
+            });
+        }
+    } else if (copdType === 'with infection') {
+        if (!correctedCodes.some(c => c.code === 'J44.0')) {
+            correctedCodes.push({
+                code: 'J44.0',
+                label: 'COPD with acute lower respiratory infection',
+                isPrimary: false
+            });
+        }
     }
 
     // Rule 9: Pneumonia organism mapping
     const pneumoniaOrg = lower.match(/pneumonia organism:\s*([^\n]+)/i)?.[1]?.toLowerCase();
-    if (lower.includes('pneumonia: yes') && pneumoniaOrg) {
-        correctedCodes = correctedCodes.filter(c => !c.code.startsWith('J15') && c.code !== 'J18.9' && c.code !== 'J12.9');
+    if (hasPneumonia && pneumoniaOrg) {
+        correctedCodes = correctedCodes.filter(c => !c.code.startsWith('J15') && c.code !== 'J18.9' && c.code !== 'J12.9' && c.code !== 'J22');
 
         let pneumoniaCode = 'J18.9';
         if (pneumoniaOrg.includes('mrsa')) pneumoniaCode = 'J15.212';
@@ -342,6 +361,10 @@ export function applyComprehensiveMedicalRules(
             label: 'Pneumonia',
             isPrimary: false
         });
+
+        // CRITICAL FIX: Remove J22 if specific organism known
+        // J22 is only for truly unspecified acute lower respiratory infection
+        correctedCodes = correctedCodes.filter(c => c.code !== 'J22');
     }
 
     // ===== D) SEPSIS =====
@@ -380,6 +403,10 @@ export function applyComprehensiveMedicalRules(
 
     // ===== E) CARDIAC + RENAL =====
 
+    // Get HF details first (needed for multiple sections)
+    const hfType = lower.match(/heart failure:\s*([^\n]+)/i)?.[1]?.toLowerCase();
+    const hfAcuity = lower.match(/heart failure acuity:\s*([^\n]+)/i)?.[1]?.toLowerCase();
+
     // Rule 14-16: HTN combinations
     const hasHTN = lower.includes('hypertension: yes');
     const hasHF = lower.includes('heart failure:') && !lower.includes('heart failure: none');
@@ -392,6 +419,34 @@ export function applyComprehensiveMedicalRules(
                 code: ckdStage === '5' || ckdStage === 'esrd' ? 'I13.2' : 'I13.10',
                 label: 'Hypertensive heart and CKD',
                 isPrimary: correctedCodes.length === 0
+            });
+        }
+
+        // CRITICAL FIX: I13.x does NOT include HF specificity - must add I50.xx
+        // Per ICD-10-CM Guidelines: Code also the type of heart failure
+        if (hfType && !correctedCodes.some(c => c.code.startsWith('I50'))) {
+            let hfCode = 'I50.9';
+            if (hfType.includes('systolic')) {
+                if (hfAcuity?.includes('acute on chronic')) hfCode = 'I50.23';
+                else if (hfAcuity?.includes('acute')) hfCode = 'I50.21';
+                else if (hfAcuity?.includes('chronic')) hfCode = 'I50.22';
+                else hfCode = 'I50.20';
+            } else if (hfType.includes('diastolic')) {
+                if (hfAcuity?.includes('acute on chronic')) hfCode = 'I50.33';
+                else if (hfAcuity?.includes('acute')) hfCode = 'I50.31';
+                else if (hfAcuity?.includes('chronic')) hfCode = 'I50.32';
+                else hfCode = 'I50.30';
+            } else if (hfType.includes('combined')) {
+                if (hfAcuity?.includes('acute on chronic')) hfCode = 'I50.43';
+                else if (hfAcuity?.includes('acute')) hfCode = 'I50.41';
+                else if (hfAcuity?.includes('chronic')) hfCode = 'I50.42';
+                else hfCode = 'I50.40';
+            }
+
+            correctedCodes.push({
+                code: hfCode,
+                label: 'Heart failure',
+                isPrimary: false
             });
         }
     } else if (hasHTN && hasHF) {
@@ -414,10 +469,7 @@ export function applyComprehensiveMedicalRules(
         }
     }
 
-    // Rule 17: Heart failure specificity
-    const hfType = lower.match(/heart failure:\s*([^\n]+)/i)?.[1]?.toLowerCase();
-    const hfAcuity = lower.match(/heart failure acuity:\s*([^\n]+)/i)?.[1]?.toLowerCase();
-
+    // Rule 17: Heart failure specificity (for standalone HF without HTN)
     if (hfType && !hasHTN) {
         let hfCode = 'I50.9';
         if (hfType.includes('systolic')) {
