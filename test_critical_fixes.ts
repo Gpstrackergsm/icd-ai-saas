@@ -2,7 +2,7 @@ import { parseInput } from './lib/structured/parser';
 import { runStructuredRules } from './lib/structured/engine';
 import { validateCodeSet } from './lib/structured/validator-post';
 import { validateFinalOutput } from './lib/structured/validator-enhanced';
-import { applyComprehensiveCodingRules } from './lib/structured/validator-advanced';
+import { applyComprehensiveMedicalRules } from './lib/structured/validator-advanced';
 import * as fs from 'fs';
 
 // Test cases targeting all 10 critical fixes
@@ -125,35 +125,35 @@ for (const testCase of cases) {
         const enhanced = validateFinalOutput(validated.codes, testCase.input);
 
         // Apply comprehensive rules with error reporting
-        const finalResult = applyComprehensiveCodingRules(enhanced.codes, testCase.input);
+        const finalResult = applyComprehensiveMedicalRules(enhanced.codes, testCase.input);
 
         console.log('  RESULT:');
         if (finalResult.codes.length === 0) {
             console.log('    ❌ NO CODES GENERATED');
             if (finalResult.errors.length > 0) {
                 console.log('    ERRORS:');
-                finalResult.errors.forEach(e => console.log(`      - ${e}`));
+                finalResult.errors.forEach((e: string) => console.log(`      - ${e}`));
             }
         } else {
-            finalResult.codes.forEach((code, idx) => {
+            finalResult.codes.forEach((code: any, idx: number) => {
                 const status = idx === 0 ? '[PRIMARY]  ' : '[SECONDARY]';
                 console.log(`    ✅ ${status} ${code.code} - ${code.label}`);
             });
 
             if (finalResult.warnings.length > 0) {
                 console.log('    WARNINGS:');
-                finalResult.warnings.forEach(w => console.log(`      ⚠ ${w}`));
+                finalResult.warnings.forEach((w: string) => console.log(`      ⚠ ${w}`));
             }
         }
 
         // Build corrected results
         correctedResults += `CASE ${testCase.id}:\n`;
-        inputLines.forEach(line => correctedResults += `  ${line}\n`);
+        inputLines.forEach((line: string) => correctedResults += `  ${line}\n`);
         correctedResults += '\nICD_CODES:\n';
         if (finalResult.codes.length === 0) {
             correctedResults += '  NO CODABLE DIAGNOSIS\n';
         } else {
-            correctedResults += `  ${finalResult.codes.map(c => c.code).join(', ')}\n`;
+            correctedResults += `  ${finalResult.codes.map((c: any) => c.code).join(', ')}\n`;
         }
         correctedResults += '\n';
 
@@ -162,11 +162,11 @@ for (const testCase of cases) {
             errorLog += `CASE ${testCase.id}:\n`;
             if (finalResult.errors.length > 0) {
                 errorLog += '  ERRORS:\n';
-                finalResult.errors.forEach(e => errorLog += `    - ${e}\n`);
+                finalResult.errors.forEach((e: string) => errorLog += `    - ${e}\n`);
             }
             if (finalResult.warnings.length > 0) {
                 errorLog += '  WARNINGS:\n';
-                finalResult.warnings.forEach(w => errorLog += `    - ${w}\n`);
+                finalResult.warnings.forEach((w: string) => errorLog += `    - ${w}\n`);
             }
             errorLog += '\n';
         }
@@ -174,7 +174,7 @@ for (const testCase of cases) {
         results.push({
             caseId: testCase.id,
             success: finalResult.codes.length > 0,
-            codes: finalResult.codes.map(c => c.code),
+            codes: finalResult.codes.map((c: any) => c.code),
             errors: finalResult.errors,
             warnings: finalResult.warnings
         });
