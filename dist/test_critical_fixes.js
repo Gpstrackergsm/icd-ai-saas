@@ -111,8 +111,7 @@ Type: Primary
 `;
 function parseCases(fileContent) {
     const cases = [];
-    const lines = fileContent.split, global;
-    ('\n');
+    const lines = fileContent.split('\n');
     let currentCase = null;
     for (const line of lines) {
         if (line.trim().startsWith('CASE ')) {
