@@ -726,6 +726,11 @@ export function parseInput(text: string): ParseResult {
                 break;
 
             // Cardiovascular
+            case 'secondary hypertension':
+                if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
+                context.conditions.cardiovascular.hypertension = true;
+                context.conditions.cardiovascular.secondaryHypertension = parseBoolean(value);
+                break;
             case 'hypertension':
                 if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
                 context.conditions.cardiovascular.hypertension = parseBoolean(value);
@@ -854,6 +859,7 @@ export function parseInput(text: string): ParseResult {
                     };
                 }
                 break;
+            case 'resp failure':
             case 'respiratory failure':
                 if (!context.conditions.respiratory) context.conditions.respiratory = {};
                 const isRespFailureNone = lowerValue === 'no' || lowerValue === 'none' || lowerValue === 'false';
@@ -910,6 +916,7 @@ export function parseInput(text: string): ParseResult {
                 if (!context.conditions.infection) context.conditions.infection = { present: false };
                 context.conditions.infection.present = parseBoolean(value);
                 break;
+            case 'site':
             case 'infection site':
                 if (!context.conditions.infection) context.conditions.infection = { present: true };
                 if (lowerValue.includes('lung') || lowerValue.includes('pneumonia')) context.conditions.infection.site = 'lung';

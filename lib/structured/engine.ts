@@ -318,15 +318,8 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 rule: 'HTN combination code logic'
             });
 
-            // Add I50.9 heart failure code
-            codes.push({
-                code: 'I50.9',
-                label: 'Heart failure, unspecified',
-                rationale: 'Heart failure documented',
-                guideline: 'ICD-10-CM I.C.9.a.1',
-                trigger: 'Heart Failure',
-                rule: 'Heart failure code'
-            });
+            // NOTE: Specific heart failure code will be added by the heart failure rule below
+            // Do NOT add I50.9 here to avoid duplicate codes
         }
         // RULE: HTN + Heart Disease (WITHOUT HF) → I11.9
         else if (c.hypertension && c.heartDisease && !hasHF) {
@@ -339,18 +332,28 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 rule: 'HTN heart disease code'
             });
         }
-        // RULE: HTN only → I10 (UNLESS patient is pregnant/postpartum - then use O10-O16)
+        // RULE: HTN only → I10 or I15.x (UNLESS patient is pregnant/postpartum - then use O10-O16)
         else if (c.hypertension) {
             // Check if patient is pregnant OR postpartum - if so, skip I10 (will be handled in OB/GYN section)
             const isPregnantOrPostpartum = !!(ctx.conditions.obstetric?.pregnant || ctx.conditions.obstetric?.postpartum);
             if (!isPregnantOrPostpartum) {
+                // Check for secondary hypertension
+                const isSecondary = c.secondaryHypertension;
+                const code = isSecondary ? 'I15.9' : 'I10';
+                const label = isSecondary
+                    ? 'Secondary hypertension, unspecified'
+                    : 'Essential (primary) hypertension';
+                const rationale = isSecondary
+                    ? 'Secondary hypertension documented'
+                    : 'Uncomplicated hypertension';
+
                 codes.push({
-                    code: 'I10',
-                    label: 'Essential (primary) hypertension',
-                    rationale: 'Uncomplicated hypertension',
+                    code,
+                    label,
+                    rationale,
                     guideline: 'ICD-10-CM I.C.9.a',
-                    trigger: 'Hypertension documented',
-                    rule: 'Uncomplicated hypertension'
+                    trigger: isSecondary ? 'Secondary Hypertension = Yes' : 'Hypertension documented',
+                    rule: isSecondary ? 'Secondary hypertension' : 'Uncomplicated hypertension'
                 });
             }
         }
@@ -453,19 +456,18 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             rule: 'COVID-19 pneumonia manifestation'
         });
     }
-    // Regular pneumonia
+    // --- PNEUMONIA RULES (DETERMINISTIC) ---
     else if (ctx.conditions.respiratory?.pneumonia) {
-        const r = ctx.conditions.respiratory;
-        const p = r.pneumonia!;
+        const p = ctx.conditions.respiratory.pneumonia;
 
-        // Aspiration pneumonia takes precedence
+        // Aspiration pneumonia
         if (p.type === 'aspiration') {
             codes.push({
                 code: 'J69.0',
                 label: 'Pneumonitis due to inhalation of food and vomit',
-                rationale: 'Aspiration pneumonia/pneumonitis documented',
-                guideline: 'ICD-10-CM I.C.10.d',
-                trigger: 'Aspiration pneumonia',
+                rationale: 'Aspiration pneumonia documented',
+                guideline: 'ICD-10-CM I.C.10',
+                trigger: 'Aspiration Pneumonia',
                 rule: 'Aspiration pneumonia code'
             });
         } else {
@@ -481,16 +483,17 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 });
             }
 
-            // Organism-specific code
-            const pCode = mapPneumoniaOrganism(p.organism);
-            const pLabel = getPneumoniaLabel(pCode, p.organism);
+            // Organism-specific code - check both pneumonia.organism and infection.organism
+            const organism = p.organism || ctx.conditions.infection?.organism;
+            const pCode = mapPneumoniaOrganism(organism);
+            const pLabel = getPneumoniaLabel(pCode, organism);
 
             codes.push({
                 code: pCode,
                 label: pLabel,
-                rationale: `Pneumonia${p.organism ? ' due to ' + p.organism.replace(/_/g, ' ') : ', unspecified organism'}`,
+                rationale: `Pneumonia${organism ? ' due to ' + organism.replace(/_/g, ' ') : ', unspecified organism'}`,
                 guideline: 'ICD-10-CM I.C.10.d',
-                trigger: 'Pneumonia + ' + (p.organism || 'unspecified organism'),
+                trigger: 'Pneumonia + ' + (organism || 'unspecified organism'),
                 rule: 'Organism-specific pneumonia code'
             });
         }
@@ -1526,24 +1529,36 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
     if (hasSepsis || hasR6520or21) {
         // Check if source infection codes are present
-        const hasPneumonia = finalCodes.some(c => c.code.startsWith('J15') || c.code.startsWith('J18'));
+        const hasPneumonia = finalCodes.some(c => c.code.startsWith('J15') || c.code.startsWith('J18') || c.code.startsWith('J12'));
         const hasUTI = finalCodes.some(c => c.code === 'N39.0');
         const hasCellulitis = finalCodes.some(c => c.code.startsWith('L03'));
 
-        // If infection context has source but no corresponding code, add it
-        if (ctx.conditions.infection?.source) {
-            const source = ctx.conditions.infection.source.toLowerCase();
+        // Check both source field and site field for infection source
+        const source = ctx.conditions.infection?.source?.toLowerCase() || '';
+        const site = ctx.conditions.infection?.site?.toLowerCase() || '';
 
-            if ((source.includes('uti') || source.includes('urinary')) && !hasUTI) {
-                finalCodes.push({
-                    code: 'N39.0',
-                    label: 'Urinary tract infection, site not specified',
-                    rationale: 'UTI documented as source of sepsis',
-                    guideline: 'ICD-10-CM N39.0',
-                    trigger: `Source: ${ctx.conditions.infection.source}`,
-                    rule: 'Sepsis source infection'
-                });
-            }
+        // Add UTI code if urinary site is documented
+        if ((source.includes('uti') || source.includes('urinary') || site === 'urinary') && !hasUTI) {
+            finalCodes.push({
+                code: 'N39.0',
+                label: 'Urinary tract infection, site not specified',
+                rationale: 'UTI documented as source of sepsis',
+                guideline: 'ICD-10-CM N39.0',
+                trigger: `Infection Site: ${site || source}`,
+                rule: 'Sepsis source infection'
+            });
+        }
+
+        // Add cellulitis code if skin site is documented
+        if (site === 'skin' && !hasCellulitis) {
+            finalCodes.push({
+                code: 'L03.317',
+                label: 'Cellulitis of buttock',
+                rationale: 'Skin infection documented as  source of sepsis',
+                guideline: 'ICD-10-CM L03',
+                trigger: `Infection Site: skin`,
+                rule: 'Sepsis source infection (skin/cellulitis)'
+            });
         }
     }
 
@@ -1711,7 +1726,7 @@ function mapHeartFailureCode(type: string, acuity: string): string {
 function mapPneumoniaOrganism(organism?: string): string {
     if (!organism) return 'J18.9'; // Unspecified
 
-    switch (organism) {
+    switch (organism.toLowerCase()) {
         case 'strep_pneumoniae':
             return 'J13'; // Streptococcus pneumoniae
         case 'strep': // Other streptococci
@@ -1789,12 +1804,13 @@ function mapPressureUlcer(location: string, stage: string): string {
     else base += '9'; // Other site
 
     // Stage mapping
-    if (stage === 'stage1') return base + '1';
-    else if (stage === 'stage2') return base + '2';
-    else if (stage === 'stage3') return base + '3';
-    else if (stage === 'stage4') return base + '4';
-    else if (stage === 'unstageable') return base + '0';
-    else if (stage === 'deep_tissue') return base + '6';
+    const lowerStage = stage.toLowerCase();
+    if (lowerStage === 'stage1' || lowerStage === 'stage 1') return base + '1';
+    else if (lowerStage === 'stage2' || lowerStage === 'stage 2') return base + '2';
+    else if (lowerStage === 'stage3' || lowerStage === 'stage 3') return base + '3';
+    else if (lowerStage === 'stage4' || lowerStage === 'stage 4' || lowerStage.includes('bone')) return base + '4';
+    else if (lowerStage === 'unstageable') return base + '0';
+    else if (lowerStage === 'deep_tissue') return base + '6';
     else return base + '9'; // Unspecified
 }
 
