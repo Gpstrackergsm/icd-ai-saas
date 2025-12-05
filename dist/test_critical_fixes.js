@@ -151,13 +151,13 @@ for (const testCase of cases) {
         const validated = (0, validator_post_1.validateCodeSet)(engineResult.primary, engineResult.secondary, context);
         const enhanced = (0, validator_enhanced_1.validateFinalOutput)(validated.codes, testCase.input);
         // Apply comprehensive rules with error reporting
-        const finalResult = (0, validator_advanced_1.applyComprehensiveCodingRules)(enhanced.codes, testCase.input);
+        const finalResult = (0, validator_advanced_1.applyComprehensiveMedicalRules)(enhanced.codes, testCase.input);
         console.log('  RESULT:');
         if (finalResult.codes.length === 0) {
             console.log('    ❌ NO CODES GENERATED');
             if (finalResult.errors.length > 0) {
                 console.log('    ERRORS:');
-                finalResult.errors.forEach(e => console.log(`      - ${e}`));
+                finalResult.errors.forEach((e) => console.log(`      - ${e}`));
             }
         }
         else {
@@ -167,18 +167,18 @@ for (const testCase of cases) {
             });
             if (finalResult.warnings.length > 0) {
                 console.log('    WARNINGS:');
-                finalResult.warnings.forEach(w => console.log(`      ⚠ ${w}`));
+                finalResult.warnings.forEach((w) => console.log(`      ⚠ ${w}`));
             }
         }
         // Build corrected results
         correctedResults += `CASE ${testCase.id}:\n`;
-        inputLines.forEach(line => correctedResults += `  ${line}\n`);
+        inputLines.forEach((line) => correctedResults += `  ${line}\n`);
         correctedResults += '\nICD_CODES:\n';
         if (finalResult.codes.length === 0) {
             correctedResults += '  NO CODABLE DIAGNOSIS\n';
         }
         else {
-            correctedResults += `  ${finalResult.codes.map(c => c.code).join(', ')}\n`;
+            correctedResults += `  ${finalResult.codes.map((c) => c.code).join(', ')}\n`;
         }
         correctedResults += '\n';
         // Build error log
@@ -186,18 +186,18 @@ for (const testCase of cases) {
             errorLog += `CASE ${testCase.id}:\n`;
             if (finalResult.errors.length > 0) {
                 errorLog += '  ERRORS:\n';
-                finalResult.errors.forEach(e => errorLog += `    - ${e}\n`);
+                finalResult.errors.forEach((e) => errorLog += `    - ${e}\n`);
             }
             if (finalResult.warnings.length > 0) {
                 errorLog += '  WARNINGS:\n';
-                finalResult.warnings.forEach(w => errorLog += `    - ${w}\n`);
+                finalResult.warnings.forEach((w) => errorLog += `    - ${w}\n`);
             }
             errorLog += '\n';
         }
         results.push({
             caseId: testCase.id,
             success: finalResult.codes.length > 0,
-            codes: finalResult.codes.map(c => c.code),
+            codes: finalResult.codes.map((c) => c.code),
             errors: finalResult.errors,
             warnings: finalResult.warnings
         });

@@ -44,10 +44,13 @@ function parseAuditFile(content) {
     const cases = [];
     const lines = content.split('\n');
     let currentCase = null;
+    let inCodes = false;
     for (let i = 0; i < lines.length; i++) {
         const line = lines[i];
         if (line.startsWith('CASE ')) {
-            if (currentCase) {
+            if (currentCase && currentCase.inputLines) {
+                currentCase.input = currentCase.inputLines.join('\n');
+                delete currentCase.inputLines;
                 cases.push(currentCase);
             }
             currentCase = {
@@ -55,25 +58,33 @@ function parseAuditFile(content) {
                 inputLines: [],
                 originalCodes: []
             };
+            inCodes = false;
         }
-        else if (currentCase && line.startsWith('ICD_CODES:')) {
-            const codesLine = line.replace('ICD_CODES:', '').trim();
-            if (codesLine && codesLine !== 'NO CODES' && codesLine !== 'NO CODABLE DIAGNOSIS') {
-                currentCase.originalCodes = codesLine.split(',').map(c => c.trim());
+        else if (currentCase) {
+            if (line.startsWith('ICD_CODES:')) {
+                inCodes = true;
+            }
+            else if (inCodes && line.trim()) {
+                // Parse codes from the indented line
+                const codesStr = line.trim();
+                if (codesStr && codesStr !== 'NO CODES' && codesStr !== 'NO CODABLE DIAGNOSIS') {
+                    currentCase.originalCodes = codesStr.split(',').map((c) => c.trim());
+                }
+                inCodes = false;
+            }
+            else if (!inCodes && line.trim() && !line.startsWith('ICD_CODES:')) {
+                currentCase.inputLines.push(line.trim());
             }
         }
-        else if (currentCase && line.trim() && !line.startsWith('ICD_CODES')) {
-            currentCase.inputLines.push(line.trim());
-        }
     }
-    if (currentCase) {
+    if (currentCase && currentCase.inputLines) {
         currentCase.input = currentCase.inputLines.join('\n');
         delete currentCase.inputLines;
         cases.push(currentCase);
     }
-    return cases;
+    return cases.filter(c => c.input);
 }
-const auditFile = fs.readFileSync(process.env.HOME + '/Desktop/icd_results_2025-12-05.txt', 'utf-8');
+const auditFile = fs.readFileSync('./data/structured_cases.txt', 'utf-8');
 const cases = parseAuditFile(auditFile);
 console.log('='.repeat(80));
 console.log('COMPREHENSIVE MEDICAL CODING AUDIT - 30 RULES ENFORCEMENT');
