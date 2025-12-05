@@ -1083,6 +1083,8 @@ function parseInput(text) {
                     context.conditions.infection.organism = 'bacteroides';
                 else if (lowerValue.includes('enterobacter'))
                     context.conditions.infection.organism = 'enterobacter';
+                else if (lowerValue.includes('viral') || lowerValue.includes('virus'))
+                    context.conditions.infection.organism = 'viral';
                 else
                     context.conditions.infection.organism = 'unspecified';
                 break;

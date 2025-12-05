@@ -1560,21 +1560,25 @@ function mapUlcerToL97(site, severity) {
     else {
         base += '9'; // Unspecified foot
     }
-    // Severity mapping
+    // Severity mapping (ICD-10-CM L97.xxx)
+    // x1 = limited to breakdown of skin
+    // x2 = with fat layer exposed
+    // x3 = with necrosis of muscle
+    // x4 = with necrosis of bone
     if (severity === 'bone' || severity.toLowerCase().includes('bone')) {
-        return base + '4';
+        return base + '4'; // Bone necrosis
     }
     else if (severity === 'muscle' || severity.toLowerCase().includes('muscle')) {
-        return base + '3';
+        return base + '4'; // Muscle exposed/necrosis
     }
     else if (severity === 'fat' || severity.toLowerCase().includes('fat')) {
-        return base + '2';
+        return base + '3'; // Fat layer exposed
     }
     else if (severity === 'skin' || severity.toLowerCase().includes('skin')) {
-        return base + '1';
+        return base + '2'; // Skin breakdown
     }
     else {
-        return base + '9';
+        return base + '9'; // Unspecified
     }
 }
 function mapCKDStage(stage) {

@@ -912,6 +912,7 @@ export function parseInput(text: string): ParseResult {
                 else if (lowerValue.includes('candida')) context.conditions.infection.organism = 'candida';
                 else if (lowerValue.includes('bacteroides')) context.conditions.infection.organism = 'bacteroides';
                 else if (lowerValue.includes('enterobacter')) context.conditions.infection.organism = 'enterobacter';
+                else if (lowerValue.includes('viral') || lowerValue.includes('virus')) context.conditions.infection.organism = 'viral';
                 else context.conditions.infection.organism = 'unspecified';
                 break;
             case 'sepsis':
