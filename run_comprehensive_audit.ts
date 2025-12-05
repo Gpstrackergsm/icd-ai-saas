@@ -53,7 +53,7 @@ function parseAuditFile(content: string): Array<{ caseId: number, input: string,
     return cases.filter(c => c.input);
 }
 
-const auditFile = fs.readFileSync(process.env.HOME + '/Desktop/icd_results_2025-12-05.txt', 'utf-8');
+const auditFile = fs.readFileSync('./data/structured_cases.txt', 'utf-8');
 const cases = parseAuditFile(auditFile);
 
 console.log('='.repeat(80));

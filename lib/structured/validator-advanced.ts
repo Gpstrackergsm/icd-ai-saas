@@ -311,7 +311,230 @@ export function applyComprehensiveMedicalRules(
         });
     }
 
-    // Rule 27: NO CODABLE DIAGNOSIS blocker
+    // ===== F) DIABETES DETAILING (Rules 19-22) =====
+
+    const hasDiabetes = lower.includes('diabetes type:');
+    const dmComplications = lower.match(/complications:\s*([^\n]+)/i)?.[1]?.toLowerCase();
+    const dmType = lower.includes('diabetes type: type 1') || lower.includes('type 1') ? 'E10' : 'E11';
+
+    if (hasDiabetes && dmComplications) {
+        // Rule 20: Neuropathy specificity
+        if (dmComplications.includes('neuropathy') && !dmComplications.includes('foot ulcer')) {
+            const isPolyneuropathy = lower.includes('polyneuropathy');
+            const neuropathyCode = isPolyneuropathy ? `${dmType}.42` : `${dmType}.40`;
+
+            if (!correctedCodes.some(c => c.code === neuropathyCode)) {
+                correctedCodes = correctedCodes.filter(c => !c.code.match(/E1[01]\.4[02]/));
+                correctedCodes.push({
+                    code: neuropathyCode,
+                    label: isPolyneuropathy ? 'Diabetes with polyneuropathy' : 'Diabetes with neuropathy',
+                    isPrimary: correctedCodes.length === 0
+                });
+            }
+        }
+
+        // Rule 21: Hypoglycemia
+        if (dmComplications.includes('hypoglycemia')) {
+            const hypoglycemiaCode = `${dmType}.649`;
+            if (!correctedCodes.some(c => c.code === hypoglycemiaCode)) {
+                correctedCodes.push({
+                    code: hypoglycemiaCode,
+                    label: 'Diabetes with hypoglycemia',
+                    isPrimary: correctedCodes.length === 0
+                });
+            }
+        }
+
+        // Rule 22: Ketoacidosis
+        if (dmComplications.includes('ketoacidosis')) {
+            const ketoacidosisCode = `${dmType}.10`;
+            if (!correctedCodes.some(c => c.code === ketoacidosisCode)) {
+                correctedCodes.push({
+                    code: ketoacidosisCode,
+                    label: 'Diabetes with ketoacidosis',
+                    isPrimary: correctedCodes.length === 0
+                });
+            }
+        }
+    }
+
+    // ===== G) MALIGNANCY (Rules 23-26) =====
+
+    const hasCancer = lower.includes('cancer present: yes') || lower.includes('active tx: yes');
+    const cancerSite = lower.match(/site:\s*([^\n]+)/i)?.[1]?.toLowerCase();
+    const hasMetastasis = lower.includes('metastasis: yes');
+    const metastaticSite = lower.match(/metastatic site:\s*([^\n]+)/i)?.[1]?.toLowerCase();
+    const isHistory = lower.includes('history of cancer');
+
+    // Rule 24: Forbid Z85 unless "History of" explicit
+    if (!isHistory) {
+        correctedCodes = correctedCodes.filter(c => !c.code.startsWith('Z85'));
+    }
+
+    if (hasCancer && !isHistory) {
+        // Rule 23: Site-specific C-code
+        if (cancerSite) {
+            let cancerCode = 'C80.1'; // Default
+            let cancerLabel = 'Malignant neoplasm, unspecified';
+
+            if (cancerSite.includes('lung')) {
+                cancerCode = 'C34.90';
+                cancerLabel = 'Malignant neoplasm of lung';
+            } else if (cancerSite.includes('breast')) {
+                cancerCode = 'C50.919';
+                cancerLabel = 'Malignant neoplasm of breast';
+            } else if (cancerSite.includes('colon')) {
+                cancerCode = 'C18.9';
+                cancerLabel = 'Malignant neoplasm of colon';
+            } else if (cancerSite.includes('prostate')) {
+                cancerCode = 'C61';
+                cancerLabel = 'Malignant neoplasm of prostate';
+            } else if (cancerSite.includes('pancreas')) {
+                cancerCode = 'C25.9';
+                cancerLabel = 'Malignant neoplasm of pancreas';
+            } else if (cancerSite.includes('liver')) {
+                cancerCode = 'C22.9';
+                cancerLabel = 'Malignant neoplasm of liver';
+            }
+
+            if (!correctedCodes.some(c => c.code.startsWith('C') && c.code !== 'C80.1')) {
+                correctedCodes = correctedCodes.filter(c => !c.code.startsWith('C'));
+                correctedCodes.push({
+                    code: cancerCode,
+                    label: cancerLabel,
+                    isPrimary: correctedCodes.length === 0
+                });
+            }
+        } else {
+            // Rule 26: C80.1 only if site truly unknown
+            if (!correctedCodes.some(c => c.code.startsWith('C'))) {
+                correctedCodes.push({
+                    code: 'C80.1',
+                    label: 'Malignant neoplasm, unspecified',
+                    isPrimary: correctedCodes.length === 0
+                });
+            }
+        }
+
+        // Rule 24: Metastasis → C77-C79
+        if (hasMetastasis && metastaticSite) {
+            let metastasisCode = 'C79.9';
+            let metastasisLabel = 'Secondary malignant neoplasm';
+
+            if (metastaticSite.includes('bone')) {
+                metastasisCode = 'C79.51';
+                metastasisLabel = 'Secondary malignant neoplasm of bone';
+            } else if (metastaticSite.includes('brain')) {
+                metastasisCode = 'C79.31';
+                metastasisLabel = 'Secondary malignant neoplasm of brain';
+            } else if (metastaticSite.includes('liver')) {
+                metastasisCode = 'C78.7';
+                metastasisLabel = 'Secondary malignant neoplasm of liver';
+            } else if (metastaticSite.includes('lung')) {
+                metastasisCode = 'C78.00';
+                metastasisLabel = 'Secondary malignant neoplasm of lung';
+            }
+
+            if (!correctedCodes.some(c => c.code.startsWith('C7'))) {
+                correctedCodes.push({
+                    code: metastasisCode,
+                    label: metastasisLabel,
+                    isPrimary: false
+                });
+            }
+        }
+    }
+
+    // ===== H) INFECTION SOURCE CODES (Rule 13 Enhancement) =====
+
+    if (lower.includes('sepsis: yes') || lower.includes('sepsis:yes')) {
+        const infectionSite = lower.match(/infection site:\s*([^\n]+)/i)?.[1]?.toLowerCase();
+
+        if (infectionSite) {
+            // Rule 14: Add infection source as secondary
+            if (infectionSite.includes('urinary') || infectionSite.includes('uti')) {
+                if (!correctedCodes.some(c => c.code === 'N39.0')) {
+                    correctedCodes.push({
+                        code: 'N39.0',
+                        label: 'Urinary tract infection, site not specified',
+                        isPrimary: false
+                    });
+                }
+            } else if (infectionSite.includes('skin')) {
+                if (!correctedCodes.some(c => c.code.startsWith('L03'))) {
+                    correctedCodes.push({
+                        code: 'L03.90',
+                        label: 'Cellulitis, unspecified',
+                        isPrimary: false
+                    });
+                }
+            } else if (infectionSite.includes('blood') && !correctedCodes.some(c => c.code.startsWith('A41'))) {
+                // Blood infection is already handled by sepsis code
+            }
+            // Lung infections are handled by pneumonia rules above
+        }
+    }
+
+    // Handle standalone infections WITHOUT sepsis
+    const hasInfection = lower.includes('infection present: yes');
+    const hasSepsis = lower.includes('sepsis: yes') || lower.includes('sepsis:yes');
+
+    if (hasInfection && !hasSepsis) {
+        const infectionSite = lower.match(/infection site:\s*([^\n]+)/i)?.[1]?.toLowerCase();
+        const organism = lower.match(/organism:\s*([^\n]+)/i)?.[1]?.toLowerCase();
+
+        if (infectionSite) {
+            // Skin infection → Cellulitis
+            if (infectionSite.includes('skin')) {
+                if (!correctedCodes.some(c => c.code.startsWith('L03'))) {
+                    correctedCodes.push({
+                        code: 'L03.90',
+                        label: 'Cellulitis, unspecified',
+                        isPrimary: correctedCodes.length === 0
+                    });
+                }
+            }
+            // Lung infection → Pneumonia
+            else if (infectionSite.includes('lung')) {
+                if (!correctedCodes.some(c => c.code.startsWith('J'))) {
+                    let pneumoniaCode = 'J18.9';
+                    if (organism?.includes('mrsa')) pneumoniaCode = 'J15.212';
+                    else if (organism?.includes('pseudomonas')) pneumoniaCode = 'J15.1';
+                    else if (organism?.includes('e. coli') || organism?.includes('e.coli')) pneumoniaCode = 'J15.5';
+                    else if (organism?.includes('viral')) pneumoniaCode = 'J12.9';
+
+                    correctedCodes.push({
+                        code: pneumoniaCode,
+                        label: 'Pneumonia',
+                        isPrimary: correctedCodes.length === 0
+                    });
+                }
+            }
+            // Urinary tract infection
+            else if (infectionSite.includes('urinary')) {
+                if (!correctedCodes.some(c => c.code === 'N39.0')) {
+                    correctedCodes.push({
+                        code: 'N39.0',
+                        label: 'Urinary tract infection, site not specified',
+                        isPrimary: correctedCodes.length === 0
+                    });
+                }
+            }
+            // Blood infection without sepsis → Bacteremia
+            else if (infectionSite.includes('blood')) {
+                if (!correctedCodes.some(c => c.code === 'R78.81')) {
+                    correctedCodes.push({
+                        code: 'R78.81',
+                        label: 'Bacteremia',
+                        isPrimary: correctedCodes.length === 0
+                    });
+                }
+            }
+        }
+    }
+
+    // ===== I) FAIL-SAFE (Rules 29-30) =====
+
     const hasAnyDiagnosis = hasUlcerWound || lower.includes('sepsis') ||
         lower.includes('pneumonia') || lower.includes('cancer') ||
         lower.includes('diabetes') || hasHTN || hasCKD;
