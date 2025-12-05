@@ -164,6 +164,36 @@
         <div id="encodeResults" class="results"></div>
       </div>
     </div>
+
+    <!-- Batch Upload Section -->
+    <div class="panel" style="margin-top: 32px;">
+      <h2 style="font-size: 20px; margin-top: 0; margin-bottom: 16px;">Batch File Upload</h2>
+      <p style="color: #64748b; font-size: 14px; margin-bottom: 16px;">
+        Upload a .txt file containing multiple structured cases for batch processing.
+      </p>
+
+      <div style="margin-bottom: 16px;">
+        <label for="batchFile" style="display: block; margin-bottom: 8px;">Choose File:</label>
+        <input type="file" id="batchFile" accept=".txt"
+          style="padding: 8px; border: 1px solid #cbd5e1; border-radius: 8px; width: 100%; max-width: 400px;">
+      </div>
+
+      <div class="actions">
+        <button id="processBatchBtn" disabled>Upload & Process</button>
+        <button id="downloadResultsBtn" class="secondary" disabled style="display: none;">Download Results</button>
+        <button id="clearBatchBtn" class="secondary">Clear</button>
+      </div>
+
+      <div id="batchStatus" class="status"></div>
+      <div id="batchProgress" style="display: none; margin-top: 12px;">
+        <div style="background: #e2e8f0; border-radius: 8px; height: 24px; overflow: hidden;">
+          <div id="progressBar" style="background: #22c55e; height: 100%; width: 0%; transition: width 0.3s ease;">
+          </div>
+        </div>
+        <div id="progressText" style="margin-top: 8px; color: #64748b; font-size: 14px;"></div>
+      </div>
+    </div>
+  </div>
   </div>
 
   <script>
@@ -861,6 +891,128 @@
 
     encodeBtn.addEventListener('click', performEncode);
     copyEncodeBtn.addEventListener('click', copyEncodedCodes);
+
+    // --- BATCH UPLOAD LOGIC ---
+    const batchFileInput = document.getElementById('batchFile');
+    const processBatchBtn = document.getElementById('processBatchBtn');
+    const downloadResultsBtn = document.getElementById('downloadResultsBtn');
+    const clearBatchBtn = document.getElementById('clearBatchBtn');
+    const batchStatus = document.getElementById('batchStatus');
+    const batchProgress = document.getElementById('batchProgress');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+
+    let batchResults = null;
+
+    // Enable process button when file is selected
+    batchFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file && file.name.endsWith('.txt')) {
+        processBatchBtn.disabled = false;
+        batchStatus.textContent = `Selected: ${file.name}`;
+      } else if (file) {
+        batchStatus.textContent = 'Please select a .txt file';
+        processBatchBtn.disabled = true;
+      }
+    });
+
+    // Process batch file
+    processBatchBtn.addEventListener('click', async () => {
+      const file = batchFileInput.files[0];
+      if (!file) {
+        batchStatus.textContent = 'Please select a file first';
+        return;
+      }
+
+      try {
+        processBatchBtn.disabled = true;
+        batchStatus.textContent = 'Reading file...';
+        batchProgress.style.display = 'block';
+        progressBar.style.width = '10%';
+        progressText.textContent = 'Reading file...';
+
+        // Read file content
+        const fileContent = await file.text();
+
+        progressBar.style.width = '30%';
+        progressText.textContent = 'Sending to server...';
+        batchStatus.textContent = 'Processing cases...';
+
+        const token = localStorage.getItem('token');
+        const response = await fetch('/api/batch-encode', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ fileContent })
+        });
+
+        progressBar.style.width = '70%';
+
+        if (!response.ok) {
+          throw new Error('Processing failed');
+        }
+
+        const data = await response.json();
+
+        progressBar.style.width = '100%';
+        progressText.textContent = 'Complete!';
+
+        if (data.success) {
+          batchResults = data.output;
+          batchStatus.textContent = `✓ Processed ${data.totalCases} cases (${data.processedCases} successful, ${data.failedCases} failed)`;
+          batchStatus.style.color = '#22c55e';
+          downloadResultsBtn.style.display = 'inline-block';
+          downloadResultsBtn.disabled = false;
+
+          setTimeout(() => {
+            batchProgress.style.display = 'none';
+            progressBar.style.width = '0%';
+          }, 2000);
+        } else {
+          throw new Error(data.error || 'Processing failed');
+        }
+
+      } catch (error) {
+        batchStatus.textContent = `Error: ${error.message}`;
+        batchStatus.style.color = '#ef4444';
+        batchProgress.style.display = 'none';
+        progressBar.style.width = '0%';
+      } finally {
+        processBatchBtn.disabled = false;
+      }
+    });
+
+    // Download results
+    downloadResultsBtn.addEventListener('click', () => {
+      if (!batchResults) return;
+
+      const blob = new Blob([batchResults], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `icd_results_${new Date().toISOString().slice(0, 10)}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      batchStatus.textContent = '✓ Results downloaded!';
+    });
+
+    // Clear batch
+    clearBatchBtn.addEventListener('click', () => {
+      batchFileInput.value = '';
+      processBatchBtn.disabled = true;
+      downloadResultsBtn.style.display = 'none';
+      downloadResultsBtn.disabled = true;
+      batchStatus.textContent = '';
+      batchStatus.style.color = '#475569';
+      batchProgress.style.display = 'none';
+      progressBar.style.width = '0%';
+      batchResults = null;
+    });
   </script>
 </body>
 
