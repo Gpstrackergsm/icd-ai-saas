@@ -1678,12 +1678,13 @@ function mapUlcerToL97(site: string, severity: string): string {
 }
 
 function mapCKDStage(stage: number | string): string {
-    if (stage === 'esrd' || stage === 6) return 'N18.6';
-    if (stage === 5) return 'N18.5';
-    if (stage === 4) return 'N18.4';
-    if (stage === 3) return 'N18.30'; // Unspecified stage 3
-    if (stage === 2) return 'N18.2';
-    if (stage === 1) return 'N18.1';
+    const stageStr = String(stage);
+    if (stageStr === 'esrd' || stage === 6) return 'N18.6';
+    if (stageStr === '5' || stage === 5) return 'N18.5';
+    if (stageStr === '4' || stage === 4) return 'N18.4';
+    if (stageStr === '3' || stage === 3) return 'N18.30'; // Unspecified stage 3
+    if (stageStr === '2' || stage === 2) return 'N18.2';
+    if (stageStr === '1' || stage === 1) return 'N18.1';
     return 'N18.9';
 }
 

@@ -734,7 +734,8 @@ export function parseInput(text: string): ParseResult {
             case 'hf':
             case 'chf':
                 if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
-                if (parseBoolean(value) || value.toLowerCase() !== 'no') {
+                const isNone = lowerValue === 'no' || lowerValue === 'none' || lowerValue === 'false';
+                if (!isNone) {
                     // Parse type and acuity from value
                     const lv = value.toLowerCase();
                     let type: 'systolic' | 'diastolic' | 'combined' | 'unspecified' = 'unspecified';
@@ -839,21 +840,34 @@ export function parseInput(text: string): ParseResult {
             case 'copd':
             case 'chronic obstructive pulmonary disease':
                 if (!context.conditions.respiratory) context.conditions.respiratory = {};
-                // Always parse COPD field - check for exacerbation/infection in value
-                const withExacerbation = lowerValue.includes('exacerbation') || lowerValue.includes('exacerbated');
-                const withInfection = lowerValue.includes('bronchitis') || lowerValue.includes('pneumonia') || lowerValue.includes('infection');
+                const isCopdNone = lowerValue === 'no' || lowerValue === 'none' || lowerValue === 'false';
+                if (!isCopdNone) {
+                    // Check for exacerbation/infection/both
+                    const withBoth = lowerValue.includes('with both') || lowerValue.includes('both');
+                    const withExacerbation = withBoth || lowerValue.includes('exacerbation') || lowerValue.includes('exacerbated');
+                    const withInfection = withBoth || lowerValue.includes('bronchitis') || lowerValue.includes('pneumonia') || lowerValue.includes('infection');
 
-                context.conditions.respiratory.copd = {
-                    present: true,
-                    withExacerbation: withExacerbation && !withInfection,
-                    withInfection: withInfection
-                };
+                    context.conditions.respiratory.copd = {
+                        present: true,
+                        withExacerbation: withExacerbation && !withInfection || withBoth,
+                        withInfection: withInfection
+                    };
+                }
                 break;
             case 'respiratory failure':
                 if (!context.conditions.respiratory) context.conditions.respiratory = {};
-                if (!context.conditions.respiratory.failure) context.conditions.respiratory.failure = { type: 'unspecified' };
-                if (lowerValue.includes('acute')) context.conditions.respiratory.failure.type = 'acute';
-                if (lowerValue.includes('chronic')) context.conditions.respiratory.failure.type = 'chronic';
+                const isRespFailureNone = lowerValue === 'no' || lowerValue === 'none' || lowerValue === 'false';
+                if (!isRespFailureNone) {
+                    if (!context.conditions.respiratory.failure) context.conditions.respiratory.failure = { type: 'unspecified' };
+                    // Check for acute on chronic first
+                    if (lowerValue.includes('acute on chronic') || lowerValue.includes('acute-on-chronic')) {
+                        context.conditions.respiratory.failure.type = 'acute_on_chronic';
+                    } else if (lowerValue.includes('acute')) {
+                        context.conditions.respiratory.failure.type = 'acute';
+                    } else if (lowerValue.includes('chronic')) {
+                        context.conditions.respiratory.failure.type = 'chronic';
+                    }
+                }
                 break;
             case 'asthma':
                 if (!context.conditions.respiratory) context.conditions.respiratory = {};
