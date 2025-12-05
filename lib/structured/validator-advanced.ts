@@ -198,7 +198,7 @@ export function applyComprehensiveMedicalRules(
         });
     }
 
-    // Rule 6: TRAUMATIC WOUNDS - S/T codes by body region
+    // Rule 6: TRAUMATIC WOUNDS - S91.xxx for open wounds, S90.xxx only for superficial
     if (woundType === 'traumatic') {
         correctedCodes = correctedCodes.filter(c => !c.code.startsWith('N18')); // Never CKD
 
@@ -206,86 +206,111 @@ export function applyComprehensiveMedicalRules(
             let traumaCode = 'S09.90XA'; // Default unspecified head/neck injury
             let traumaLabel = 'Traumatic wound';
 
+            // Check for depth indicators - if present, use OPEN WOUND codes (S91.xxx)
+            const isOpenWound = woundStage && (
+                woundStage.toLowerCase().includes('muscle') ||
+                woundStage.toLowerCase().includes('bone') ||
+                woundStage.toLowerCase().includes('necrosis') ||
+                woundStage.toLowerCase().includes('stage 3') ||
+                woundStage.toLowerCase().includes('stage 4') ||
+                woundStage.toLowerCase().includes('exposed')
+            );
+
             if (woundLocation) {
                 const loc = woundLocation.toLowerCase();
 
-                // Foot injuries (S90.xxx)
+                // CRITICAL: Use S91.xxx for open wounds, S90.xxx only for superficial
                 if (loc.includes('foot')) {
-                    if (loc.includes('right')) traumaCode = 'S90.91XA';
-                    else if (loc.includes('left')) traumaCode = 'S90.92XA';
-                    else traumaCode = 'S90.90XA';
-                    traumaLabel = 'Unspecified injury of foot';
+                    if (isOpenWound) {
+                        // OPEN WOUND codes
+                        if (loc.includes('right')) traumaCode = 'S91.301A';
+                        else if (loc.includes('left')) traumaCode = 'S91.302A';
+                        else traumaCode = 'S91.309A';
+                        traumaLabel = 'Open wound of foot';
+                    } else {
+                        // Superficial only
+                        if (loc.includes('right')) traumaCode = 'S90.91XA';
+                        else if (loc.includes('left')) traumaCode = 'S90.92XA';
+                        else traumaCode = 'S90.90XA';
+                        traumaLabel = 'Superficial injury of foot';
+                    }
                 }
-                // Ankle injuries (S90.xxx)
-                else if (loc.includes('ankle')) {
-                    if (loc.includes('right')) traumaCode = 'S90.91XA';
-                    else if (loc.includes('left')) traumaCode = 'S90.92XA';
-                    else traumaCode = 'S90.90XA';
-                    traumaLabel = 'Unspecified injury of ankle';
-                }
-                // Heel injuries (S90.xxx)
                 else if (loc.includes('heel')) {
-                    if (loc.includes('right')) traumaCode = 'S90.91XA';
-                    else if (loc.includes('left')) traumaCode = 'S90.92XA';
-                    else traumaCode = 'S90.90XA';
-                    traumaLabel = 'Unspecified injury of heel';
+                    if (isOpenWound) {
+                        traumaCode = 'S91.359A'; // Open wound of heel
+                        traumaLabel = 'Open wound of heel';
+                    } else {
+                        traumaCode = 'S90.90XA';
+                        traumaLabel = 'Superficial injury of heel';
+                    }
                 }
-                // Lower leg injuries (S80.xxx)
+                else if (loc.includes('ankle')) {
+                    if (isOpenWound) {
+                        traumaCode = 'S91.009A'; // Open wound of ankle
+                        traumaLabel = 'Open wound of ankle';
+                    } else {
+                        if (loc.includes('right')) traumaCode = 'S90.91XA';
+                        else if (loc.includes('left')) traumaCode = 'S90.92XA';
+                        else traumaCode = 'S90.90XA';
+                        traumaLabel = 'Superficial injury of ankle';
+                    }
+                }
+                // Lower leg injuries
                 else if (loc.includes('leg') || loc.includes('shin') || loc.includes('calf')) {
                     if (loc.includes('right')) traumaCode = 'S80.91XA';
                     else if (loc.includes('left')) traumaCode = 'S80.92XA';
                     else traumaCode = 'S80.90XA';
                     traumaLabel = 'Unspecified injury of lower leg';
                 }
-                // Knee injuries (S80.xxx)
+                // Knee injuries
                 else if (loc.includes('knee')) {
                     if (loc.includes('right')) traumaCode = 'S80.91XA';
                     else if (loc.includes('left')) traumaCode = 'S80.92XA';
                     else traumaCode = 'S80.90XA';
                     traumaLabel = 'Unspecified injury of knee';
                 }
-                // Arm/upper limb injuries (S40.xxx-S69.xxx)
+                // Arm/upper limb injuries
                 else if (loc.includes('arm') || loc.includes('hand') || loc.includes('wrist') || loc.includes('finger')) {
                     if (loc.includes('right')) traumaCode = 'S69.91XA';
                     else if (loc.includes('left')) traumaCode = 'S69.92XA';
                     else traumaCode = 'S69.90XA';
                     traumaLabel = 'Unspecified injury of wrist, hand and finger(s)';
                 }
-                // Elbow/forearm injuries (S50.xxx)
+                // Elbow/forearm injuries
                 else if (loc.includes('elbow') || loc.includes('forearm')) {
                     if (loc.includes('right')) traumaCode = 'S59.91XA';
                     else if (loc.includes('left')) traumaCode = 'S59.92XA';
                     else traumaCode = 'S59.90XA';
                     traumaLabel = 'Unspecified injury of forearm';
                 }
-                // Shoulder injuries (S40.xxx)
+                // Shoulder injuries
                 else if (loc.includes('shoulder')) {
                     if (loc.includes('right')) traumaCode = 'S49.91XA';
                     else if (loc.includes('left')) traumaCode = 'S49.92XA';
                     else traumaCode = 'S49.90XA';
                     traumaLabel = 'Unspecified injury of shoulder';
                 }
-                // Head injuries (S00.xxx-S09.xxx)
+                // Head injuries
                 else if (loc.includes('head') || loc.includes('scalp') || loc.includes('face')) {
                     traumaCode = 'S09.90XA';
                     traumaLabel = 'Unspecified injury of head';
                 }
-                // Neck injuries (S10.xxx-S19.xxx)
+                // Neck injuries
                 else if (loc.includes('neck')) {
                     traumaCode = 'S19.9XXA';
                     traumaLabel = 'Unspecified injury of neck';
                 }
-                // Chest/thorax injuries (S20.xxx-S29.xxx)
+                // Chest/thorax injuries
                 else if (loc.includes('chest') || loc.includes('thorax') || loc.includes('rib')) {
                     traumaCode = 'S29.9XXA';
                     traumaLabel = 'Unspecified injury of thorax';
                 }
-                // Abdomen injuries (S30.xxx-S39.xxx)
+                // Abdomen injuries
                 else if (loc.includes('abdomen') || loc.includes('stomach')) {
                     traumaCode = 'S39.91XA';
                     traumaLabel = 'Unspecified injury of abdomen';
                 }
-                // Back injuries (S30.xxx-S39.xxx)
+                // Back injuries
                 else if (loc.includes('back') || loc.includes('spine')) {
                     traumaCode = 'S39.012A';
                     traumaLabel = 'Contusion of lower back and pelvis';
