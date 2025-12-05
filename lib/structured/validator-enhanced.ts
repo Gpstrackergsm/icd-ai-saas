@@ -125,13 +125,15 @@ export function applyConsistencyRules(
         }
     }
 
-    // Keep primary designation
-    if (validatedCodes.length > 0) {
-        validatedCodes[0].isPrimary = true;
-    }
+    // Ensure all codes have isPrimary set
+    const finalCodes = validatedCodes.map((c, idx) => ({
+        code: c.code,
+        label: c.label,
+        isPrimary: idx === 0
+    }));
 
     return {
-        codes: validatedCodes,
+        codes: finalCodes,
         violations,
         applied_fixes
     };
@@ -156,10 +158,6 @@ export function validateFinalOutput(
 
     return {
         output: 'VALIDATED',
-        codes: result.codes.map((c, idx) => ({
-            code: c.code,
-            label: c.label,
-            isPrimary: idx === 0
-        }))
+        codes: result.codes
     };
 }
