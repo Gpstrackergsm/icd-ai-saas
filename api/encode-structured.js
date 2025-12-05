@@ -1,6 +1,7 @@
 const { parseInput } = require('../dist/lib/structured/parser.js');
 const { validateContext } = require('../dist/lib/structured/validator.js');
 const { runStructuredRules } = require('../dist/lib/structured/engine.js');
+const { validateCodeSet } = require('../dist/lib/structured/validator-post.js');
 const { requireAuth } = require('../dist/lib/auth/middleware.js');
 
 module.exports = async function handler(req, res) {
@@ -43,14 +44,24 @@ module.exports = async function handler(req, res) {
         // Run the rules engine
         const result = runStructuredRules(context);
 
-        // Format response
+        // Apply ICD-10-CM validation for claim compliance
+        const validated = validateCodeSet(result.primary, result.secondary, context);
+
+        // Extract validated primary and secondary codes
+        const validatedPrimary = validated.codes[0] || null;
+        const validatedSecondary = validated.codes.slice(1);
+
+        // Format response with claim-ready codes
         const response = {
-            primary: result.primary,
-            secondary: result.secondary,
+            primary: validatedPrimary,
+            secondary: validatedSecondary,
             procedures: result.procedures,
             warnings: [...validation.warnings, ...result.warnings],
             validationErrors: result.validationErrors,
-            context: context // Include parsed context for debugging
+            validationChanges: {
+                removed: validated.removed,
+                added: validated.added
+            }
         };
 
         return res.status(200).json({ success: true, data: response });
