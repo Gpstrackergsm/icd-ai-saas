@@ -1667,11 +1667,11 @@ function mapUlcerToL97(site: string, severity: string): string {
     if (severity === 'bone' || severity.toLowerCase().includes('bone')) {
         return base + '4'; // Bone necrosis
     } else if (severity === 'muscle' || severity.toLowerCase().includes('muscle')) {
-        return base + '4'; // Muscle exposed/necrosis
+        return base + '3'; // Muscle necrosis
     } else if (severity === 'fat' || severity.toLowerCase().includes('fat')) {
-        return base + '3'; // Fat layer exposed
+        return base + '2'; // Fat layer exposed
     } else if (severity === 'skin' || severity.toLowerCase().includes('skin')) {
-        return base + '2'; // Skin breakdown
+        return base + '1'; // Skin breakdown
     } else {
         return base + '9'; // Unspecified
     }
