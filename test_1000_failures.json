@@ -1,0 +1,9429 @@
+[
+  {
+    "id": 1,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 2,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 3,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 4,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 5,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 7,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 8,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 9,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 10,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 11,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 12,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 13,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 14,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 15,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 16,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 17,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 19,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 20,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 21,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 22,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 23,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 24,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 25,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 26,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 27,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 28,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 29,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 31,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 32,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 33,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 34,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 35,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 36,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 37,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 38,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 39,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 40,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 41,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 43,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 44,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 45,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 46,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 47,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 48,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 49,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 50,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 51,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 52,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 53,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 55,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 56,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 57,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 58,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 59,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 60,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 61,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 62,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 63,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 64,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 65,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 67,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 68,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 69,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 70,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 71,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 72,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 73,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 74,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 75,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 76,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 77,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 79,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 80,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 81,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 82,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 83,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 84,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 85,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 86,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 87,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 88,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 89,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 91,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 92,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 93,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 94,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 95,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 96,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 97,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 98,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 99,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 100,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 101,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 103,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 104,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 105,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 106,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 107,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 108,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 109,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 110,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 111,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 112,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 113,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 115,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 116,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 117,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 118,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 119,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 120,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 121,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 122,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 123,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 124,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 125,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 127,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 128,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 129,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 130,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 131,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 132,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 133,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 134,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 135,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 136,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 137,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 139,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 140,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 141,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 142,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 143,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 144,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 145,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 146,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 147,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 148,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 149,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 151,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 152,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 153,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 154,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 155,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 156,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 157,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 158,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 159,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 160,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 161,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 163,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 164,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 165,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 166,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 167,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 168,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 169,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 170,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 171,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 172,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 173,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 175,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 176,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 177,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 178,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 179,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 180,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 181,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 182,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 183,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 184,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 185,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 187,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 188,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 189,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 190,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 191,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 192,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 193,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 194,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 195,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 196,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 197,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 199,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 200,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 201,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 202,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 203,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 204,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 205,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 206,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 207,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 208,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 209,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 211,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 212,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 213,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 214,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 215,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 216,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 217,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 218,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 219,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 220,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 221,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 223,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 224,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 225,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 226,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 227,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 228,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 229,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 230,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 231,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 232,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 233,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 235,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 236,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 237,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 238,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 239,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 240,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 241,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 242,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 243,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 244,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 245,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 247,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 248,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 249,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 250,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 251,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 252,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 253,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 254,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 255,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 256,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 257,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 259,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 260,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 261,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 262,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 263,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 264,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 265,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 266,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 267,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 268,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 269,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 271,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 272,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 273,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 274,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 275,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 276,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 277,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 278,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 279,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 280,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 281,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 283,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 284,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 285,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 286,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 287,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 288,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 289,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 290,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 291,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 292,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 293,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 295,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 296,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 297,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 298,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 299,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 300,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 301,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 302,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 303,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 304,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 305,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 307,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 308,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 309,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 310,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 311,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 312,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 313,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 314,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 315,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 316,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 317,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 319,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 320,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 321,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 322,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 323,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 324,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 325,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 326,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 327,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 328,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 329,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 331,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 332,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 333,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 334,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 335,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 336,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 337,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 338,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 339,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 340,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 341,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 343,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 344,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 345,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 346,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 347,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 348,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 349,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 350,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 351,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 352,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 353,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 355,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 356,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 357,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 358,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 359,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 360,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 361,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 362,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 363,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 364,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 365,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 367,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 368,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 369,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 370,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 371,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 372,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 373,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 374,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 375,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 376,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 377,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 379,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 380,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 381,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 382,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 383,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 384,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 385,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 386,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 387,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 388,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 389,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 391,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 392,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 393,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 394,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 395,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 396,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 397,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 398,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 399,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 400,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 401,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 403,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 404,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 405,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 406,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 407,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 408,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 409,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 410,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 411,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 412,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 413,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 415,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 416,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 417,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 418,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 419,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 420,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 421,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 422,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 423,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 424,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 425,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 427,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 428,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 429,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 430,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 431,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 432,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 433,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 434,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 435,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 436,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 437,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 439,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 440,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 441,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 442,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 443,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 444,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 445,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 446,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 447,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 448,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 449,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 451,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 452,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 453,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 454,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 455,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 456,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 457,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 458,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 459,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 460,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 461,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 463,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 464,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 465,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 466,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 467,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 468,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 469,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 470,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 471,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 472,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 473,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 475,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 476,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 477,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 478,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 479,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 480,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 481,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 482,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 483,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 484,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 485,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 487,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 488,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 489,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 490,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 491,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 492,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 493,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 494,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 495,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 496,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 497,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 499,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 500,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 501,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 502,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 503,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 504,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 505,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 506,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 507,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 508,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 509,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 511,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 512,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 513,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 514,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 515,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 516,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 517,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 518,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 519,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 520,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 521,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 523,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 524,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 525,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 526,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 527,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 528,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 529,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 530,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 531,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 532,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 533,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 535,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 536,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 537,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 538,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 539,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 540,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 541,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 542,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 543,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 544,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 545,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 547,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 548,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 549,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 550,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 551,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 552,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 553,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 554,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 555,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 556,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 557,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 559,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 560,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 561,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 562,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 563,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 564,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 565,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 566,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 567,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 568,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 569,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 571,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 572,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 573,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 574,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 575,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 576,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 577,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 578,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 579,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 580,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 581,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 583,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 584,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 585,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 586,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 587,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 588,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 589,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 590,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 591,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 592,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 593,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 595,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 596,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 597,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 598,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 599,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 600,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 601,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 602,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 603,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 604,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 605,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 607,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 608,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 609,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 610,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 611,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 612,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 613,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 614,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 615,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 616,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 617,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 619,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 620,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 621,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 622,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 623,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 624,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 625,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 626,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 627,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 628,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 629,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 631,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 632,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 633,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 634,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 635,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 636,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 637,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 638,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 639,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 640,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 641,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 643,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 644,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 645,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 646,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 647,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 648,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 649,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 650,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 651,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 652,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 653,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 655,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 656,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 657,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 658,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 659,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 660,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 661,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 662,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 663,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 664,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 665,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 667,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 668,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 669,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 670,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 671,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 672,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 673,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 674,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 675,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 676,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 677,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 679,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 680,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 681,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 682,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 683,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 684,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 685,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 686,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 687,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 688,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 689,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 691,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 692,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 693,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 694,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 695,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 696,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 697,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 698,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 699,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 700,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 701,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 703,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 704,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 705,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 706,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 707,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 708,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 709,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 710,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 711,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 712,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 713,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 715,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 716,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 717,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 718,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 719,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 720,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 721,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 722,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 723,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 724,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 725,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 727,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 728,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 729,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 730,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 731,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 732,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 733,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 734,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 735,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 736,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 737,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 739,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 740,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 741,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 742,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 743,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 744,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 745,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 746,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 747,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 748,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 749,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 751,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 752,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 753,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 754,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 755,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 756,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 757,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 758,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 759,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 760,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 761,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 763,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 764,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 765,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 766,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 767,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 768,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 769,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 770,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 771,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 772,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 773,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 775,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 776,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 777,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 778,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 779,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 780,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 781,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 782,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 783,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 784,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 785,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 787,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 788,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 789,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 790,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 791,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 792,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 793,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 794,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 795,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 796,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 797,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 799,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 800,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 801,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 802,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 803,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 804,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 805,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 806,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 807,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 808,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 809,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 811,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 812,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 813,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 814,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 815,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 816,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 817,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 818,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 819,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 820,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 821,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 823,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 824,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 825,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 826,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 827,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 828,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 829,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 830,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 831,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 832,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 833,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 835,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 836,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 837,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 838,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 839,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 840,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 841,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 842,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 843,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 844,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 845,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 847,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 848,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 849,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 850,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 851,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 852,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 853,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 854,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 855,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 856,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 857,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 859,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 860,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 861,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 862,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 863,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 864,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 865,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 866,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 867,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 868,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 869,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 871,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 872,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 873,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 874,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 875,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 876,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 877,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 878,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 879,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 880,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 881,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 883,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 884,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 885,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 886,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 887,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 888,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 889,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 890,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 891,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 892,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 893,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 895,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 896,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 897,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 898,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 899,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 900,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 901,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 902,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 903,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 904,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 905,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 907,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 908,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 909,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 910,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 911,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 912,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 913,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 914,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 915,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 916,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 917,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 919,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 920,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 921,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 922,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 923,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 924,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 925,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 926,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 927,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 928,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 929,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 931,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 932,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 933,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 934,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 935,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 936,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 937,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 938,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 939,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 940,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 941,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 943,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 944,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 945,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 946,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 947,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 948,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 949,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 950,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 951,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 952,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 953,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 955,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 956,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 957,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 958,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 959,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 960,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 961,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 962,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 963,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 964,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 965,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 967,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 968,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 969,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 970,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 971,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 972,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 973,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 974,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 975,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 976,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 977,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 979,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 980,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 981,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 982,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 983,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 984,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 985,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 986,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 987,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 988,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 989,
+    "domain": "Neurology",
+    "expected": [
+      "G30.9",
+      "F02.81"
+    ],
+    "generated": []
+  },
+  {
+    "id": 991,
+    "domain": "Oncology",
+    "expected": [
+      "Z85.3",
+      "Z92.21"
+    ],
+    "generated": [
+      "Z51.11"
+    ]
+  },
+  {
+    "id": 992,
+    "domain": "OB/GYN",
+    "expected": [
+      "O80",
+      "Z3A.39"
+    ],
+    "generated": []
+  },
+  {
+    "id": 993,
+    "domain": "Liver & GI",
+    "expected": [
+      "K70.30",
+      "R18.8"
+    ],
+    "generated": [
+      "R18.8"
+    ]
+  },
+  {
+    "id": 994,
+    "domain": "Infectious Disease",
+    "expected": [
+      "T83.511A",
+      "N39.0"
+    ],
+    "generated": []
+  },
+  {
+    "id": 995,
+    "domain": "Psychiatry",
+    "expected": [
+      "F32.1"
+    ],
+    "generated": []
+  },
+  {
+    "id": 996,
+    "domain": "Dermatology & Ulcers",
+    "expected": [
+      "T22.331A"
+    ],
+    "generated": []
+  },
+  {
+    "id": 997,
+    "domain": "Diabetes",
+    "expected": [
+      "E11.22",
+      "N18.32"
+    ],
+    "generated": [
+      "E11.22",
+      "N18.9"
+    ]
+  },
+  {
+    "id": 998,
+    "domain": "Sepsis",
+    "expected": [
+      "A41.01",
+      "R65.21",
+      "J15.211",
+      "J96.01"
+    ],
+    "generated": [
+      "A41.02",
+      "R65.21",
+      "J96.00",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 999,
+    "domain": "Cardiology",
+    "expected": [
+      "I48.91",
+      "Z79.01"
+    ],
+    "generated": []
+  },
+  {
+    "id": 1000,
+    "domain": "Pulmonology",
+    "expected": [
+      "J44.1",
+      "F17.210"
+    ],
+    "generated": [
+      "J44.1"
+    ]
+  }
+]

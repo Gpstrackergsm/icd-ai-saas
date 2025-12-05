@@ -1,0 +1,86 @@
+CASE 01
+Age: 54
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 3
+Insulin Use: No
+
+CASE 02
+Age: 62
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+Insulin Use: Yes
+
+CASE 03
+Age: 71
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+
+CASE 04
+Age: 68
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 05
+Age: 59
+Gender: Male
+Encounter Type: Outpatient
+COPD: With exacerbation
+Smoking: Current
+
+CASE 06
+Age: 76
+Gender: Female
+Encounter Type: Inpatient
+COPD: With infection
+Respiratory Failure: Acute
+Mechanical Ventilation: Yes
+Ventilation Duration: 12
+Pneumonia: Yes
+Pneumonia Organism: Unspecified
+
+CASE 07
+Age: 44
+Gender: Male
+Encounter Type: ED
+Asthma: Yes
+Respiratory Failure: Acute
+
+CASE 08
+Age: 81
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: MRSA
+Sepsis: Yes
+
+CASE 09
+Age: 66
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: E. coli
+Sepsis: Yes
+
+CASE 10
+Age: 73
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Sacral
+Stage/Depth: Bone necrosis

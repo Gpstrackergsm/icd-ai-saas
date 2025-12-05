@@ -1,0 +1,49 @@
+ICD-10-CM PRODUCTION COMPLIANCE REPORT
+================================================================================
+
+SECTION 1 — OVERALL
+--------------------------------------------------------------------------------
+System Status:    FAIL
+Total Cases:      1000
+Passed:           982
+Failed:           18
+Success Rate:     98.20%
+
+SECTION 2 — COVERAGE
+--------------------------------------------------------------------------------
+Code Generation:  98.20%
+Demographic Only: 1.80%
+Mean Codes/Case:  2.01
+
+SECTION 3 — DOMAIN COMPLIANCE
+--------------------------------------------------------------------------------
+Cardiology      Total:  232  Passed:  232  Failed:    0
+Diabetes        Total:  262  Passed:  262  Failed:    0
+Infection       Total:   56  Passed:   38  Failed:   18
+Respiratory     Total:  239  Passed:  239  Failed:    0
+Sepsis          Total:  211  Passed:  211  Failed:    0
+
+SECTION 4 — VIOLATIONS
+--------------------------------------------------------------------------------
+No clinical rule violations detected.
+SECTION 5 — SAMPLES
+--------------------------------------------------------------------------------
+PASSED CASES:
+  CASE 1: E11.22, N18.1
+  CASE 2: E10.21, E10.22, N18.4
+  CASE 3: I13.0, N18.3
+  CASE 4: I11.0, I50.43
+  CASE 5: A41.9
+
+FAILED CASES:
+  CASE 20: No codes generated
+  CASE 36: No codes generated
+  CASE 45: No codes generated
+  CASE 113: No codes generated
+  CASE 277: No codes generated
+
+SECTION 6 — ARTIFACTS
+--------------------------------------------------------------------------------
+✓ results.json
+✓ violations.json
+✓ compliance_report.txt
