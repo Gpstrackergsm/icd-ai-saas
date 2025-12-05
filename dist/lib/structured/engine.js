@@ -1692,8 +1692,7 @@ function mapSepsisOrganism(organism) {
         return 'A41.59';
     if (lower.includes('legionella'))
         return 'A48.1'; // Legionnaires' disease
-    if (lower.includes('influenza') || lower.includes('viral'))
-        return 'A41.89'; // Other specified sepsis
+    // if (lower.includes('influenza') || lower.includes('viral')) return 'A41.89'; // User rule: Viral sepsis -> A41.9
     return 'A41.9'; // Unspecified
 }
 // Organism code mapping (B96.x codes)

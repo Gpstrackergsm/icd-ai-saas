@@ -1758,7 +1758,7 @@ function mapSepsisOrganism(organism: string): string {
     if (lower.includes('serratia')) return 'A41.53';
     if (lower.includes('acinetobacter')) return 'A41.59';
     if (lower.includes('legionella')) return 'A48.1'; // Legionnaires' disease
-    if (lower.includes('influenza') || lower.includes('viral')) return 'A41.89'; // Other specified sepsis
+    // if (lower.includes('influenza') || lower.includes('viral')) return 'A41.89'; // User rule: Viral sepsis -> A41.9
     return 'A41.9'; // Unspecified
 }
 

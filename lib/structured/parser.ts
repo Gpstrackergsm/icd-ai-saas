@@ -849,6 +849,12 @@ export function parseInput(text: string): ParseResult {
                     withInfection: withInfection
                 };
                 break;
+            case 'respiratory failure':
+                if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                if (!context.conditions.respiratory.failure) context.conditions.respiratory.failure = { type: 'unspecified' };
+                if (lowerValue.includes('acute')) context.conditions.respiratory.failure.type = 'acute';
+                if (lowerValue.includes('chronic')) context.conditions.respiratory.failure.type = 'chronic';
+                break;
             case 'asthma':
                 if (!context.conditions.respiratory) context.conditions.respiratory = {};
 
