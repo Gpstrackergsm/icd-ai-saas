@@ -173,8 +173,8 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
         // RULE: Secondary Hypertension → I15.x (takes precedence)
         if (c.secondaryHypertension) {
-            let code = 'I15.9'; // Unspecified
-            let label = 'Secondary hypertension, unspecified';
+            let code = 'I15.1'; // Default to renovascular
+            let label = 'Renovascular hypertension';
 
             if (c.hypertensionCause === 'renal') {
                 code = 'I15.1';
@@ -339,12 +339,12 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             if (!isPregnantOrPostpartum) {
                 // Check for secondary hypertension
                 const isSecondary = c.secondaryHypertension;
-                const code = isSecondary ? 'I15.9' : 'I10';
+                const code = isSecondary ? 'I15.1' : 'I10'; // Default secondary HTN to renovascular
                 const label = isSecondary
-                    ? 'Secondary hypertension, unspecified'
+                    ? 'Renovascular hypertension'
                     : 'Essential (primary) hypertension';
                 const rationale = isSecondary
-                    ? 'Secondary hypertension documented'
+                    ? 'Secondary hypertension documented (renovascular)'
                     : 'Uncomplicated hypertension';
 
                 codes.push({
@@ -1674,15 +1674,18 @@ function mapUlcerToL97(site: string, severity: string): string {
         base += '9'; // Unspecified foot
     }
 
-    // Severity mapping (ICD-10-CM L97.xxx)
-    // x1 = limited to breakdown of skin
+    // Severity mapping (ICD-10-CM L97.xxx)\n    // x1 = limited to breakdown of skin
     // x2 = with fat layer exposed
     // x3 = with necrosis of muscle
     // x4 = with necrosis of bone
+    // x5 = with muscle involvement without evidence of necrosis
+    // x9 = unspecified severity
     if (severity === 'bone' || severity.toLowerCase().includes('bone')) {
         return base + '4'; // Bone necrosis
-    } else if (severity === 'muscle' || severity.toLowerCase().includes('muscle')) {
-        return base + '3'; // Muscle necrosis
+    } else if (severity.toLowerCase().includes('muscle necrosis')) {
+        return base + '3'; // Muscle necrosis (only if explicitly stated)
+    } else if (severity === 'muscle' || severity.toLowerCase().includes('muscle exposed') || severity.toLowerCase().includes('muscle involvement')) {
+        return base + '5'; // Muscle involvement without necrosis (default for muscle)
     } else if (severity === 'fat' || severity.toLowerCase().includes('fat')) {
         return base + '2'; // Fat layer exposed
     } else if (severity === 'skin' || severity.toLowerCase().includes('skin')) {
@@ -1724,7 +1727,7 @@ function mapHeartFailureCode(type: string, acuity: string): string {
 }
 
 function mapPneumoniaOrganism(organism?: string): string {
-    if (!organism) return 'J18.9'; // Unspecified
+    if (!organism) return 'J18.9'; // Pneumonia, unspecified organism (not bacterial)
 
     switch (organism.toLowerCase()) {
         case 'strep_pneumoniae':
@@ -1748,7 +1751,7 @@ function mapPneumoniaOrganism(organism?: string): string {
         case 'viral':
             return 'J12.9'; // Viral pneumonia, unspecified
         case 'unspecified':
-            return 'J15.9'; // Bacterial pneumonia, unspecified
+            return 'J18.9'; // Pneumonia, unspecified organism (not necessarily bacterial)
         default:
             return 'J18.9'; // Pneumonia, unspecified organism
     }

@@ -638,8 +638,8 @@ export function parseInput(text: string): ParseResult {
                 break;
             case 'ulcer site':
                 if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                if (lowerValue.includes('left') && lowerValue.includes('foot')) context.conditions.diabetes.ulcerSite = 'left_foot';
-                else if (lowerValue.includes('right') && lowerValue.includes('foot')) context.conditions.diabetes.ulcerSite = 'right_foot';
+                if (lowerValue.includes('left') && (lowerValue.includes('foot') || lowerValue.includes('ankle'))) context.conditions.diabetes.ulcerSite = 'left_foot';
+                else if (lowerValue.includes('right') && (lowerValue.includes('foot') || lowerValue.includes('ankle'))) context.conditions.diabetes.ulcerSite = 'right_foot';
                 else context.conditions.diabetes.ulcerSite = 'other';
                 break;
             case 'ulcer severity':
@@ -650,7 +650,7 @@ export function parseInput(text: string): ParseResult {
                     if (lowerValue.includes('bone') || lowerValue.includes('necrosis')) {
                         context.conditions.diabetes.ulcerSeverity = 'bone';
                     } else if (lowerValue.includes('muscle') || lowerValue.includes('fat exposed')) {
-                        // "Fat exposed" means muscle level in ICD-10-CM
+                        // "muscle exposed" means muscle involvement without necrosis (x5)
                         context.conditions.diabetes.ulcerSeverity = 'muscle';
                     } else if (lowerValue.includes('fat') && !lowerValue.includes('exposed')) {
                         context.conditions.diabetes.ulcerSeverity = 'fat';
