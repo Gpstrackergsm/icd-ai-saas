@@ -77,6 +77,71 @@ export function applyComprehensiveMedicalRules(
                 else if (stage.includes('stage 1')) ulcerCode = 'L89.321';
                 else if (stage.includes('unstageable')) ulcerCode = 'L89.320';
             }
+            // Ankle codes
+            else if (loc.includes('ankle')) {
+                // Right ankle
+                if (loc.includes('right')) {
+                    if (stage.includes('stage 4') || stage.includes('bone')) ulcerCode = 'L89.514';
+                    else if (stage.includes('stage 3') || stage.includes('muscle')) ulcerCode = 'L89.513';
+                    else if (stage.includes('stage 2')) ulcerCode = 'L89.512';
+                    else if (stage.includes('stage 1')) ulcerCode = 'L89.511';
+                    else if (stage.includes('unstageable')) ulcerCode = 'L89.510';
+                }
+                // Left ankle
+                else if (loc.includes('left')) {
+                    if (stage.includes('stage 4') || stage.includes('bone')) ulcerCode = 'L89.524';
+                    else if (stage.includes('stage 3') || stage.includes('muscle')) ulcerCode = 'L89.523';
+                    else if (stage.includes('stage 2')) ulcerCode = 'L89.522';
+                    else if (stage.includes('stage 1')) ulcerCode = 'L89.521';
+                    else if (stage.includes('unstageable')) ulcerCode = 'L89.520';
+                }
+            }
+            // Foot codes (use ankle codes as foot pressure ulcers typically involve ankle region)
+            else if (loc.includes('foot')) {
+                // Right foot
+                if (loc.includes('right')) {
+                    if (stage.includes('stage 4') || stage.includes('bone')) ulcerCode = 'L89.514';
+                    else if (stage.includes('stage 3') || stage.includes('muscle')) ulcerCode = 'L89.513';
+                    else if (stage.includes('stage 2')) ulcerCode = 'L89.512';
+                    else if (stage.includes('stage 1')) ulcerCode = 'L89.511';
+                    else if (stage.includes('unstageable')) ulcerCode = 'L89.510';
+                }
+                // Left foot
+                else if (loc.includes('left')) {
+                    if (stage.includes('stage 4') || stage.includes('bone')) ulcerCode = 'L89.524';
+                    else if (stage.includes('stage 3') || stage.includes('muscle')) ulcerCode = 'L89.523';
+                    else if (stage.includes('stage 2')) ulcerCode = 'L89.522';
+                    else if (stage.includes('stage 1')) ulcerCode = 'L89.521';
+                    else if (stage.includes('unstageable')) ulcerCode = 'L89.520';
+                }
+            }
+            // Elbow codes
+            else if (loc.includes('elbow')) {
+                // Right elbow
+                if (loc.includes('right')) {
+                    if (stage.includes('stage 4')) ulcerCode = 'L89.014';
+                    else if (stage.includes('stage 3')) ulcerCode = 'L89.013';
+                    else if (stage.includes('stage 2')) ulcerCode = 'L89.012';
+                    else if (stage.includes('stage 1')) ulcerCode = 'L89.011';
+                    else if (stage.includes('unstageable')) ulcerCode = 'L89.010';
+                }
+                // Left elbow
+                else if (loc.includes('left')) {
+                    if (stage.includes('stage 4')) ulcerCode = 'L89.024';
+                    else if (stage.includes('stage 3')) ulcerCode = 'L89.023';
+                    else if (stage.includes('stage 2')) ulcerCode = 'L89.022';
+                    else if (stage.includes('stage 1')) ulcerCode = 'L89.021';
+                    else if (stage.includes('unstageable')) ulcerCode = 'L89.020';
+                }
+            }
+            // Back codes
+            else if (loc.includes('back')) {
+                if (stage.includes('stage 4')) ulcerCode = 'L89.144';
+                else if (stage.includes('stage 3')) ulcerCode = 'L89.143';
+                else if (stage.includes('stage 2')) ulcerCode = 'L89.142';
+                else if (stage.includes('stage 1')) ulcerCode = 'L89.141';
+                else if (stage.includes('unstageable')) ulcerCode = 'L89.140';
+            }
         } else if (!woundLocation || !woundStage) {
             errors.push('Missing ulcer location and stage');
         }
@@ -133,18 +198,108 @@ export function applyComprehensiveMedicalRules(
         });
     }
 
-    // Rule 6: TRAUMATIC WOUNDS - S/T codes
+    // Rule 6: TRAUMATIC WOUNDS - S/T codes by body region
     if (woundType === 'traumatic') {
         correctedCodes = correctedCodes.filter(c => !c.code.startsWith('N18')); // Never CKD
 
         if (!correctedCodes.some(c => c.code.startsWith('S') || c.code.startsWith('T'))) {
+            let traumaCode = 'S09.90XA'; // Default unspecified head/neck injury
+            let traumaLabel = 'Traumatic wound';
+
+            if (woundLocation) {
+                const loc = woundLocation.toLowerCase();
+
+                // Foot injuries (S90.xxx)
+                if (loc.includes('foot')) {
+                    if (loc.includes('right')) traumaCode = 'S90.91XA';
+                    else if (loc.includes('left')) traumaCode = 'S90.92XA';
+                    else traumaCode = 'S90.90XA';
+                    traumaLabel = 'Unspecified injury of foot';
+                }
+                // Ankle injuries (S90.xxx)
+                else if (loc.includes('ankle')) {
+                    if (loc.includes('right')) traumaCode = 'S90.91XA';
+                    else if (loc.includes('left')) traumaCode = 'S90.92XA';
+                    else traumaCode = 'S90.90XA';
+                    traumaLabel = 'Unspecified injury of ankle';
+                }
+                // Heel injuries (S90.xxx)
+                else if (loc.includes('heel')) {
+                    if (loc.includes('right')) traumaCode = 'S90.91XA';
+                    else if (loc.includes('left')) traumaCode = 'S90.92XA';
+                    else traumaCode = 'S90.90XA';
+                    traumaLabel = 'Unspecified injury of heel';
+                }
+                // Lower leg injuries (S80.xxx)
+                else if (loc.includes('leg') || loc.includes('shin') || loc.includes('calf')) {
+                    if (loc.includes('right')) traumaCode = 'S80.91XA';
+                    else if (loc.includes('left')) traumaCode = 'S80.92XA';
+                    else traumaCode = 'S80.90XA';
+                    traumaLabel = 'Unspecified injury of lower leg';
+                }
+                // Knee injuries (S80.xxx)
+                else if (loc.includes('knee')) {
+                    if (loc.includes('right')) traumaCode = 'S80.91XA';
+                    else if (loc.includes('left')) traumaCode = 'S80.92XA';
+                    else traumaCode = 'S80.90XA';
+                    traumaLabel = 'Unspecified injury of knee';
+                }
+                // Arm/upper limb injuries (S40.xxx-S69.xxx)
+                else if (loc.includes('arm') || loc.includes('hand') || loc.includes('wrist') || loc.includes('finger')) {
+                    if (loc.includes('right')) traumaCode = 'S69.91XA';
+                    else if (loc.includes('left')) traumaCode = 'S69.92XA';
+                    else traumaCode = 'S69.90XA';
+                    traumaLabel = 'Unspecified injury of wrist, hand and finger(s)';
+                }
+                // Elbow/forearm injuries (S50.xxx)
+                else if (loc.includes('elbow') || loc.includes('forearm')) {
+                    if (loc.includes('right')) traumaCode = 'S59.91XA';
+                    else if (loc.includes('left')) traumaCode = 'S59.92XA';
+                    else traumaCode = 'S59.90XA';
+                    traumaLabel = 'Unspecified injury of forearm';
+                }
+                // Shoulder injuries (S40.xxx)
+                else if (loc.includes('shoulder')) {
+                    if (loc.includes('right')) traumaCode = 'S49.91XA';
+                    else if (loc.includes('left')) traumaCode = 'S49.92XA';
+                    else traumaCode = 'S49.90XA';
+                    traumaLabel = 'Unspecified injury of shoulder';
+                }
+                // Head injuries (S00.xxx-S09.xxx)
+                else if (loc.includes('head') || loc.includes('scalp') || loc.includes('face')) {
+                    traumaCode = 'S09.90XA';
+                    traumaLabel = 'Unspecified injury of head';
+                }
+                // Neck injuries (S10.xxx-S19.xxx)
+                else if (loc.includes('neck')) {
+                    traumaCode = 'S19.9XXA';
+                    traumaLabel = 'Unspecified injury of neck';
+                }
+                // Chest/thorax injuries (S20.xxx-S29.xxx)
+                else if (loc.includes('chest') || loc.includes('thorax') || loc.includes('rib')) {
+                    traumaCode = 'S29.9XXA';
+                    traumaLabel = 'Unspecified injury of thorax';
+                }
+                // Abdomen injuries (S30.xxx-S39.xxx)
+                else if (loc.includes('abdomen') || loc.includes('stomach')) {
+                    traumaCode = 'S39.91XA';
+                    traumaLabel = 'Unspecified injury of abdomen';
+                }
+                // Back injuries (S30.xxx-S39.xxx)
+                else if (loc.includes('back') || loc.includes('spine')) {
+                    traumaCode = 'S39.012A';
+                    traumaLabel = 'Contusion of lower back and pelvis';
+                }
+            }
+
             correctedCodes.push({
-                code: 'S00.00XA',
-                label: 'Traumatic wound',
+                code: traumaCode,
+                label: traumaLabel,
                 isPrimary: correctedCodes.length === 0
             });
         }
     }
+
 
     // ===== C) RESPIRATORY =====
 
