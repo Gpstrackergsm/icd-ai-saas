@@ -1,0 +1,112 @@
+CASE 1
+Age: 44
+Gender: Female
+Encounter Type: ED
+
+CASE 2
+Age: 21
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 3
+Age: 37
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+
+CASE 4
+Age: 50
+Gender: Male
+Encounter Type: Inpatient
+Cancer Present: Yes
+Active Tx: Yes
+
+CASE 5
+Age: 62
+Gender: Male
+Encounter Type: Outpatient
+Infection Present: Yes
+
+CASE 6
+Age: 29
+Gender: Female
+Encounter Type: ED
+Sepsis: Yes
+
+CASE 7
+Age: 40
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+
+CASE 8
+Age: 55
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+
+CASE 9
+Age: 72
+Gender: Male
+Encounter Type: ED
+Respiratory Failure: Yes
+
+CASE 10
+Age: 60
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Location: Heel
+
+CASE 11
+Age: 38
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+
+CASE 12
+Age: 47
+Gender: Female
+Encounter Type: ED
+CKD Present: Yes
+
+CASE 13
+Age: 70
+Gender: Male
+Encounter Type: Inpatient
+Injury Present: Yes
+
+CASE 14
+Age: 33
+Gender: Female
+Encounter Type: ED
+Pneumonia: Yes
+
+CASE 15
+Age: 58
+Gender: Male
+Encounter Type: Outpatient
+Heart Failure: Yes
+
+CASE 16
+Age: 66
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+Metastasis: Yes
+
+CASE 17
+Age: 25
+Gender: Male
+Encounter Type: ED
+Infection Present: Yes
+Organism: MRSA
+
+CASE 18
+Age: 80
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 1

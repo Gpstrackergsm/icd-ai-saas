@@ -1,0 +1,43 @@
+CASE 1
+Age: 44
+Gender: Female
+Encounter Type: ED
+Diagnosis: Essential Hypertension
+
+CASE 3
+Age: 37
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Diabetic
+Location: Heel
+Stage/Depth: Muscle necrosis
+Diabetes Type: Type 2
+
+CASE 8
+Age: 55
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+Active Tx: Yes
+Site: Lung
+Type: Primary
+
+CASE 10
+Age: 60
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Heel
+Stage/Depth: Stage 3
+
+CASE 16
+Age: 66
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+Active Tx: Yes
+Metastasis: Yes
+Site: Colon
+Type: Primary

@@ -741,9 +741,9 @@ function parseInput(text) {
             case 'ulcer site':
                 if (!context.conditions.diabetes)
                     context.conditions.diabetes = { type: 'type2', complications: [] };
-                if (lowerValue.includes('left') && lowerValue.includes('foot'))
+                if (lowerValue.includes('left') && (lowerValue.includes('foot') || lowerValue.includes('ankle')))
                     context.conditions.diabetes.ulcerSite = 'left_foot';
-                else if (lowerValue.includes('right') && lowerValue.includes('foot'))
+                else if (lowerValue.includes('right') && (lowerValue.includes('foot') || lowerValue.includes('ankle')))
                     context.conditions.diabetes.ulcerSite = 'right_foot';
                 else
                     context.conditions.diabetes.ulcerSite = 'other';
@@ -757,7 +757,7 @@ function parseInput(text) {
                         context.conditions.diabetes.ulcerSeverity = 'bone';
                     }
                     else if (lowerValue.includes('muscle') || lowerValue.includes('fat exposed')) {
-                        // "Fat exposed" means muscle level in ICD-10-CM
+                        // "muscle exposed" means muscle involvement without necrosis (x5)
                         context.conditions.diabetes.ulcerSeverity = 'muscle';
                     }
                     else if (lowerValue.includes('fat') && !lowerValue.includes('exposed')) {
@@ -849,6 +849,12 @@ function parseInput(text) {
                 context.conditions.ckd.transplantStatus = parseBoolean(value);
                 break;
             // Cardiovascular
+            case 'secondary hypertension':
+                if (!context.conditions.cardiovascular)
+                    context.conditions.cardiovascular = { hypertension: false };
+                context.conditions.cardiovascular.hypertension = true;
+                context.conditions.cardiovascular.secondaryHypertension = parseBoolean(value);
+                break;
             case 'hypertension':
                 if (!context.conditions.cardiovascular)
                     context.conditions.cardiovascular = { hypertension: false };
@@ -1002,6 +1008,7 @@ function parseInput(text) {
                     };
                 }
                 break;
+            case 'resp failure':
             case 'respiratory failure':
                 if (!context.conditions.respiratory)
                     context.conditions.respiratory = {};
@@ -1066,6 +1073,7 @@ function parseInput(text) {
                     context.conditions.infection = { present: false };
                 context.conditions.infection.present = parseBoolean(value);
                 break;
+            case 'site':
             case 'infection site':
                 if (!context.conditions.infection)
                     context.conditions.infection = { present: true };
