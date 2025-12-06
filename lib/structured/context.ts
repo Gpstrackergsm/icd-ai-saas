@@ -74,7 +74,7 @@ export interface PatientContext {
         };
         infection?: {
             present: boolean;
-            site?: 'lung' | 'urinary' | 'skin' | 'blood' | 'other';
+            site?: 'lung' | 'urinary' | 'skin' | 'blood' | 'abdominal' | 'other';
             organism?: 'e_coli' | 'pseudomonas' | 'mrsa' | 'mssa' | 'klebsiella' | 'strep' | 'proteus' | 'enterococcus' | 'bacteroides' | 'enterobacter' | 'candida' | 'staph' | 'gram_negative' | 'gram_positive' | 'viral' | 'unspecified';
             source?: string; // e.g., "urinary tract infection", "pneumonia", "cellulitis"
             sepsis?: {
@@ -90,8 +90,8 @@ export interface PatientContext {
         wounds?: {
             present: boolean;
             type?: 'pressure' | 'diabetic' | 'traumatic' | 'venous' | 'arterial';
-            location?: 'sacral' | 'foot_right' | 'foot_left' | 'heel' | 'buttock' | 'other';
-            stage?: 'stage1' | 'stage2' | 'stage3' | 'stage4' | 'unstageable' | 'deep_tissue';
+            location?: 'sacral' | 'foot_right' | 'foot_left' | 'heel' | 'heel_right' | 'heel_left' | 'buttock' | 'other';
+            stage?: 'stage1' | 'stage2' | 'stage3' | 'stage4' | 'muscle_necrosis' | 'bone_necrosis' | 'unstageable' | 'deep_tissue';
             depth?: 'skin' | 'fat' | 'muscle' | 'bone';
             laterality?: 'left' | 'right' | 'bilateral';
         };
