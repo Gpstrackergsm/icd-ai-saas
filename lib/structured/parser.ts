@@ -1057,10 +1057,19 @@ export function parseInput(text: string): ParseResult {
                 } else if (lowerValue.includes('left') && lowerValue.includes('foot')) {
                     context.conditions.wounds.location = 'foot_left';
                     context.conditions.wounds.laterality = 'left';
+                } else if (lowerValue.includes('foot')) {
+                    context.conditions.wounds.location = 'foot';
+                } else if (lowerValue.includes('ankle')) {
+                    context.conditions.wounds.location = 'ankle';
                 } else if (lowerValue.includes('buttock')) {
                     context.conditions.wounds.location = 'buttock';
                 } else {
                     context.conditions.wounds.location = 'other';
+                }
+
+                // For traumatic wounds, also set injury bodyRegion with the original value
+                if (context.conditions.injury?.present && context.conditions.injury.type === 'open_wound') {
+                    context.conditions.injury.bodyRegion = value; // Use original value (e.g., "Ankle", "Foot", "Heel")
                 }
                 break;
             case 'stage/depth':

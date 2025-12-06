@@ -2071,8 +2071,13 @@ function mapInjuryCode(type: string, bodyRegion: string, laterality?: string, en
             if (laterality === 'right') code = 'S81.801';
             else if (laterality === 'left') code = 'S81.802';
             else code = 'S81.809';
-        } else if (lower.includes('foot') || lower.includes('heel') || lower.includes('ankle') || lower.includes('toe')) {
-            // S91.x - Open wound of foot (includes heel, ankle, toe)
+        } else if (lower.includes('ankle')) {
+            // S91.0xx - Open wound of ankle (separate from foot)
+            if (laterality === 'right') code = 'S91.001';
+            else if (laterality === 'left') code = 'S91.002';
+            else code = 'S91.009';
+        } else if (lower.includes('foot') || lower.includes('heel') || lower.includes('toe')) {
+            // S91.3xx - Open wound of foot (includes heel, toe, but NOT ankle)
             if (laterality === 'right') code = 'S91.301';
             else if (laterality === 'left') code = 'S91.302';
             else code = 'S91.309';

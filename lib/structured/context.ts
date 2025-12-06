@@ -90,7 +90,7 @@ export interface PatientContext {
         wounds?: {
             present: boolean;
             type?: 'pressure' | 'diabetic' | 'traumatic' | 'venous' | 'arterial';
-            location?: 'sacral' | 'foot_right' | 'foot_left' | 'heel' | 'heel_right' | 'heel_left' | 'buttock' | 'other';
+            location?: 'sacral' | 'foot_right' | 'foot_left' | 'foot' | 'ankle' | 'heel' | 'heel_right' | 'heel_left' | 'buttock' | 'other';
             stage?: 'stage1' | 'stage2' | 'stage3' | 'stage4' | 'muscle_necrosis' | 'bone_necrosis' | 'unstageable' | 'deep_tissue';
             depth?: 'skin' | 'fat' | 'muscle' | 'bone';
             laterality?: 'left' | 'right' | 'bilateral';
