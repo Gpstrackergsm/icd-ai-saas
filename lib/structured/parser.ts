@@ -1455,9 +1455,19 @@ export function parseInput(text: string): ParseResult {
         } else if (context.conditions.wounds.stage) {
             // Fallback: Map stage to severity for L97 codes
             const s = context.conditions.wounds.stage;
-            if (s === 'stage1' || s === 'stage2') context.conditions.diabetes.ulcerSeverity = 'skin';
-            else if (s === 'stage3') context.conditions.diabetes.ulcerSeverity = 'muscle'; // User Rule: Stage 3 = Muscle Necrosis (suffix 3)
-            else if (s === 'stage4') context.conditions.diabetes.ulcerSeverity = 'muscle'; // or bone, safer to assume deep
+            const currentSeverity = context.conditions.diabetes.ulcerSeverity;
+            // Only update if not already set to a higher severity (bone/muscle)
+            const isHighSeverity = currentSeverity === 'bone' || currentSeverity === 'muscle';
+
+            if ((s === 'stage1' || s === 'stage2') && !isHighSeverity) {
+                context.conditions.diabetes.ulcerSeverity = 'skin';
+            }
+            else if (s === 'stage3' && currentSeverity !== 'bone') {
+                context.conditions.diabetes.ulcerSeverity = 'muscle'; // User Rule: Stage 3 = Muscle Necrosis (suffix 3)
+            }
+            else if (s === 'stage4' && currentSeverity !== 'bone') {
+                context.conditions.diabetes.ulcerSeverity = 'muscle'; // or bone, safer to assume deep if not specified as bone
+            }
         }
 
         // CRITICAL FIX: Ensure 'foot_ulcer' is in complications list so engine picks it up
