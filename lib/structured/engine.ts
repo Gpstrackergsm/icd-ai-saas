@@ -479,6 +479,23 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     }
 
     // --- RESPIRATORY RULES ---
+    // RULE: Mechanical Ventilation & Respiratory Failure
+    // Strict coding rule: Mechanical Ventilation implies Acute Respiratory Failure (J96.00)
+    // Runs before pneumonia logic
+    if (ctx.conditions.respiratory?.mechanicalVent?.present) {
+        const hasJ96 = codes.some(c => c.code.startsWith('J96'));
+        if (!hasJ96) {
+            codes.push({
+                code: 'J96.00',
+                label: 'Acute respiratory failure, unspecified whether with hypoxia or hypercapnia',
+                rationale: 'Acute respiratory failure implied by mechanical ventilation',
+                guideline: 'ICD-10-CM J96.0',
+                trigger: 'Mechanical Ventilation = Yes',
+                rule: 'Ventilator-associated respiratory failure'
+            });
+        }
+    }
+
     // COVID-19 pneumonia (takes precedence)
     if (ctx.conditions.infection?.covid19 && ctx.conditions.respiratory?.pneumonia) {
         codes.push({
@@ -539,6 +556,8 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 rule: 'Organism-specific pneumonia code'
             });
         }
+
+
     }
 
     if (ctx.conditions.respiratory?.failure) {
@@ -1481,17 +1500,28 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
         // RULE: Drug Use
         if (s.drugUse?.present) {
-            let code = 'F19.10'; // Other drug abuse, uncomplicated
-            if (s.drugUse.type === 'opioid') code = 'F11.10';
-            else if (s.drugUse.type === 'cocaine') code = 'F14.10';
-            else if (s.drugUse.type === 'cannabis') code = 'F12.10';
+            let code = 'Z72.2'; // Default to Drug Use (not abuse) per strict coding rules
+            if (s.drugUse.type === 'opioid') code = 'F11.10'; // Abuse implied by specific type in this parser? No, should be strict.
+            // Strict check: if parser didn't say 'abuse' or 'dependence', stick to Z72.2 or F-code if type implies it?
+            // User requirement: "Drug Use: Yes" -> Z72.2 ONLY.
+            // We only use F-codes if we had 'abuse' documented.
+            // Assuming parser puts 'abuse' in 'alcoholUse' logic but generic drug use is here.
+            // Since our parser is simple, we'll default to Z72.2 unless type is strongly associated with a disorder code key.
+            // But for safety and strictness:
+            code = 'Z72.2';
+
+            if (s.drugUse.type) {
+                // If type is known, we might want specific Z codes or F codes if abuse stated.
+                // For now, strict Z72.2 is safest default.
+                // If explicit abuse logic existed, we'd use it.
+            }
 
             codes.push({
                 code: code,
-                label: `Drug abuse, ${s.drugUse.type || 'unspecified'}, uncomplicated`,
-                rationale: 'Drug use documented',
-                guideline: 'ICD-10-CM F11-F19',
-                trigger: `Drug Use Type: ${s.drugUse.type}`,
+                label: 'Drug use',
+                rationale: 'Drug use documented (without abuse/dependence)',
+                guideline: 'ICD-10-CM Z72.2',
+                trigger: 'Drug Use: Yes',
                 rule: 'Drug use code'
             });
         }
@@ -1796,10 +1826,17 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         if (code.startsWith('J44')) return 25;
 
         // 5. Organ Dysfunction (Respiratory Failure, AKI, etc.) - AFTER COPD
-        if (code.startsWith('N17') || code.startsWith('G93') || code.startsWith('J96') || code === 'G92.8' || code === 'K72.90') return 30;
+        if (code.startsWith('N17') || code.startsWith('G93') || code === 'G92.8' || code === 'K72.90') return 30;
 
-        // 6. Pneumonia - AFTER COPD and respiratory failure (when COPD is present, pneumonia is a complication)
-        if (code.startsWith('J13') || code.startsWith('J14') || code.startsWith('J15') || code.startsWith('J16') || code.startsWith('J18') || code.startsWith('J11')) return 35; // Pneumonia/Flu
+        // 5.5 Respiratory Failure - Should be PRIMARY if it caused admission (over COPD)
+        // User Rule: Pneumonia/Resp Failure > COPD.
+        // So J96 should be < 25.
+        if (code.startsWith('J96')) return 22;
+
+        // 6. Pneumonia - Should be PRIMARY if it caused admission (over COPD)
+        // User Rule: Pneumonia > COPD.
+        // So J1x should be < 25.
+        if (code.startsWith('J13') || code.startsWith('J14') || code.startsWith('J15') || code.startsWith('J16') || code.startsWith('J18') || code.startsWith('J11')) return 23; // Pneumonia/Flu
 
         // 7. Diabetes
         if (code.startsWith('E08') || code.startsWith('E09') || code.startsWith('E10') || code.startsWith('E11') || code.startsWith('E13')) return 50;

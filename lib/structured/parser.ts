@@ -802,6 +802,18 @@ export function parseInput(text: string): ParseResult {
                 break;
 
             // Respiratory
+            case 'mechanical ventilation':
+                if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                context.conditions.respiratory.mechanicalVent = { present: parseBoolean(value) };
+                break;
+            case 'ventilation duration':
+                if (!context.conditions.respiratory?.mechanicalVent) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                    context.conditions.respiratory.mechanicalVent = { present: true, duration: 0 };
+                }
+                context.conditions.respiratory.mechanicalVent.duration = parseInt(value) || 0;
+                break;
+
             case 'pneumonia':
                 if (!context.conditions.respiratory) context.conditions.respiratory = {};
 
@@ -1440,6 +1452,12 @@ export function parseInput(text: string): ParseResult {
         // Sync Depth/Severity
         if (context.conditions.wounds.depth) {
             context.conditions.diabetes.ulcerSeverity = context.conditions.wounds.depth;
+        } else if (context.conditions.wounds.stage) {
+            // Fallback: Map stage to severity for L97 codes
+            const s = context.conditions.wounds.stage;
+            if (s === 'stage1' || s === 'stage2') context.conditions.diabetes.ulcerSeverity = 'skin';
+            else if (s === 'stage3') context.conditions.diabetes.ulcerSeverity = 'fat';
+            else if (s === 'stage4') context.conditions.diabetes.ulcerSeverity = 'muscle'; // or bone, safer to assume deep
         }
 
         // CRITICAL FIX: Ensure 'foot_ulcer' is in complications list so engine picks it up
