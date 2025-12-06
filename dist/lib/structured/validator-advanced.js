@@ -9,7 +9,7 @@ function applyAdvancedCodingRules(codes, input) {
     return result.codes;
 }
 function applyComprehensiveMedicalRules(codes, input) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3, _4, _5, _6;
     const lower = input.toLowerCase();
     let correctedCodes = [...codes];
     const errors = [];
@@ -472,11 +472,54 @@ function applyComprehensiveMedicalRules(codes, input) {
                 });
             }
         }
+        // Rule 13: Infection source codes - CRITICAL FIX for sepsis + lung
+        const infectionSite = (_q = (_p = lower.match(/infection site:\s*([^\n]+)/i)) === null || _p === void 0 ? void 0 : _p[1]) === null || _q === void 0 ? void 0 : _q.toLowerCase();
+        if (infectionSite === null || infectionSite === void 0 ? void 0 : infectionSite.includes('lung')) {
+            // ALWAYS add J-code when sepsis + lung infection
+            const hasJCode = correctedCodes.some(c => c.code.startsWith('J12') || c.code.startsWith('J15') || c.code === 'J18.9');
+            if (!hasJCode) {
+                // Add appropriate pneumonia code based on organism
+                let pneumoniaCode = 'J18.9'; // Default unspecified
+                if (organism === null || organism === void 0 ? void 0 : organism.includes('viral'))
+                    pneumoniaCode = 'J12.9';
+                else if (organism === null || organism === void 0 ? void 0 : organism.includes('mrsa'))
+                    pneumoniaCode = 'J15.212';
+                else if (organism === null || organism === void 0 ? void 0 : organism.includes('e. coli'))
+                    pneumoniaCode = 'J15.5';
+                else if (organism === null || organism === void 0 ? void 0 : organism.includes('pseudomonas'))
+                    pneumoniaCode = 'J15.1';
+                correctedCodes.push({
+                    code: pneumoniaCode,
+                    label: 'Pneumonia',
+                    isPrimary: false
+                });
+            }
+        }
+        else if (infectionSite === null || infectionSite === void 0 ? void 0 : infectionSite.includes('urinary')) {
+            const hasN390 = correctedCodes.some(c => c.code === 'N39.0');
+            if (!hasN390) {
+                correctedCodes.push({
+                    code: 'N39.0',
+                    label: 'Urinary tract infection',
+                    isPrimary: false
+                });
+            }
+        }
+        else if (infectionSite === null || infectionSite === void 0 ? void 0 : infectionSite.includes('skin')) {
+            const hasL03 = correctedCodes.some(c => c.code.startsWith('L03'));
+            if (!hasL03) {
+                correctedCodes.push({
+                    code: 'L03.317',
+                    label: 'Cellulitis',
+                    isPrimary: false
+                });
+            }
+        }
     }
     // ===== E) CARDIAC + RENAL =====
     // Get HF details first (needed for multiple sections)
-    const hfType = (_q = (_p = lower.match(/heart failure:\s*([^\n]+)/i)) === null || _p === void 0 ? void 0 : _p[1]) === null || _q === void 0 ? void 0 : _q.toLowerCase();
-    const hfAcuity = (_s = (_r = lower.match(/heart failure acuity:\s*([^\n]+)/i)) === null || _r === void 0 ? void 0 : _r[1]) === null || _s === void 0 ? void 0 : _s.toLowerCase();
+    const hfType = (_s = (_r = lower.match(/heart failure:\s*([^\n]+)/i)) === null || _r === void 0 ? void 0 : _r[1]) === null || _s === void 0 ? void 0 : _s.toLowerCase();
+    const hfAcuity = (_u = (_t = lower.match(/heart failure acuity:\s*([^\n]+)/i)) === null || _t === void 0 ? void 0 : _t[1]) === null || _u === void 0 ? void 0 : _u.toLowerCase();
     // Rule 14-16: HTN combinations
     const hasHTN = lower.includes('hypertension: yes');
     const hasHF = lower.includes('heart failure:') && !lower.includes('heart failure: none');
@@ -617,7 +660,7 @@ function applyComprehensiveMedicalRules(codes, input) {
     }
     // ===== F) DIABETES DETAILING (Rules 19-22) =====
     const hasDiabetes = lower.includes('diabetes type:');
-    const dmComplications = (_u = (_t = lower.match(/complications:\s*([^\n]+)/i)) === null || _t === void 0 ? void 0 : _t[1]) === null || _u === void 0 ? void 0 : _u.toLowerCase();
+    const dmComplications = (_w = (_v = lower.match(/complications:\s*([^\n]+)/i)) === null || _v === void 0 ? void 0 : _v[1]) === null || _w === void 0 ? void 0 : _w.toLowerCase();
     const dmType = lower.includes('diabetes type: type 1') || lower.includes('type 1') ? 'E10' : 'E11';
     if (hasDiabetes && dmComplications) {
         // Rule 20: Neuropathy specificity
@@ -658,9 +701,9 @@ function applyComprehensiveMedicalRules(codes, input) {
     }
     // ===== G) MALIGNANCY (Rules 23-26) =====
     const hasCancer = lower.includes('cancer present: yes') || lower.includes('active tx: yes');
-    const cancerSite = (_w = (_v = lower.match(/site:\s*([^\n]+)/i)) === null || _v === void 0 ? void 0 : _v[1]) === null || _w === void 0 ? void 0 : _w.toLowerCase();
+    const cancerSite = (_y = (_x = lower.match(/site:\s*([^\n]+)/i)) === null || _x === void 0 ? void 0 : _x[1]) === null || _y === void 0 ? void 0 : _y.toLowerCase();
     const hasMetastasis = lower.includes('metastasis: yes');
-    const metastaticSite = (_y = (_x = lower.match(/metastatic site:\s*([^\n]+)/i)) === null || _x === void 0 ? void 0 : _x[1]) === null || _y === void 0 ? void 0 : _y.toLowerCase();
+    const metastaticSite = (_0 = (_z = lower.match(/metastatic site:\s*([^\n]+)/i)) === null || _z === void 0 ? void 0 : _z[1]) === null || _0 === void 0 ? void 0 : _0.toLowerCase();
     const isHistory = lower.includes('history of cancer');
     // Rule 24: Forbid Z85 unless "History of" explicit
     if (!isHistory) {
@@ -745,7 +788,7 @@ function applyComprehensiveMedicalRules(codes, input) {
     }
     // ===== H) INFECTION SOURCE CODES (Rule 13 Enhancement) =====
     if (lower.includes('sepsis: yes') || lower.includes('sepsis:yes')) {
-        const infectionSite = (_0 = (_z = lower.match(/infection site:\s*([^\n]+)/i)) === null || _z === void 0 ? void 0 : _z[1]) === null || _0 === void 0 ? void 0 : _0.toLowerCase();
+        const infectionSite = (_2 = (_1 = lower.match(/infection site:\s*([^\n]+)/i)) === null || _1 === void 0 ? void 0 : _1[1]) === null || _2 === void 0 ? void 0 : _2.toLowerCase();
         if (infectionSite) {
             // Rule 14: Add infection source as secondary
             if (infectionSite.includes('urinary') || infectionSite.includes('uti')) {
@@ -776,8 +819,8 @@ function applyComprehensiveMedicalRules(codes, input) {
     const hasInfection = lower.includes('infection present: yes');
     const hasSepsis = lower.includes('sepsis: yes') || lower.includes('sepsis:yes');
     if (hasInfection && !hasSepsis) {
-        const infectionSite = (_2 = (_1 = lower.match(/infection site:\s*([^\n]+)/i)) === null || _1 === void 0 ? void 0 : _1[1]) === null || _2 === void 0 ? void 0 : _2.toLowerCase();
-        const organism = (_4 = (_3 = lower.match(/organism:\s*([^\n]+)/i)) === null || _3 === void 0 ? void 0 : _3[1]) === null || _4 === void 0 ? void 0 : _4.toLowerCase();
+        const infectionSite = (_4 = (_3 = lower.match(/infection site:\s*([^\n]+)/i)) === null || _3 === void 0 ? void 0 : _3[1]) === null || _4 === void 0 ? void 0 : _4.toLowerCase();
+        const organism = (_6 = (_5 = lower.match(/organism:\s*([^\n]+)/i)) === null || _5 === void 0 ? void 0 : _5[1]) === null || _6 === void 0 ? void 0 : _6.toLowerCase();
         if (infectionSite) {
             // Skin infection → Cellulitis
             if (infectionSite.includes('skin')) {

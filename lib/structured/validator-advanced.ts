@@ -424,6 +424,49 @@ export function applyComprehensiveMedicalRules(
                 });
             }
         }
+
+        // Rule 13: Infection source codes - CRITICAL FIX for sepsis + lung
+        const infectionSite = lower.match(/infection site:\s*([^\n]+)/i)?.[1]?.toLowerCase();
+
+        if (infectionSite?.includes('lung')) {
+            // ALWAYS add J-code when sepsis + lung infection
+            const hasJCode = correctedCodes.some(c =>
+                c.code.startsWith('J12') || c.code.startsWith('J15') || c.code === 'J18.9'
+            );
+
+            if (!hasJCode) {
+                // Add appropriate pneumonia code based on organism
+                let pneumoniaCode = 'J18.9'; // Default unspecified
+                if (organism?.includes('viral')) pneumoniaCode = 'J12.9';
+                else if (organism?.includes('mrsa')) pneumoniaCode = 'J15.212';
+                else if (organism?.includes('e. coli')) pneumoniaCode = 'J15.5';
+                else if (organism?.includes('pseudomonas')) pneumoniaCode = 'J15.1';
+
+                correctedCodes.push({
+                    code: pneumoniaCode,
+                    label: 'Pneumonia',
+                    isPrimary: false
+                });
+            }
+        } else if (infectionSite?.includes('urinary')) {
+            const hasN390 = correctedCodes.some(c => c.code === 'N39.0');
+            if (!hasN390) {
+                correctedCodes.push({
+                    code: 'N39.0',
+                    label: 'Urinary tract infection',
+                    isPrimary: false
+                });
+            }
+        } else if (infectionSite?.includes('skin')) {
+            const hasL03 = correctedCodes.some(c => c.code.startsWith('L03'));
+            if (!hasL03) {
+                correctedCodes.push({
+                    code: 'L03.317',
+                    label: 'Cellulitis',
+                    isPrimary: false
+                });
+            }
+        }
     }
 
     // ===== E) CARDIAC + RENAL =====
