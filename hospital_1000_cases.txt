@@ -1,0 +1,8228 @@
+CASE 1
+Age: 45
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: MRSA
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 2
+Age: 52
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: E. coli
+Sepsis: Yes
+
+CASE 3
+Age: 58
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: Pseudomonas
+Sepsis: Yes
+
+CASE 4
+Age: 63
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: Staphylococcus aureus
+Sepsis: Yes
+
+CASE 5
+Age: 68
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: Streptococcus
+Sepsis: Yes
+
+CASE 6
+Age: 72
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: Klebsiella
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 7
+Age: 75
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: Proteus
+Sepsis: Yes
+
+CASE 8
+Age: 80
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: Candida
+Sepsis: Yes
+
+CASE 9
+Age: 85
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: Unspecified
+Sepsis: Yes
+
+CASE 10
+Age: 45
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: Viral
+Sepsis: Yes
+
+CASE 11
+Age: 52
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: MRSA
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 12
+Age: 58
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: E. coli
+Sepsis: Yes
+
+CASE 13
+Age: 63
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: Pseudomonas
+Sepsis: Yes
+
+CASE 14
+Age: 68
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: Staphylococcus aureus
+Sepsis: Yes
+
+CASE 15
+Age: 72
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: Streptococcus
+Sepsis: Yes
+
+CASE 16
+Age: 75
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: Klebsiella
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 17
+Age: 80
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: Proteus
+Sepsis: Yes
+
+CASE 18
+Age: 85
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: Candida
+Sepsis: Yes
+
+CASE 19
+Age: 45
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: Unspecified
+Sepsis: Yes
+
+CASE 20
+Age: 52
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: Viral
+Sepsis: Yes
+
+CASE 21
+Age: 58
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: MRSA
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 22
+Age: 63
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: E. coli
+Sepsis: Yes
+
+CASE 23
+Age: 68
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: Pseudomonas
+Sepsis: Yes
+
+CASE 24
+Age: 72
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: Staphylococcus aureus
+Sepsis: Yes
+
+CASE 25
+Age: 75
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: Streptococcus
+Sepsis: Yes
+
+CASE 26
+Age: 80
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: Klebsiella
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 27
+Age: 85
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: Proteus
+Sepsis: Yes
+
+CASE 28
+Age: 45
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: Candida
+Sepsis: Yes
+
+CASE 29
+Age: 52
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: Unspecified
+Sepsis: Yes
+
+CASE 30
+Age: 58
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: Viral
+Sepsis: Yes
+
+CASE 31
+Age: 63
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: MRSA
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 32
+Age: 68
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: E. coli
+Sepsis: Yes
+
+CASE 33
+Age: 72
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: Pseudomonas
+Sepsis: Yes
+
+CASE 34
+Age: 75
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: Staphylococcus aureus
+Sepsis: Yes
+
+CASE 35
+Age: 80
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: Streptococcus
+Sepsis: Yes
+
+CASE 36
+Age: 85
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: Klebsiella
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 37
+Age: 45
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: Proteus
+Sepsis: Yes
+
+CASE 38
+Age: 52
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: Candida
+Sepsis: Yes
+
+CASE 39
+Age: 58
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: Unspecified
+Sepsis: Yes
+
+CASE 40
+Age: 63
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: Viral
+Sepsis: Yes
+
+CASE 41
+Age: 68
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: MRSA
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 42
+Age: 72
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: E. coli
+Sepsis: Yes
+
+CASE 43
+Age: 75
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: Pseudomonas
+Sepsis: Yes
+
+CASE 44
+Age: 80
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: Staphylococcus aureus
+Sepsis: Yes
+
+CASE 45
+Age: 85
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: Streptococcus
+Sepsis: Yes
+
+CASE 46
+Age: 45
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: Klebsiella
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 47
+Age: 52
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: Proteus
+Sepsis: Yes
+
+CASE 48
+Age: 58
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: Candida
+Sepsis: Yes
+
+CASE 49
+Age: 63
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: Unspecified
+Sepsis: Yes
+
+CASE 50
+Age: 68
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: Viral
+Sepsis: Yes
+
+CASE 51
+Age: 72
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: MRSA
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 52
+Age: 75
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: E. coli
+Sepsis: Yes
+
+CASE 53
+Age: 80
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: Pseudomonas
+Sepsis: Yes
+
+CASE 54
+Age: 85
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: Staphylococcus aureus
+Sepsis: Yes
+
+CASE 55
+Age: 45
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: Streptococcus
+Sepsis: Yes
+
+CASE 56
+Age: 52
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: Klebsiella
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 57
+Age: 58
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: Proteus
+Sepsis: Yes
+
+CASE 58
+Age: 63
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: Candida
+Sepsis: Yes
+
+CASE 59
+Age: 68
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: Unspecified
+Sepsis: Yes
+
+CASE 60
+Age: 72
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: Viral
+Sepsis: Yes
+
+CASE 61
+Age: 75
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: MRSA
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 62
+Age: 80
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: E. coli
+Sepsis: Yes
+
+CASE 63
+Age: 85
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: Pseudomonas
+Sepsis: Yes
+
+CASE 64
+Age: 45
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: Staphylococcus aureus
+Sepsis: Yes
+
+CASE 65
+Age: 52
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: Streptococcus
+Sepsis: Yes
+
+CASE 66
+Age: 58
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: Klebsiella
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 67
+Age: 63
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: Proteus
+Sepsis: Yes
+
+CASE 68
+Age: 68
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: Candida
+Sepsis: Yes
+
+CASE 69
+Age: 72
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: Unspecified
+Sepsis: Yes
+
+CASE 70
+Age: 75
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: Viral
+Sepsis: Yes
+
+CASE 71
+Age: 80
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: MRSA
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 72
+Age: 85
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: E. coli
+Sepsis: Yes
+
+CASE 73
+Age: 45
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: Pseudomonas
+Sepsis: Yes
+
+CASE 74
+Age: 52
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: Staphylococcus aureus
+Sepsis: Yes
+
+CASE 75
+Age: 58
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: Streptococcus
+Sepsis: Yes
+
+CASE 76
+Age: 63
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: Klebsiella
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 77
+Age: 68
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: Proteus
+Sepsis: Yes
+
+CASE 78
+Age: 72
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: Candida
+Sepsis: Yes
+
+CASE 79
+Age: 75
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: Unspecified
+Sepsis: Yes
+
+CASE 80
+Age: 80
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: Viral
+Sepsis: Yes
+
+CASE 81
+Age: 85
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: MRSA
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 82
+Age: 45
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: E. coli
+Sepsis: Yes
+
+CASE 83
+Age: 52
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: Pseudomonas
+Sepsis: Yes
+
+CASE 84
+Age: 58
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: Staphylococcus aureus
+Sepsis: Yes
+
+CASE 85
+Age: 63
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: Streptococcus
+Sepsis: Yes
+
+CASE 86
+Age: 68
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: Klebsiella
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 87
+Age: 72
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: Proteus
+Sepsis: Yes
+
+CASE 88
+Age: 75
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: Candida
+Sepsis: Yes
+
+CASE 89
+Age: 80
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: Unspecified
+Sepsis: Yes
+
+CASE 90
+Age: 85
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: Viral
+Sepsis: Yes
+
+CASE 91
+Age: 45
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: MRSA
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 92
+Age: 52
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: E. coli
+Sepsis: Yes
+
+CASE 93
+Age: 58
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: Pseudomonas
+Sepsis: Yes
+
+CASE 94
+Age: 63
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: Staphylococcus aureus
+Sepsis: Yes
+
+CASE 95
+Age: 68
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: Streptococcus
+Sepsis: Yes
+
+CASE 96
+Age: 72
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: Klebsiella
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 97
+Age: 75
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: Proteus
+Sepsis: Yes
+
+CASE 98
+Age: 80
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: Candida
+Sepsis: Yes
+
+CASE 99
+Age: 85
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: Unspecified
+Sepsis: Yes
+
+CASE 100
+Age: 45
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: Viral
+Sepsis: Yes
+
+CASE 101
+Age: 52
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: MRSA
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 102
+Age: 58
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: E. coli
+Sepsis: Yes
+
+CASE 103
+Age: 63
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: Pseudomonas
+Sepsis: Yes
+
+CASE 104
+Age: 68
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: Staphylococcus aureus
+Sepsis: Yes
+
+CASE 105
+Age: 72
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: Streptococcus
+Sepsis: Yes
+
+CASE 106
+Age: 75
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: Klebsiella
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 107
+Age: 80
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: Proteus
+Sepsis: Yes
+
+CASE 108
+Age: 85
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: Candida
+Sepsis: Yes
+
+CASE 109
+Age: 45
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: Unspecified
+Sepsis: Yes
+
+CASE 110
+Age: 52
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: Viral
+Sepsis: Yes
+
+CASE 111
+Age: 58
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: MRSA
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 112
+Age: 63
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: E. coli
+Sepsis: Yes
+
+CASE 113
+Age: 68
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: Pseudomonas
+Sepsis: Yes
+
+CASE 114
+Age: 72
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: Staphylococcus aureus
+Sepsis: Yes
+
+CASE 115
+Age: 75
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Lung
+Organism: Streptococcus
+Sepsis: Yes
+
+CASE 116
+Age: 80
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Urinary tract
+Organism: Klebsiella
+Sepsis: Yes
+Septic Shock: Yes
+
+CASE 117
+Age: 85
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Skin
+Organism: Proteus
+Sepsis: Yes
+
+CASE 118
+Age: 45
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Blood
+Organism: Candida
+Sepsis: Yes
+
+CASE 119
+Age: 52
+Gender: Male
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Abdominal
+Organism: Unspecified
+Sepsis: Yes
+
+CASE 120
+Age: 58
+Gender: Female
+Encounter Type: Inpatient
+Infection Present: Yes
+Infection Site: Wound
+Organism: Viral
+Sepsis: Yes
+
+CASE 121
+Age: 35
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 122
+Age: 36
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 2
+
+CASE 123
+Age: 37
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 124
+Age: 38
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Bone exposed
+Insulin Use: Yes
+
+CASE 125
+Age: 39
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 126
+Age: 40
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 127
+Age: 41
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 128
+Age: 42
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 3
+
+CASE 129
+Age: 43
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 130
+Age: 44
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Fat exposed
+Insulin Use: Yes
+
+CASE 131
+Age: 45
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 132
+Age: 46
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 133
+Age: 47
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 134
+Age: 48
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 4
+
+CASE 135
+Age: 49
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 136
+Age: 50
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Bone exposed
+Insulin Use: Yes
+
+CASE 137
+Age: 51
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 138
+Age: 52
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 139
+Age: 53
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 140
+Age: 54
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 5
+
+CASE 141
+Age: 55
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 142
+Age: 56
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Fat exposed
+Insulin Use: Yes
+
+CASE 143
+Age: 57
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 144
+Age: 58
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 145
+Age: 59
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 146
+Age: 60
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 1
+
+CASE 147
+Age: 61
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 148
+Age: 62
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Bone exposed
+Insulin Use: Yes
+
+CASE 149
+Age: 63
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 150
+Age: 64
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 151
+Age: 65
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 152
+Age: 66
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 2
+
+CASE 153
+Age: 67
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 154
+Age: 68
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Fat exposed
+Insulin Use: Yes
+
+CASE 155
+Age: 69
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 156
+Age: 70
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 157
+Age: 71
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 158
+Age: 72
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 3
+
+CASE 159
+Age: 73
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 160
+Age: 74
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Bone exposed
+Insulin Use: Yes
+
+CASE 161
+Age: 75
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 162
+Age: 76
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 163
+Age: 77
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 164
+Age: 78
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 4
+
+CASE 165
+Age: 79
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 166
+Age: 80
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Fat exposed
+Insulin Use: Yes
+
+CASE 167
+Age: 81
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 168
+Age: 82
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 169
+Age: 83
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 170
+Age: 84
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 5
+
+CASE 171
+Age: 35
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 172
+Age: 36
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Bone exposed
+Insulin Use: Yes
+
+CASE 173
+Age: 37
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 174
+Age: 38
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 175
+Age: 39
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 176
+Age: 40
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 1
+
+CASE 177
+Age: 41
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 178
+Age: 42
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Fat exposed
+Insulin Use: Yes
+
+CASE 179
+Age: 43
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 180
+Age: 44
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 181
+Age: 45
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 182
+Age: 46
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 2
+
+CASE 183
+Age: 47
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 184
+Age: 48
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Bone exposed
+Insulin Use: Yes
+
+CASE 185
+Age: 49
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 186
+Age: 50
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 187
+Age: 51
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 188
+Age: 52
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 3
+
+CASE 189
+Age: 53
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 190
+Age: 54
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Fat exposed
+Insulin Use: Yes
+
+CASE 191
+Age: 55
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 192
+Age: 56
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 193
+Age: 57
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 194
+Age: 58
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 4
+
+CASE 195
+Age: 59
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 196
+Age: 60
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Bone exposed
+Insulin Use: Yes
+
+CASE 197
+Age: 61
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 198
+Age: 62
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 199
+Age: 63
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 200
+Age: 64
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 5
+
+CASE 201
+Age: 65
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 202
+Age: 66
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Fat exposed
+Insulin Use: Yes
+
+CASE 203
+Age: 67
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 204
+Age: 68
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 205
+Age: 69
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 206
+Age: 70
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 1
+
+CASE 207
+Age: 71
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 208
+Age: 72
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Bone exposed
+Insulin Use: Yes
+
+CASE 209
+Age: 73
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 210
+Age: 74
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 211
+Age: 75
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 212
+Age: 76
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 2
+
+CASE 213
+Age: 77
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 214
+Age: 78
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Fat exposed
+Insulin Use: Yes
+
+CASE 215
+Age: 79
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 216
+Age: 80
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 217
+Age: 81
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 218
+Age: 82
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 3
+
+CASE 219
+Age: 83
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 220
+Age: 84
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Bone exposed
+Insulin Use: Yes
+
+CASE 221
+Age: 35
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 222
+Age: 36
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 223
+Age: 37
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 224
+Age: 38
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 4
+
+CASE 225
+Age: 39
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 226
+Age: 40
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Fat exposed
+Insulin Use: Yes
+
+CASE 227
+Age: 41
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 228
+Age: 42
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 229
+Age: 43
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 230
+Age: 44
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 5
+
+CASE 231
+Age: 45
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 232
+Age: 46
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Bone exposed
+Insulin Use: Yes
+
+CASE 233
+Age: 47
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 234
+Age: 48
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 235
+Age: 49
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 236
+Age: 50
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 1
+
+CASE 237
+Age: 51
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 238
+Age: 52
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Fat exposed
+Insulin Use: Yes
+
+CASE 239
+Age: 53
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 240
+Age: 54
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 241
+Age: 55
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 242
+Age: 56
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 2
+
+CASE 243
+Age: 57
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 244
+Age: 58
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Bone exposed
+Insulin Use: Yes
+
+CASE 245
+Age: 59
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 246
+Age: 60
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 247
+Age: 61
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 248
+Age: 62
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 3
+
+CASE 249
+Age: 63
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 250
+Age: 64
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Fat exposed
+Insulin Use: Yes
+
+CASE 251
+Age: 65
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 252
+Age: 66
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 253
+Age: 67
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 254
+Age: 68
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 4
+
+CASE 255
+Age: 69
+Gender: Male
+Encounter Type: Outpatient
+Diabetes Type: Type 1
+Complications: Neuropathy
+
+CASE 256
+Age: 70
+Gender: Female
+Encounter Type: Inpatient
+Diabetes Type: Type 2
+Complications: Foot Ulcer
+Ulcer Site: Left Foot
+Ulcer Severity: Bone exposed
+Insulin Use: Yes
+
+CASE 257
+Age: 71
+Gender: Male
+Encounter Type: ED
+Diabetes Type: Type 1
+Complications: Hypoglycemia
+
+CASE 258
+Age: 72
+Gender: Female
+Encounter Type: Outpatient
+Diabetes Type: Type 2
+Complications: Hyperglycemia
+
+CASE 259
+Age: 73
+Gender: Male
+Encounter Type: Inpatient
+Diabetes Type: Type 1
+Complications: Retinopathy
+
+CASE 260
+Age: 74
+Gender: Female
+Encounter Type: ED
+Diabetes Type: Type 2
+Complications: Nephropathy/CKD
+CKD Stage: 5
+
+CASE 261
+Age: 45
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+
+CASE 262
+Age: 46
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 263
+Age: 47
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 264
+Age: 48
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 265
+Age: 49
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 266
+Age: 50
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+
+CASE 267
+Age: 51
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 268
+Age: 52
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 269
+Age: 53
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 270
+Age: 54
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 271
+Age: 55
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+
+CASE 272
+Age: 56
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 273
+Age: 57
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 274
+Age: 58
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 275
+Age: 59
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 276
+Age: 60
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+
+CASE 277
+Age: 61
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 278
+Age: 62
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 279
+Age: 63
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 280
+Age: 64
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 281
+Age: 65
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+
+CASE 282
+Age: 66
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 283
+Age: 67
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 284
+Age: 68
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 285
+Age: 69
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 286
+Age: 70
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+
+CASE 287
+Age: 71
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 288
+Age: 72
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 289
+Age: 73
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 290
+Age: 74
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 291
+Age: 75
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+
+CASE 292
+Age: 76
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 293
+Age: 77
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 294
+Age: 78
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 295
+Age: 79
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 296
+Age: 80
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+
+CASE 297
+Age: 81
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 298
+Age: 82
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 299
+Age: 83
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 300
+Age: 84
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 301
+Age: 45
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+
+CASE 302
+Age: 46
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 303
+Age: 47
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 304
+Age: 48
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 305
+Age: 49
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 306
+Age: 50
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+
+CASE 307
+Age: 51
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 308
+Age: 52
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 309
+Age: 53
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 310
+Age: 54
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 311
+Age: 55
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+
+CASE 312
+Age: 56
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 313
+Age: 57
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 314
+Age: 58
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 315
+Age: 59
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 316
+Age: 60
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+
+CASE 317
+Age: 61
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 318
+Age: 62
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 319
+Age: 63
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 320
+Age: 64
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 321
+Age: 65
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+
+CASE 322
+Age: 66
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 323
+Age: 67
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 324
+Age: 68
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 325
+Age: 69
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 326
+Age: 70
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+
+CASE 327
+Age: 71
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 328
+Age: 72
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 329
+Age: 73
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 330
+Age: 74
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 331
+Age: 75
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+
+CASE 332
+Age: 76
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 333
+Age: 77
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 334
+Age: 78
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 335
+Age: 79
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 336
+Age: 80
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+
+CASE 337
+Age: 81
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 338
+Age: 82
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 339
+Age: 83
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 340
+Age: 84
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 341
+Age: 45
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+
+CASE 342
+Age: 46
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 343
+Age: 47
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 344
+Age: 48
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 345
+Age: 49
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 346
+Age: 50
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+
+CASE 347
+Age: 51
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 348
+Age: 52
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 349
+Age: 53
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 350
+Age: 54
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 351
+Age: 55
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+
+CASE 352
+Age: 56
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 353
+Age: 57
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 354
+Age: 58
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 355
+Age: 59
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 356
+Age: 60
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+
+CASE 357
+Age: 61
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 358
+Age: 62
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 359
+Age: 63
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 360
+Age: 64
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 361
+Age: 65
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+
+CASE 362
+Age: 66
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 363
+Age: 67
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 364
+Age: 68
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 365
+Age: 69
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 366
+Age: 70
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+
+CASE 367
+Age: 71
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 368
+Age: 72
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 369
+Age: 73
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 370
+Age: 74
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 371
+Age: 75
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+
+CASE 372
+Age: 76
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 373
+Age: 77
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 374
+Age: 78
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 375
+Age: 79
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 376
+Age: 80
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+
+CASE 377
+Age: 81
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 378
+Age: 82
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 379
+Age: 83
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 380
+Age: 84
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 381
+Age: 45
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+
+CASE 382
+Age: 46
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 383
+Age: 47
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 384
+Age: 48
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 385
+Age: 49
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 386
+Age: 50
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+
+CASE 387
+Age: 51
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 388
+Age: 52
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 389
+Age: 53
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 390
+Age: 54
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 391
+Age: 55
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+
+CASE 392
+Age: 56
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 393
+Age: 57
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 394
+Age: 58
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 395
+Age: 59
+Gender: Male
+Encounter Type: Outpatient
+Hypertension: Yes
+Heart Failure: Combined
+Heart Failure Acuity: Acute on chronic
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 396
+Age: 60
+Gender: Female
+Encounter Type: Inpatient
+Hypertension: Yes
+
+CASE 397
+Age: 61
+Gender: Male
+Encounter Type: ED
+Hypertension: Yes
+Heart Failure: Diastolic
+Heart Failure Acuity: Chronic
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 398
+Age: 62
+Gender: Female
+Encounter Type: Outpatient
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 399
+Age: 63
+Gender: Male
+Encounter Type: Inpatient
+Hypertension: Yes
+Heart Failure: Systolic
+Heart Failure Acuity: Acute
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 400
+Age: 64
+Gender: Female
+Encounter Type: ED
+Hypertension: Yes
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 401
+Age: 55
+Gender: Male
+Encounter Type: Inpatient
+Pneumonia: Yes
+Pneumonia Organism: MRSA
+Respiratory Failure: Acute
+
+CASE 402
+Age: 56
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Respiratory Failure: Chronic
+
+CASE 403
+Age: 57
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: E. coli
+
+CASE 404
+Age: 58
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Viral
+
+CASE 405
+Age: 59
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: Streptococcus
+
+CASE 406
+Age: 60
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Unspecified
+Respiratory Failure: Acute on chronic
+
+CASE 407
+Age: 61
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Respiratory Failure: Acute
+
+CASE 408
+Age: 62
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Pseudomonas
+
+CASE 409
+Age: 63
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: E. coli
+
+CASE 410
+Age: 64
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Viral
+
+CASE 411
+Age: 65
+Gender: Male
+Encounter Type: Inpatient
+Pneumonia: Yes
+Pneumonia Organism: Streptococcus
+Respiratory Failure: Chronic
+
+CASE 412
+Age: 66
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Respiratory Failure: Acute on chronic
+
+CASE 413
+Age: 67
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: MRSA
+
+CASE 414
+Age: 68
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Pseudomonas
+
+CASE 415
+Age: 69
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: E. coli
+
+CASE 416
+Age: 70
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Viral
+Respiratory Failure: Acute
+
+CASE 417
+Age: 71
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Respiratory Failure: Chronic
+
+CASE 418
+Age: 72
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Unspecified
+
+CASE 419
+Age: 73
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: MRSA
+
+CASE 420
+Age: 74
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Pseudomonas
+
+CASE 421
+Age: 75
+Gender: Male
+Encounter Type: Inpatient
+Pneumonia: Yes
+Pneumonia Organism: E. coli
+Respiratory Failure: Acute on chronic
+
+CASE 422
+Age: 76
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Respiratory Failure: Acute
+
+CASE 423
+Age: 77
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: Streptococcus
+
+CASE 424
+Age: 78
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Unspecified
+
+CASE 425
+Age: 79
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: MRSA
+
+CASE 426
+Age: 80
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Pseudomonas
+Respiratory Failure: Chronic
+
+CASE 427
+Age: 81
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Respiratory Failure: Acute on chronic
+
+CASE 428
+Age: 82
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Viral
+
+CASE 429
+Age: 83
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: Streptococcus
+
+CASE 430
+Age: 84
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Unspecified
+
+CASE 431
+Age: 55
+Gender: Male
+Encounter Type: Inpatient
+Pneumonia: Yes
+Pneumonia Organism: MRSA
+Respiratory Failure: Acute
+
+CASE 432
+Age: 56
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Respiratory Failure: Chronic
+
+CASE 433
+Age: 57
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: E. coli
+
+CASE 434
+Age: 58
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Viral
+
+CASE 435
+Age: 59
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: Streptococcus
+
+CASE 436
+Age: 60
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Unspecified
+Respiratory Failure: Acute on chronic
+
+CASE 437
+Age: 61
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Respiratory Failure: Acute
+
+CASE 438
+Age: 62
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Pseudomonas
+
+CASE 439
+Age: 63
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: E. coli
+
+CASE 440
+Age: 64
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Viral
+
+CASE 441
+Age: 65
+Gender: Male
+Encounter Type: Inpatient
+Pneumonia: Yes
+Pneumonia Organism: Streptococcus
+Respiratory Failure: Chronic
+
+CASE 442
+Age: 66
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Respiratory Failure: Acute on chronic
+
+CASE 443
+Age: 67
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: MRSA
+
+CASE 444
+Age: 68
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Pseudomonas
+
+CASE 445
+Age: 69
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: E. coli
+
+CASE 446
+Age: 70
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Viral
+Respiratory Failure: Acute
+
+CASE 447
+Age: 71
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Respiratory Failure: Chronic
+
+CASE 448
+Age: 72
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Unspecified
+
+CASE 449
+Age: 73
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: MRSA
+
+CASE 450
+Age: 74
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Pseudomonas
+
+CASE 451
+Age: 75
+Gender: Male
+Encounter Type: Inpatient
+Pneumonia: Yes
+Pneumonia Organism: E. coli
+Respiratory Failure: Acute on chronic
+
+CASE 452
+Age: 76
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Respiratory Failure: Acute
+
+CASE 453
+Age: 77
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: Streptococcus
+
+CASE 454
+Age: 78
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Unspecified
+
+CASE 455
+Age: 79
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: MRSA
+
+CASE 456
+Age: 80
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Pseudomonas
+Respiratory Failure: Chronic
+
+CASE 457
+Age: 81
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Respiratory Failure: Acute on chronic
+
+CASE 458
+Age: 82
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Viral
+
+CASE 459
+Age: 83
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: Streptococcus
+
+CASE 460
+Age: 84
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Unspecified
+
+CASE 461
+Age: 55
+Gender: Male
+Encounter Type: Inpatient
+Pneumonia: Yes
+Pneumonia Organism: MRSA
+Respiratory Failure: Acute
+
+CASE 462
+Age: 56
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Respiratory Failure: Chronic
+
+CASE 463
+Age: 57
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: E. coli
+
+CASE 464
+Age: 58
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Viral
+
+CASE 465
+Age: 59
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: Streptococcus
+
+CASE 466
+Age: 60
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Unspecified
+Respiratory Failure: Acute on chronic
+
+CASE 467
+Age: 61
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Respiratory Failure: Acute
+
+CASE 468
+Age: 62
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Pseudomonas
+
+CASE 469
+Age: 63
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: E. coli
+
+CASE 470
+Age: 64
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Viral
+
+CASE 471
+Age: 65
+Gender: Male
+Encounter Type: Inpatient
+Pneumonia: Yes
+Pneumonia Organism: Streptococcus
+Respiratory Failure: Chronic
+
+CASE 472
+Age: 66
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Respiratory Failure: Acute on chronic
+
+CASE 473
+Age: 67
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: MRSA
+
+CASE 474
+Age: 68
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Pseudomonas
+
+CASE 475
+Age: 69
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: E. coli
+
+CASE 476
+Age: 70
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Viral
+Respiratory Failure: Acute
+
+CASE 477
+Age: 71
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Respiratory Failure: Chronic
+
+CASE 478
+Age: 72
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Unspecified
+
+CASE 479
+Age: 73
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: MRSA
+
+CASE 480
+Age: 74
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Pseudomonas
+
+CASE 481
+Age: 75
+Gender: Male
+Encounter Type: Inpatient
+Pneumonia: Yes
+Pneumonia Organism: E. coli
+Respiratory Failure: Acute on chronic
+
+CASE 482
+Age: 76
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Respiratory Failure: Acute
+
+CASE 483
+Age: 77
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: Streptococcus
+
+CASE 484
+Age: 78
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Unspecified
+
+CASE 485
+Age: 79
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: MRSA
+
+CASE 486
+Age: 80
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Pseudomonas
+Respiratory Failure: Chronic
+
+CASE 487
+Age: 81
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Respiratory Failure: Acute on chronic
+
+CASE 488
+Age: 82
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Viral
+
+CASE 489
+Age: 83
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: Streptococcus
+
+CASE 490
+Age: 84
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Unspecified
+
+CASE 491
+Age: 55
+Gender: Male
+Encounter Type: Inpatient
+Pneumonia: Yes
+Pneumonia Organism: MRSA
+Respiratory Failure: Acute
+
+CASE 492
+Age: 56
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Respiratory Failure: Chronic
+
+CASE 493
+Age: 57
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: E. coli
+
+CASE 494
+Age: 58
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Viral
+
+CASE 495
+Age: 59
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: Streptococcus
+
+CASE 496
+Age: 60
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Unspecified
+Respiratory Failure: Acute on chronic
+
+CASE 497
+Age: 61
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Respiratory Failure: Acute
+
+CASE 498
+Age: 62
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Pseudomonas
+
+CASE 499
+Age: 63
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: E. coli
+
+CASE 500
+Age: 64
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Viral
+
+CASE 501
+Age: 65
+Gender: Male
+Encounter Type: Inpatient
+Pneumonia: Yes
+Pneumonia Organism: Streptococcus
+Respiratory Failure: Chronic
+
+CASE 502
+Age: 66
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Respiratory Failure: Acute on chronic
+
+CASE 503
+Age: 67
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: MRSA
+
+CASE 504
+Age: 68
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Pseudomonas
+
+CASE 505
+Age: 69
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: E. coli
+
+CASE 506
+Age: 70
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Viral
+Respiratory Failure: Acute
+
+CASE 507
+Age: 71
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Respiratory Failure: Chronic
+
+CASE 508
+Age: 72
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Unspecified
+
+CASE 509
+Age: 73
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: MRSA
+
+CASE 510
+Age: 74
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Pseudomonas
+
+CASE 511
+Age: 75
+Gender: Male
+Encounter Type: Inpatient
+Pneumonia: Yes
+Pneumonia Organism: E. coli
+Respiratory Failure: Acute on chronic
+
+CASE 512
+Age: 76
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Respiratory Failure: Acute
+
+CASE 513
+Age: 77
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Pneumonia: Yes
+Pneumonia Organism: Streptococcus
+
+CASE 514
+Age: 78
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Unspecified
+
+CASE 515
+Age: 79
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: MRSA
+
+CASE 516
+Age: 80
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Pseudomonas
+Respiratory Failure: Chronic
+
+CASE 517
+Age: 81
+Gender: Male
+Encounter Type: Inpatient
+COPD: With infection
+Respiratory Failure: Acute on chronic
+
+CASE 518
+Age: 82
+Gender: Female
+Encounter Type: ED
+COPD: With exacerbation
+Pneumonia: Yes
+Pneumonia Organism: Viral
+
+CASE 519
+Age: 83
+Gender: Male
+Encounter Type: Inpatient
+COPD: With both
+Pneumonia: Yes
+Pneumonia Organism: Streptococcus
+
+CASE 520
+Age: 84
+Gender: Female
+Encounter Type: ED
+COPD: Uncomplicated
+Pneumonia: Yes
+Pneumonia Organism: Unspecified
+
+CASE 521
+Age: 60
+Gender: Male
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Sacral
+Stage/Depth: Stage 1
+
+CASE 522
+Age: 61
+Gender: Female
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right heel
+Stage/Depth: Stage 2
+
+CASE 523
+Age: 62
+Gender: Male
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left heel
+Stage/Depth: Stage 3
+
+CASE 524
+Age: 63
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right foot
+Stage/Depth: Stage 4
+
+CASE 525
+Age: 64
+Gender: Male
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left foot
+Stage/Depth: Unstageable
+
+CASE 526
+Age: 65
+Gender: Female
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right ankle
+Stage/Depth: Skin breakdown
+
+CASE 527
+Age: 66
+Gender: Male
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left ankle
+Stage/Depth: Fat exposed
+
+CASE 528
+Age: 67
+Gender: Female
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Heel
+Stage/Depth: Muscle necrosis
+
+CASE 529
+Age: 68
+Gender: Male
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Foot
+Stage/Depth: Bone necrosis
+
+CASE 530
+Age: 69
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Ankle
+Stage/Depth: Stage 1
+
+CASE 531
+Age: 70
+Gender: Male
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Sacral
+Stage/Depth: Stage 2
+
+CASE 532
+Age: 71
+Gender: Female
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right heel
+Stage/Depth: Stage 3
+
+CASE 533
+Age: 72
+Gender: Male
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left heel
+Stage/Depth: Stage 4
+
+CASE 534
+Age: 73
+Gender: Female
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right foot
+Stage/Depth: Unstageable
+
+CASE 535
+Age: 74
+Gender: Male
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left foot
+Stage/Depth: Skin breakdown
+
+CASE 536
+Age: 75
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right ankle
+Stage/Depth: Fat exposed
+
+CASE 537
+Age: 76
+Gender: Male
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left ankle
+Stage/Depth: Muscle necrosis
+
+CASE 538
+Age: 77
+Gender: Female
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Heel
+Stage/Depth: Bone necrosis
+
+CASE 539
+Age: 78
+Gender: Male
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Foot
+Stage/Depth: Stage 1
+
+CASE 540
+Age: 79
+Gender: Female
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Ankle
+Stage/Depth: Stage 2
+
+CASE 541
+Age: 80
+Gender: Male
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Sacral
+Stage/Depth: Stage 3
+
+CASE 542
+Age: 81
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right heel
+Stage/Depth: Stage 4
+
+CASE 543
+Age: 82
+Gender: Male
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left heel
+Stage/Depth: Unstageable
+
+CASE 544
+Age: 83
+Gender: Female
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right foot
+Stage/Depth: Skin breakdown
+
+CASE 545
+Age: 84
+Gender: Male
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left foot
+Stage/Depth: Fat exposed
+
+CASE 546
+Age: 85
+Gender: Female
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right ankle
+Stage/Depth: Muscle necrosis
+
+CASE 547
+Age: 86
+Gender: Male
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left ankle
+Stage/Depth: Bone necrosis
+
+CASE 548
+Age: 87
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Heel
+Stage/Depth: Stage 1
+
+CASE 549
+Age: 88
+Gender: Male
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Foot
+Stage/Depth: Stage 2
+
+CASE 550
+Age: 89
+Gender: Female
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Ankle
+Stage/Depth: Stage 3
+
+CASE 551
+Age: 90
+Gender: Male
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Sacral
+Stage/Depth: Stage 4
+
+CASE 552
+Age: 91
+Gender: Female
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right heel
+Stage/Depth: Unstageable
+
+CASE 553
+Age: 92
+Gender: Male
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left heel
+Stage/Depth: Skin breakdown
+
+CASE 554
+Age: 93
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right foot
+Stage/Depth: Fat exposed
+
+CASE 555
+Age: 94
+Gender: Male
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left foot
+Stage/Depth: Muscle necrosis
+
+CASE 556
+Age: 60
+Gender: Female
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right ankle
+Stage/Depth: Bone necrosis
+
+CASE 557
+Age: 61
+Gender: Male
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left ankle
+Stage/Depth: Stage 1
+
+CASE 558
+Age: 62
+Gender: Female
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Heel
+Stage/Depth: Stage 2
+
+CASE 559
+Age: 63
+Gender: Male
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Foot
+Stage/Depth: Stage 3
+
+CASE 560
+Age: 64
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Ankle
+Stage/Depth: Stage 4
+
+CASE 561
+Age: 65
+Gender: Male
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Sacral
+Stage/Depth: Unstageable
+
+CASE 562
+Age: 66
+Gender: Female
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right heel
+Stage/Depth: Skin breakdown
+
+CASE 563
+Age: 67
+Gender: Male
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left heel
+Stage/Depth: Fat exposed
+
+CASE 564
+Age: 68
+Gender: Female
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right foot
+Stage/Depth: Muscle necrosis
+
+CASE 565
+Age: 69
+Gender: Male
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left foot
+Stage/Depth: Bone necrosis
+
+CASE 566
+Age: 70
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right ankle
+Stage/Depth: Stage 1
+
+CASE 567
+Age: 71
+Gender: Male
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left ankle
+Stage/Depth: Stage 2
+
+CASE 568
+Age: 72
+Gender: Female
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Heel
+Stage/Depth: Stage 3
+
+CASE 569
+Age: 73
+Gender: Male
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Foot
+Stage/Depth: Stage 4
+
+CASE 570
+Age: 74
+Gender: Female
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Ankle
+Stage/Depth: Unstageable
+
+CASE 571
+Age: 75
+Gender: Male
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Sacral
+Stage/Depth: Skin breakdown
+
+CASE 572
+Age: 76
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right heel
+Stage/Depth: Fat exposed
+
+CASE 573
+Age: 77
+Gender: Male
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left heel
+Stage/Depth: Muscle necrosis
+
+CASE 574
+Age: 78
+Gender: Female
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right foot
+Stage/Depth: Bone necrosis
+
+CASE 575
+Age: 79
+Gender: Male
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left foot
+Stage/Depth: Stage 1
+
+CASE 576
+Age: 80
+Gender: Female
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right ankle
+Stage/Depth: Stage 2
+
+CASE 577
+Age: 81
+Gender: Male
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left ankle
+Stage/Depth: Stage 3
+
+CASE 578
+Age: 82
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Heel
+Stage/Depth: Stage 4
+
+CASE 579
+Age: 83
+Gender: Male
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Foot
+Stage/Depth: Unstageable
+
+CASE 580
+Age: 84
+Gender: Female
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Ankle
+Stage/Depth: Skin breakdown
+
+CASE 581
+Age: 85
+Gender: Male
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Sacral
+Stage/Depth: Fat exposed
+
+CASE 582
+Age: 86
+Gender: Female
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right heel
+Stage/Depth: Muscle necrosis
+
+CASE 583
+Age: 87
+Gender: Male
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left heel
+Stage/Depth: Bone necrosis
+
+CASE 584
+Age: 88
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right foot
+Stage/Depth: Stage 1
+
+CASE 585
+Age: 89
+Gender: Male
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left foot
+Stage/Depth: Stage 2
+
+CASE 586
+Age: 90
+Gender: Female
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right ankle
+Stage/Depth: Stage 3
+
+CASE 587
+Age: 91
+Gender: Male
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left ankle
+Stage/Depth: Stage 4
+
+CASE 588
+Age: 92
+Gender: Female
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Heel
+Stage/Depth: Unstageable
+
+CASE 589
+Age: 93
+Gender: Male
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Foot
+Stage/Depth: Skin breakdown
+
+CASE 590
+Age: 94
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Ankle
+Stage/Depth: Fat exposed
+
+CASE 591
+Age: 60
+Gender: Male
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Sacral
+Stage/Depth: Muscle necrosis
+
+CASE 592
+Age: 61
+Gender: Female
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right heel
+Stage/Depth: Bone necrosis
+
+CASE 593
+Age: 62
+Gender: Male
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left heel
+Stage/Depth: Stage 1
+
+CASE 594
+Age: 63
+Gender: Female
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right foot
+Stage/Depth: Stage 2
+
+CASE 595
+Age: 64
+Gender: Male
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left foot
+Stage/Depth: Stage 3
+
+CASE 596
+Age: 65
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right ankle
+Stage/Depth: Stage 4
+
+CASE 597
+Age: 66
+Gender: Male
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left ankle
+Stage/Depth: Unstageable
+
+CASE 598
+Age: 67
+Gender: Female
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Heel
+Stage/Depth: Skin breakdown
+
+CASE 599
+Age: 68
+Gender: Male
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Foot
+Stage/Depth: Fat exposed
+
+CASE 600
+Age: 69
+Gender: Female
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Ankle
+Stage/Depth: Muscle necrosis
+
+CASE 601
+Age: 70
+Gender: Male
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Sacral
+Stage/Depth: Bone necrosis
+
+CASE 602
+Age: 71
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right heel
+Stage/Depth: Stage 1
+
+CASE 603
+Age: 72
+Gender: Male
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left heel
+Stage/Depth: Stage 2
+
+CASE 604
+Age: 73
+Gender: Female
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right foot
+Stage/Depth: Stage 3
+
+CASE 605
+Age: 74
+Gender: Male
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left foot
+Stage/Depth: Stage 4
+
+CASE 606
+Age: 75
+Gender: Female
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right ankle
+Stage/Depth: Unstageable
+
+CASE 607
+Age: 76
+Gender: Male
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left ankle
+Stage/Depth: Skin breakdown
+
+CASE 608
+Age: 77
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Heel
+Stage/Depth: Fat exposed
+
+CASE 609
+Age: 78
+Gender: Male
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Foot
+Stage/Depth: Muscle necrosis
+
+CASE 610
+Age: 79
+Gender: Female
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Ankle
+Stage/Depth: Bone necrosis
+
+CASE 611
+Age: 80
+Gender: Male
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Sacral
+Stage/Depth: Stage 1
+
+CASE 612
+Age: 81
+Gender: Female
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right heel
+Stage/Depth: Stage 2
+
+CASE 613
+Age: 82
+Gender: Male
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left heel
+Stage/Depth: Stage 3
+
+CASE 614
+Age: 83
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right foot
+Stage/Depth: Stage 4
+
+CASE 615
+Age: 84
+Gender: Male
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left foot
+Stage/Depth: Unstageable
+
+CASE 616
+Age: 85
+Gender: Female
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Right ankle
+Stage/Depth: Skin breakdown
+
+CASE 617
+Age: 86
+Gender: Male
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Left ankle
+Stage/Depth: Fat exposed
+
+CASE 618
+Age: 87
+Gender: Female
+Encounter Type: ED
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Heel
+Stage/Depth: Muscle necrosis
+
+CASE 619
+Age: 88
+Gender: Male
+Encounter Type: Outpatient
+Ulcer/Wound: Yes
+Type: Pressure
+Location: Foot
+Stage/Depth: Bone necrosis
+
+CASE 620
+Age: 89
+Gender: Female
+Encounter Type: Inpatient
+Ulcer/Wound: Yes
+Type: Traumatic
+Location: Ankle
+Stage/Depth: Stage 1
+
+CASE 621
+Age: 25
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Chest
+Laterality: Right
+Encounter: Initial
+Ext Cause: MVC
+
+CASE 622
+Age: 26
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Abdomen
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Fall
+
+CASE 623
+Age: 27
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Leg
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Sports
+
+CASE 624
+Age: 28
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Arm
+Laterality: Right
+Encounter: Initial
+Ext Cause: Assault
+
+CASE 625
+Age: 29
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Head
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Accident
+
+CASE 626
+Age: 30
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Foot
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: MVC
+
+CASE 627
+Age: 31
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Hand
+Laterality: Right
+Encounter: Initial
+Ext Cause: Fall
+
+CASE 628
+Age: 32
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Chest
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Sports
+
+CASE 629
+Age: 33
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Abdomen
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Assault
+
+CASE 630
+Age: 34
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Leg
+Laterality: Right
+Encounter: Initial
+Ext Cause: Accident
+
+CASE 631
+Age: 35
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Arm
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: MVC
+
+CASE 632
+Age: 36
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Head
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Fall
+
+CASE 633
+Age: 37
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Foot
+Laterality: Right
+Encounter: Initial
+Ext Cause: Sports
+
+CASE 634
+Age: 38
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Hand
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Assault
+
+CASE 635
+Age: 39
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Chest
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Accident
+
+CASE 636
+Age: 40
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Abdomen
+Laterality: Right
+Encounter: Initial
+Ext Cause: MVC
+
+CASE 637
+Age: 41
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Leg
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Fall
+
+CASE 638
+Age: 42
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Arm
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Sports
+
+CASE 639
+Age: 43
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Head
+Laterality: Right
+Encounter: Initial
+Ext Cause: Assault
+
+CASE 640
+Age: 44
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Foot
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Accident
+
+CASE 641
+Age: 45
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Hand
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: MVC
+
+CASE 642
+Age: 46
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Chest
+Laterality: Right
+Encounter: Initial
+Ext Cause: Fall
+
+CASE 643
+Age: 47
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Abdomen
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Sports
+
+CASE 644
+Age: 48
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Leg
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Assault
+
+CASE 645
+Age: 49
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Arm
+Laterality: Right
+Encounter: Initial
+Ext Cause: Accident
+
+CASE 646
+Age: 50
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Head
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: MVC
+
+CASE 647
+Age: 51
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Foot
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Fall
+
+CASE 648
+Age: 52
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Hand
+Laterality: Right
+Encounter: Initial
+Ext Cause: Sports
+
+CASE 649
+Age: 53
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Chest
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Assault
+
+CASE 650
+Age: 54
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Abdomen
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Accident
+
+CASE 651
+Age: 55
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Leg
+Laterality: Right
+Encounter: Initial
+Ext Cause: MVC
+
+CASE 652
+Age: 56
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Arm
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Fall
+
+CASE 653
+Age: 57
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Head
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Sports
+
+CASE 654
+Age: 58
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Foot
+Laterality: Right
+Encounter: Initial
+Ext Cause: Assault
+
+CASE 655
+Age: 59
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Hand
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Accident
+
+CASE 656
+Age: 60
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Chest
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: MVC
+
+CASE 657
+Age: 61
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Abdomen
+Laterality: Right
+Encounter: Initial
+Ext Cause: Fall
+
+CASE 658
+Age: 62
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Leg
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Sports
+
+CASE 659
+Age: 63
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Arm
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Assault
+
+CASE 660
+Age: 64
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Head
+Laterality: Right
+Encounter: Initial
+Ext Cause: Accident
+
+CASE 661
+Age: 65
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Foot
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: MVC
+
+CASE 662
+Age: 66
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Hand
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Fall
+
+CASE 663
+Age: 67
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Chest
+Laterality: Right
+Encounter: Initial
+Ext Cause: Sports
+
+CASE 664
+Age: 68
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Abdomen
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Assault
+
+CASE 665
+Age: 69
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Leg
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Accident
+
+CASE 666
+Age: 70
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Arm
+Laterality: Right
+Encounter: Initial
+Ext Cause: MVC
+
+CASE 667
+Age: 71
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Head
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Fall
+
+CASE 668
+Age: 72
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Foot
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Sports
+
+CASE 669
+Age: 73
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Hand
+Laterality: Right
+Encounter: Initial
+Ext Cause: Assault
+
+CASE 670
+Age: 74
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Chest
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Accident
+
+CASE 671
+Age: 75
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Abdomen
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: MVC
+
+CASE 672
+Age: 76
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Leg
+Laterality: Right
+Encounter: Initial
+Ext Cause: Fall
+
+CASE 673
+Age: 77
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Arm
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Sports
+
+CASE 674
+Age: 78
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Head
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Assault
+
+CASE 675
+Age: 79
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Foot
+Laterality: Right
+Encounter: Initial
+Ext Cause: Accident
+
+CASE 676
+Age: 80
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Hand
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: MVC
+
+CASE 677
+Age: 81
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Chest
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Fall
+
+CASE 678
+Age: 82
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Abdomen
+Laterality: Right
+Encounter: Initial
+Ext Cause: Sports
+
+CASE 679
+Age: 83
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Leg
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Assault
+
+CASE 680
+Age: 84
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Arm
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Accident
+
+CASE 681
+Age: 25
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Head
+Laterality: Right
+Encounter: Initial
+Ext Cause: MVC
+
+CASE 682
+Age: 26
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Foot
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Fall
+
+CASE 683
+Age: 27
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Hand
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Sports
+
+CASE 684
+Age: 28
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Chest
+Laterality: Right
+Encounter: Initial
+Ext Cause: Assault
+
+CASE 685
+Age: 29
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Abdomen
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Accident
+
+CASE 686
+Age: 30
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Leg
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: MVC
+
+CASE 687
+Age: 31
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Arm
+Laterality: Right
+Encounter: Initial
+Ext Cause: Fall
+
+CASE 688
+Age: 32
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Head
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Sports
+
+CASE 689
+Age: 33
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Foot
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Assault
+
+CASE 690
+Age: 34
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Hand
+Laterality: Right
+Encounter: Initial
+Ext Cause: Accident
+
+CASE 691
+Age: 35
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Chest
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: MVC
+
+CASE 692
+Age: 36
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Abdomen
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Fall
+
+CASE 693
+Age: 37
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Leg
+Laterality: Right
+Encounter: Initial
+Ext Cause: Sports
+
+CASE 694
+Age: 38
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Arm
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Assault
+
+CASE 695
+Age: 39
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Head
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Accident
+
+CASE 696
+Age: 40
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Foot
+Laterality: Right
+Encounter: Initial
+Ext Cause: MVC
+
+CASE 697
+Age: 41
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Hand
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Fall
+
+CASE 698
+Age: 42
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Chest
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Sports
+
+CASE 699
+Age: 43
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Abdomen
+Laterality: Right
+Encounter: Initial
+Ext Cause: Assault
+
+CASE 700
+Age: 44
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Leg
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Accident
+
+CASE 701
+Age: 45
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Arm
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: MVC
+
+CASE 702
+Age: 46
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Head
+Laterality: Right
+Encounter: Initial
+Ext Cause: Fall
+
+CASE 703
+Age: 47
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Foot
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Sports
+
+CASE 704
+Age: 48
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Hand
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Assault
+
+CASE 705
+Age: 49
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Chest
+Laterality: Right
+Encounter: Initial
+Ext Cause: Accident
+
+CASE 706
+Age: 50
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Abdomen
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: MVC
+
+CASE 707
+Age: 51
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Leg
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Fall
+
+CASE 708
+Age: 52
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Arm
+Laterality: Right
+Encounter: Initial
+Ext Cause: Sports
+
+CASE 709
+Age: 53
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Head
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Assault
+
+CASE 710
+Age: 54
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Foot
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Accident
+
+CASE 711
+Age: 55
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Hand
+Laterality: Right
+Encounter: Initial
+Ext Cause: MVC
+
+CASE 712
+Age: 56
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Chest
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Fall
+
+CASE 713
+Age: 57
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Abdomen
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Sports
+
+CASE 714
+Age: 58
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Leg
+Laterality: Right
+Encounter: Initial
+Ext Cause: Assault
+
+CASE 715
+Age: 59
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Arm
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Accident
+
+CASE 716
+Age: 60
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Head
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: MVC
+
+CASE 717
+Age: 61
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Foot
+Laterality: Right
+Encounter: Initial
+Ext Cause: Fall
+
+CASE 718
+Age: 62
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Hand
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Sports
+
+CASE 719
+Age: 63
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Chest
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Assault
+
+CASE 720
+Age: 64
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Abdomen
+Laterality: Right
+Encounter: Initial
+Ext Cause: Accident
+
+CASE 721
+Age: 65
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Leg
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: MVC
+
+CASE 722
+Age: 66
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Arm
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Fall
+
+CASE 723
+Age: 67
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Head
+Laterality: Right
+Encounter: Initial
+Ext Cause: Sports
+
+CASE 724
+Age: 68
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Foot
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Assault
+
+CASE 725
+Age: 69
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Hand
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Accident
+
+CASE 726
+Age: 70
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Chest
+Laterality: Right
+Encounter: Initial
+Ext Cause: MVC
+
+CASE 727
+Age: 71
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Abdomen
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Fall
+
+CASE 728
+Age: 72
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Leg
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Sports
+
+CASE 729
+Age: 73
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Arm
+Laterality: Right
+Encounter: Initial
+Ext Cause: Assault
+
+CASE 730
+Age: 74
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Head
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Accident
+
+CASE 731
+Age: 75
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Foot
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: MVC
+
+CASE 732
+Age: 76
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Hand
+Laterality: Right
+Encounter: Initial
+Ext Cause: Fall
+
+CASE 733
+Age: 77
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Chest
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Sports
+
+CASE 734
+Age: 78
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Abdomen
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Assault
+
+CASE 735
+Age: 79
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Leg
+Laterality: Right
+Encounter: Initial
+Ext Cause: Accident
+
+CASE 736
+Age: 80
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Arm
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: MVC
+
+CASE 737
+Age: 81
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Head
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Fall
+
+CASE 738
+Age: 82
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Foot
+Laterality: Right
+Encounter: Initial
+Ext Cause: Sports
+
+CASE 739
+Age: 83
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Hand
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Assault
+
+CASE 740
+Age: 84
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Chest
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Accident
+
+CASE 741
+Age: 25
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Abdomen
+Laterality: Right
+Encounter: Initial
+Ext Cause: MVC
+
+CASE 742
+Age: 26
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Leg
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Fall
+
+CASE 743
+Age: 27
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Arm
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Sports
+
+CASE 744
+Age: 28
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Head
+Laterality: Right
+Encounter: Initial
+Ext Cause: Assault
+
+CASE 745
+Age: 29
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Foot
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Accident
+
+CASE 746
+Age: 30
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Hand
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: MVC
+
+CASE 747
+Age: 31
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Chest
+Laterality: Right
+Encounter: Initial
+Ext Cause: Fall
+
+CASE 748
+Age: 32
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Abdomen
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Sports
+
+CASE 749
+Age: 33
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Leg
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Assault
+
+CASE 750
+Age: 34
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Arm
+Laterality: Right
+Encounter: Initial
+Ext Cause: Accident
+
+CASE 751
+Age: 35
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Head
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: MVC
+
+CASE 752
+Age: 36
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Foot
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Fall
+
+CASE 753
+Age: 37
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Hand
+Laterality: Right
+Encounter: Initial
+Ext Cause: Sports
+
+CASE 754
+Age: 38
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Chest
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Assault
+
+CASE 755
+Age: 39
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Abdomen
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Accident
+
+CASE 756
+Age: 40
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Leg
+Laterality: Right
+Encounter: Initial
+Ext Cause: MVC
+
+CASE 757
+Age: 41
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Open wound
+Body Region: Arm
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Fall
+
+CASE 758
+Age: 42
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Fracture
+Body Region: Head
+Laterality: Bilateral
+Encounter: Sequela
+Ext Cause: Sports
+
+CASE 759
+Age: 43
+Gender: Male
+Encounter Type: ED
+Injury Present: Yes
+Type: Burn
+Body Region: Foot
+Laterality: Right
+Encounter: Initial
+Ext Cause: Assault
+
+CASE 760
+Age: 44
+Gender: Female
+Encounter Type: Inpatient
+Injury Present: Yes
+Type: Laceration
+Body Region: Hand
+Laterality: Left
+Encounter: Subsequent
+Ext Cause: Accident
+
+CASE 761
+Age: 50
+Gender: Male
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 762
+Age: 51
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 763
+Age: 52
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 764
+Age: 53
+Gender: Female
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 765
+Age: 54
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 766
+Age: 55
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 767
+Age: 56
+Gender: Male
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 768
+Age: 57
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 769
+Age: 58
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 770
+Age: 59
+Gender: Female
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 771
+Age: 60
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 772
+Age: 61
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 773
+Age: 62
+Gender: Male
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 774
+Age: 63
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 775
+Age: 64
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 776
+Age: 65
+Gender: Female
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 777
+Age: 66
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 778
+Age: 67
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 779
+Age: 68
+Gender: Male
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 780
+Age: 69
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 781
+Age: 70
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 782
+Age: 71
+Gender: Female
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 783
+Age: 72
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 784
+Age: 73
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 785
+Age: 74
+Gender: Male
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 786
+Age: 75
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 787
+Age: 76
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 788
+Age: 77
+Gender: Female
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 789
+Age: 78
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 790
+Age: 79
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 791
+Age: 80
+Gender: Male
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 792
+Age: 81
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 793
+Age: 82
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 794
+Age: 83
+Gender: Female
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 795
+Age: 84
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 796
+Age: 85
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 797
+Age: 86
+Gender: Male
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 798
+Age: 87
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 799
+Age: 88
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 800
+Age: 89
+Gender: Female
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 801
+Age: 50
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 802
+Age: 51
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 803
+Age: 52
+Gender: Male
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 804
+Age: 53
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 805
+Age: 54
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 806
+Age: 55
+Gender: Female
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 807
+Age: 56
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 808
+Age: 57
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 809
+Age: 58
+Gender: Male
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 810
+Age: 59
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 811
+Age: 60
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 812
+Age: 61
+Gender: Female
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 813
+Age: 62
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 814
+Age: 63
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 815
+Age: 64
+Gender: Male
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 1
+
+CASE 816
+Age: 65
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 2
+
+CASE 817
+Age: 66
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 3
+
+CASE 818
+Age: 67
+Gender: Female
+Encounter Type: Inpatient
+CKD Present: Yes
+CKD Stage: 4
+
+CASE 819
+Age: 68
+Gender: Male
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: 5
+
+CASE 820
+Age: 69
+Gender: Female
+Encounter Type: Outpatient
+CKD Present: Yes
+CKD Stage: ESRD
+
+CASE 821
+Age: 50
+Gender: Male
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Lung
+Type: Primary
+Metastasis: Yes
+Active Tx: Yes
+
+CASE 822
+Age: 51
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Breast
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 823
+Age: 52
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Prostate
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 824
+Age: 53
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Colon
+Type: Secondary
+Metastasis: Yes
+Active Tx: No
+
+CASE 825
+Age: 54
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Liver
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 826
+Age: 55
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Pancreas
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 827
+Age: 56
+Gender: Male
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Lung
+Type: Primary
+Metastasis: Yes
+Active Tx: Yes
+
+CASE 828
+Age: 57
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Breast
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 829
+Age: 58
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Prostate
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 830
+Age: 59
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Colon
+Type: Secondary
+Metastasis: Yes
+Active Tx: No
+
+CASE 831
+Age: 60
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Liver
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 832
+Age: 61
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Pancreas
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 833
+Age: 62
+Gender: Male
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Lung
+Type: Primary
+Metastasis: Yes
+Active Tx: Yes
+
+CASE 834
+Age: 63
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Breast
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 835
+Age: 64
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Prostate
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 836
+Age: 65
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Colon
+Type: Secondary
+Metastasis: Yes
+Active Tx: No
+
+CASE 837
+Age: 66
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Liver
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 838
+Age: 67
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Pancreas
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 839
+Age: 68
+Gender: Male
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Lung
+Type: Primary
+Metastasis: Yes
+Active Tx: Yes
+
+CASE 840
+Age: 69
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Breast
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 841
+Age: 70
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Prostate
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 842
+Age: 71
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Colon
+Type: Secondary
+Metastasis: Yes
+Active Tx: No
+
+CASE 843
+Age: 72
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Liver
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 844
+Age: 73
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Pancreas
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 845
+Age: 74
+Gender: Male
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Lung
+Type: Primary
+Metastasis: Yes
+Active Tx: Yes
+
+CASE 846
+Age: 75
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Breast
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 847
+Age: 76
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Prostate
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 848
+Age: 77
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Colon
+Type: Secondary
+Metastasis: Yes
+Active Tx: No
+
+CASE 849
+Age: 78
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Liver
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 850
+Age: 79
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Pancreas
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 851
+Age: 80
+Gender: Male
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Lung
+Type: Primary
+Metastasis: Yes
+Active Tx: Yes
+
+CASE 852
+Age: 81
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Breast
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 853
+Age: 82
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Prostate
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 854
+Age: 83
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Colon
+Type: Secondary
+Metastasis: Yes
+Active Tx: No
+
+CASE 855
+Age: 84
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Liver
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 856
+Age: 85
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Pancreas
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 857
+Age: 86
+Gender: Male
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Lung
+Type: Primary
+Metastasis: Yes
+Active Tx: Yes
+
+CASE 858
+Age: 87
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Breast
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 859
+Age: 88
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Prostate
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 860
+Age: 89
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Colon
+Type: Secondary
+Metastasis: Yes
+Active Tx: No
+
+CASE 861
+Age: 50
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Liver
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 862
+Age: 51
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Pancreas
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 863
+Age: 52
+Gender: Male
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Lung
+Type: Primary
+Metastasis: Yes
+Active Tx: Yes
+
+CASE 864
+Age: 53
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Breast
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 865
+Age: 54
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Prostate
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 866
+Age: 55
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Colon
+Type: Secondary
+Metastasis: Yes
+Active Tx: No
+
+CASE 867
+Age: 56
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Liver
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 868
+Age: 57
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Pancreas
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 869
+Age: 58
+Gender: Male
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Lung
+Type: Primary
+Metastasis: Yes
+Active Tx: Yes
+
+CASE 870
+Age: 59
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Breast
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 871
+Age: 60
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Prostate
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 872
+Age: 61
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Colon
+Type: Secondary
+Metastasis: Yes
+Active Tx: No
+
+CASE 873
+Age: 62
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Liver
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 874
+Age: 63
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Pancreas
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 875
+Age: 64
+Gender: Male
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Lung
+Type: Primary
+Metastasis: Yes
+Active Tx: Yes
+
+CASE 876
+Age: 65
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Breast
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 877
+Age: 66
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Prostate
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 878
+Age: 67
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Colon
+Type: Secondary
+Metastasis: Yes
+Active Tx: No
+
+CASE 879
+Age: 68
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Liver
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 880
+Age: 69
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Pancreas
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 881
+Age: 70
+Gender: Male
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Lung
+Type: Primary
+Metastasis: Yes
+Active Tx: Yes
+
+CASE 882
+Age: 71
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Breast
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 883
+Age: 72
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Prostate
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 884
+Age: 73
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Colon
+Type: Secondary
+Metastasis: Yes
+Active Tx: No
+
+CASE 885
+Age: 74
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Liver
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 886
+Age: 75
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Pancreas
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 887
+Age: 76
+Gender: Male
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Lung
+Type: Primary
+Metastasis: Yes
+Active Tx: Yes
+
+CASE 888
+Age: 77
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Breast
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 889
+Age: 78
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Prostate
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 890
+Age: 79
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Colon
+Type: Secondary
+Metastasis: Yes
+Active Tx: No
+
+CASE 891
+Age: 80
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Liver
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 892
+Age: 81
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Pancreas
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 893
+Age: 82
+Gender: Male
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Lung
+Type: Primary
+Metastasis: Yes
+Active Tx: Yes
+
+CASE 894
+Age: 83
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Breast
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 895
+Age: 84
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Prostate
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 896
+Age: 85
+Gender: Female
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Colon
+Type: Secondary
+Metastasis: Yes
+Active Tx: No
+
+CASE 897
+Age: 86
+Gender: Male
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Liver
+Type: Primary
+Metastasis: No
+Active Tx: Yes
+
+CASE 898
+Age: 87
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Pancreas
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 899
+Age: 88
+Gender: Male
+Encounter Type: Inpatient
+Cancer Present: Yes
+Site: Lung
+Type: Primary
+Metastasis: Yes
+Active Tx: Yes
+
+CASE 900
+Age: 89
+Gender: Female
+Encounter Type: Outpatient
+Cancer Present: Yes
+Site: Breast
+Type: Secondary
+Metastasis: No
+Active Tx: No
+
+CASE 901
+Age: 60
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Acute
+
+CASE 902
+Age: 61
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Chronic
+
+CASE 903
+Age: 62
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Acute on chronic
+
+CASE 904
+Age: 63
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Acute
+
+CASE 905
+Age: 64
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Chronic
+
+CASE 906
+Age: 65
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Acute on chronic
+
+CASE 907
+Age: 66
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Acute
+
+CASE 908
+Age: 67
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Chronic
+
+CASE 909
+Age: 68
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Acute on chronic
+
+CASE 910
+Age: 69
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Acute
+
+CASE 911
+Age: 70
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Chronic
+
+CASE 912
+Age: 71
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Acute on chronic
+
+CASE 913
+Age: 72
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Acute
+
+CASE 914
+Age: 73
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Chronic
+
+CASE 915
+Age: 74
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Acute on chronic
+
+CASE 916
+Age: 75
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Acute
+
+CASE 917
+Age: 76
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Chronic
+
+CASE 918
+Age: 77
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Acute on chronic
+
+CASE 919
+Age: 78
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Acute
+
+CASE 920
+Age: 79
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Chronic
+
+CASE 921
+Age: 80
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Acute on chronic
+
+CASE 922
+Age: 81
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Acute
+
+CASE 923
+Age: 82
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Chronic
+
+CASE 924
+Age: 83
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Acute on chronic
+
+CASE 925
+Age: 84
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Acute
+
+CASE 926
+Age: 85
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Chronic
+
+CASE 927
+Age: 86
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Acute on chronic
+
+CASE 928
+Age: 87
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Acute
+
+CASE 929
+Age: 88
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Chronic
+
+CASE 930
+Age: 89
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Acute on chronic
+
+CASE 931
+Age: 60
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Acute
+
+CASE 932
+Age: 61
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Chronic
+
+CASE 933
+Age: 62
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Acute on chronic
+
+CASE 934
+Age: 63
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Acute
+
+CASE 935
+Age: 64
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Chronic
+
+CASE 936
+Age: 65
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Acute on chronic
+
+CASE 937
+Age: 66
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Acute
+
+CASE 938
+Age: 67
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Chronic
+
+CASE 939
+Age: 68
+Gender: Male
+Encounter Type: Inpatient
+Respiratory Failure: Acute on chronic
+
+CASE 940
+Age: 69
+Gender: Female
+Encounter Type: ED
+Respiratory Failure: Acute

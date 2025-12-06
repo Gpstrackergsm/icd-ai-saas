@@ -1,0 +1,7 @@
+HOSPITAL 940-CASE VALIDATION SUMMARY
+Generated: 2025-12-06T13:26:49.865Z
+
+Total Cases: 940
+Successful: 929 (98.8%)
+Empty: 11 (1.2%)
+Errors: 0 (0.0%)

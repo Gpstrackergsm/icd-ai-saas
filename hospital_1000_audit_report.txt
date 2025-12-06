@@ -1,0 +1,92 @@
+================================================================================
+HOSPITAL-GRADE 1000-CASE AUDIT REPORT
+================================================================================
+
+CASE 1
+DEPARTMENT: ER_EMERGENCY
+AGE: 58
+GENDER: Male
+ENCOUNTER TYPE: ED
+CLINICAL STORY: Patient presents with acute chest pain, diaphoresis. EKG shows ST elevation. Troponin elevated. Diagnosed with acute STEMI of anterior wall.
+GOLD ICD-10-CM CODES: I21.09
+SYSTEM CODES: NONE
+VERDICT: ✗ FAIL
+FAILURE REASON: Expected: I21.09 | Got: 
+RULE CHECKS:
+  Sequencing: ✓
+  Combination codes: ✓
+  Laterality: ✓
+  Stage/Severity: ✓
+  Organism: ✓
+  Encounter type: ✓
+
+CASE 2
+DEPARTMENT: ER_EMERGENCY
+AGE: 42
+GENDER: Female
+ENCOUNTER TYPE: ED
+CLINICAL STORY: Patient fell from ladder, loss of consciousness for 5 minutes. CT shows concussion. Initial encounter.
+GOLD ICD-10-CM CODES: S06.0X0A, W11.XXXA
+SYSTEM CODES: W19.XXXA
+VERDICT: ✗ FAIL
+FAILURE REASON: Expected: S06.0X0A, W11.XXXA | Got: W19.XXXA
+RULE CHECKS:
+  Sequencing: ✓
+  Combination codes: ✓
+  Laterality: ✓
+  Stage/Severity: ✓
+  Organism: ✓
+  Encounter type: ✓
+
+CASE 3
+DEPARTMENT: ER_EMERGENCY
+AGE: 28
+GENDER: Male
+ENCOUNTER TYPE: ED
+CLINICAL STORY: Right lower quadrant pain, fever, elevated WBC. CT confirms acute appendicitis with peritonitis.
+GOLD ICD-10-CM CODES: K35.80
+SYSTEM CODES: NONE
+VERDICT: ✗ FAIL
+FAILURE REASON: Expected: K35.80 | Got: 
+RULE CHECKS:
+  Sequencing: ✓
+  Combination codes: ✓
+  Laterality: ✓
+  Stage/Severity: ✓
+  Organism: ✓
+  Encounter type: ✓
+
+CASE 4
+DEPARTMENT: ICU_SEPSIS
+AGE: 72
+GENDER: Male
+ENCOUNTER TYPE: Inpatient
+CLINICAL STORY: ICU admission for severe sepsis due to MRSA pneumonia. Patient on vasopressors.
+GOLD ICD-10-CM CODES: A41.02, J15.212
+SYSTEM CODES: A41.02, J15.212
+VERDICT: ✓ PASS
+RULE CHECKS:
+  Sequencing: ✓
+  Combination codes: ✓
+  Laterality: ✓
+  Stage/Severity: ✓
+  Organism: ✓
+  Encounter type: ✓
+
+CASE 5
+DEPARTMENT: ICU_SEPSIS
+AGE: 68
+GENDER: Female
+ENCOUNTER TYPE: Inpatient
+CLINICAL STORY: E. coli urosepsis with septic shock. Hypotensive requiring pressors.
+GOLD ICD-10-CM CODES: A41.51, N39.0, R65.21
+SYSTEM CODES: A41.51, N39.0, R65.21
+VERDICT: ✓ PASS
+RULE CHECKS:
+  Sequencing: ✓
+  Combination codes: ✓
+  Laterality: ✓
+  Stage/Severity: ✓
+  Organism: ✓
+  Encounter type: ✓
+
