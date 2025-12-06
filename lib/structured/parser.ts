@@ -1456,7 +1456,7 @@ export function parseInput(text: string): ParseResult {
             // Fallback: Map stage to severity for L97 codes
             const s = context.conditions.wounds.stage;
             if (s === 'stage1' || s === 'stage2') context.conditions.diabetes.ulcerSeverity = 'skin';
-            else if (s === 'stage3') context.conditions.diabetes.ulcerSeverity = 'fat';
+            else if (s === 'stage3') context.conditions.diabetes.ulcerSeverity = 'muscle'; // User Rule: Stage 3 = Muscle Necrosis (suffix 3)
             else if (s === 'stage4') context.conditions.diabetes.ulcerSeverity = 'muscle'; // or bone, safer to assume deep
         }
 
