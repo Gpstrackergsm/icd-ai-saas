@@ -55,7 +55,7 @@ async function main() {
     console.log('ICD-10-CM 200 CASES TEST');
     console.log('================================================================================\n');
 
-    const filePath = '/Users/khalidaitelmaati/Desktop/structured_200_cases_v2.txt';
+    const filePath = '/Users/khalidaitelmaati/Desktop/a.txt';
 
     console.log(`Loading test cases from: ${filePath}`);
     const cases = parseCasesFile(filePath);
