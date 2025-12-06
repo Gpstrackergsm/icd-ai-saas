@@ -1923,17 +1923,17 @@ function mapUlcerToL97(site: string, severity: string): string {
         base = 'L97.59';
     }
 
-    // Severity mapping
+    // Severity mapping (Corrected to standard ICD-10-CM suffixes 1-4)
     if (severity === 'bone' || severity.toLowerCase().includes('bone exposed') || severity.toLowerCase().includes('bone involvement')) {
-        return base + '6'; // Bone involvement/necrosis
+        return base + '4'; // Necrosis of bone
     } else if (severity === 'muscle' || severity.toLowerCase().includes('muscle exposed') || severity.toLowerCase().includes('muscle involvement')) {
-        return base + '5'; // Muscle involvement without necrosis (default for muscle)
+        return base + '3'; // Necrosis of muscle
     } else if (severity === 'fat' || severity.toLowerCase().includes('fat')) {
         return base + '2'; // Fat layer exposed
     } else if (severity === 'skin' || severity.toLowerCase().includes('skin')) {
         return base + '1'; // Skin breakdown
     } else {
-        return base + '9'; // Unspecified
+        return base + '9'; // Unspecified severity
     }
 }
 
