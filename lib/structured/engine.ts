@@ -1653,57 +1653,8 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         }
     }
 
-    // CRITICAL FIX: Sepsis source infection validation
-    // If sepsis is present, ensure source infection code is included
-    const hasSepsis = finalCodes.some(c => c.code.startsWith('A41') || c.code.startsWith('A40'));
-    const hasR6520or21 = finalCodes.some(c => c.code === 'R65.20' || c.code === 'R65.21');
 
-    if (hasSepsis || hasR6520or21) {
-        // Check if source infection codes are present
-        const hasPneumonia = finalCodes.some(c => c.code.startsWith('J15') || c.code.startsWith('J18') || c.code.startsWith('J12'));
-        const hasUTI = finalCodes.some(c => c.code === 'N39.0');
-        const hasCellulitis = finalCodes.some(c => c.code.startsWith('L03'));
 
-        // Check both source field and site field for infection source
-        const source = ctx.conditions.infection?.source?.toLowerCase() || '';
-        const site = ctx.conditions.infection?.site?.toLowerCase() || '';
-
-        // Add UTI code if urinary site is documented
-        if ((source.includes('uti') || source.includes('urinary') || site === 'urinary') && !hasUTI) {
-            finalCodes.push({
-                code: 'N39.0',
-                label: 'Urinary tract infection, site not specified',
-                rationale: 'UTI documented as source of sepsis',
-                guideline: 'ICD-10-CM N39.0',
-                trigger: `Infection Site: ${site || source}`,
-                rule: 'Sepsis source infection'
-            });
-        }
-
-        // Add cellulitis code if skin site is documented
-        if (site === 'skin' && !hasCellulitis) {
-            finalCodes.push({
-                code: 'L03.317',
-                label: 'Cellulitis of buttock',
-                rationale: 'Skin infection documented as source of sepsis',
-                guideline: 'ICD-10-CM L03',
-                trigger: `Infection Site: skin`,
-                rule: 'Sepsis source infection (skin/cellulitis)'
-            });
-        }
-
-        // Add peritonitis code if abdominal site is documented  
-        if (site === 'abdominal' && !finalCodes.some(c => c.code.startsWith('K65'))) {
-            finalCodes.push({
-                code: 'K65.9',
-                label: 'Peritonitis, unspecified',
-                rationale: 'Abdominal infection documented as source of sepsis',
-                guideline: 'ICD-10-CM K65',
-                trigger: `Infection Site: abdominal`,
-                rule: 'Sepsis source infection (abdomen/peritonitis)'
-            });
-        }
-    }
 
     // FIX 2: Stroke I63/I69 conflict - remove I63.x if I69.x present
     const hasI63 = finalCodes.some(c => c.code.startsWith('I63'));
@@ -1734,6 +1685,23 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     );
     if (hasJ22 && hasSpecificPneumonia) {
         finalCodes = finalCodes.filter(c => c.code !== 'J22');
+    }
+
+    // RULE: CKD-DIABETES CONFLICT ENFORCEMENT
+    // 1. Remove E1x.22 if E1x.21 present
+    const hasE21 = finalCodes.some(c => /^E1[0-9]\.21/.test(c.code));
+    const hasE22 = finalCodes.some(c => /^E1[0-9]\.22/.test(c.code));
+    if (hasE21 && hasE22) {
+        finalCodes = finalCodes.filter(c => !/^E1[0-9]\.22/.test(c.code));
+        console.log("AUDIT: E1x.22 removed favoring E1x.21");
+    }
+
+    // 2. Remove N18 if E1x.22 present (and survived rule 1)
+    const remainingE22 = finalCodes.some(c => /^E1[0-9]\.22/.test(c.code));
+    const hasN18 = finalCodes.some(c => c.code.startsWith('N18'));
+    if (remainingE22 && hasN18) {
+        finalCodes = finalCodes.filter(c => !c.code.startsWith('N18'));
+        console.log("AUDIT: N18 removed favoring E1x.22");
     }
 
     // FIX 8: Remove N18.30 trailing zero (should be N18.3)
