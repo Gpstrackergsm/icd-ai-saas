@@ -2071,13 +2071,18 @@ function mapInjuryCode(type: string, bodyRegion: string, laterality?: string, en
             if (laterality === 'right') code = 'S81.801';
             else if (laterality === 'left') code = 'S81.802';
             else code = 'S81.809';
-        } else if (lower.includes('foot')) {
-            // S91.x - Open wound of foot
+        } else if (lower.includes('foot') || lower.includes('heel') || lower.includes('ankle') || lower.includes('toe')) {
+            // S91.x - Open wound of foot (includes heel, ankle, toe)
             if (laterality === 'right') code = 'S91.301';
             else if (laterality === 'left') code = 'S91.302';
             else code = 'S91.309';
+        } else if (lower.includes('hand') || lower.includes('finger')) {
+            // S61.x - Open wound of hand
+            if (laterality === 'right') code = 'S61.401';
+            else if (laterality === 'left') code = 'S61.402';
+            else code = 'S61.409';
         } else {
-            code = 'S01.00'; // Unspecified open wound
+            code = 'S01.00'; // Unspecified open wound (scalp default)
         }
     } else if (type === 'burn') {
         // Burn mapping by body region
