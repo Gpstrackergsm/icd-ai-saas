@@ -579,15 +579,21 @@ export function parseInput(text: string): ParseResult {
             case 'sex':
                 context.demographics.gender = lowerValue === 'male' ? 'male' : 'female';
                 break;
-            case 'encounter type':
+            // Encounter field - could be general encounter type OR injury encounter type
             case 'encounter':
-                if (lowerValue === 'inpatient') context.encounter.type = 'inpatient';
-                else if (lowerValue === 'outpatient') context.encounter.type = 'outpatient';
-                else if (lowerValue === 'ed') context.encounter.type = 'ed';
-                else if (lowerValue === 'initial') context.encounter.type = 'initial';
-                else if (lowerValue === 'subsequent') context.encounter.type = 'subsequent';
-                else if (lowerValue === 'icu') context.encounter.type = 'inpatient';
-                else errors.push(`Invalid encounter type: ${value}`);
+            case 'encounter type':
+                // Check if this is for injury context or general encounter
+                if (context.conditions.injury?.present) {
+                    // Injury encounter type (Initial/Subsequent/Sequela)
+                    if (lowerValue === 'initial' || lowerValue.includes('initial')) context.conditions.injury.encounterType = 'initial';
+                    else if (lowerValue === 'subsequent' || lowerValue.includes('subsequent')) context.conditions.injury.encounterType = 'subsequent';
+                    else if (lowerValue === 'sequela' || lowerValue.includes('sequela')) context.conditions.injury.encounterType = 'sequela';
+                } else {
+                    // General encounter type (Inpatient/Outpatient/ED)
+                    if (lowerValue.includes('inpatient')) context.encounter.type = 'inpatient';
+                    else if (lowerValue.includes('outpatient')) context.encounter.type = 'outpatient';
+                    else if (lowerValue.includes('ed') || lowerValue.includes('emergency')) context.encounter.type = 'ed';
+                }
                 break;
 
             case 'diabetes type':
@@ -638,9 +644,14 @@ export function parseInput(text: string): ParseResult {
                 break;
             case 'ulcer site':
                 if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                if (lowerValue.includes('left') && (lowerValue.includes('foot') || lowerValue.includes('ankle'))) context.conditions.diabetes.ulcerSite = 'left_foot';
-                else if (lowerValue.includes('right') && (lowerValue.includes('foot') || lowerValue.includes('ankle'))) context.conditions.diabetes.ulcerSite = 'right_foot';
-                else context.conditions.diabetes.ulcerSite = 'other';
+                // Preserve the full site string for better mapping (e.g., "Left Heel" instead of just "left_foot")
+                if (lowerValue.includes('left') && (lowerValue.includes('foot') || lowerValue.includes('ankle') || lowerValue.includes('heel'))) {
+                    context.conditions.diabetes.ulcerSite = value as any; // Preserve original case and full string
+                } else if (lowerValue.includes('right') && (lowerValue.includes('foot') || lowerValue.includes('ankle') || lowerValue.includes('heel'))) {
+                    context.conditions.diabetes.ulcerSite = value as any; // Preserve original case and full string
+                } else {
+                    context.conditions.diabetes.ulcerSite = 'other';
+                }
                 break;
             case 'ulcer severity':
             case 'ulcer depth':
@@ -918,12 +929,25 @@ export function parseInput(text: string): ParseResult {
                 break;
             case 'site':
             case 'infection site':
-                if (!context.conditions.infection) context.conditions.infection = { present: true };
-                if (lowerValue.includes('lung') || lowerValue.includes('pneumonia')) context.conditions.infection.site = 'lung';
-                else if (lowerValue.includes('urinary') || lowerValue.includes('uti')) context.conditions.infection.site = 'urinary';
-                else if (lowerValue.includes('blood')) context.conditions.infection.site = 'blood';
-                else if (lowerValue.includes('skin')) context.conditions.infection.site = 'skin';
-                else context.conditions.infection.site = 'other';
+                // Handle Site field - could be infection site OR cancer site
+                if (context.conditions.infection?.present || key === 'infection site') {
+                    // Infection site
+                    if (!context.conditions.infection) context.conditions.infection = { present: true };
+                    if (lowerValue.includes('lung') || lowerValue.includes('pneumonia')) context.conditions.infection.site = 'lung';
+                    else if (lowerValue.includes('urinary') || lowerValue.includes('uti')) context.conditions.infection.site = 'urinary';
+                    else if (lowerValue.includes('blood')) context.conditions.infection.site = 'blood';
+                    else if (lowerValue.includes('skin')) context.conditions.infection.site = 'skin';
+                    else if (lowerValue.includes('abdomen') || lowerValue.includes('abdominal')) context.conditions.infection.site = 'abdominal';
+                    else context.conditions.infection.site = 'other';
+                } else if (context.conditions.neoplasm?.present || key === 'site') {
+                    // Cancer site
+                    if (!context.conditions.neoplasm) context.conditions.neoplasm = { present: true };
+                    if (lowerValue.includes('lung')) context.conditions.neoplasm.site = 'lung';
+                    else if (lowerValue.includes('breast')) context.conditions.neoplasm.site = 'breast';
+                    else if (lowerValue.includes('colon')) context.conditions.neoplasm.site = 'colon';
+                    else if (lowerValue.includes('prostate')) context.conditions.neoplasm.site = 'prostate';
+                    else context.conditions.neoplasm.site = 'other';
+                }
                 break;
             case 'organism':
                 if (!context.conditions.infection) context.conditions.infection = { present: true };
@@ -964,6 +988,7 @@ export function parseInput(text: string): ParseResult {
                 break;
 
             // Wounds & Ulcers
+            case 'ulcer/wound':
             case 'ulcer present':
             case 'wound present':
             case 'pressure ulcer':
@@ -973,35 +998,96 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.wounds.type = 'pressure';
                 }
                 break;
+            case 'type':
             case 'ulcer type':
             case 'wound type':
-                if (!context.conditions.wounds) context.conditions.wounds = { present: true };
-                if (lowerValue.includes('pressure')) context.conditions.wounds.type = 'pressure';
-                else if (lowerValue.includes('diabetic')) context.conditions.wounds.type = 'diabetic';
-                else if (lowerValue.includes('traumatic')) context.conditions.wounds.type = 'traumatic';
-                else if (lowerValue.includes('venous')) context.conditions.wounds.type = 'venous';
-                else if (lowerValue.includes('arterial')) context.conditions.wounds.type = 'arterial';
+                // CONSOLIDATED TYPE HANDLER - Check context to route correctly
+                if (context.conditions.wounds || key === 'ulcer type' || key === 'wound type') {
+                    // Ulcer/wound type
+                    if (!context.conditions.wounds) context.conditions.wounds = { present: true };
+                    if (lowerValue.includes('pressure')) context.conditions.wounds.type = 'pressure';
+                    else if (lowerValue.includes('diabetic')) context.conditions.wounds.type = 'diabetic';
+                    else if (lowerValue.includes('venous')) context.conditions.wounds.type = 'venous';
+                    else if (lowerValue.includes('arterial')) context.conditions.wounds.type = 'arterial';
+                    else if (lowerValue.includes('traumatic')) {
+                        // Traumatic wound - this is actually an injury, switch context
+                        if (!context.conditions.injury) context.conditions.injury = { present: true };
+                        context.conditions.injury.type = 'open_wound';
+                        // Set default encounterType to 'initial' if not already set
+                        if (!context.conditions.injury.encounterType) {
+                            context.conditions.injury.encounterType = 'initial';
+                        }
+                        // Copy wound location to injury bodyRegion if available
+                        if (context.conditions.wounds?.location) {
+                            context.conditions.injury.bodyRegion = context.conditions.wounds.location.replace('_', ' ');
+                        }
+                    }
+                } else if (context.conditions.injury?.present || key.includes('injury') || key.includes('trauma')) {
+                    // Injury/trauma type
+                    if (!context.conditions.injury) context.conditions.injury = { present: true };
+                    if (lowerValue.includes('fracture')) context.conditions.injury.type = 'fracture';
+                    else if (lowerValue.includes('open wound') || lowerValue.includes('open_wound') || lowerValue.includes('laceration')) context.conditions.injury.type = 'open_wound';
+                    else if (lowerValue.includes('burn')) context.conditions.injury.type = 'burn';
+                    else if (lowerValue.includes('contusion')) context.conditions.injury.type = 'contusion';
+                } else if (context.conditions.neoplasm?.present) {
+                    // Cancer type
+                    if (lowerValue === 'primary') context.conditions.neoplasm.primaryOrSecondary = 'primary';
+                    else if (lowerValue === 'secondary') context.conditions.neoplasm.primaryOrSecondary = 'secondary';
+                }
                 break;
+            case 'location':
             case 'ulcer location':
             case 'wound location':
                 if (!context.conditions.wounds) context.conditions.wounds = { present: true };
-                if (lowerValue.includes('sacral') || lowerValue.includes('sacrum')) context.conditions.wounds.location = 'sacral';
-                else if (lowerValue.includes('right') && lowerValue.includes('foot')) context.conditions.wounds.location = 'foot_right';
-                else if (lowerValue.includes('left') && lowerValue.includes('foot')) context.conditions.wounds.location = 'foot_left';
-                else if (lowerValue.includes('heel')) context.conditions.wounds.location = 'heel';
-                else if (lowerValue.includes('buttock')) context.conditions.wounds.location = 'buttock';
-                else context.conditions.wounds.location = 'other';
+                // Enhanced parsing for pressure ulcers with laterality
+                if (lowerValue.includes('sacral') || lowerValue.includes('sacrum')) {
+                    context.conditions.wounds.location = 'sacral';
+                } else if (lowerValue.includes('right') && lowerValue.includes('heel')) {
+                    context.conditions.wounds.location = 'heel_right';
+                    context.conditions.wounds.laterality = 'right';
+                } else if (lowerValue.includes('left') && lowerValue.includes('heel')) {
+                    context.conditions.wounds.location = 'heel_left';
+                    context.conditions.wounds.laterality = 'left';
+                } else if (lowerValue.includes('heel')) {
+                    // Unspecified heel (will need laterality from separate field)
+                    context.conditions.wounds.location = 'heel';
+                } else if (lowerValue.includes('right') && lowerValue.includes('foot')) {
+                    context.conditions.wounds.location = 'foot_right';
+                    context.conditions.wounds.laterality = 'right';
+                } else if (lowerValue.includes('left') && lowerValue.includes('foot')) {
+                    context.conditions.wounds.location = 'foot_left';
+                    context.conditions.wounds.laterality = 'left';
+                } else if (lowerValue.includes('buttock')) {
+                    context.conditions.wounds.location = 'buttock';
+                } else {
+                    context.conditions.wounds.location = 'other';
+                }
                 break;
+            case 'stage/depth':
             case 'ulcer stage':
             case 'pressure ulcer stage':
             case 'stage':
                 if (!context.conditions.wounds) context.conditions.wounds = { present: true };
-                if (lowerValue.includes('1')) context.conditions.wounds.stage = 'stage1';
-                else if (lowerValue.includes('2')) context.conditions.wounds.stage = 'stage2';
-                else if (lowerValue.includes('3')) context.conditions.wounds.stage = 'stage3';
-                else if (lowerValue.includes('4')) context.conditions.wounds.stage = 'stage4';
-                else if (lowerValue.includes('unstageable')) context.conditions.wounds.stage = 'unstageable';
-                else if (lowerValue.includes('deep tissue')) context.conditions.wounds.stage = 'deep_tissue';
+                // Enhanced parsing for stage numbers and depth descriptors
+                if (lowerValue.includes('bone') && (lowerValue.includes('necrosis') || lowerValue.includes('exposed'))) {
+                    context.conditions.wounds.stage = 'bone_necrosis';
+                    context.conditions.wounds.depth = 'bone';
+                } else if (lowerValue.includes('muscle') && (lowerValue.includes('necrosis') || lowerValue.includes('exposed'))) {
+                    context.conditions.wounds.stage = 'muscle_necrosis';
+                    context.conditions.wounds.depth = 'muscle';
+                } else if (lowerValue.includes('stage 4') || lowerValue === '4' || lowerValue === 'stage 4') {
+                    context.conditions.wounds.stage = 'stage4';
+                } else if (lowerValue.includes('stage 3') || lowerValue === '3' || lowerValue === 'stage 3') {
+                    context.conditions.wounds.stage = 'stage3';
+                } else if (lowerValue.includes('stage 2') || lowerValue === '2' || lowerValue === 'stage 2') {
+                    context.conditions.wounds.stage = 'stage2';
+                } else if (lowerValue.includes('stage 1') || lowerValue === '1' || lowerValue === 'stage 1') {
+                    context.conditions.wounds.stage = 'stage1';
+                } else if (lowerValue.includes('unstageable')) {
+                    context.conditions.wounds.stage = 'unstageable';
+                } else if (lowerValue.includes('deep tissue')) {
+                    context.conditions.wounds.stage = 'deep_tissue';
+                }
                 break;
 
             // Injury & Trauma
@@ -1010,14 +1096,7 @@ export function parseInput(text: string): ParseResult {
                 if (!context.conditions.injury) context.conditions.injury = { present: false };
                 context.conditions.injury.present = parseBoolean(value);
                 break;
-            case 'injury type':
-            case 'trauma type':
-                if (!context.conditions.injury) context.conditions.injury = { present: true };
-                if (lowerValue.includes('fracture')) context.conditions.injury.type = 'fracture';
-                else if (lowerValue.includes('open wound') || lowerValue.includes('laceration')) context.conditions.injury.type = 'open_wound';
-                else if (lowerValue.includes('burn')) context.conditions.injury.type = 'burn';
-                else if (lowerValue.includes('contusion')) context.conditions.injury.type = 'contusion';
-                break;
+            // Injury type now handled in consolidated 'type' handler above
             case 'body region':
             case 'injury site':
                 if (!context.conditions.injury) context.conditions.injury = { present: true };
@@ -1029,13 +1108,8 @@ export function parseInput(text: string): ParseResult {
                 else if (lowerValue.includes('right')) context.conditions.injury.laterality = 'right';
                 else if (lowerValue.includes('bilateral')) context.conditions.injury.laterality = 'bilateral';
                 break;
-            case 'injury encounter type':
-            case 'encounter type for injury':
-                if (!context.conditions.injury) context.conditions.injury = { present: true };
-                if (lowerValue.includes('initial')) context.conditions.injury.encounterType = 'initial';
-                else if (lowerValue.includes('subsequent')) context.conditions.injury.encounterType = 'subsequent';
-                else if (lowerValue.includes('sequela')) context.conditions.injury.encounterType = 'sequela';
-                break;
+            // Injury encounter type now handled in consolidated 'encounter' handler above
+            case 'ext cause':
             case 'external cause':
             case 'mechanism':
                 if (!context.conditions.injury) context.conditions.injury = { present: true };
@@ -1146,6 +1220,30 @@ export function parseInput(text: string): ParseResult {
             case 'ascites':
                 if (!context.conditions.gastro) context.conditions.gastro = {};
                 context.conditions.gastro.ascites = parseBoolean(value);
+                break;
+
+            // Cancer / Neoplasm
+            case 'cancer present':
+            case 'cancer':
+                if (!context.conditions.neoplasm) context.conditions.neoplasm = { present: false };
+                context.conditions.neoplasm.present = parseBoolean(value);
+                break;
+            // Cancer type now handled in consolidated 'type' handler above
+            case 'type':
+                // Check if this is for a cancer/neoplasm context
+                if (context.conditions.neoplasm?.present) {
+                    if (lowerValue === 'primary') context.conditions.neoplasm.primaryOrSecondary = 'primary';
+                    else if (lowerValue === 'secondary') context.conditions.neoplasm.primaryOrSecondary = 'secondary';
+                } else if (context.conditions.injury?.type) {
+                    // Already handled in injury section above
+                }
+                break;
+            case 'active tx':
+            case 'active treatment':
+                if (!context.conditions.neoplasm) context.conditions.neoplasm = { present: true };
+                context.conditions.neoplasm.activeTreatment = parseBoolean(value);
+                context.conditions.neoplasm.chemotherapy = parseBoolean(value); // Assume chemo if active treatment
+                context.conditions.neoplasm.active = parseBoolean(value); // Mark cancer as active
                 break;
 
             // Hematology/Oncology

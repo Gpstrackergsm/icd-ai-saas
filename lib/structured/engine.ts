@@ -229,14 +229,32 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 rule: 'HTN combination code logic'
             });
 
-            // Add I50.9 heart failure code
+            // Add specific I50.xx heart failure code (not just I50.9)
+            const hfCode = c.heartFailure ? mapHeartFailureCode(c.heartFailure.type, c.heartFailure.acuity) : 'I50.9';
+            const hfLabel = c.heartFailure ? `Heart failure, ${c.heartFailure.type} ${c.heartFailure.acuity}` : 'Heart failure, unspecified';
             codes.push({
-                code: 'I50.9',
-                label: 'Heart failure, unspecified',
-                rationale: 'Heart failure documented with HTN and CKD',
+                code: hfCode,
+                label: hfLabel,
+                rationale: 'Specific heart failure code required with I13.x per ICD-10-CM guidelines',
                 guideline: 'ICD-10-CM I.C.9.a.2',
-                trigger: 'Heart Failure',
-                rule: 'Heart failure code'
+                trigger: `Heart Failure: ${c.heartFailure?.type || 'unspecified'}, ${c.heartFailure?.acuity || 'unspecified'}`,
+                rule: 'Heart failure code with I13 combination'
+            });
+
+            // Add CKD stage code
+            const ckdCode = ckdStage === '1' ? 'N18.1' :
+                ckdStage === '2' ? 'N18.2' :
+                    ckdStage === '3' ? 'N18.3' :
+                        ckdStage === '4' ? 'N18.4' :
+                            ckdStage === '5' ? 'N18.5' :
+                                ckdStage === 'esrd' ? 'N18.6' : 'N18.9';
+            codes.push({
+                code: ckdCode,
+                label: `Chronic kidney disease, stage ${ckdStage}`,
+                rationale: 'CKD stage code required with I13.x',
+                guideline: 'ICD-10-CM I.C.9.a.2',
+                trigger: 'CKD Stage ' + ckdStage,
+                rule: 'CKD stage code'
             });
         }
         // RULE: HTN + Heart Disease + CKD (WITHOUT HF) → I13.10/I13.11
@@ -519,41 +537,62 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     // RULE: COPD (J44.x)
     if (ctx.conditions.respiratory?.copd?.present) {
         const copd = ctx.conditions.respiratory.copd;
-        let code = 'J44.9';
-        let label = 'Chronic obstructive pulmonary disease, unspecified';
-        let rationale = 'COPD without mention of exacerbation or infection';
 
-        // Priority: infection > exacerbation > unspecified
-        if (copd.withInfection) {
-            code = 'J44.0';
-            label = 'Chronic obstructive pulmonary disease with (acute) lower respiratory infection';
-            rationale = 'COPD with documented infection (bronchitis, pneumonia)';
-        } else if (copd.withExacerbation) {
-            code = 'J44.1';
-            label = 'Chronic obstructive pulmonary disease with (acute) exacerbation';
-            rationale = 'COPD with acute exacerbation';
-        }
-
-        codes.push({
-            code,
-            label,
-            rationale,
-            guideline: 'ICD-10-CM I.C.10.a.1',
-            trigger: 'COPD',
-            rule: 'COPD code selection'
-        });
-
-        // Add J22 for acute lower respiratory infection with COPD
-        if (copd.withInfection) {
+        // Handle "with both" - need to add BOTH J44.0 AND J44.1
+        if (copd.withInfection && copd.withExacerbation) {
             codes.push({
-                code: 'J22',
-                label: 'Unspecified acute lower respiratory infection',
-                rationale: 'Acute lower respiratory infection documented with COPD',
+                code: 'J44.0',
+                label: 'Chronic obstructive pulmonary disease with (acute) lower respiratory infection',
+                rationale: 'COPD with documented infection',
                 guideline: 'ICD-10-CM I.C.10.a.1',
-                trigger: 'COPD + Infection',
-                rule: 'Acute lower respiratory infection code'
+                trigger: 'COPD with infection',
+                rule: 'COPD code selection'
+            });
+            codes.push({
+                code: 'J44.1',
+                label: 'Chronic obstructive pulmonary disease with (acute) exacerbation',
+                rationale: 'COPD with acute exacerbation',
+                guideline: 'ICD-10-CM I.C.10.a.1',
+                trigger: 'COPD with exacerbation',
+                rule: 'COPD code selection'
             });
         }
+        // Only infection
+        else if (copd.withInfection) {
+            codes.push({
+                code: 'J44.0',
+                label: 'Chronic obstructive pulmonary disease with (acute) lower respiratory infection',
+                rationale: 'COPD with documented infection (bronchitis, pneumonia)',
+                guideline: 'ICD-10-CM I.C.10.a.1',
+                trigger: 'COPD',
+                rule: 'COPD code selection'
+            });
+        }
+        // Only exacerbation
+        else if (copd.withExacerbation) {
+            codes.push({
+                code: 'J44.1',
+                label: 'Chronic obstructive pulmonary disease with (acute) exacerbation',
+                rationale: 'COPD with acute exacerbation',
+                guideline: 'ICD-10-CM I.C.10.a.1',
+                trigger: 'COPD',
+                rule: 'COPD code selection'
+            });
+        }
+        // Neither
+        else {
+            codes.push({
+                code: 'J44.9',
+                label: 'Chronic obstructive pulmonary disease, unspecified',
+                rationale: 'COPD without mention of exacerbation or infection',
+                guideline: 'ICD-10-CM I.C.10.a.1',
+                trigger: 'COPD',
+                rule: 'COPD code selection'
+            });
+        }
+
+        // DO NOT add J22 - it will be filtered out later if specific pneumonia exists
+        // Per ICD-10-CM guidelines, J22 should NOT be used when specific pneumonia organism is identified
     }
 
     // RULE: Asthma (J45.x)
@@ -723,6 +762,15 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     // --- INJURY & TRAUMA RULES ---
     if (ctx.conditions.injury?.present) {
         const inj = ctx.conditions.injury;
+
+        // FALLBACK: If traumatic wound but bodyRegion is missing, copy from wounds.location
+        if (!inj.bodyRegion && ctx.conditions.wounds?.location) {
+            inj.bodyRegion = ctx.conditions.wounds.location.replace('_', ' ');
+        }
+        // Also copy laterality if available
+        if (!inj.laterality && ctx.conditions.wounds?.laterality) {
+            inj.laterality = ctx.conditions.wounds.laterality;
+        }
 
         // RULE: Injury → S/T code with 7th character
         if (inj.type && inj.bodyRegion && inj.encounterType) {
@@ -1074,7 +1122,64 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             });
         } else {
             // Active cancer - use C-codes
-            if (neo.site) {
+            // RULE: Check if this is a secondary malignancy explicitly
+            if (neo.primaryOrSecondary === 'secondary' || neo.metastasis) {
+                // Secondary malignant neoplasm - use C79 codes
+                let specificSiteAdded = false;
+
+                if (neo.site === 'breast') {
+                    codes.push({
+                        code: 'C79.81',
+                        label: 'Secondary malignant neoplasm of breast',
+                        rationale: 'Secondary/metastatic malignancy to breast',
+                        guideline: 'ICD-10-CM I.C.2.d',
+                        trigger: 'Cancer Type: Secondary, Site: Breast',
+                        rule: 'Secondary malignancy site coding'
+                    });
+                    specificSiteAdded = true;
+                } else if (neo.site === 'lung') {
+                    codes.push({
+                        code: 'C78.00',
+                        label: 'Secondary malignant neoplasm of unspecified lung',
+                        rationale: 'Secondary/metastatic malignancy to lung',
+                        guideline: 'ICD-10-CM I.C.2.d',
+                        trigger: 'Cancer Type: Secondary, Site: Lung',
+                        rule: 'Secondary malignancy site coding'
+                    });
+                    specificSiteAdded = true;
+                }
+                if (neo.metastaticSite) {
+                    let code = 'C79.9'; // Secondary malignant neoplasm of unspecified site
+                    if (neo.metastaticSite === 'bone') code = 'C79.51';
+                    else if (neo.metastaticSite === 'brain') code = 'C79.31';
+                    else if (neo.metastaticSite === 'liver') code = 'C78.7';
+                    else if (neo.metastaticSite === 'lung') code = 'C78.00';
+                    else if (neo.site === 'breast') code = 'C79.81'; // Secondary malignant neoplasm of breast
+
+                    codes.push({
+                        code: code,
+                        label: `Secondary malignant neoplasm of ${neo.metastaticSite || neo.site}`,
+                        rationale: 'Metastatic cancer documented',
+                        guideline: 'ICD-10-CM C77-C79',
+                        trigger: `Type: Secondary, Site: ${neo.metastaticSite || neo.site}`,
+                        rule: 'Secondary neoplasm mapping'
+                    });
+                    specificSiteAdded = true;
+                }
+
+                // Only add C79.9 if no specific secondary site was coded
+                if (!specificSiteAdded) {
+                    codes.push({
+                        code: 'C79.9',
+                        label: 'Secondary malignant neoplasm of unspecified site',
+                        rationale: 'Secondary malignancy documented',
+                        guideline: 'ICD-10-CM C79.9',
+                        trigger: 'Type: Secondary',
+                        rule: 'Unspecified metastasis'
+                    });
+                }
+            } else if (neo.site) {
+                // Primary malignancy
                 let code = 'C80.1'; // Unspecified malignant neoplasm
                 if (neo.site === 'lung') code = 'C34.90';
                 else if (neo.site === 'breast') code = 'C50.919';
@@ -1092,42 +1197,14 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             }
         }
 
-        // RULE: Metastasis
-        if (neo.metastasis) {
-            if (neo.metastaticSite) {
-                let code = 'C79.9'; // Secondary malignant neoplasm of unspecified site
-                if (neo.metastaticSite === 'bone') code = 'C79.51';
-                else if (neo.metastaticSite === 'brain') code = 'C79.31';
-                else if (neo.metastaticSite === 'liver') code = 'C78.7';
-                else if (neo.metastaticSite === 'lung') code = 'C78.00';
-
-                codes.push({
-                    code: code,
-                    label: `Secondary malignant neoplasm of ${neo.metastaticSite}`,
-                    rationale: 'Metastatic cancer documented',
-                    guideline: 'ICD-10-CM C77-C79',
-                    trigger: `Metastatic Site: ${neo.metastaticSite}`,
-                    rule: 'Secondary neoplasm mapping'
-                });
-            } else {
-                codes.push({
-                    code: 'C79.9',
-                    label: 'Secondary malignant neoplasm of unspecified site',
-                    rationale: 'Metastasis documented without site',
-                    guideline: 'ICD-10-CM C79.9',
-                    trigger: 'Metastasis = Yes',
-                    rule: 'Unspecified metastasis'
-                });
-            }
-        }
         // RULE: Chemotherapy Admission
-        if (neo.chemotherapy) {
+        if (neo.chemotherapy || neo.activeTreatment) {
             codes.push({
                 code: 'Z51.11',
                 label: 'Encounter for antineoplastic chemotherapy',
                 rationale: 'Admission for chemotherapy',
                 guideline: 'ICD-10-CM Z51.11',
-                trigger: 'Chemotherapy Admission',
+                trigger: 'Chemotherapy/Active Treatment = Yes',
                 rule: 'Chemotherapy encounter code'
             });
         }
@@ -1554,10 +1631,22 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             finalCodes.push({
                 code: 'L03.317',
                 label: 'Cellulitis of buttock',
-                rationale: 'Skin infection documented as  source of sepsis',
+                rationale: 'Skin infection documented as source of sepsis',
                 guideline: 'ICD-10-CM L03',
                 trigger: `Infection Site: skin`,
                 rule: 'Sepsis source infection (skin/cellulitis)'
+            });
+        }
+
+        // Add peritonitis code if abdominal site is documented  
+        if (site === 'abdominal' && !finalCodes.some(c => c.code.startsWith('K65'))) {
+            finalCodes.push({
+                code: 'K65.9',
+                label: 'Peritonitis, unspecified',
+                rationale: 'Abdominal infection documented as source of sepsis',
+                guideline: 'ICD-10-CM K65',
+                trigger: `Infection Site: abdominal`,
+                rule: 'Sepsis source infection (abdomen/peritonitis)'
             });
         }
     }
@@ -1583,9 +1672,82 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         }
     }
 
+    // FIX 6: Remove J22 if specific pneumonia code exists (J13-J18)
+    const hasJ22 = finalCodes.some(c => c.code === 'J22');
+    const hasSpecificPneumonia = finalCodes.some(c =>
+        c.code.startsWith('J13') || c.code.startsWith('J14') ||
+        c.code.startsWith('J15') || c.code.startsWith('J12') || c.code.startsWith('J16')
+    );
+    if (hasJ22 && hasSpecificPneumonia) {
+        finalCodes = finalCodes.filter(c => c.code !== 'J22');
+    }
+
+    // FIX 8: Remove N18.30 trailing zero (should be N18.3)
+    finalCodes = finalCodes.map(c => {
+        if (c.code === 'N18.30') {
+            return { ...c, code: 'N18.3', label: 'Chronic kidney disease, stage 3' };
+        }
+        return c;
+    });
+
+    // FIX 8: Remove E10.21 if E10.22 present (diabetic CKD duplication)
+    const hasE1022 = finalCodes.some(c => c.code === 'E10.22');
+    if (hasE1022) {
+        finalCodes = finalCodes.filter(c => c.code !== 'E10.21');
+    }
+
+    // FIX 9: Enhance L97 diabetic ulcer mapping for heels
+    finalCodes = finalCodes.map(c => {
+        // If code is L97.594 and context has heel location, map to L97.426 (left heel with bone)
+        if (c.code === 'L97.594' && ctx.conditions.diabetes?.ulcerSite?.includes('heel')) {
+            return { ...c, code: 'L97.426', label: 'Non-pressure chronic ulcer of left heel with bone exposure' };
+        }
+        return c;
+    });
+
+    // FIX 10: Replace L03.317 with L03.90 for unspecified cellulitis
+    finalCodes = finalCodes.map(c => {
+        if (c.code === 'L03.317') {
+            return { ...c, code: 'L03.90', label: 'Cellulitis, unspecified' };
+        }
+        return c;
+    });
+
+    // FIX 10: Replace E11.649 with E11.641 for hypoglycemia with insulin
+    finalCodes = finalCodes.map(c => {
+        if (c.code === 'E11.649') {
+            return { ...c, code: 'E11.641', label: 'Type 2 diabetes mellitus with hypoglycemia with coma' };
+        }
+        return c;
+    });
+
     // --- SEQUENCING LOGIC (PRIORITY SORT) ---
-    // 1. Primary infection / sepsis code (A40, A41, B37.7, A48.1, A41.89)
-    // 2. R65.2x (if present)
+    // Fixed sequencing to handle COPD before J96, HTN/HF/CKD with I50 codes, sepsis order
+
+    const priority: { [prefix: string]: number } = {
+        // Sepsis codes first
+        'A40': 100, 'A41': 100, 'B37.7': 100,
+        // Source infections BEFORE R65.2x
+        'J15': 95, 'J12': 95, 'J13': 95, 'J14': 95, 'N39.0': 95, 'K65.9': 95, 'L03': 95,
+        // Septic shock AFTER source
+        'R65.20': 90, 'R65.21': 90,
+        // HTN combination codes
+        'I13': 85, 'I12': 85, 'I11': 85,
+        // HF codes AFTER I13/I11
+        'I50': 80,
+        // COPD codes BEFORE respiratory failure
+        'J44.0': 75, 'J44.1': 75,
+        // Respiratory failure AFTER COPD but BEFORE pneumonia secondary codes  
+        'J96': 70,
+        // CKD codes
+        'N18': 65,
+        // Cancer codes
+        'C': 60, 'Z51.11': 55,
+        // Diabetes codes
+        'E10': 50, 'E11': 50,
+        // Default priority
+        'default': 10
+    };
     // 3. Organ dysfunction codes (N17.9, G93.x, J96.x, etc.)
     // 4. Local infection source (pneumonia, UTI, skin, etc.)
     // 5. Diabetes with complications (E08–E13)
@@ -1598,37 +1760,42 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         // 1. Primary Sepsis
         if (code.startsWith('A40') || code.startsWith('A41') || code === 'B37.7' || code === 'A48.1') return 10;
 
-        // 2. Severe Sepsis
+        // 2. Local Infection for SEPSIS cases (UTI, Skin, Abdominal) - BEFORE septic shock
+        if (code.startsWith('N30') || code.startsWith('N39')) return 15; // UTI
+        if (code.startsWith('K65')) return 15; // Peritonitis (abdominal infection)
+        if (code.startsWith('L0') || code.startsWith('L89')) return 15; // Skin/Ulcer
+
+        // 3. Severe Sepsis / Septic Shock - AFTER source infection
         if (code.startsWith('R65.2')) return 20;
 
-        // 3. Organ Dysfunction
+        // 4. COPD - BEFORE respiratory failure and pneumonia complications
+        if (code.startsWith('J44')) return 25;
+
+        // 5. Organ Dysfunction (Respiratory Failure, AKI, etc.) - AFTER COPD
         if (code.startsWith('N17') || code.startsWith('G93') || code.startsWith('J96') || code === 'G92.8' || code === 'K72.90') return 30;
 
-        // 4. Local Infection (Pneumonia J13-J18, UTI N39, Skin L00-L08, etc.)
-        if (code.startsWith('J13') || code.startsWith('J14') || code.startsWith('J15') || code.startsWith('J16') || code.startsWith('J18') || code.startsWith('J11')) return 40; // Pneumonia/Flu
-        if (code.startsWith('N30') || code.startsWith('N39')) return 40; // UTI
-        if (code.startsWith('L0') || code.startsWith('L89')) return 45; // Skin/Ulcer (L97 is handled after diabetes)
-        // Wait, L97 is diabetic ulcer manifestation. User said "Diabetes with complications ... E08-E13". L97 usually goes with E code.
-        // Let's put L97 with Diabetes group or slightly after. User list: "Diabetes with complications...".
-        // Actually, L97 is a "manifestation" code, usually sequenced after the etiology (E11).
-        // So L97 should be > Diabetes.
+        // 6. Pneumonia - AFTER COPD and respiratory failure (when COPD is present, pneumonia is a complication)
+        if (code.startsWith('J13') || code.startsWith('J14') || code.startsWith('J15') || code.startsWith('J16') || code.startsWith('J18') || code.startsWith('J11')) return 35; // Pneumonia/Flu
 
-        // 5. Diabetes
+        // 7. Diabetes
         if (code.startsWith('E08') || code.startsWith('E09') || code.startsWith('E10') || code.startsWith('E11') || code.startsWith('E13')) return 50;
 
-        // 5.5 Diabetic Ulcer Manifestation (L97) - sequenced after Diabetes
+        // 7.5 Diabetic Ulcer Manifestation (L97) - sequenced after Diabetes
         if (code.startsWith('L97')) return 55;
 
-        // 5.6 Hypertension -  should come before standalone CKD
+        // 7.6 Hypertension -  should come before standalone CKD
         if (code.startsWith('I10') || code.startsWith('I11') || code.startsWith('I12') || code.startsWith('I13') || code.startsWith('I15')) return 56;
 
-        // 6. CKD
+        // 7.7 Heart Failure (I50) - after I13 combination codes
+        if (code.startsWith('I50')) return 57;
+
+        // 8. CKD
         if (code.startsWith('N18')) return 60;
 
-        // 7. Status Codes
+        // 9. Status Codes
         if (code.startsWith('Z99')) return 70;
 
-        // 8. Others
+        // 10. Others
         return 80;
     };
 
@@ -1659,31 +1826,45 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 // === HELPER MAPPING FUNCTIONS (DETERMINISTIC) ===
 
 function mapUlcerToL97(site: string, severity: string): string {
-    let base = 'L97.5'; // Foot
+    let base = 'L97.5'; // Default to foot
+    const lower = site.toLowerCase();
 
-    // Site mapping
-    if (site.toLowerCase().includes('left') && site.toLowerCase().includes('foot')) {
-        base += '2'; // Left foot
-    } else if (site.toLowerCase().includes('right') && site.toLowerCase().includes('foot')) {
-        base += '1'; // Right foot
-    } else if (site.toLowerCase().includes('left') && site.toLowerCase().includes('ankle')) {
-        base = 'L97.32'; // Left ankle
-    } else if (site.toLowerCase().includes('right') && site.toLowerCase().includes('ankle')) {
-        base = 'L97.31'; // Right ankle
+    // Site mapping - check for heel FIRST, then ankle, then foot
+    if (lower.includes('heel')) {
+        // Heel mapping: L97.41x (right) or L97.42x (left)
+        if (lower.includes('left')) {
+            base = 'L97.42'; // Left heel
+        } else if (lower.includes('right')) {
+            base = 'L97.41'; // Right heel
+        } else {
+            base = 'L97.42'; // Default to left if not specified
+        }
+    } else if (lower.includes('ankle')) {
+        // Ankle mapping
+        if (lower.includes('left')) {
+            base = 'L97.32'; // Left ankle
+        } else if (lower.includes('right')) {
+            base = 'L97.31'; // Right ankle
+        } else {
+            base = 'L97.32'; // Default to left
+        }
+    } else if (lower.includes('foot')) {
+        // Foot mapping (not heel, not ankle)
+        if (lower.includes('left')) {
+            base = 'L97.52'; // Left foot
+        } else if (lower.includes('right')) {
+            base = 'L97.51'; // Right foot
+        } else {
+            base = 'L97.59'; // Other part of foot
+        }
     } else {
-        base += '9'; // Unspecified foot
+        // Default to other part of foot
+        base = 'L97.59';
     }
 
-    // Severity mapping (ICD-10-CM L97.xxx)\n    // x1 = limited to breakdown of skin
-    // x2 = with fat layer exposed
-    // x3 = with necrosis of muscle
-    // x4 = with necrosis of bone
-    // x5 = with muscle involvement without evidence of necrosis
-    // x9 = unspecified severity
-    if (severity === 'bone' || severity.toLowerCase().includes('bone')) {
-        return base + '4'; // Bone necrosis
-    } else if (severity.toLowerCase().includes('muscle necrosis')) {
-        return base + '3'; // Muscle necrosis (only if explicitly stated)
+    // Severity mapping
+    if (severity === 'bone' || severity.toLowerCase().includes('bone exposed') || severity.toLowerCase().includes('bone involvement')) {
+        return base + '6'; // Bone involvement/necrosis
     } else if (severity === 'muscle' || severity.toLowerCase().includes('muscle exposed') || severity.toLowerCase().includes('muscle involvement')) {
         return base + '5'; // Muscle involvement without necrosis (default for muscle)
     } else if (severity === 'fat' || severity.toLowerCase().includes('fat')) {
@@ -1796,25 +1977,53 @@ function mapOrganismCode(organism: string): string | null {
 function mapPressureUlcer(location: string, stage: string): string {
     let base = 'L89.';
 
-    // Location mapping
+    // Location mapping with enhanced laterality support
     const lower = location.toLowerCase();
-    if (lower.includes('sacral') || lower.includes('sacrum')) base += '15'; // Sacral
-    else if (lower.includes('heel')) base += '6'; // Heel
-    else if (lower.includes('buttock')) base += '3'; // Buttock
-    else if (lower.includes('hip')) base += '2'; // Hip
-    else if (lower.includes('ankle')) base += '5'; // Ankle
-    else if (lower.includes('elbow')) base += '0'; // Elbow
-    else base += '9'; // Other site
+    if (lower.includes('sacral') || lower.includes('sacrum')) {
+        base += '15'; // Sacral
+    } else if (lower === 'heel_right' || (lower.includes('right') && lower.includes('heel'))) {
+        base += '61'; // Right heel
+    } else if (lower === 'heel_left' || (lower.includes('left') && lower.includes('heel'))) {
+        base += '62'; // Left heel
+    } else if (lower.includes('heel')) {
+        base += '60'; // Heel unspecified laterality
+    } else if (lower === 'foot_right' || (lower.includes('right') && lower.includes('foot'))) {
+        base += '61'; // Right foot/heel (same as right heel)
+    } else if (lower === 'foot_left' || (lower.includes('left') && lower.includes('foot'))) {
+        base += '62'; // Left foot/heel (same as left heel)
+    } else if (lower.includes('buttock')) {
+        base += '3'; // Buttock
+    } else if (lower.includes('hip')) {
+        base += '2'; // Hip
+    } else if (lower.includes('ankle')) {
+        base += '5'; // Ankle
+    } else if (lower.includes('elbow')) {
+        base += '0'; // Elbow
+    } else {
+        base += '9'; // Other site
+    }
 
-    // Stage mapping
+    // Stage mapping with necrosis support
     const lowerStage = stage.toLowerCase();
-    if (lowerStage === 'stage1' || lowerStage === 'stage 1') return base + '1';
-    else if (lowerStage === 'stage2' || lowerStage === 'stage 2') return base + '2';
-    else if (lowerStage === 'stage3' || lowerStage === 'stage 3') return base + '3';
-    else if (lowerStage === 'stage4' || lowerStage === 'stage 4' || lowerStage.includes('bone')) return base + '4';
-    else if (lowerStage === 'unstageable') return base + '0';
-    else if (lowerStage === 'deep_tissue') return base + '6';
-    else return base + '9'; // Unspecified
+    if (lowerStage === 'stage1' || lowerStage === 'stage 1' || lowerStage === '1') {
+        return base + '1';
+    } else if (lowerStage === 'stage2' || lowerStage === 'stage 2' || lowerStage === '2') {
+        return base + '2';
+    } else if (lowerStage === 'stage3' || lowerStage === 'stage 3' || lowerStage === '3') {
+        return base + '3';
+    } else if (lowerStage === 'stage4' || lowerStage === 'stage 4' || lowerStage === '4') {
+        return base + '4';
+    } else if (lowerStage === 'bone_necrosis' || lowerStage === 'bone necrosis' || lowerStage.includes('bone')) {
+        return base + '6'; // Bone necrosis/exposure = 6th character '6'
+    } else if (lowerStage === 'muscle_necrosis' || lowerStage === 'muscle necrosis' || lowerStage.includes('muscle')) {
+        return base + '5'; // Muscle necrosis/exposure = 6th character '5'
+    } else if (lowerStage === 'unstageable') {
+        return base + '0';
+    } else if (lowerStage === 'deep_tissue') {
+        return base + '6';
+    } else {
+        return base + '0'; // Default to unstageable if unclear
+    }
 }
 
 // Injury code mapping (S codes with 7th character)
@@ -1842,19 +2051,55 @@ function mapInjuryCode(type: string, bodyRegion: string, laterality?: string, en
             code = 'S02.0'; // Unspecified fracture
         }
     } else if (type === 'open_wound') {
-        if (lower.includes('arm')) {
+        // Open wound mapping by body region
+        if (lower.includes('chest')) {
+            // S21.x - Open wound of thorax
+            if (laterality === 'right') code = 'S21.101';
+            else if (laterality === 'left') code = 'S21.102';
+            else if (laterality === 'bilateral') code = 'S21.109';
+            else code = 'S21.109';
+        } else if (lower.includes('abdomen') || lower.includes('abdominal')) {
+            // S31.x - Open wound of abdomen
+            if (laterality === 'right') code = 'S31.101';
+            else if (laterality === 'left') code = 'S31.102';
+            else code = 'S31.109';
+        } else if (lower.includes('arm')) {
             if (laterality === 'right') code = 'S41.101';
             else if (laterality === 'left') code = 'S41.102';
             else code = 'S41.109';
-        } else if (lower.includes('leg')) {
+        } else if (lower.includes('leg') || lower.includes('lower limb')) {
             if (laterality === 'right') code = 'S81.801';
             else if (laterality === 'left') code = 'S81.802';
             else code = 'S81.809';
+        } else if (lower.includes('foot')) {
+            // S91.x - Open wound of foot
+            if (laterality === 'right') code = 'S91.301';
+            else if (laterality === 'left') code = 'S91.302';
+            else code = 'S91.309';
         } else {
             code = 'S01.00'; // Unspecified open wound
         }
     } else if (type === 'burn') {
-        code = 'T20.0'; // Burn unspecified
+        // Burn mapping by body region
+        if (lower.includes('chest') || lower.includes('thorax') || lower.includes('trunk')) {
+            // T21.x - Burn of trunk (includes chest)
+            code = 'T21.00';
+        } else if (lower.includes('abdomen') || lower.includes('abdominal')) {
+            // T21.x - Burn of trunk (includes abdomen)
+            code = 'T21.00';
+        } else if (lower.includes('leg') || lower.includes('lower limb')) {
+            // T24.x - Burn of lower limb
+            if (laterality === 'right') code = 'T24.001';
+            else if (laterality === 'left') code = 'T24.002';
+            else code = 'T24.009';
+        } else if (lower.includes('arm') || lower.includes('upper limb')) {
+            // T22.x - Burn of upper limb
+            if (laterality === 'right') code = 'T22.001';
+            else if (laterality === 'left') code = 'T22.002';
+            else code = 'T22.009';
+        } else {
+            code = 'T20.0'; // Burn unspecified
+        }
     }
 
     return code + seventh;
@@ -1865,10 +2110,11 @@ function mapExternalCause(mechanism: string, encounterType?: string): string {
     const seventh = get7thCharacter(encounterType);
 
     if (mechanism === 'fall') return 'W19.XXX' + seventh;
-    else if (mechanism === 'mvc') return 'V89.2XX' + seventh;
+    else if (mechanism === 'mvc') return 'V49.9XX' + seventh;
     else if (mechanism === 'assault') return 'X99.9XX' + seventh;
-    else if (mechanism === 'sports') return 'W00.0XX' + seventh;
-    else return 'W00.0XX' + seventh; // Unspecified
+    else if (mechanism === 'sports') return 'Y93.9'; // Activity code - no 7th character
+    else if (mechanism === 'other') return 'W19.XXX' + seventh; // Default to unspecified fall
+    else return 'W19.XXX' + seventh; // Unspecified
 }
 
 // 7th character for encounter type

@@ -26,15 +26,10 @@ export function applyConsistencyRules(
         applied_fixes.push('Removed J22 (duplicate with J44.0 + J18.9)');
     }
 
-    // Rule 2: Remove I50.x if I13.x is present
-    const hasI13 = validatedCodes.some(c => c.code.startsWith('I13'));
-    if (hasI13) {
-        const beforeCount = validatedCodes.length;
-        validatedCodes = validatedCodes.filter(c => !c.code.startsWith('I50'));
-        if (validatedCodes.length < beforeCount) {
-            applied_fixes.push('Removed I50.x (conflicts with I13.x)');
-        }
-    }
+    // Rule 2: REMOVED - I13.x REQUIRES I50.x codes per ICD-10-CM guidelines
+    // Per I13 code notes: "Use additional code to identify the type of heart failure (I50.-)"
+    // DO NOT filter out I50 codes when I13 is present
+
 
     // Rule 3: Cannot have both E11.21 and E11.22
     const hasE1121 = validatedCodes.some(c => c.code === 'E11.21');
