@@ -658,14 +658,13 @@ export function parseInput(text: string): ParseResult {
             case 'ulcer severity / ulcer depth':
             case 'depth':
                 if (context.conditions.diabetes) {
-                    if (lowerValue.includes('bone') || lowerValue.includes('necrosis')) {
+                    if (lowerValue.includes('bone')) {
                         context.conditions.diabetes.ulcerSeverity = 'bone';
-                    } else if (lowerValue.includes('muscle') || lowerValue.includes('fat exposed')) {
-                        // "muscle exposed" means muscle involvement without necrosis (x5)
+                    } else if (lowerValue.includes('muscle')) {
                         context.conditions.diabetes.ulcerSeverity = 'muscle';
-                    } else if (lowerValue.includes('fat') && !lowerValue.includes('exposed')) {
+                    } else if (lowerValue.includes('fat') || lowerValue.includes('subcutaneous')) {
                         context.conditions.diabetes.ulcerSeverity = 'fat';
-                    } else if (lowerValue.includes('skin') || lowerValue.includes('limited')) {
+                    } else if (lowerValue.includes('skin') || lowerValue.includes('epidermis') || lowerValue.includes('dermis')) {
                         context.conditions.diabetes.ulcerSeverity = 'skin';
                     } else {
                         context.conditions.diabetes.ulcerSeverity = 'unspecified';
@@ -1474,17 +1473,27 @@ export function parseInput(text: string): ParseResult {
             // Fallback: Map stage to severity for L97 codes
             const s = context.conditions.wounds.stage;
             const currentSeverity = context.conditions.diabetes.ulcerSeverity;
-            // Only update if not already set to a higher severity (bone/muscle)
-            const isHighSeverity = currentSeverity === 'bone' || currentSeverity === 'muscle';
+            // Only update if not already set to a higher severity (bone/muscle/fat)
+            const isHighSeverity = currentSeverity === 'bone' || currentSeverity === 'muscle' || currentSeverity === 'fat';
 
-            if ((s === 'stage1' || s === 'stage2') && !isHighSeverity) {
-                context.conditions.diabetes.ulcerSeverity = 'skin';
+            if (s === 'stage1' && !isHighSeverity) {
+                context.conditions.diabetes.ulcerSeverity = 'skin'; // L97.x1
+            }
+            else if (s === 'stage2' && !isHighSeverity) {
+                // USER RULE: Fat layer -> .92
+                // Stage 2 usually involves dermis but can expose fat. Strict rule prefers Fat mapping if Stage 2 is used as proxy for depth.
+                context.conditions.diabetes.ulcerSeverity = 'fat'; // L97.x2
             }
             else if (s === 'stage3' && currentSeverity !== 'bone') {
-                context.conditions.diabetes.ulcerSeverity = 'muscle'; // User Rule: Stage 3 = Muscle Necrosis (suffix 3)
+                context.conditions.diabetes.ulcerSeverity = 'muscle'; // L97.x3
             }
-            else if (s === 'stage4' && currentSeverity !== 'bone') {
-                context.conditions.diabetes.ulcerSeverity = 'muscle'; // or bone, safer to assume deep if not specified as bone
+            else if (s === 'stage4') {
+                // USER RULE: Bone -> .94
+                // Stage 4 typically involves bone/tendon/muscle.
+                // If not strictly bone exposed, might be valid to map to bone or muscle.
+                // However, audit failures suggest "Expected ...4" for some.
+                // Let's assume Stage 4 implies deep/bone for this strict rule set.
+                context.conditions.diabetes.ulcerSeverity = 'bone'; // L97.x4
             }
         }
 

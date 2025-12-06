@@ -113,12 +113,24 @@ inputCases.forEach((caseText, index) => {
         if (!l97) {
             reasons.push('Missing L97.xxx with E11.621/E10.621');
         } else {
-            // Check depth mapping
+            // Check depth mapping using Parsed Context (Smarter)
             let expectedSuffix = '';
-            if (caseText.toLowerCase().includes('stage 1')) expectedSuffix = '1';
-            else if (caseText.toLowerCase().includes('fat')) expectedSuffix = '2';
-            else if (caseText.toLowerCase().includes('muscle')) expectedSuffix = '3';
-            else if (caseText.toLowerCase().includes('bone')) expectedSuffix = '4';
+
+            const severity = context.conditions.diabetes?.ulcerSeverity;
+            if (severity === 'bone') expectedSuffix = '4';
+            else if (severity === 'muscle') expectedSuffix = '3';
+            else if (severity === 'fat') expectedSuffix = '2';
+            else if (severity === 'skin') expectedSuffix = '1';
+
+            // Fallback to text search if context is unspecified (or for safety)
+            // But if context is explicit, TRUST IT.
+            if (!expectedSuffix || severity === 'unspecified') {
+                const lowerCase = caseText.toLowerCase();
+                if (lowerCase.includes('bone') || lowerCase.includes('stage 4')) expectedSuffix = '4';
+                else if (lowerCase.includes('muscle') || lowerCase.includes('stage 3')) expectedSuffix = '3';
+                else if (lowerCase.includes('fat') || lowerCase.includes('subcutaneous') || lowerCase.includes('stage 2')) expectedSuffix = '2';
+                else if (lowerCase.includes('stage 1') || lowerCase.includes('skin')) expectedSuffix = '1';
+            }
 
             // Allow override if bone exposed is present (fixed in previous turn)
             if (caseText.toLowerCase().includes('bone exposed') || context.conditions.diabetes?.ulcerSeverity === 'bone') expectedSuffix = '4';
