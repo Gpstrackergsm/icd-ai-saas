@@ -1,0 +1,41 @@
+DESKTOP HOSPITAL 1000-CASE VALIDATION SUMMARY
+Generated: 2025-12-06T13:34:54.620Z
+
+Total Cases: 1071
+Successful: 0 (0.0%)
+Empty: 1071 (100.0%)
+Errors: 0 (0.0%)
+
+Failed Cases: 1071
+
+First 30 failures:
+CASE 1: No codes
+CASE 2: No codes
+CASE 3: No codes
+CASE 4: No codes
+CASE 5: No codes
+CASE 6: No codes
+CASE 7: No codes
+CASE 8: No codes
+CASE 9: No codes
+CASE 10: No codes
+CASE 11: No codes
+CASE 12: No codes
+CASE 13: No codes
+CASE 14: No codes
+CASE 15: No codes
+CASE 16: No codes
+CASE 17: No codes
+CASE 18: No codes
+CASE 19: No codes
+CASE 20: No codes
+CASE 21: No codes
+CASE 22: No codes
+CASE 23: No codes
+CASE 24: No codes
+CASE 25: No codes
+CASE 26: No codes
+CASE 27: No codes
+CASE 28: No codes
+CASE 29: No codes
+CASE 30: No codes
