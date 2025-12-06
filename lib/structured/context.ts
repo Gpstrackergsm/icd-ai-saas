@@ -39,6 +39,8 @@ export interface PatientContext {
                 type: 'stemi' | 'nstemi' | 'unspecified';
                 timing: 'initial' | 'subsequent' | 'old';
             };
+            atrialFibrillation?: boolean;
+            historyOfMI?: boolean;
         };
         renal?: {
             ckd?: {

@@ -388,6 +388,30 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 rule: 'Heart failure specificity mapping'
             });
         }
+
+        // RULE: Atrial Fibrillation
+        if (c.atrialFibrillation) {
+            codes.push({
+                code: 'I48.91',
+                label: 'Unspecified atrial fibrillation',
+                rationale: 'Atrial fibrillation documented',
+                guideline: 'ICD-10-CM I48',
+                trigger: 'Atrial Fibrillation = Yes',
+                rule: 'Atrial fibrillation code'
+            });
+        }
+
+        // RULE: Old Myocardial Infarction
+        if (c.historyOfMI) {
+            codes.push({
+                code: 'I25.2',
+                label: 'Old myocardial infarction',
+                rationale: 'History of myocardial infarction documented',
+                guideline: 'ICD-10-CM I25.2',
+                trigger: 'Prior MI = Yes',
+                rule: 'Old MI code'
+            });
+        }
     }
 
     // --- RENAL RULES (DETERMINISTIC) ---

@@ -787,6 +787,20 @@ export function parseInput(text: string): ParseResult {
                 else if (lowerValue === 'chronic') context.conditions.cardiovascular!.heartFailure!.acuity = 'chronic';
                 break;
 
+            case 'atrial fibrillation':
+            case 'afib':
+                if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
+                context.conditions.cardiovascular.atrialFibrillation = parseBoolean(value);
+                break;
+
+            case 'prior mi':
+            case 'old mi':
+            case 'history of mi':
+            case 'history of myocardial infarction':
+                if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
+                context.conditions.cardiovascular.historyOfMI = parseBoolean(value);
+                break;
+
             // Respiratory
             case 'pneumonia':
                 if (!context.conditions.respiratory) context.conditions.respiratory = {};
@@ -1006,7 +1020,13 @@ export function parseInput(text: string): ParseResult {
                     // Ulcer/wound type
                     if (!context.conditions.wounds) context.conditions.wounds = { present: true };
                     if (lowerValue.includes('pressure')) context.conditions.wounds.type = 'pressure';
-                    else if (lowerValue.includes('diabetic')) context.conditions.wounds.type = 'diabetic';
+                    else if (lowerValue.includes('diabetic')) {
+                        context.conditions.wounds.type = 'diabetic';
+                        // Infer diabetes if not already present
+                        if (!context.conditions.diabetes) {
+                            context.conditions.diabetes = { type: 'type2', complications: [] };
+                        }
+                    }
                     else if (lowerValue.includes('venous')) context.conditions.wounds.type = 'venous';
                     else if (lowerValue.includes('arterial')) context.conditions.wounds.type = 'arterial';
                     else if (lowerValue.includes('traumatic')) {
@@ -1420,6 +1440,11 @@ export function parseInput(text: string): ParseResult {
         // Sync Depth/Severity
         if (context.conditions.wounds.depth) {
             context.conditions.diabetes.ulcerSeverity = context.conditions.wounds.depth;
+        }
+
+        // CRITICAL FIX: Ensure 'foot_ulcer' is in complications list so engine picks it up
+        if (!context.conditions.diabetes.complications.includes('foot_ulcer')) {
+            context.conditions.diabetes.complications.push('foot_ulcer');
         }
     }
 
