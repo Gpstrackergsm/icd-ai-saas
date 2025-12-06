@@ -1,257 +1,101 @@
-MEDICAL CODING AUDIT REPORT
-================================================================================
+MEDICAL AUDIT REPORT — 1000 CASES
+========================================
 
-Total Cases: 999
-With Codes: 520
-No Codes: 479
+TOTAL CASES: 1000
 
-CASE 2
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
+✅ CORRECT:  954
+❌ INCORRECT: 46
+⚠ NOT CODED / NO OUTPUT: 0
 
-CASE 3
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
+MEDICAL ACCURACY: 95.4%
 
-CASE 4
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
+----------------------------------------
+DOMAIN BREAKDOWN:
+----------------------------------------
+Diabetes: 46/324 Failed
+Respiratory: 0/676 Failed
+Renal: 0/0 Failed
+Sepsis: 0/0 Failed
+Cardiac: 0/0 Failed
+Wounds/Ulcers: 0/0 Failed
+Trauma: 0/0 Failed
+Oncology: 0/0 Failed
+Other: 0/0 Failed
 
-CASE 5
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
+----------------------------------------
+TOP ERROR PATTERNS:
+----------------------------------------
+1) Wrong L97 suffix. Expected ...2, got L97.319 (9 cases)
+2) Wrong L97 suffix. Expected ...2, got L97.519 (7 cases)
+3) Wrong L97 suffix. Expected ...2, got L97.529 (6 cases)
+4) Wrong L97 suffix. Expected ...2, got L97.599 (4 cases)
+5) Wrong L97 suffix. Expected ...2, got L97.329 (4 cases)
 
-CASE 6
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
+----------------------------------------
+CRITICAL FAILURES (List CASE NUMBERS):
+----------------------------------------
+CASE 38 – Wrong L97 suffix. Expected ...2, got L97.521
+CASE 40 – Wrong L97 suffix. Expected ...2, got L97.319
+CASE 69 – Wrong L97 suffix. Expected ...2, got L97.319
+CASE 82 – Wrong L97 suffix. Expected ...2, got L97.519
+CASE 88 – Wrong L97 suffix. Expected ...2, got L97.599
+CASE 93 – Wrong L97 suffix. Expected ...1, got L97.519
+CASE 139 – Wrong L97 suffix. Expected ...2, got L97.529
+CASE 171 – Wrong L97 suffix. Expected ...2, got L97.519
+CASE 198 – Wrong L97 suffix. Expected ...2, got L97.329
+CASE 201 – Wrong L97 suffix. Expected ...2, got L97.319
+CASE 275 – Wrong L97 suffix. Expected ...3, got L97.521
+CASE 336 – Wrong L97 suffix. Expected ...2, got L97.519
+CASE 338 – Wrong L97 suffix. Expected ...2, got L97.529
+CASE 352 – Wrong L97 suffix. Expected ...2, got L97.319
+CASE 357 – Wrong L97 suffix. Expected ...2, got L97.529
+CASE 374 – Wrong L97 suffix. Expected ...2, got L97.519
+CASE 380 – Wrong L97 suffix. Expected ...2, got L97.529
+CASE 390 – Wrong L97 suffix. Expected ...2, got L97.319
+CASE 400 – Wrong L97 suffix. Expected ...2, got L97.329
+CASE 411 – Wrong L97 suffix. Expected ...2, got L97.319
+CASE 442 – Wrong L97 suffix. Expected ...1, got L97.513
+CASE 457 – Wrong L97 suffix. Expected ...1, got L97.593
+CASE 458 – Wrong L97 suffix. Expected ...3, got L97.321
+CASE 470 – Wrong L97 suffix. Expected ...2, got L97.329
+CASE 471 – Wrong L97 suffix. Expected ...4, got L97.511
+CASE 474 – Wrong L97 suffix. Expected ...4, got L97.521
+CASE 478 – Wrong L97 suffix. Expected ...2, got L97.519
+CASE 501 – Wrong L97 suffix. Expected ...2, got L97.599
+CASE 541 – Wrong L97 suffix. Expected ...1, got L97.593
+CASE 544 – Wrong L97 suffix. Expected ...2, got L97.599
+CASE 564 – Wrong L97 suffix. Expected ...2, got L97.319
+CASE 611 – Wrong L97 suffix. Expected ...2, got L97.529
+CASE 637 – Wrong L97 suffix. Expected ...1, got L97.529
+CASE 669 – Wrong L97 suffix. Expected ...1, got L97.593
+CASE 672 – Wrong L97 suffix. Expected ...2, got L97.519
+CASE 678 – Wrong L97 suffix. Expected ...1, got L97.599
+CASE 700 – Wrong L97 suffix. Expected ...2, got L97.599
+CASE 704 – Wrong L97 suffix. Expected ...1, got L97.593
+CASE 715 – Wrong L97 suffix. Expected ...2, got L97.319
+CASE 720 – Wrong L97 suffix. Expected ...2, got L97.513
+CASE 741 – Wrong L97 suffix. Expected ...2, got L97.593
+CASE 752 – Wrong L97 suffix. Expected ...2, got L97.329
+CASE 881 – Wrong L97 suffix. Expected ...2, got L97.519
+CASE 902 – Wrong L97 suffix. Expected ...2, got L97.529
+CASE 915 – Wrong L97 suffix. Expected ...2, got L97.319
+CASE 990 – Wrong L97 suffix. Expected ...4, got L97.311
 
-CASE 7
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
+----------------------------------------
+FINAL MEDICAL VERDICT:
+----------------------------------------
+☐ NOT AUDIT-SAFE
+☑ CONDITIONALLY ACCEPTABLE
+☐ AUDIT-GRADE COMPLIANT
 
-CASE 8
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
+With justification.
+High accuracy but critical errors persist in specific domains.
 
-CASE 9
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 10
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 11
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 12
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 13
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 14
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 15
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 16
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 17
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 18
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 19
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 20
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 21
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 22
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 23
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 24
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 25
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 26
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 27
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 28
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 29
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 30
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 31
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 32
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 33
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 34
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 35
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 36
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 37
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 38
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 39
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 40
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 41
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 42
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 43
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 44
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 45
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 46
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 47
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 48
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 49
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 50
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
-CASE 51
-Category: ICU_SEPSIS
-Clinical: Fever, hypotension, source UTI, organism E. coli, septic shock.
-System: A41.51, N39.0, R65.21
-
+----------------------------------------
+RECOMMENDATIONS TO REACH ≥ 99%:
+----------------------------------------
+1) Fix: Wrong L97 suffix. Expected ...2, got L97.319
+2) Fix: Wrong L97 suffix. Expected ...2, got L97.519
+3) Fix: Wrong L97 suffix. Expected ...2, got L97.529
+4) Fix: Wrong L97 suffix. Expected ...2, got L97.599
+5) Fix: Wrong L97 suffix. Expected ...2, got L97.329

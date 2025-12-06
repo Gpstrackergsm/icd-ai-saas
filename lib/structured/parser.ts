@@ -1402,7 +1402,25 @@ export function parseInput(text: string): ParseResult {
                 break;
             case 'drug use':
                 if (!context.social) context.social = {};
-                if (parseBoolean(value)) context.social.drugUse = { present: true };
+                // Enhance parsing to capture abuse/dependence
+                if (lowerValue.includes('abuse')) context.social.drugUse = { present: true, type: 'abuse' as any }; // Cast to any/string if type definition allows, or just use present=true
+                // Actually, let's check the context type definition. It might just have 'present' and 'type' (which is usually drug class).
+                // If type is usually 'opioid', we might need a separate 'status' field or reuse type?
+                // Looking at engine.ts: s.drugUse.type is used for 'opioid'. 
+                // We should add a new field 'status' or similar if we can, OR simply don't set 'type' to opioid if it's abuse?
+                // Wait, the engine logic I just wrote ignores F-codes unless I add logic back.
+                // The user said: "IF 'Drug Use: Yes' AND no word 'abuse/dependence/disorder' THEN FORCE Z72.2".
+                // So if "Drug Use: Abuse", we ALLOW F-codes.
+                // But my engine fix removed F-code logic entirely.
+                // I need to add F-code logic BACK in engine.ts but guarded by an 'abuse' flag.
+                // First, let's make parser parse it.
+                if (lowerValue.includes('abuse')) {
+                    context.social.drugUse = { present: true, status: 'abuse' };
+                } else if (lowerValue.includes('dependence')) {
+                    context.social.drugUse = { present: true, status: 'dependence' };
+                } else if (parseBoolean(value)) {
+                    context.social.drugUse = { present: true };
+                }
                 break;
             case 'drug type':
                 if (!context.social) context.social = {};

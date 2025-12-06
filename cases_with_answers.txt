@@ -1,0 +1,27 @@
+HOSPITAL TEST CASES WITH ICD-10-CM ANSWERS
+================================================================================
+
+CASE 1
+Clinical Story: Patient presents with acute chest pain, diaphoresis. EKG shows ST elevation. Troponin elevated. Diagnosed with acute STEMI of anterior wall.
+ICD-10-CM Codes: I21.09
+
+CASE 2
+Clinical Story: Patient fell from ladder, loss of consciousness for 5 minutes. CT shows concussion. Initial encounter.
+ICD-10-CM Codes: S06.0X0A, W11.XXXA
+
+CASE 3
+Clinical Story: Right lower quadrant pain, fever, elevated WBC. CT confirms acute appendicitis with peritonitis.
+ICD-10-CM Codes: K35.80
+
+CASE 4
+Clinical Story: ICU admission for severe sepsis due to MRSA pneumonia. Patient on vasopressors.
+ICD-10-CM Codes: A41.02, J15.212
+
+CASE 5
+Clinical Story: E. coli urosepsis with septic shock. Hypotensive requiring pressors.
+ICD-10-CM Codes: A41.51, N39.0, R65.21
+
+================================================================================
+Total Cases: 5
+Generated: 2025-12-06
+================================================================================

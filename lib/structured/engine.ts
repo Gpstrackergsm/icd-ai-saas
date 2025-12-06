@@ -1500,30 +1500,38 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
         // RULE: Drug Use
         if (s.drugUse?.present) {
-            let code = 'Z72.2'; // Default to Drug Use (not abuse) per strict coding rules
-            if (s.drugUse.type === 'opioid') code = 'F11.10'; // Abuse implied by specific type in this parser? No, should be strict.
-            // Strict check: if parser didn't say 'abuse' or 'dependence', stick to Z72.2 or F-code if type implies it?
-            // User requirement: "Drug Use: Yes" -> Z72.2 ONLY.
-            // We only use F-codes if we had 'abuse' documented.
-            // Assuming parser puts 'abuse' in 'alcoholUse' logic but generic drug use is here.
-            // Since our parser is simple, we'll default to Z72.2 unless type is strongly associated with a disorder code key.
-            // But for safety and strictness:
-            code = 'Z72.2';
+            // STRICT RULE: "Drug Use: Yes" -> Z72.2 ONLY.
+            // Do NOT infer F-codes from drug type unless abuse/dependence is explicitly documented.
 
-            if (s.drugUse.type) {
-                // If type is known, we might want specific Z codes or F codes if abuse stated.
-                // For now, strict Z72.2 is safest default.
-                // If explicit abuse logic existed, we'd use it.
+            if (s.drugUse.status === 'abuse' || s.drugUse.status === 'dependence') {
+                // Logic for abuse/dependence (F-codes)
+                // Start with generic F19.10 (Abuse) or F19.20 (Dependence) if type unknown
+                let code = s.drugUse.status === 'dependence' ? 'F19.20' : 'F19.10';
+
+                // Specific types
+                if (s.drugUse.type === 'opioid') code = s.drugUse.status === 'dependence' ? 'F11.20' : 'F11.10';
+                else if (s.drugUse.type === 'cocaine') code = s.drugUse.status === 'dependence' ? 'F14.20' : 'F14.10';
+                else if (s.drugUse.type === 'cannabis') code = s.drugUse.status === 'dependence' ? 'F12.20' : 'F12.10';
+
+                codes.push({
+                    code: code,
+                    label: `Drug ${s.drugUse.status}, uncomplicated`,
+                    rationale: `Drug ${s.drugUse.status} documented`,
+                    guideline: 'ICD-10-CM F10-F19',
+                    trigger: `Drug Use: ${s.drugUse.status}, Type: ${s.drugUse.type}`,
+                    rule: 'Drug abuse/dependence code'
+                });
+            } else {
+                // Default: Z72.2
+                codes.push({
+                    code: 'Z72.2',
+                    label: 'Drug use',
+                    rationale: 'Drug use documented (without abuse/dependence)',
+                    guideline: 'ICD-10-CM Z72.2',
+                    trigger: 'Drug Use: Yes',
+                    rule: 'Drug use code'
+                });
             }
-
-            codes.push({
-                code: code,
-                label: 'Drug use',
-                rationale: 'Drug use documented (without abuse/dependence)',
-                guideline: 'ICD-10-CM Z72.2',
-                trigger: 'Drug Use: Yes',
-                rule: 'Drug use code'
-            });
         }
 
         // RULE: Homelessness
@@ -1702,6 +1710,18 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     if (remainingE22 && hasN18) {
         finalCodes = finalCodes.filter(c => !c.code.startsWith('N18'));
         console.log("AUDIT: N18 removed favoring E1x.22");
+    }
+
+    // STRICT USER RULE 5 FIX:
+    // "IF 'Drug Use: Yes' [Z72.2] THEN FORBID any F1x/F17 code"
+    const hasZ722 = finalCodes.some(c => c.code === 'Z72.2');
+    if (hasZ722) {
+        // Remove ALL F1 codes (F10, F11, F17, etc.)
+        const initialCount = finalCodes.length;
+        finalCodes = finalCodes.filter(c => !c.code.startsWith('F1'));
+        if (finalCodes.length < initialCount) {
+            console.log("AUDIT: F1x codes removed because Z72.2 (Drug Use) is present per Strict User Rule");
+        }
     }
 
     // FIX 8: Remove N18.30 trailing zero (should be N18.3)

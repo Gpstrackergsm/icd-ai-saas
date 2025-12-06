@@ -191,6 +191,7 @@ export interface PatientContext {
         drugUse?: {
             present: boolean;
             type?: 'opioid' | 'cocaine' | 'cannabis';
+            status?: 'abuse' | 'dependence';
         };
         homeless?: boolean;
     };
