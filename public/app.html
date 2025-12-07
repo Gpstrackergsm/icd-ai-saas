@@ -4,250 +4,242 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ICD-10-CM Encoder</title>
+  <title>ICD-10-CM Encoder - App</title>
+  <meta name="description" content="Secure, AI-powered ICD-10-CM encoding workspace.">
   <link rel="icon" type="image/png" href="favicon.png">
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f0fdf4;
-      color: #1e293b;
-      margin: 0;
-      padding: 0;
-    }
 
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 32px 16px 48px;
-    }
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
 
-    h1 {
-      font-size: 28px;
-      margin-bottom: 16px;
-      color: #0f172a;
-    }
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    .panel {
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
-      padding: 20px;
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            medical: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            }
+          }
+        }
+      }
     }
-
-
-    label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .input-row {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    textarea,
-    input[type="text"] {
-      flex: 1;
-      min-width: 220px;
-      padding: 12px;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      font-size: 16px;
-      resize: vertical;
-      min-height: 120px;
-    }
-
-    button {
-      background: #22c55e;
-      color: #fff;
-      border: none;
-      padding: 12px 18px;
-      border-radius: 8px;
-      font-size: 15px;
-      cursor: pointer;
-      transition: background 0.15s ease;
-    }
-
-    button:hover {
-      background: #16a34a;
-    }
-
-    button.secondary {
-      background: #64748b;
-    }
-
-    button.secondary:hover {
-      background: #475569;
-    }
-
-    .status {
-      margin-top: 12px;
-      color: #475569;
-      min-height: 20px;
-    }
-
-    .results {
-      margin-top: 20px;
-      display: grid;
-      gap: 12px;
-    }
-
-    .card {
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 14px;
-      background: #f8fafc;
-    }
-
-    .code {
-      font-weight: 700;
-      color: #0f172a;
-      margin-bottom: 6px;
-    }
-
-    .desc {
-      margin: 4px 0;
-      color: #334155;
-    }
-
-    .synonyms {
-      font-size: 13px;
-      color: #64748b;
-    }
-
-    .actions {
-      margin-top: 16px;
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .pill {
-      display: inline-block;
-      padding: 4px 8px;
-      background: #dcfce7;
-      color: #166534;
-      border-radius: 6px;
-      font-size: 12px;
-      margin-right: 6px;
-    }
-  </style>
+  </script>
 </head>
 
-<body>
-  <div class="container">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-      <h1 style="margin: 0;">ICD-10-CM Encoder</h1>
-      <div style="display: flex; align-items: center; gap: 12px;">
-        <span id="userEmail" style="font-size: 14px; color: #64748b;"></span>
-        <button id="logoutBtn" class="secondary" style="padding: 8px 16px; font-size: 14px;">Logout</button>
-      </div>
-    </div>
-    <div class="panel">
+<body class="bg-slate-50 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
 
-      <div id="encodePanel">
-        <label for="narrative">Encoder: clinical narrative</label>
-        <div class="input-row">
-          <textarea id="narrative" name="narrative"
-            placeholder="e.g., Type 2 diabetes with CKD stage 4 and hypertension"></textarea>
-          <button id="encodeBtn">Encode</button>
-        </div>
-        <div class="actions">
-          <button id="copyEncodeBtn" class="secondary" disabled>Copy codes</button>
-        </div>
-        <div id="encodeStatus" class="status"></div>
-        <div id="encodeResults" class="results"></div>
-      </div>
-    </div>
-
-    <!-- Batch Upload Section -->
-    <div class="panel" style="margin-top: 32px;">
-      <h2 style="font-size: 20px; margin-top: 0; margin-bottom: 16px;">Batch File Upload</h2>
-      <p style="color: #64748b; font-size: 14px; margin-bottom: 16px;">
-        Upload a .txt file containing multiple structured cases for batch processing.
-      </p>
-
-      <div style="margin-bottom: 16px;">
-        <label for="batchFile" style="display: block; margin-bottom: 8px;">Choose File:</label>
-        <input type="file" id="batchFile" accept=".txt"
-          style="padding: 8px; border: 1px solid #cbd5e1; border-radius: 8px; width: 100%; max-width: 400px;">
-      </div>
-
-      <div class="actions">
-        <button id="processBatchBtn" disabled>Upload & Process</button>
-        <button id="downloadResultsBtn" class="secondary" disabled style="display: none;">Download Results</button>
-        <button id="clearBatchBtn" class="secondary">Clear</button>
-      </div>
-
-      <div id="batchStatus" class="status"></div>
-      <div id="batchProgress" style="display: none; margin-top: 12px;">
-        <div style="background: #e2e8f0; border-radius: 8px; height: 24px; overflow: hidden;">
-          <div id="progressBar" style="background: #22c55e; height: 100%; width: 0%; transition: width 0.3s ease;">
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-medical-600 flex items-center justify-center text-white">
+            <i class="fa-solid fa-laptop-medical"></i>
           </div>
+          <span class="text-xl font-bold text-slate-900 tracking-tight">ICD Audit Engine</span>
         </div>
-        <div id="progressText" style="margin-top: 8px; color: #64748b; font-size: 14px;"></div>
+        <div class="flex items-center gap-4">
+          <div class="hidden sm:flex flex-col items-end">
+            <span id="userEmail" class="text-sm font-medium text-slate-900"></span>
+            <span class="text-xs text-green-600 font-semibold">• Online</span>
+          </div>
+          <button id="logoutBtn"
+            class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+            title="Logout">
+            <i class="fa-solid fa-right-from-bracket text-lg"></i>
+          </button>
+        </div>
       </div>
     </div>
-  </div>
-  </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full gap-8 grid grid-cols-1 lg:grid-cols-3">
+
+    <!-- Left Column: Inputs -->
+    <div class="lg:col-span-2 space-y-8">
+
+      <!-- Encoder Panel -->
+      <section class="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden">
+        <div class="p-6 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+          <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-keyboard text-medical-500"></i> Clinical Scenario
+          </h2>
+          <span class="text-xs font-medium px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800">
+            Secure Mode
+          </span>
+        </div>
+
+        <div class="p-6" id="encodePanel">
+          <!-- Dynamic Form Builder Container will be inserted here by JS -->
+
+          <div class="mt-6">
+            <label for="narrative" class="block text-sm font-semibold text-slate-700 mb-2">
+              Generated Clinical Narrative
+              <span class="text-xs font-normal text-slate-500 ml-1">(Editable)</span>
+            </label>
+            <div class="relative">
+              <textarea id="narrative" name="narrative"
+                class="w-full h-40 px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-medical-500 focus:border-transparent outline-none transition-all resize-none font-mono text-sm leading-relaxed"
+                placeholder="Describe the patient encounter or use the builder above..."></textarea>
+              <div class="absolute bottom-3 right-3 text-xs text-slate-400 pointer-events-none">
+                AI Ready
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 flex items-center gap-4">
+            <button id="encodeBtn"
+              class="flex-1 bg-medical-600 hover:bg-medical-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> Encode Scenario
+            </button>
+          </div>
+
+          <div id="encodeStatus" class="mt-4 text-center text-sm font-medium min-h-[20px] text-slate-500"></div>
+
+        </div>
+      </section>
+
+      <!-- Batch Upload Panel -->
+      <section class="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden">
+        <div class="p-6 border-b border-slate-100 bg-slate-50">
+          <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-file-arrow-up text-medical-500"></i> Batch Processing
+          </h2>
+        </div>
+        <div class="p-6">
+          <p class="text-slate-600 text-sm mb-4">
+            Upload a <code class="bg-slate-100 px-1 py-0.5 rounded text-slate-800">.txt</code> file containing multiple
+            structured cases for high-volume auditing.
+          </p>
+
+          <div
+            class="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:bg-slate-50 transition-colors relative group">
+            <input type="file" id="batchFile" accept=".txt"
+              class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10">
+            <div class="space-y-2 pointer-events-none">
+              <i
+                class="fa-solid fa-cloud-arrow-up text-3xl text-slate-400 group-hover:text-medical-500 transition-colors"></i>
+              <p class="text-sm font-medium text-slate-700">Click to upload or drag and drop</p>
+              <p class="text-xs text-slate-500" id="fileLabel">TXT files only</p>
+            </div>
+          </div>
+
+          <div class="mt-6 flex flex-wrap gap-3">
+            <button id="processBatchBtn" disabled
+              class="bg-slate-800 hover:bg-slate-900 text-white font-medium py-2 px-6 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm">
+              Process Batch
+            </button>
+            <button id="downloadResultsBtn" style="display:none;"
+              class="bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-6 rounded-lg transition-all shadow-sm flex items-center gap-2">
+              <i class="fa-solid fa-download"></i> Download Report
+            </button>
+            <button id="clearBatchBtn"
+              class="ml-auto text-slate-500 hover:text-slate-700 font-medium text-sm py-2 px-4">
+              Clear
+            </button>
+          </div>
+
+          <div id="batchStatus" class="mt-4 text-sm font-medium text-slate-600"></div>
+
+          <!-- Progress Bar -->
+          <div id="batchProgress" class="hidden mt-4">
+            <div class="h-2 w-full bg-slate-200 rounded-full overflow-hidden">
+              <div id="progressBar" class="h-full bg-medical-500 transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <p id="progressText" class="text-xs text-center text-slate-500 mt-2">Initializing...</p>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Right Column: Results -->
+    <div class="lg:col-span-1">
+      <div class="sticky top-24">
+        <section
+          class="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden flex flex-col max-h-[calc(100vh-8rem)]">
+          <div class="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+            <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-medical-500"></i> Results
+            </h2>
+            <button id="copyEncodeBtn" disabled
+              class="text-xs font-medium text-medical-600 hover:text-medical-700 disabled:text-slate-400 flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Copy All
+            </button>
+          </div>
+
+          <div id="encodeResults" class="p-4 overflow-y-auto space-y-4 bg-slate-50/50 flex-grow min-h-[300px]">
+            <!-- Results populated here -->
+            <div class="text-center py-10 text-slate-400">
+              <i class="fa-solid fa-clipboard-list text-4xl mb-3 opacity-20"></i>
+              <p class="text-sm">Codes will appear here</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </main>
 
   <script>
-    // Authentication check
-    (async function checkAuth() {
-      const token = localStorage.getItem('token');
-      if (!token) {
-        window.location.href = '/';
-        return;
-      }
-
-      try {
-        const response = await fetch('/api/auth/verify', {
-          headers: { 'Authorization': `Bearer ${token}` }
-        });
-
-        if (!response.ok) {
-          localStorage.removeItem('token');
-          localStorage.removeItem('user');
+      // Authentication Logic
+      (async function checkAuth() {
+        const token = localStorage.getItem('token');
+        if (!token) {
           window.location.href = '/';
           return;
         }
 
-        const data = await response.json();
-        document.getElementById('userEmail').textContent = data.user.email;
-      } catch (error) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.href = '/';
-      }
-    })();
+        try {
+          const response = await fetch('/api/auth/verify', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
 
-    // Logout functionality
+          if (!response.ok) {
+            throw new Error('Invalid token');
+          }
+
+          const data = await response.json();
+          document.getElementById('userEmail').textContent = data.user.email;
+        } catch (error) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/';
+        }
+      })();
+
     document.getElementById('logoutBtn').addEventListener('click', () => {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/';
     });
 
-    // Encoder tab logic
-    const narrativeInput = document.getElementById('narrative');
-    const encodeBtn = document.getElementById('encodeBtn');
-    const copyEncodeBtn = document.getElementById('copyEncodeBtn');
-    const encodeStatus = document.getElementById('encodeStatus');
-    const encodeResults = document.getElementById('encodeResults');
-    let lastEncoded = null;
-
     // --- FORM BUILDER LOGIC ---
 
-    // 1. Define Domain Schema Configuration
+    // Domain Configuration
     const domainConfig = {
       demographics: {
         label: 'Demographics',
+        icon: 'fa-user',
         fields: [
           { key: 'Age', type: 'number', label: 'Age' },
           { key: 'Gender', type: 'select', label: 'Gender', options: ['Male', 'Female'] },
@@ -256,6 +248,7 @@
       },
       diabetes: {
         label: 'Diabetes',
+        icon: 'fa-droplet',
         fields: [
           { key: 'Diabetes Type', type: 'select', label: 'Type', options: ['None', 'Type 1', 'Type 2'], required: true },
           {
@@ -266,13 +259,13 @@
           },
           { key: 'CKD Stage', type: 'select', label: 'CKD Stage', options: ['1', '2', '3', '4', '5', 'ESRD'], showIf: 'Nephropathy/CKD' },
           { key: 'Insulin Use', type: 'select', label: 'Insulin Use', options: ['Yes', 'No'] },
-          // Conditional fields - shown only if Foot Ulcer selected
           { key: 'Ulcer Site', type: 'select', label: 'Ulcer Site', options: ['Left Foot', 'Right Foot', 'Left Ankle', 'Right Ankle', 'Other'], required: 'if_foot_ulcer', showIf: 'Foot Ulcer' },
           { key: 'Ulcer Severity', type: 'select', label: 'Ulcer Depth', options: ['Skin only', 'Fat layer exposed', 'Muscle exposed', 'Bone exposed'], required: 'if_foot_ulcer', showIf: 'Foot Ulcer' }
         ]
       },
       ckd: {
         label: 'Renal / CKD',
+        icon: 'fa-flask',
         fields: [
           { key: 'CKD Present', type: 'select', label: 'CKD Present', options: ['Yes', 'No'] },
           { key: 'CKD Stage', type: 'select', label: 'CKD Stage', options: ['1', '2', '3', '4', '5', 'ESRD'], required: true, showIf: 'Yes' },
@@ -283,6 +276,7 @@
       },
       cardio: {
         label: 'Cardiovascular',
+        icon: 'fa-heart-pulse',
         fields: [
           { key: 'Hypertension', type: 'select', label: 'Hypertension', options: ['Yes', 'No'] },
           { key: 'Heart Failure', type: 'select', label: 'Heart Failure', options: ['None', 'Systolic', 'Diastolic', 'Combined'] },
@@ -294,6 +288,7 @@
       },
       respiratory: {
         label: 'Respiratory',
+        icon: 'fa-lungs',
         fields: [
           { key: 'Respiratory Failure', type: 'select', label: 'Resp Failure', options: ['None', 'Acute', 'Chronic', 'Acute on chronic'] },
           { key: 'COPD', type: 'select', label: 'COPD', options: ['None', 'With infection', 'With exacerbation', 'With both'] },
@@ -306,6 +301,7 @@
       },
       infection: {
         label: 'Infections',
+        icon: 'fa-bacterium',
         fields: [
           { key: 'Infection Present', type: 'select', label: 'Infection', options: ['Yes', 'No'] },
           { key: 'Infection Site', type: 'select', label: 'Site', options: ['Lung', 'Urinary tract', 'Blood', 'Skin', 'Other'], showIf: 'Yes' },
@@ -317,6 +313,7 @@
       },
       wounds: {
         label: 'Wounds / Ulcers',
+        icon: 'fa-bandage',
         fields: [
           { key: 'Ulcer Present', type: 'select', label: 'Ulcer/Wound', options: ['Yes', 'No'] },
           { key: 'Ulcer Type', type: 'select', label: 'Type', options: ['Pressure', 'Diabetic', 'Traumatic'], required: true, showIf: 'Yes' },
@@ -326,6 +323,7 @@
       },
       neoplasm: {
         label: 'Neoplasm / Cancer',
+        icon: 'fa-ribbon',
         fields: [
           { key: 'Cancer Present', type: 'select', label: 'Cancer', options: ['Yes', 'No'] },
           { key: 'Cancer Site', type: 'text', label: 'Site', showIf: 'Yes' },
@@ -336,6 +334,7 @@
       },
       injury: {
         label: 'Injury / Trauma',
+        icon: 'fa-crutch',
         fields: [
           { key: 'Injury Present', type: 'select', label: 'Injury', options: ['Yes', 'No'] },
           { key: 'Injury Type', type: 'select', label: 'Type', options: ['Fracture', 'Open wound', 'Burn'], required: true, showIf: 'Yes' },
@@ -347,6 +346,7 @@
       },
       social: {
         label: 'Social / Lifestyle',
+        icon: 'fa-champagne-glasses',
         fields: [
           { key: 'Smoking', type: 'select', label: 'Smoking', options: ['Never', 'Current', 'Former'] },
           { key: 'Alcohol Use', type: 'select', label: 'Alcohol', options: ['None', 'Yes'] },
@@ -355,56 +355,46 @@
       }
     };
 
-    // State to hold current form values
     let formState = {
-      demographics: { Age: '', Gender: '' } // Always present
+      demographics: { Age: '', Gender: '' }
     };
 
-    // UI Elements
+    // DOM Elements
+    const encodePanel = document.getElementById('encodePanel');
+    const narrativeInput = document.getElementById('narrative');
+    const encodeBtn = document.getElementById('encodeBtn');
+    const copyEncodeBtn = document.getElementById('copyEncodeBtn');
+    const encodeStatus = document.getElementById('encodeStatus');
+    const encodeResults = document.getElementById('encodeResults');
+
+    // Builder Container
     const builderContainer = document.createElement('div');
-    builderContainer.style.background = '#f1f5f9';
-    builderContainer.style.padding = '16px';
-    builderContainer.style.borderRadius = '8px';
-    builderContainer.style.marginBottom = '20px';
-    builderContainer.style.border = '1px solid #e2e8f0';
+    builderContainer.className = 'border border-slate-200 bg-slate-50/50 rounded-lg p-5 mb-6';
 
+    // Header for builder
+    const builderHeader = document.createElement('div');
+    builderHeader.className = 'flex justify-between items-center mb-4';
     const builderTitle = document.createElement('h3');
-    builderTitle.textContent = 'Structured Scenario Builder';
-    builderTitle.style.marginTop = '0';
-    builderTitle.style.marginBottom = '12px';
-    builderTitle.style.fontSize = '16px';
-    builderContainer.appendChild(builderTitle);
+    builderTitle.className = 'text-sm font-bold text-slate-700 uppercase tracking-wide';
+    builderTitle.textContent = 'Structured Builder';
+    builderHeader.appendChild(builderTitle);
 
-    // Container for active forms
-    const activeFormsContainer = document.createElement('div');
-    activeFormsContainer.style.display = 'flex';
-    activeFormsContainer.style.flexDirection = 'column';
-    activeFormsContainer.style.gap = '12px';
-    builderContainer.appendChild(activeFormsContainer);
-
-    // "Add Condition" Dropdown
-    const addConditionContainer = document.createElement('div');
-    addConditionContainer.style.marginTop = '16px';
-    addConditionContainer.style.borderTop = '1px solid #cbd5e1';
-    addConditionContainer.style.paddingTop = '12px';
-
-    const addLabel = document.createElement('label');
-    addLabel.textContent = '+ Add Condition:';
-    addLabel.style.display = 'inline-block';
-    addLabel.style.marginRight = '8px';
-    addLabel.style.fontSize = '14px';
-
+    // Add Condition Wrapper
+    const addWrapper = document.createElement('div');
+    addWrapper.className = 'relative';
     const addSelect = document.createElement('select');
-    addSelect.style.padding = '6px';
-    addSelect.style.borderRadius = '4px';
+    addSelect.className = 'pl-3 pr-8 py-1.5 text-sm bg-white border border-slate-300 rounded-md focus:ring-2 focus:ring-medical-500 outline-none shadow-sm cursor-pointer hover:border-medical-400 transition-colors appearance-none';
 
+    // Add customized default option
     const defaultOpt = document.createElement('option');
-    defaultOpt.text = 'Select domain...';
+    defaultOpt.text = '+ Add Condition';
     defaultOpt.value = '';
+    // defaultOpt.disabled = true;
+    defaultOpt.selected = true;
     addSelect.appendChild(defaultOpt);
 
     Object.keys(domainConfig).forEach(key => {
-      if (key === 'demographics') return; // Skip, already added
+      if (key === 'demographics') return;
       const opt = document.createElement('option');
       opt.value = key;
       opt.text = domainConfig[key].label;
@@ -415,54 +405,58 @@
       const domain = e.target.value;
       if (domain) {
         if (!formState[domain]) {
-          formState[domain] = {}; // Initialize state
+          formState[domain] = {};
           renderFormSection(domain);
           updateNarrative();
         }
-        e.target.value = ''; // Reset
+        e.target.value = '';
       }
     });
 
-    addConditionContainer.appendChild(addLabel);
-    addConditionContainer.appendChild(addSelect);
-    builderContainer.appendChild(addConditionContainer);
+    // Icon for select
+    const selectIcon = document.createElement('div');
+    selectIcon.className = 'absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-xs';
+    selectIcon.innerHTML = '<i class="fa-solid fa-plus"></i>';
 
-    // Insert Builder into DOM
-    const encodePanel = document.getElementById('encodePanel');
+    addWrapper.appendChild(addSelect);
+    addWrapper.appendChild(selectIcon);
+    builderHeader.appendChild(addWrapper);
+    builderContainer.appendChild(builderHeader);
+
+    const activeFormsContainer = document.createElement('div');
+    activeFormsContainer.className = 'space-y-4';
+    builderContainer.appendChild(activeFormsContainer);
+
+    // Insert Builder
     const narrativeLabel = encodePanel.querySelector('label[for="narrative"]');
-    encodePanel.insertBefore(builderContainer, narrativeLabel);
+    encodePanel.insertBefore(builderContainer, narrativeLabel.parentElement); // Parent of label is the div wrapper
 
-
-    // Helper: Render a Form Section
     function renderFormSection(domainKey) {
       const config = domainConfig[domainKey];
       const section = document.createElement('div');
-      section.className = 'form-section';
-      section.style.background = '#fff';
-      section.style.padding = '12px';
-      section.style.borderRadius = '6px';
-      section.style.border = '1px solid #cbd5e1';
+      section.className = 'bg-white p-4 rounded-lg border border-slate-200 shadow-sm relative group animate-[fadeIn_0.3s_ease-out]';
       section.dataset.domain = domainKey;
+
+      if (config.icon) {
+        const iconBg = document.createElement('div');
+        iconBg.className = 'absolute -left-3 -top-3 w-8 h-8 rounded-full bg-slate-800 text-white flex items-center justify-center shadow-md z-10 border-2 border-slate-50';
+        iconBg.innerHTML = `<i class="fa-solid ${config.icon} text-sm"></i>`;
+        section.appendChild(iconBg);
+      }
 
       // Header
       const header = document.createElement('div');
-      header.style.display = 'flex';
-      header.style.justifyContent = 'space-between';
-      header.style.marginBottom = '8px';
+      header.className = 'flex justify-between items-center mb-4 pl-3';
 
       const title = document.createElement('strong');
+      title.className = `text-sm font-semibold text-slate-900 ${config.icon ? 'ml-2' : ''}`;
       title.textContent = config.label;
       header.appendChild(title);
 
       if (domainKey !== 'demographics') {
         const removeBtn = document.createElement('button');
-        removeBtn.textContent = '×';
-        removeBtn.style.padding = '0 6px';
-        removeBtn.style.fontSize = '16px';
-        removeBtn.style.background = 'transparent';
-        removeBtn.style.color = '#ef4444';
-        removeBtn.style.border = 'none';
-        removeBtn.style.cursor = 'pointer';
+        removeBtn.innerHTML = '<i class="fa-solid fa-xmark"></i>';
+        removeBtn.className = 'text-slate-400 hover:text-red-500 transition-colors w-6 h-6 flex items-center justify-center rounded-full hover:bg-slate-100';
         removeBtn.title = 'Remove condition';
         removeBtn.onclick = () => {
           delete formState[domainKey];
@@ -473,31 +467,37 @@
       }
       section.appendChild(header);
 
-      // Fields Container
+      // Fields Grid
       const fieldsContainer = document.createElement('div');
-      fieldsContainer.style.display = 'grid';
-      fieldsContainer.style.gridTemplateColumns = 'repeat(auto-fill, minmax(200px, 1fr))';
-      fieldsContainer.style.gap = '10px';
+      fieldsContainer.className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4';
 
       config.fields.forEach(field => {
-        // Skip conditional fields if condition not met
+        // Logic for showIf (same as before)
         if (field.showIf) {
-          // Check if the condition is met
           let conditionMet = false;
-
-          // For checkbox groups (like Complications), check if the value is in the array
           const complicationsValue = formState[domainKey]?.['Complications'];
           if (Array.isArray(complicationsValue) && complicationsValue.includes(field.showIf)) {
             conditionMet = true;
           }
 
-          // For select fields (like CKD Stage), check if the value matches
-          const ckdStageValue = formState[domainKey]?.['CKD Stage'];
-          if (ckdStageValue === field.showIf) {
-            conditionMet = true;
-          }
+          // RegEx style match/plain match for strings
+          // Special handling for pipe delimited string options in showIf
+          const criteriaOptions = field.showIf.split('|');
+          // Check if ANY of the current form values in this domain match ANY of the criteria options
+          Object.keys(formState[domainKey] || {}).forEach(key => {
+            const value = formState[domainKey][key];
+            if (typeof value === 'string' && criteriaOptions.includes(value)) {
+              conditionMet = true;
+            }
+            // For strict key mapping if we had it, but here we just check if value exists in domain state
+          });
 
-          // For other select fields, check if value matches (supports pipe-separated values)
+          // Special direct check for certain fields if needed, but generic approach works for now based on previous logic
+          // Re-implementing the specific check from previous file for 100% fidelity:
+          // "For other select fields, check if value matches (supports pipe-separated values)"
+          // "if (typeof value === 'string' && (value === field.showIf || field.showIf.includes(value)))" -> this was loose
+
+          // Let's stick to the previous logic exactly to break nothing
           Object.keys(formState[domainKey] || {}).forEach(key => {
             const value = formState[domainKey][key];
             if (typeof value === 'string' && (value === field.showIf || field.showIf.includes(value))) {
@@ -505,114 +505,94 @@
             }
           });
 
-          if (!conditionMet) {
-            return; // Skip this field
-          }
+          if (!conditionMet) return;
         }
 
         const fieldWrapper = document.createElement('div');
 
         const label = document.createElement('label');
-        label.textContent = field.label + (field.required ? ' *' : '');
-        label.style.fontSize = '12px';
-        label.style.marginBottom = '4px';
-        label.style.color = field.required ? '#dc2626' : '#64748b';
-        label.style.fontWeight = field.required ? '600' : 'normal';
+        label.className = `block text-xs font-semibold mb-1.5 ${field.required ? 'text-slate-800' : 'text-slate-500'}`;
+        label.innerHTML = `${field.label}${field.required ? ' <span class="text-red-500">*</span>' : ''}`;
 
         let input;
         if (field.type === 'checkbox-group') {
-          // Create checkbox group
-          const checkboxContainer = document.createElement('div');
-          checkboxContainer.style.display = 'flex';
-          checkboxContainer.style.flexDirection = 'column';
-          checkboxContainer.style.gap = '6px';
+          input = document.createElement('div');
+          input.className = 'space-y-2 pt-1';
 
-          if (!formState[domainKey][field.key]) {
-            formState[domainKey][field.key] = [];
-          }
+          if (!formState[domainKey][field.key]) formState[domainKey][field.key] = [];
 
           field.options.forEach(opt => {
-            const checkWrapper = document.createElement('label');
-            checkWrapper.style.display = 'flex';
-            checkWrapper.style.alignItems = 'center';
-            checkWrapper.style.gap = '6px';
-            checkWrapper.style.fontSize = '13px';
+            const labelWrap = document.createElement('label');
+            labelWrap.className = 'flex items-center gap-2 text-sm text-slate-700 cursor-pointer hover:text-slate-900';
 
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
             checkbox.value = opt;
-            checkbox.checked = formState[domainKey][field.key].includes(opt); // Set initial checked state
+            checkbox.checked = formState[domainKey][field.key].includes(opt);
+            checkbox.className = 'w-4 h-4 text-medical-600 border-slate-300 rounded focus:ring-medical-500';
+
             checkbox.addEventListener('change', (e) => {
               if (e.target.checked) {
-                if (!formState[domainKey][field.key].includes(opt)) {
-                  formState[domainKey][field.key].push(opt);
-                }
+                if (!formState[domainKey][field.key].includes(opt)) formState[domainKey][field.key].push(opt);
               } else {
                 formState[domainKey][field.key] = formState[domainKey][field.key].filter(v => v !== opt);
               }
               updateNarrative();
-              // Re-render to show/hide conditional fields
+              // Re-render for conditionals
               const currentSection = document.querySelector(`[data-domain="${domainKey}"]`);
               if (currentSection) {
                 const parent = currentSection.parentElement;
-                currentSection.remove();
-                renderFormSection(domainKey);
+                // We need to keep position, simplest is simple re-render in place logic or remove/add
+                // But remove/add moves it to bottom if we blindly append.
+                // Let's implementation replaceChild
+                currentSection.replaceWith(renderFormSection(domainKey));
               }
             });
 
-            checkWrapper.appendChild(checkbox);
-            checkWrapper.appendChild(document.createTextNode(opt));
-            checkboxContainer.appendChild(checkWrapper);
+            labelWrap.appendChild(checkbox);
+            labelWrap.appendChild(document.createTextNode(opt));
+            input.appendChild(labelWrap);
           });
 
-          fieldWrapper.appendChild(label);
-          fieldWrapper.appendChild(checkboxContainer);
-          fieldsContainer.appendChild(fieldWrapper);
-          return; // Skip further processing for this field type
         } else if (field.type === 'select') {
           input = document.createElement('select');
-          input.style.width = '100%';
-          input.style.padding = '6px';
-          input.style.borderRadius = '4px';
-          input.style.border = '1px solid #cbd5e1';
+          input.className = 'w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-medical-500 focus:border-transparent outline-none transition-shadow';
 
           const empty = document.createElement('option');
           empty.value = '';
-          empty.text = '-';
+          empty.text = '- Select -';
           input.appendChild(empty);
 
           field.options.forEach(opt => {
             const o = document.createElement('option');
             o.value = opt;
             o.text = opt;
+            if (formState[domainKey][field.key] === opt) o.selected = true;
             input.appendChild(o);
           });
-        } else if (field.type === 'multi-select') {
-          // Simplified as text input for now, or simple select
-          // For better UX, let's use a select that appends to a list? 
-          // Or just a simple input for comma separation?
-          // Let's stick to simple text input for multi-select to save UI complexity for now
-          input = document.createElement('input');
-          input.type = 'text';
-          input.placeholder = 'e.g. CKD, Foot Ulcer';
-          input.style.width = '100%';
-          input.style.padding = '6px';
-          input.style.borderRadius = '4px';
-          input.style.border = '1px solid #cbd5e1';
+
+          input.addEventListener('change', (e) => {
+            formState[domainKey][field.key] = e.target.value;
+            updateNarrative();
+            // Re-render validation for dependent fields (like CKD stage dependent on CKD Present=Yes)
+            if (['Yes', 'No', 'Foot Ulcer', 'Nephropathy/CKD'].some(v => e.target.value.includes(v))) {
+              const currentSection = document.querySelector(`[data-domain="${domainKey}"]`);
+              if (currentSection) currentSection.replaceWith(renderFormSection(domainKey));
+            }
+          });
+
         } else {
           input = document.createElement('input');
           input.type = field.type;
-          input.style.width = '100%';
-          input.style.padding = '6px';
-          input.style.borderRadius = '4px';
-          input.style.border = '1px solid #cbd5e1';
-        }
+          input.className = 'w-full px-3 py-2 bg-slate-50 border border-slate-300 rounded-md text-sm focus:ring-2 focus:ring-medical-500 focus:border-transparent outline-none transition-shadow placeholder:text-slate-400';
+          input.placeholder = field.label;
+          if (formState[domainKey][field.key]) input.value = formState[domainKey][field.key];
 
-        // Event Listener
-        input.addEventListener('input', (e) => {
-          formState[domainKey][field.key] = e.target.value;
-          updateNarrative();
-        });
+          input.addEventListener('input', (e) => {
+            formState[domainKey][field.key] = e.target.value;
+            updateNarrative();
+          });
+        }
 
         fieldWrapper.appendChild(label);
         fieldWrapper.appendChild(input);
@@ -620,194 +600,35 @@
       });
 
       section.appendChild(fieldsContainer);
-      activeFormsContainer.appendChild(section);
+      if (domainKey === 'demographics' && activeFormsContainer.firstChild) {
+        // Keep demographics at top theoretically, but in this logic we just append nicely
+      }
+      return section;
     }
 
-    // Helper: Update Narrative Textarea
+    // Initial Render
+    activeFormsContainer.appendChild(renderFormSection('demographics'));
+
+
     function updateNarrative() {
       const lines = [];
-
-      // Order: Demographics -> Diabetes -> Renal -> Cardio -> Respiratory
-      const order = ['demographics', 'diabetes', 'ckd', 'cardio', 'respiratory'];
+      const order = ['demographics', 'diabetes', 'ckd', 'cardio', 'respiratory', 'infection', 'wounds', 'neoplasm', 'injury', 'social'];
 
       order.forEach(domain => {
         if (formState[domain]) {
           const data = formState[domain];
           Object.keys(data).forEach(key => {
             const value = data[key];
-            if (value) {
-              // Handle arrays (checkbox groups)
-              if (Array.isArray(value)) {
-                if (value.length > 0) {
-                  lines.push(`${key}: ${value.join(', ')}`);
-                }
-              } else {
-                lines.push(`${key}: ${value}`);
-              }
+            if (value && (!Array.isArray(value) || value.length > 0)) {
+              lines.push(Array.isArray(value) ? `${key}: ${value.join(', ')}` : `${key}: ${value}`);
             }
           });
         }
       });
-
       narrativeInput.value = lines.join('\n');
     }
 
-    // Initialize with Demographics
-    renderFormSection('demographics');
-
-
-
-    function renderEncodeResults(payload) {
-      encodeResults.innerHTML = '';
-
-      // Normalize payload to array
-      const results = Array.isArray(payload) ? payload : [payload];
-
-      if (!results.length) {
-        encodeResults.innerHTML = '<p>No results returned.</p>';
-        return;
-      }
-
-      const fragment = document.createDocumentFragment();
-
-      results.forEach((result, index) => {
-        // Container for this result item
-        const itemContainer = document.createElement('div');
-        itemContainer.className = 'result-item';
-        itemContainer.style.marginBottom = '24px';
-
-        // Header for the item if batch
-        if (results.length > 1) {
-          const header = document.createElement('h3');
-          header.textContent = `Item ${index + 1}: ${result.text}`;
-          header.style.fontSize = '16px';
-          header.style.color = '#334155';
-          header.style.marginBottom = '12px';
-          header.style.borderBottom = '1px solid #e2e8f0';
-          header.style.paddingBottom = '8px';
-          itemContainer.appendChild(header);
-        }
-
-        if (!result.primary && (!result.secondary || !result.secondary.length)) {
-          const noCode = document.createElement('div');
-          noCode.className = 'card';
-          noCode.textContent = 'No codes suggested.';
-          itemContainer.appendChild(noCode);
-        } else {
-          const createCard = (code, type) => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            if (type === 'Primary') {
-              card.style.borderLeft = '4px solid #22c55e';
-            }
-
-            const codeEl = document.createElement('div');
-            codeEl.className = 'code';
-            codeEl.textContent = `${type}: ${code.code}`;
-
-            const desc = document.createElement('div');
-            desc.className = 'desc';
-            desc.textContent = code.description || '';
-
-            const reason = document.createElement('div');
-            reason.className = 'synonyms';
-            reason.textContent = `Rationale: ${code.rationale}`;
-
-            card.appendChild(codeEl);
-            card.appendChild(desc);
-            card.appendChild(reason);
-            return card;
-          };
-
-          if (result.primary) {
-            itemContainer.appendChild(createCard(result.primary, 'Primary'));
-          }
-
-          if (result.secondary && result.secondary.length) {
-            result.secondary.forEach((code) => {
-              itemContainer.appendChild(createCard(code, 'Secondary'));
-            });
-          }
-        }
-
-        if (result.warnings?.length) {
-          const warnCard = document.createElement('div');
-          warnCard.className = 'card';
-          warnCard.innerHTML = `<div class="code">Warnings</div><div class="desc">${result.warnings.join('<br/>')}</div>`;
-          itemContainer.appendChild(warnCard);
-        }
-
-        if (result.validationErrors?.length) {
-          const errCard = document.createElement('div');
-          errCard.className = 'card';
-          errCard.style.borderLeft = '4px solid #dc2626';
-          errCard.style.background = '#fee2e2';
-          const title = document.createElement('div');
-          title.className = 'code';
-          title.style.color = '#dc2626';
-          title.textContent = 'Validation Failed';
-          errCard.appendChild(title);
-
-          const errList = document.createElement('ul');
-          errList.style.margin = '8px 0';
-          errList.style.paddingLeft = '20px';
-          result.validationErrors.forEach(err => {
-            const li = document.createElement('li');
-            li.textContent = err;
-            li.style.color = '#991b1b';
-            li.style.marginBottom = '4px';
-            errList.appendChild(li);
-          });
-          errCard.appendChild(errList);
-          itemContainer.appendChild(errCard);
-        }
-
-        if (result.errors?.length) {
-          const errCard = document.createElement('div');
-          errCard.className = 'card';
-          errCard.style.borderLeft = '4px solid #dc2626';
-          const title = document.createElement('div');
-          title.className = 'code';
-          title.style.color = '#dc2626';
-          title.textContent = 'Errors';
-          errCard.appendChild(title);
-          const desc = document.createElement('div');
-          desc.className = 'desc';
-          desc.innerHTML = result.errors.join('<br/>');
-          errCard.appendChild(desc);
-          itemContainer.appendChild(errCard);
-        }
-
-        fragment.appendChild(itemContainer);
-      });
-
-      encodeResults.appendChild(fragment);
-      copyEncodeBtn.disabled = false;
-    }
-
-    async function fetchPayload(url, body, defaultError, token) {
-      const headers = { 'Content-Type': 'application/json' };
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-
-      const response = await fetch(url, {
-        method: 'POST',
-        headers,
-        body: JSON.stringify(body),
-      });
-
-      const data = await response.json().catch(() => ({}));
-      const message =
-        data?.error?.message || data?.message || data?.error || defaultError;
-
-      if (!response.ok || data?.success === false) {
-        throw new Error(message);
-      }
-
-      return data?.data ?? data;
-    }
-
+    // --- ENCODER LOGIC ---
     async function performEncode() {
       const text = narrativeInput.value.trim();
       encodeResults.innerHTML = '';
@@ -815,205 +636,233 @@
       copyEncodeBtn.disabled = true;
 
       if (!text) {
-        encodeStatus.textContent = 'Please enter a clinical narrative.';
+        encodeStatus.innerHTML = '<span class="text-amber-500"><i class="fa-solid fa-triangle-exclamation"></i> Please enter a clinical narrative.</span>';
         return;
       }
 
       encodeBtn.disabled = true;
-      encodeStatus.textContent = 'Encoding…';
+      encodeBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
 
-      // Check for numbered list
-      // Regex looks for lines starting with a number followed by dot, paren, or space
       const lines = text.split(/\r?\n/).filter(l => l.trim());
       const isBatch = lines.length > 1 && lines.every(l => /^\d+[\.\)\s]/.test(l.trim()));
 
-      let payloadBody = {};
-      if (isBatch) {
-        // Extract text after the number
-        const items = lines.map(l => l.replace(/^\d+[\.\)\s]\s*/, '').trim());
-        payloadBody = { items };
-      } else {
-        payloadBody = { text };
-      }
-
       try {
         const token = localStorage.getItem('token');
-        const payload = await fetchPayload(
-          '/api/encode-structured',  // CHANGED: Use zero-assumption structured endpoint
-          payloadBody,
-          'Encoding failed',
-          token
-        );
-        lastEncoded = payload;
-        renderEncodeResults(payload);
+        const payloadBody = isBatch ? { items: lines.map(l => l.replace(/^\d+[\.\)\s]\s*/, '').trim()) } : { text };
 
-        const count = Array.isArray(payload) ? payload.length : 1;
-        encodeStatus.textContent = `Processed ${count} item(s).`;
+        const response = await fetch('/api/encode-structured', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify(payloadBody)
+        });
+
+        if (!response.ok) throw new Error('Encoding failed.');
+        const data = await response.json();
+        const finalData = data.data || data;
+
+        lastEncoded = finalData;
+        renderEncodeResults(finalData);
+        const count = Array.isArray(finalData) ? finalData.length : 1;
+        encodeStatus.innerHTML = `<span class="text-green-600 font-bold"><i class="fa-solid fa-check"></i> ${count} case(s) processed successfully.</span>`;
+
       } catch (err) {
-        encodeStatus.textContent = err.message || 'Unable to encode right now.';
+        encodeStatus.innerHTML = `<span class="text-red-500 font-bold"><i class="fa-solid fa-circle-xmark"></i> ${err.message}</span>`;
       } finally {
         encodeBtn.disabled = false;
+        encodeBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Encode Scenario';
       }
     }
 
-    async function copyEncodedCodes() {
-      if (!lastEncoded) return;
+    let lastEncoded = null;
 
+    function renderEncodeResults(payload) {
+      encodeResults.innerHTML = '';
+      const results = Array.isArray(payload) ? payload : [payload];
+
+      if (!results.length) {
+        encodeResults.innerHTML = '<div class="text-center py-8 text-slate-400">No results found.</div>';
+        return;
+      }
+
+      results.forEach((result, index) => {
+        const itemContainer = document.createElement('div');
+        itemContainer.className = 'bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden mb-6 animate-[fadeIn_0.5s_ease-out]';
+
+        if (results.length > 1) {
+          const header = document.createElement('div');
+          header.className = 'bg-slate-50 px-4 py-3 border-b border-slate-200 font-medium text-slate-700 text-sm';
+          header.textContent = `Case #${index + 1}: ${result.text.substring(0, 60)}${result.text.length > 60 ? '...' : ''}`;
+          itemContainer.appendChild(header);
+        }
+
+        const content = document.createElement('div');
+        content.className = 'p-4 space-y-3';
+
+        if (!result.primary && (!result.secondary || !result.secondary.length)) {
+          content.innerHTML = '<div class="p-3 bg-amber-50 text-amber-700 rounded-md border border-amber-200 text-sm">No codes were generated for this scenario.</div>';
+        } else {
+          const createCard = (code, type) => {
+            const isPrimary = type === 'Primary';
+            const colorClass = isPrimary ? 'border-medical-500' : 'border-slate-300';
+            const bgClass = isPrimary ? 'bg-white' : 'bg-slate-50';
+            const badgeClass = isPrimary ? 'bg-medical-100 text-medical-800' : 'bg-slate-200 text-slate-700';
+
+            return `
+                    <div class="border-l-4 ${colorClass} ${bgClass} rounded-r-md p-3 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-xs font-bold uppercase tracking-wider ${badgeClass} px-2 py-0.5 rounded">${type}</span>
+                            <span class="font-mono text-lg font-bold text-slate-900">${code.code}</span>
+                        </div>
+                        <div class="text-sm text-slate-800 font-medium mb-1">${code.description || 'No description'}</div>
+                        <div class="text-xs text-slate-500 italic border-t border-slate-100 pt-1 mt-1">
+                           <i class="fa-solid fa-info-circle mr-1"></i> ${code.rationale}
+                        </div>
+                    </div>
+                 `;
+          };
+
+          if (result.primary) {
+            const el = document.createElement('div');
+            el.innerHTML = createCard(result.primary, 'Primary');
+            content.appendChild(el.firstChild.nextSibling || el.firstChild); // Handle HTML string parsing quirk
+          }
+          if (result.secondary) {
+            result.secondary.forEach(code => {
+              const el = document.createElement('div');
+              el.innerHTML = createCard(code, 'Secondary');
+              content.appendChild(el.firstChild.nextSibling || el.firstChild);
+            });
+          }
+        }
+
+        // Validation Errors
+        if (result.validationErrors?.length) {
+          const errDiv = document.createElement('div');
+          errDiv.className = 'mt-4 bg-red-50 border border-red-200 rounded-md p-3';
+          errDiv.innerHTML = `
+                <div class="flex items-center gap-2 text-red-700 text-sm font-bold mb-2">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Validation Alerts
+                </div>
+                <ul class="list-disc list-inside text-xs text-red-600 space-y-1">
+                    ${result.validationErrors.map(e => `<li>${e}</li>`).join('')}
+                </ul>
+            `;
+          content.appendChild(errDiv);
+        }
+
+        itemContainer.appendChild(content);
+        encodeResults.appendChild(itemContainer);
+      });
+
+      copyEncodeBtn.disabled = false;
+    }
+
+    encodeBtn.addEventListener('click', performEncode);
+
+    // Copy Logic
+    document.getElementById('copyEncodeBtn').addEventListener('click', async () => {
+      if (!lastEncoded) return;
       const results = Array.isArray(lastEncoded) ? lastEncoded : [lastEncoded];
       const lines = [];
 
       results.forEach((res, idx) => {
-        if (results.length > 1) lines.push(`Item ${idx + 1}: ${res.text}`);
-
-        if (res.primary) {
-          // Use 'label' for structured API, fallback to 'description' for old API
-          const primaryLabel = res.primary.label || res.primary.description;
-          lines.push(`Primary: ${res.primary.code} — ${primaryLabel}`);
+        if (results.length > 1) lines.push(`Case ${idx + 1}: ${res.text}`);
+        if (res.primary) lines.push(`Primary: ${res.primary.code} - ${res.primary.label || res.primary.description}`);
+        if (res.secondary && res.secondary.length) {
+          res.secondary.forEach(c => lines.push(`Secondary: ${c.code} - ${c.label || c.description}`));
         }
-        if (res.secondary) {
-          res.secondary.forEach((code) => {
-            // Use 'label' for structured API, fallback to 'description' for old API
-            const secondaryLabel = code.label || code.description;
-            lines.push(`Secondary: ${code.code} — ${secondaryLabel}`);
-          });
-        }
-        if (results.length > 1) lines.push(''); // spacer
+        lines.push('');
       });
-
-      if (!lines.length) return;
 
       try {
         await navigator.clipboard.writeText(lines.join('\n'));
-        encodeStatus.textContent = 'Codes copied to clipboard.';
-      } catch (err) {
-        encodeStatus.textContent = 'Unable to copy codes.';
-      }
-    }
+        const originalText = document.getElementById('copyEncodeBtn').innerHTML;
+        document.getElementById('copyEncodeBtn').innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+        setTimeout(() => {
+          document.getElementById('copyEncodeBtn').innerHTML = '<i class="fa-regular fa-copy"></i> Copy All';
+        }, 2000);
+      } catch (e) { console.error(e); }
+    });
 
-    encodeBtn.addEventListener('click', performEncode);
-    copyEncodeBtn.addEventListener('click', copyEncodedCodes);
 
-    // --- BATCH UPLOAD LOGIC ---
-    const batchFileInput = document.getElementById('batchFile');
+    // --- BATCH LOGIC ---
+    const batchInput = document.getElementById('batchFile');
     const processBatchBtn = document.getElementById('processBatchBtn');
-    const downloadResultsBtn = document.getElementById('downloadResultsBtn');
-    const clearBatchBtn = document.getElementById('clearBatchBtn');
     const batchStatus = document.getElementById('batchStatus');
-    const batchProgress = document.getElementById('batchProgress');
     const progressBar = document.getElementById('progressBar');
     const progressText = document.getElementById('progressText');
+    const batchProgress = document.getElementById('batchProgress');
+    const downloadBtn = document.getElementById('downloadResultsBtn');
+    const fileLabel = document.getElementById('fileLabel');
 
-    let batchResults = null;
-
-    // Enable process button when file is selected
-    batchFileInput.addEventListener('change', (e) => {
+    batchInput.addEventListener('change', (e) => {
       const file = e.target.files[0];
-      if (file && file.name.endsWith('.txt')) {
+      if (file) {
+        fileLabel.textContent = file.name;
         processBatchBtn.disabled = false;
-        batchStatus.textContent = `Selected: ${file.name}`;
-      } else if (file) {
-        batchStatus.textContent = 'Please select a .txt file';
-        processBatchBtn.disabled = true;
+        batchStatus.textContent = '';
       }
     });
 
-    // Process batch file
+    document.getElementById('clearBatchBtn').addEventListener('click', () => {
+      batchInput.value = '';
+      fileLabel.textContent = 'TXT files only';
+      processBatchBtn.disabled = true;
+      downloadBtn.style.display = 'none';
+      batchStatus.textContent = '';
+      batchProgress.className = 'hidden mt-4';
+    });
+
     processBatchBtn.addEventListener('click', async () => {
-      const file = batchFileInput.files[0];
-      if (!file) {
-        batchStatus.textContent = 'Please select a file first';
-        return;
-      }
+      const file = batchInput.files[0];
+      if (!file) return;
+
+      processBatchBtn.disabled = true;
+      batchProgress.classList.remove('hidden');
+      progressBar.style.width = '10%';
+      progressText.textContent = 'Reading file...';
 
       try {
-        processBatchBtn.disabled = true;
-        batchStatus.textContent = 'Reading file...';
-        batchProgress.style.display = 'block';
-        progressBar.style.width = '10%';
-        progressText.textContent = 'Reading file...';
-
-        // Read file content
-        const fileContent = await file.text();
-
-        progressBar.style.width = '30%';
-        progressText.textContent = 'Sending to server...';
-        batchStatus.textContent = 'Processing cases...';
+        const content = await file.text();
+        progressBar.style.width = '40%';
+        progressText.textContent = 'Processing with AI engine...';
 
         const token = localStorage.getItem('token');
-        const response = await fetch('/api/batch-encode', {
+        const res = await fetch('/api/batch-encode', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ fileContent })
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify({ fileContent: content })
         });
 
-        progressBar.style.width = '70%';
+        progressBar.style.width = '80%';
 
-        if (!response.ok) {
-          throw new Error('Processing failed');
-        }
-
-        const data = await response.json();
+        if (!res.ok) throw new Error('Batch processing error');
+        const data = await res.json();
 
         progressBar.style.width = '100%';
-        progressText.textContent = 'Complete!';
+        progressText.textContent = 'Done!';
 
         if (data.success) {
-          batchResults = data.output;
-          batchStatus.textContent = `✓ Processed ${data.totalCases} cases (${data.processedCases} successful, ${data.failedCases} failed)`;
-          batchStatus.style.color = '#22c55e';
-          downloadResultsBtn.style.display = 'inline-block';
-          downloadResultsBtn.disabled = false;
-
-          setTimeout(() => {
-            batchProgress.style.display = 'none';
-            progressBar.style.width = '0%';
-          }, 2000);
-        } else {
-          throw new Error(data.error || 'Processing failed');
+          batchStatus.innerHTML = `<span class="text-green-600 font-bold"><i class="fa-solid fa-check-circle"></i> Complete! ${data.totalCases} cases processed.</span>`;
+          window.batchData = data.output;
+          downloadBtn.style.display = 'inline-flex';
+          downloadBtn.onclick = () => {
+            const blob = new Blob([data.output], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `audit_results_${Date.now()}.txt`;
+            a.click();
+          };
         }
 
-      } catch (error) {
-        batchStatus.textContent = `Error: ${error.message}`;
-        batchStatus.style.color = '#ef4444';
-        batchProgress.style.display = 'none';
-        progressBar.style.width = '0%';
+      } catch (e) {
+        batchStatus.innerHTML = `<span class="text-red-600 font-bold">Error: ${e.message}</span>`;
       } finally {
         processBatchBtn.disabled = false;
       }
     });
 
-    // Download results
-    downloadResultsBtn.addEventListener('click', () => {
-      if (!batchResults) return;
-
-      const blob = new Blob([batchResults], { type: 'text/plain' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `icd_results_${new Date().toISOString().slice(0, 10)}.txt`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
-      batchStatus.textContent = '✓ Results downloaded!';
-    });
-
-    // Clear batch
-    clearBatchBtn.addEventListener('click', () => {
-      batchFileInput.value = '';
-      processBatchBtn.disabled = true;
-      downloadResultsBtn.style.display = 'none';
-      downloadResultsBtn.disabled = true;
-      batchStatus.textContent = '';
-      batchStatus.style.color = '#475569';
-      batchProgress.style.display = 'none';
-      progressBar.style.width = '0%';
-      batchResults = null;
-    });
   </script>
 </body>
 
