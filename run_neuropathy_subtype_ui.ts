@@ -17,6 +17,12 @@ Neuropathy Type: Polyneuropathy`,
         expected: "E11.42"
     },
     {
+        name: "Direct Polyneuropathy Checkbox",
+        input: `Diabetes Type: Type 2
+Complications: Polyneuropathy`,
+        expected: "E11.42"
+    },
+    {
         name: "UI Unspecified Selection",
         input: `Diabetes Type: Type 2
 Complications: Neuropathy
