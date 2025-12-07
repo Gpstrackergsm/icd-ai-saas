@@ -708,12 +708,12 @@
 
             return `
                     <div class="border-l-4 ${colorClass} ${bgClass} rounded-r-md p-3 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="flex justify-between items-start mb-1">
-                            <div class="flex items-center gap-2">
+                        <div class="flex justify-between items-start mb-1 gap-2">
+                            <div class="flex flex-wrap items-center gap-2">
                                 <span class="text-xs font-bold uppercase tracking-wider ${badgeClass} px-2 py-0.5 rounded">${type}</span>
                                 ${(code.annotations || []).map(a => `<span class="text-xs font-bold bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded border border-indigo-200">${a}</span>`).join('')}
                             </div>
-                            <span class="font-mono text-lg font-bold text-slate-900">${code.code}</span>
+                            <span class="font-mono text-lg font-bold text-slate-900 shrink-0">${code.code}</span>
                         </div>
                         <div class="text-sm text-slate-800 font-medium mb-1">${code.description || 'No description'}</div>
                         <div class="text-xs text-slate-500 italic border-t border-slate-100 pt-1 mt-1">
