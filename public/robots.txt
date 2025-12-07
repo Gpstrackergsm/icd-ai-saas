@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://www.icd-10-cm.online/sitemap.xml

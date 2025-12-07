@@ -5,5 +5,18 @@
     "api/**/*.js": {
       "includeFiles": "dist/**"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "icd-10-cm.online"
+        }
+      ],
+      "destination": "https://www.icd-10-cm.online/:path*",
+      "permanent": true
+    }
+  ]
 }
