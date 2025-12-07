@@ -4,7 +4,7 @@ const { runStructuredRules } = require('../dist/lib/structured/engine.js');
 const { validateCodeSet } = require('../dist/lib/structured/validator-post.js');
 const { requireAuth } = require('../dist/lib/auth/middleware.js');
 
-const { lookupDescription } = require('../lib/icd-dictionary.js');
+const { lookupDetail } = require('../lib/icd-dictionary.js');
 
 module.exports = async function handler(req, res) {
     if (req.method !== 'POST') {
@@ -49,15 +49,22 @@ module.exports = async function handler(req, res) {
         // Apply ICD-10-CM validation for claim compliance
         const validated = validateCodeSet(result.primary, result.secondary, context);
 
-        // --- ENFORCE OFFICIAL DESCRIPTIONS ---
+        // --- ENFORCE OFFICIAL DESCRIPTIONS & SEPARATE METADATA ---
         const enhanceCode = (c) => {
             if (!c) return null;
-            const officialDesc = lookupDescription(c.code);
 
-            // Use official description if available, otherwise keep existing
-            if (officialDesc) {
-                c.label = officialDesc;
-                c.description = officialDesc; // Ensure both properties exist just in case
+            const detail = lookupDetail(c.code);
+
+            // Use official details if available
+            if (detail) {
+                c.label = detail.description;
+                c.description = detail.description; // Clean description
+                c.annotations = detail.annotations || [];
+                c.references = detail.references || [];
+            } else {
+                // Ensure array fields exist even if lookup failed
+                c.annotations = [];
+                c.references = [];
             }
 
             // FINAL SAFEGUARD: Check for missing description
