@@ -649,6 +649,15 @@
         return;
       }
 
+      // Toggle GA4 event
+      if (typeof gtag === 'function') {
+        gtag('event', 'icd_search', {
+          search_term: text,
+          event_category: 'ICD Tool',
+          event_label: 'Search'
+        });
+      }
+
       encodeBtn.disabled = true;
       encodeBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
 
