@@ -667,7 +667,8 @@
 
         // Mobile UX: Scroll to results
         if (window.innerWidth < 1024) {
-          encodeResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Scroll to top of page to account for sticky header and order-1 results
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
       } catch (err) {
