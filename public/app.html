@@ -665,6 +665,11 @@
         const count = Array.isArray(finalData) ? finalData.length : 1;
         encodeStatus.innerHTML = `<span class="text-green-600 font-bold"><i class="fa-solid fa-check"></i> ${count} case(s) processed successfully.</span>`;
 
+        // Mobile UX: Scroll to results
+        if (window.innerWidth < 1024) {
+          encodeResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
       } catch (err) {
         encodeStatus.innerHTML = `<span class="text-red-500 font-bold"><i class="fa-solid fa-circle-xmark"></i> ${err.message}</span>`;
       } finally {
