@@ -26,6 +26,7 @@ export interface IcdCode {
   includesNotes?: string[];
   excludes1Notes?: string[];
   excludes2Notes?: string[];
+  synonyms?: string[];
 }
 
 export interface IcdIndexTerm {
@@ -61,14 +62,14 @@ export interface IcdGuidelineRule {
   name: string;
   description: string;
   category:
-    | "diabetes"
-    | "hypertension"
-    | "neoplasm"
-    | "ob-pregnancy"
-    | "injury"
-    | "external"
-    | "sign-symptom"
-    | "general";
+  | "diabetes"
+  | "hypertension"
+  | "neoplasm"
+  | "ob-pregnancy"
+  | "injury"
+  | "external"
+  | "sign-symptom"
+  | "general";
   pattern: {
     includesCodes?: string[];
     excludesCodes?: string[];
@@ -118,20 +119,20 @@ export interface ParsedConceptAttributes {
   hasFollowUpAfterCancer?: boolean;
   isPregnant?: boolean;
   pregnancyComplicationType?:
-    | "preeclampsia"
-    | "gestationalDiabetes"
-    | "hyperemesis"
-    | "placentaPrevia"
-    | "threatenedAbortion"
-    | "postpartumHemorrhage";
+  | "preeclampsia"
+  | "gestationalDiabetes"
+  | "hyperemesis"
+  | "placentaPrevia"
+  | "threatenedAbortion"
+  | "postpartumHemorrhage";
   hasCOPD?: boolean;
   hasAsthma?: boolean;
   asthmaSeverity?:
-    | "mildIntermittent"
-    | "mildPersistent"
-    | "moderatePersistent"
-    | "severePersistent"
-    | "unspecified";
+  | "mildIntermittent"
+  | "mildPersistent"
+  | "moderatePersistent"
+  | "severePersistent"
+  | "unspecified";
   hasAcuteExacerbation?: boolean;
   hasAcuteLowerRespInfection?: boolean;
   pneumoniaOrganism?: "staph" | "klebsiella" | "viral" | "unspecified";
@@ -162,11 +163,11 @@ export interface ParsedDiabetesAttributes {
   ckdStage?: string | undefined;
   neuropathy?: boolean;
   neuropathyType?:
-    | "unspecified"
-    | "polyneuropathy"
-    | "mononeuropathy"
-    | "autonomic"
-    | "amyotrophy";
+  | "unspecified"
+  | "polyneuropathy"
+  | "mononeuropathy"
+  | "autonomic"
+  | "amyotrophy";
   peripheralAngiopathy?: {
     present: boolean;
     withGangrene?: boolean;
@@ -191,23 +192,25 @@ export interface ParsedConcept {
   raw: string;
   normalized: string;
   type:
-    | "diabetes"
-    | "ckd"
-    | "hypertension"
-    | "heart_failure"
-    | "copd"
-    | "asthma"
-    | "neoplasm"
-    | "pregnancy"
-    | "injury"
-    | "symptom"
-    | "other";
+  | "diabetes"
+  | "ckd"
+  | "hypertension"
+  | "heart_failure"
+  | "copd"
+  | "asthma"
+  | "neoplasm"
+  | "pregnancy"
+  | "injury"
+  | "symptom"
+  | "other";
   attributes: ParsedConceptAttributes;
 }
 
 export interface CandidateCode {
   code: string;
   reason: string;
+  matchScore?: number;
+  synonyms?: string[];
   baseScore: number;
   conceptRefs: string[];
   guidelineRule?: string;
