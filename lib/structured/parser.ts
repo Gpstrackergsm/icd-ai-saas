@@ -41,6 +41,7 @@ export function parseInput(text: string): ParseResult {
             case 'narrative':
             case 'comment':
             case 'comments':
+            case 'neuropathy type':
                 // Intelligent routing based on content
                 // Hypertension
                 if (lowerValue.includes('hypertension') || lowerValue.includes('hypertensive')) {
@@ -181,10 +182,16 @@ export function parseInput(text: string): ParseResult {
                     lowerValue.includes('tingling') ||
                     lowerValue.includes('burning') ||
                     lowerValue.includes('monofilament') ||
-                    lowerValue.includes('vibration')
+                    lowerValue.includes('vibration') ||
+                    lowerValue.includes('polyneuropathy')
                 ) {
                     if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
                     context.conditions.diabetes.neuropathyType = 'polyneuropathy';
+                }
+
+                if (lowerValue.includes('autonomic')) {
+                    if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
+                    context.conditions.diabetes.neuropathyType = 'autonomic';
                 }
                 break;
 
