@@ -85,13 +85,25 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         }
 
         // RULE: Neuropathy → E10.40 / E11.40 (unspecified neuropathy as default)
+        // RULE: Neuropathy → E10.40 / E11.40 (unspecified) OR E10.42 / E11.42 (polyneuropathy)
         if (d.complications.includes('neuropathy')) {
+            let nCode = `${baseCode}.40`;
+            let nLabel = `${typeName} diabetes mellitus with diabetic neuropathy, unspecified`;
+
+            if (d.neuropathyType === 'polyneuropathy' || d.neuropathyType === 'peripheral') {
+                nCode = `${baseCode}.42`;
+                nLabel = `${typeName} diabetes mellitus with diabetic polyneuropathy`;
+            } else if (d.neuropathyType === 'autonomic') {
+                nCode = `${baseCode}.43`;
+                nLabel = `${typeName} diabetes mellitus with diabetic autonomic (poly)neuropathy`;
+            }
+
             codes.push({
-                code: `${baseCode}.40`, // Changed from E10.42 / E11.42 - use unspecified neuropathy as default
-                label: `${typeName} diabetes mellitus with diabetic neuropathy, unspecified`,
-                rationale: 'Diabetes with documented neuropathy complication (unspecified)',
+                code: nCode,
+                label: nLabel,
+                rationale: `Diabetes with documented ${d.neuropathyType || 'unspecified'} neuropathy complication`,
                 guideline: 'ICD-10-CM I.C.4.a',
-                trigger: 'Diabetes Type + Neuropathy complication',
+                trigger: `Diabetes Type + Neuropathy complication (${d.neuropathyType || 'unspecified'})`,
                 rule: 'Diabetes complication mapping'
             });
         }

@@ -36,6 +36,11 @@ export function parseInput(text: string): ParseResult {
             case 'condition':
             case 'conditions':
             case 'diagnosis':
+            case 'notes':
+            case 'note':
+            case 'narrative':
+            case 'comment':
+            case 'comments':
                 // Intelligent routing based on content
                 // Hypertension
                 if (lowerValue.includes('hypertension') || lowerValue.includes('hypertensive')) {
@@ -167,6 +172,19 @@ export function parseInput(text: string): ParseResult {
                     if (!context.conditions.infection) context.conditions.infection = { present: true };
                     context.conditions.infection.site = 'urinary';
                     context.conditions.infection.present = true;
+                }
+
+                if (
+                    lowerValue.includes('bilateral') ||
+                    lowerValue.includes('stocking') ||
+                    lowerValue.includes('numbness') ||
+                    lowerValue.includes('tingling') ||
+                    lowerValue.includes('burning') ||
+                    lowerValue.includes('monofilament') ||
+                    lowerValue.includes('vibration')
+                ) {
+                    if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
+                    context.conditions.diabetes.neuropathyType = 'polyneuropathy';
                 }
                 break;
 
@@ -486,7 +504,21 @@ export function parseInput(text: string): ParseResult {
                 // Diabetes Complications (Generic) - removed nephropathy/ckd as they're handled in complications section
                 if (lowerValue.includes('diabetic') || lowerValue.includes('diabetes')) {
                     if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                    if (lowerValue.includes('neuropathy')) context.conditions.diabetes.complications.push('neuropathy');
+                    if (lowerValue.includes('neuropathy')) {
+                        context.conditions.diabetes.complications.push('neuropathy');
+                        if (
+                            lowerValue.includes('polyneuropathy') ||
+                            lowerValue.includes('bilateral') ||
+                            lowerValue.includes('stocking') ||
+                            lowerValue.includes('numbness') ||
+                            lowerValue.includes('tingling') ||
+                            lowerValue.includes('burning') ||
+                            lowerValue.includes('monofilament') ||
+                            lowerValue.includes('vibration')
+                        ) {
+                            context.conditions.diabetes.neuropathyType = 'polyneuropathy';
+                        }
+                    }
                     if (lowerValue.includes('retinopathy')) {
                         context.conditions.diabetes.complications.push('retinopathy');
                         // Check for macular edema
@@ -499,6 +531,19 @@ export function parseInput(text: string): ParseResult {
                         context.conditions.diabetes.complications.push('foot_ulcer');
                         // Don't set wounds.present - diabetic foot ulcers are handled in diabetes section
                     }
+                }
+
+                if (
+                    lowerValue.includes('bilateral') ||
+                    lowerValue.includes('stocking') ||
+                    lowerValue.includes('numbness') ||
+                    lowerValue.includes('tingling') ||
+                    lowerValue.includes('burning') ||
+                    lowerValue.includes('monofilament') ||
+                    lowerValue.includes('vibration')
+                ) {
+                    if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
+                    context.conditions.diabetes.neuropathyType = 'polyneuropathy';
                 }
 
                 // Fallback to specific logic if key matches specific cases below
@@ -514,9 +559,21 @@ export function parseInput(text: string): ParseResult {
                     const comps = lowerValue.split(',').map(c => c.trim());
                     comps.forEach(c => {
                         const lc = c.toLowerCase();
-                        if (lc === 'neuropathy' || lc.includes('polyneuropathy')) {
+                        if (lc.includes('neuropathy')) {
                             if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
                             context.conditions.diabetes.complications.push('neuropathy');
+                            if (
+                                lc.includes('polyneuropathy') ||
+                                lowerValue.includes('bilateral') ||
+                                lowerValue.includes('stocking') ||
+                                lowerValue.includes('numbness') ||
+                                lowerValue.includes('tingling') ||
+                                lowerValue.includes('burning') ||
+                                lowerValue.includes('monofilament') ||
+                                lowerValue.includes('vibration')
+                            ) {
+                                context.conditions.diabetes.neuropathyType = 'polyneuropathy';
+                            }
                         }
                         else if (lc.includes('nephropathy') || lc.includes('ckd') || lc.includes('chronic kidney disease')) {
                             if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
@@ -609,7 +666,21 @@ export function parseInput(text: string): ParseResult {
             case 'diabetes complications':
                 const comps = lowerValue.split(',').map(c => c.trim());
                 comps.forEach(c => {
-                    if (c === 'neuropathy') context.conditions.diabetes!.complications.push('neuropathy');
+                    if (c.includes('neuropathy')) {
+                        context.conditions.diabetes!.complications.push('neuropathy');
+                        if (
+                            c.includes('polyneuropathy') ||
+                            lowerValue.includes('bilateral') ||
+                            lowerValue.includes('stocking') ||
+                            lowerValue.includes('numbness') ||
+                            lowerValue.includes('tingling') ||
+                            lowerValue.includes('burning') ||
+                            lowerValue.includes('monofilament') ||
+                            lowerValue.includes('vibration')
+                        ) {
+                            context.conditions.diabetes!.neuropathyType = 'polyneuropathy';
+                        }
+                    }
                     else if (c.includes('nephropathy') || c.includes('ckd') || c.includes('chronic kidney disease')) {
                         // Distinguish: "Nephropathy" alone → nephropathy, "CKD" or "Chronic Kidney Disease" → ckd
                         if (c.includes('ckd') || c.includes('chronic kidney disease')) {

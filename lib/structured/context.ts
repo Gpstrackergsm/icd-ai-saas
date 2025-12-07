@@ -15,6 +15,7 @@ export interface PatientContext {
             ulcerSite?: 'right_foot' | 'left_foot' | 'right_toe' | 'left_toe' | 'heel' | 'other';
             ulcerSeverity?: 'skin' | 'fat' | 'muscle' | 'bone' | 'unspecified';
             insulinUse?: boolean;
+            neuropathyType?: 'polyneuropathy' | 'peripheral' | 'autonomic' | 'unspecified';
         };
         ckd?: {
             stage: '1' | '2' | '3' | '4' | '5' | 'esrd' | 'unspecified';
