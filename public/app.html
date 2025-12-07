@@ -406,7 +406,8 @@
       if (domain) {
         if (!formState[domain]) {
           formState[domain] = {};
-          renderFormSection(domain);
+          const section = renderFormSection(domain);
+          activeFormsContainer.appendChild(section);
           updateNarrative();
         }
         e.target.value = '';
