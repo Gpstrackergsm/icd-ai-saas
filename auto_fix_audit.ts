@@ -235,6 +235,45 @@ casesRaw.forEach((caseText, index) => {
         fixedCodes = fixedCodes.filter(c => !c.startsWith('N18') || c === bestCode);
     }
 
+    // [9] PNEUMONIA VALIDATION RULE
+    // IF Pneumonia: No -> FORBID J12, J15, J18, J69, J95
+    // IF Pneumonia: Yes -> REQUIRE at least one of those
+    const pnaNo = caseText.includes('Pneumonia: No');
+    const pnaYes = caseText.includes('Pneumonia: Yes');
+
+    // Check for existing pneumonia codes
+    // Codes starting with J12, J15, J18, J69, J95
+    const pnaCodes = fixedCodes.filter(c =>
+        c.startsWith('J12') ||
+        c.startsWith('J15') ||
+        c.startsWith('J18') ||
+        c.startsWith('J69') ||
+        c.startsWith('J95')
+    );
+
+    if (pnaNo) {
+        if (pnaCodes.length > 0) {
+            errors.push(`Pneumonia mismatch: coded (${pnaCodes.join(', ')}) while input = No. Removed.`);
+            fixedCodes = fixedCodes.filter(c => !pnaCodes.includes(c));
+        }
+    } else if (pnaYes) {
+        if (pnaCodes.length === 0) {
+            // Missing code -> Auto Fix based on organism
+            let newCode = 'J18.9'; // Default unspecified
+            const organismLine = caseText.split('\n').find(l => l.startsWith('Pneumonia Organism:')) || '';
+            const org = organismLine.toLowerCase();
+
+            if (org.includes('viral')) newCode = 'J12.9';
+            else if (org.includes('mrsa')) newCode = 'J15.212';
+            else if (org.includes('pseudomonas')) newCode = 'J15.1';
+            else if (org.includes('e. coli') || org.includes('e.coli')) newCode = 'J15.5';
+            else if (org.includes('streptococcus')) newCode = 'J15.4';
+
+            errors.push(`Pneumonia present but no pneumonia code assigned. Added ${newCode}.`);
+            fixedCodes.push(newCode);
+        }
+    }
+
     // -- REPORTING --
     const isCorrect = errors.length === 0;
     if (isCorrect) correctCount++;
