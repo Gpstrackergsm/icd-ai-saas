@@ -381,15 +381,15 @@
 
     // Add Condition Wrapper
     const addWrapper = document.createElement('div');
-    addWrapper.className = 'relative';
+    addWrapper.className = 'relative inline-block';
     const addSelect = document.createElement('select');
-    addSelect.className = 'pl-3 pr-8 py-1.5 text-sm bg-white border border-slate-300 rounded-md focus:ring-2 focus:ring-medical-500 outline-none shadow-sm cursor-pointer hover:border-medical-400 transition-colors appearance-none';
+    // Removed appearance-none and custom icon to ensure native OS dropdown works reliably
+    addSelect.className = 'pl-3 pr-10 py-2 text-sm bg-white border border-slate-300 rounded-md focus:ring-2 focus:ring-medical-500 outline-none shadow-sm cursor-pointer hover:border-medical-400 transition-colors';
 
     // Add customized default option
     const defaultOpt = document.createElement('option');
     defaultOpt.text = '+ Add Condition';
     defaultOpt.value = '';
-    // defaultOpt.disabled = true;
     defaultOpt.selected = true;
     addSelect.appendChild(defaultOpt);
 
@@ -413,13 +413,7 @@
       }
     });
 
-    // Icon for select
-    const selectIcon = document.createElement('div');
-    selectIcon.className = 'absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-xs';
-    selectIcon.innerHTML = '<i class="fa-solid fa-plus"></i>';
-
     addWrapper.appendChild(addSelect);
-    addWrapper.appendChild(selectIcon);
     builderHeader.appendChild(addWrapper);
     builderContainer.appendChild(builderHeader);
 
@@ -429,7 +423,11 @@
 
     // Insert Builder
     const narrativeLabel = encodePanel.querySelector('label[for="narrative"]');
-    encodePanel.insertBefore(builderContainer, narrativeLabel.parentElement); // Parent of label is the div wrapper
+    if (narrativeLabel && narrativeLabel.parentElement) {
+      encodePanel.insertBefore(builderContainer, narrativeLabel.parentElement);
+    } else {
+      encodePanel.insertBefore(builderContainer, encodePanel.firstChild);
+    }
 
     function renderFormSection(domainKey) {
       const config = domainConfig[domainKey];
