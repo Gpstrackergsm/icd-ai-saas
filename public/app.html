@@ -653,8 +653,9 @@
       if (typeof gtag === 'function') {
         gtag('event', 'icd_search', {
           search_term: text,
-          event_category: 'ICD Tool',
-          event_label: 'User Search'
+          event_category: 'ICD',
+          event_label: 'Search Action',
+          value: 1
         });
       }
 
