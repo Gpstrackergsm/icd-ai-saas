@@ -939,6 +939,15 @@
                     }
                 });
             }
+
+            // Check for URL parameters to open modal
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('action') === 'login') {
+                if (typeof openModal === 'function') {
+                    // Small delay to ensure everything is ready
+                    setTimeout(() => openModal('login'), 100);
+                }
+            }
         });
     </script>
 </body>
