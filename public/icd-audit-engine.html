@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9DPX4FW21M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-9DPX4FW21M');
+    </script>
+    <title>ICD Audit Engine | AI Medical Coding Compliance System by BALLEY LTD</title>
+    <meta name="description"
+        content="The world's first true ICD Audit Engine. Replace manual auditing with AI-driven compliance logic. Prevent claim denials and revenue leakage automatically.">
+
+    <link rel="icon" type="image/png" href="favicon.png">
+
+    <!-- SEO: Canonical & JSON-LD -->
+    <link rel="canonical" href="https://www.icd-10-cm.online/icd-audit-engine" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "ICD Audit Engine",
+      "applicationCategory": "MedicalApplication",
+      "operatingSystem": "Web",
+      "url": "https://www.icd-10-cm.online/icd-audit-engine",
+      "description": "AI-powered ICD-10-CM Audit Engine that catches errors before insurance does."
+    }
+    </script>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        medical: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        }
+
+        .text-gradient {
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-image: linear-gradient(to right, #38bdf8, #818cf8);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body class="font-sans text-slate-800 antialiased selection:bg-medical-500 selection:text-white">
+
+    <!-- Header -->
+    <nav class="fixed w-full z-40 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="/" class="flex-shrink-0 flex items-center gap-3 cursor-pointer">
+                    <div
+                        class="w-10 h-10 bg-medical-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-medical-500/20">
+                        <i class="fa-solid fa-stethoscope text-xl"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-slate-900">ICD Audit Engine</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-slate-600 hover:text-medical-600 font-medium transition-colors">Home</a>
+                    <a href="/icd-audit-engine.html" class="text-medical-600 font-bold transition-colors">Product</a>
+                    <a href="/#pricing"
+                        class="text-slate-600 hover:text-medical-600 font-medium transition-colors">Pricing</a>
+                    <a href="/?action=login"
+                        class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-full font-medium transition-all shadow-lg hover:shadow-slate-900/20 transform hover:-translate-y-0.5 text-sm">Sign
+                        In</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden hero-gradient">
+        <div class="absolute top-0 left-0 w-full h-full overflow-hidden opacity-20 pointer-events-none">
+            <div class="absolute -top-1/2 -right-1/2 w-[1000px] h-[1000px] rounded-full bg-blue-500 blur-3xl"></div>
+            <div class="absolute -bottom-1/2 -left-1/2 w-[1000px] h-[1000px] rounded-full bg-indigo-500 blur-3xl"></div>
+        </div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+            <div
+                class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-slate-800/50 border border-slate-700/50 backdrop-blur-md mb-8 text-sm font-medium text-blue-300">
+                <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+                Public Beta Live
+            </div>
+
+            <h1
+                class="text-5xl lg:text-7xl font-extrabold text-white tracking-tight mb-8 leading-tight max-w-5xl mx-auto">
+                ICD Audit Engine <br>
+                <span class="text-gradient">AI Medical Coding & Compliance</span>
+            </h1>
+
+            <p class="text-lg lg:text-xl text-slate-300/90 mb-12 max-w-3xl mx-auto leading-relaxed">
+                The first autonomous system built to replace manual chart auditing. Detect errors, enforce compliance,
+                and protect revenue with logic-driven AI.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
+                <a href="/#pricing"
+                    class="w-full sm:w-auto px-8 py-4 bg-medical-500 hover:bg-medical-400 text-white font-bold rounded-xl shadow-xl shadow-medical-500/20 transition-all transform hover:-translate-y-1 hover:scale-105 flex items-center justify-center gap-2">
+                    Start AI Coding
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <a href="/demo.html"
+                    class="w-full sm:w-auto px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl border border-slate-700 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                    Request Demo
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Definition -->
+    <section class="py-24 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="prose prose-lg mx-auto text-slate-600">
+                <h2 class="text-3xl font-bold text-slate-900 mb-6">What is an ICD Audit Engine?</h2>
+                <p>
+                    An ICD Audit Engine is not a simple search tool. It is an autonomous logic system designed to
+                    validate medical documentation against thousands of complex ICD-10-CM guidelines in real-time.
+                </p>
+                <p>
+                    Unlike traditional "Computer Assisted Coding" (CAC) which relies on keyword matching, our engine
+                    understands the <strong>clinical relationships</strong> between diseases. It knows that Sepsis
+                    requires an underlying infection code. It knows that Diabetes and CKD are presumed linked unless
+                    stated otherwise. It mimics the reasoning of a Senior Medical Auditor.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why It Was Created (Pain Points) -->
+    <section class="py-24 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Why We Built It</h2>
+                <p class="text-slate-600">The manual coding model is broken.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-100">
+                    <div
+                        class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center text-red-600 text-xl mb-4">
+                        <i class="fa-solid fa-user-xmark"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Human Error</h3>
+                    <p class="text-slate-600">Even the best coders have a 95% accuracy ceiling. Fatigue, complex charts,
+                        and changing guidelines lead to unavoidable mistakes.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-100">
+                    <div
+                        class="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center text-orange-600 text-xl mb-4">
+                        <i class="fa-solid fa-ban"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Claim Rejections</h3>
+                    <p class="text-slate-600">Simple sequencing errors or unspecified codes cause millions in lost
+                        revenue and administrative rework costs.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-sm border border-slate-100">
+                    <div
+                        class="w-12 h-12 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600 text-xl mb-4">
+                        <i class="fa-solid fa-scale-unbalanced"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Compliance Risks</h3>
+                    <p class="text-slate-600">Under-coding leads to revenue loss. Over-coding leads to OIG audits. Our
+                        engine keeps you perfectly in the safe zone.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About BALLEY LTD -->
+    <section class="py-24 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
+                <div>
+                    <h2 class="text-3xl font-bold mb-6">About BALLEY LTD</h2>
+                    <p class="text-slate-300 text-lg mb-6 leading-relaxed">
+                        BALLEY LTD is a London-based medical software company dedicated to solving the most complex
+                        problem in healthcare revenue cycle: <strong>Accuracy</strong>.
+                    </p>
+                    <p class="text-slate-300 mb-8">
+                        We are not an educational publisher. We are engineers building the next generation of
+                        probabilistic AI systems. Our mission is to automate the technical aspects of medical auditing
+                        so potential errors are caught <em>before</em> a human ever touches the claim.
+                    </p>
+                    <ul class="space-y-4">
+                        <li class="flex items-center text-slate-300">
+                            <i class="fa-solid fa-check text-medical-500 mr-3"></i> Dedicated to Automation
+                        </li>
+                        <li class="flex items-center text-slate-300">
+                            <i class="fa-solid fa-check text-medical-500 mr-3"></i> Logic-Driven Architecture
+                        </li>
+                        <li class="flex items-center text-slate-300">
+                            <i class="fa-solid fa-check text-medical-500 mr-3"></i> Enterprise-Grade Security
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-slate-800 p-8 rounded-2xl border border-slate-700">
+                    <h3 class="text-xl font-bold mb-6 border-b border-slate-700 pb-4">Engineering First</h3>
+                    <div class="space-y-6">
+                        <div>
+                            <div class="text-sm text-slate-400 mb-1">Company Code</div>
+                            <div class="font-mono text-medical-400">BALLEY LTD (16468448)</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-slate-400 mb-1">Headquarters</div>
+                            <div class="font-mono text-white">71–75 Shelton Street, Covent Garden, London</div>
+                        </div>
+                        <div>
+                            <div class="text-sm text-slate-400 mb-1">Focus</div>
+                            <div class="font-mono text-white">AI / Machine Learning / Healthcare Compliance</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="py-24 bg-white">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-slate-900 mb-16">The Difference is Engineering</h2>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr>
+                            <th class="p-4 border-b-2 border-slate-100 w-1/3">Feature</th>
+                            <th class="p-4 border-b-2 border-slate-100 w-1/3 text-center bg-slate-50 text-slate-500">
+                                Traditional Tools (e.g. Codify)</th>
+                            <th
+                                class="p-4 border-b-2 border-medical-500 w-1/3 text-center bg-medical-50 text-medical-700 font-bold">
+                                BALLEY ICD Audit Engine</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-slate-600">
+                        <tr class="border-b border-slate-100">
+                            <td class="p-4 font-medium text-slate-900">Core Technology</td>
+                            <td class="p-4 text-center">Reference Book Search</td>
+                            <td class="p-4 text-center font-semibold text-slate-900">Autonomous Logic Engine</td>
+                        </tr>
+                        <tr class="border-b border-slate-100">
+                            <td class="p-4 font-medium text-slate-900">Audit Method</td>
+                            <td class="p-4 text-center">Manual User Lookups</td>
+                            <td class="p-4 text-center font-semibold text-slate-900">AI-Driven Validation</td>
+                        </tr>
+                        <tr class="border-b border-slate-100">
+                            <td class="p-4 font-medium text-slate-900">Error Detection</td>
+                            <td class="p-4 text-center text-red-500"><i class="fa-solid fa-xmark"></i> Passive</td>
+                            <td class="p-4 text-center text-green-500"><i class="fa-solid fa-check"></i> Proactive /
+                                Automatic</td>
+                        </tr>
+                        <tr class="border-b border-slate-100">
+                            <td class="p-4 font-medium text-slate-900">Clinical Logic</td>
+                            <td class="p-4 text-center">Limited</td>
+                            <td class="p-4 text-center font-semibold text-slate-900">Deep Clinical Inference</td>
+                        </tr>
+                        <tr class="border-b border-slate-100">
+                            <td class="p-4 font-medium text-slate-900">Speed</td>
+                            <td class="p-4 text-center">Human Speed</td>
+                            <td class="p-4 text-center font-semibold text-slate-900">Milliseconds</td>
+                        </tr>
+                        <tr>
+                            <td class="p-4 font-medium text-slate-900">Compliance</td>
+                            <td class="p-4 text-center">User Dependent</td>
+                            <td class="p-4 text-center font-semibold text-slate-900">System Enforced</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Flow -->
+    <section class="py-24 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center text-slate-900 mb-16">The Audit Flow</h2>
+
+            <div class="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-4">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 w-full md:w-64 text-center">
+                    <span class="font-bold text-slate-300 text-5xl mb-4 block">01</span>
+                    <h3 class="font-bold text-slate-900 text-lg">Input</h3>
+                    <p class="text-sm text-slate-500 mt-2">Upload text, JSON, or EMR data.</p>
+                </div>
+
+                <i class="fa-solid fa-arrow-right text-slate-300 text-xl hidden md:block"></i>
+                <i class="fa-solid fa-arrow-down text-slate-300 text-xl md:hidden"></i>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 w-full md:w-64 text-center">
+                    <span class="font-bold text-slate-300 text-5xl mb-4 block">02</span>
+                    <h3 class="font-bold text-slate-900 text-lg">Analysis</h3>
+                    <p class="text-sm text-slate-500 mt-2">NLP extracts clinical entities.</p>
+                </div>
+
+                <i class="fa-solid fa-arrow-right text-slate-300 text-xl hidden md:block"></i>
+                <i class="fa-solid fa-arrow-down text-slate-300 text-xl md:hidden"></i>
+
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 w-full md:w-64 text-center">
+                    <span class="font-bold text-medical-100 text-5xl mb-4 block">03</span>
+                    <h3 class="font-bold text-medical-600 text-lg">Validation</h3>
+                    <p class="text-sm text-slate-500 mt-2">Logic engine applies guidelines.</p>
+                </div>
+
+                <i class="fa-solid fa-arrow-right text-slate-300 text-xl hidden md:block"></i>
+                <i class="fa-solid fa-arrow-down text-slate-300 text-xl md:hidden"></i>
+
+                <div class="bg-slate-900 p-6 rounded-xl shadow-lg border border-slate-800 w-full md:w-64 text-center">
+                    <span class="font-bold text-slate-700 text-5xl mb-4 block">04</span>
+                    <h3 class="font-bold text-white text-lg">Output</h3>
+                    <p class="text-sm text-slate-400 mt-2">Perfect, compliant codes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Real Results -->
+    <section class="py-24 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 class="text-3xl font-bold text-slate-900 mb-8">Expected Outcomes</h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="text-4xl font-extrabold text-medical-600 mb-2">99.9%</div>
+                    <div class="text-sm font-bold text-slate-900">Error Reduction</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-extrabold text-medical-600 mb-2">100%</div>
+                    <div class="text-sm font-bold text-slate-900">Audit Prevention</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-extrabold text-medical-600 mb-2">24/7</div>
+                    <div class="text-sm font-bold text-slate-900">Availability</div>
+                </div>
+                <div>
+                    <div class="text-4xl font-extrabold text-medical-600 mb-2">10x</div>
+                    <div class="text-sm font-bold text-slate-900">ROI</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer CTA -->
+    <section class="py-20 bg-medical-600">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">Ready to Automate your Compliance?</h2>
+            <p class="text-medical-100 text-lg mb-10 max-w-2xl mx-auto">Stop worrying about audits. Start deploying the
+                engine that protects your revenue.</p>
+            <a href="/#pricing"
+                class="inline-block bg-white text-medical-700 font-bold py-4 px-10 rounded-xl hover:bg-slate-50 transition-colors shadow-2xl transform hover:-translate-y-1">
+                Run an Audit Now
+            </a>
+            <div class="mt-8">
+                <a href="/blog/what-is-icd-audit-engine.html"
+                    class="text-medical-100 hover:text-white underline text-sm">Read: How AI is replacing manual
+                    coding</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4 text-white font-bold text-lg">
+                        <i class="fa-solid fa-stethoscope"></i> ICD Audit Engine
+                    </div>
+                    <p class="text-sm text-slate-500">
+                        Built by BALLEY LTD<br>
+                        71–75 Shelton Street<br>
+                        Covent Garden, London
+                    </p>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Product</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/icd-audit-engine.html" class="hover:text-white">ICD Audit Engine</a></li>
+                        <li><a href="/#pricing" class="hover:text-white">Pricing</a></li>
+                        <li><a href="/demo.html" class="hover:text-white">Demo</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Resources</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="/blog/what-is-icd-audit-engine.html" class="hover:text-white">Blog</a></li>
+                        <li><a href="#" class="hover:text-white">Documentation</a></li>
+                        <li><a href="#" class="hover:text-white">Support</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-4">Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="#" class="hover:text-white">Privacy Policy</a></li>
+                        <li><a href="#" class="hover:text-white">Terms of Service</a></li>
+                        <li><a href="#" class="hover:text-white">HIPAA</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="border-t border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-sm text-slate-500">
+                <div>&copy; 2025 BALLEY LTD. All rights reserved.</div>
+                <div>Contact: <a href="mailto:Gsmkhalid@msn.com"
+                        class="hover:text-white transition-colors">Gsmkhalid@msn.com</a></div>
+            </div>
+        </div>
+    </footer>
+</body>
+
+</html>
