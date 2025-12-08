@@ -653,10 +653,9 @@
       if (typeof gtag === 'function') {
         gtag('event', 'icd_search', {
           search_term: text,
-          event_category: 'ICD',
-          event_label: 'Search Action',
-          value: 1
+          module: 'icd_audit_engine'
         });
+        console.log('GA4 Event Fired: icd_search', { search_term: text, module: 'icd_audit_engine' });
       }
 
       encodeBtn.disabled = true;
