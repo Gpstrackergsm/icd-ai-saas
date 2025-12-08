@@ -187,9 +187,9 @@
                         class="text-slate-600 hover:text-medical-600 font-medium transition-colors">How it Works</a>
                     <a href="#pricing"
                         class="text-slate-600 hover:text-medical-600 font-medium transition-colors">Pricing</a>
-                    <a href="#"
-                        class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-full font-medium transition-all shadow-lg hover:shadow-slate-900/20 transform hover:-translate-y-0.5 text-sm"
-                        onclick="openModal('login')">Sign In</a>
+                    <a href="#" id="navSignInBtn"
+                        class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-full font-medium transition-all shadow-lg hover:shadow-slate-900/20 transform hover:-translate-y-0.5 text-sm">Sign
+                        In</a>
                 </div>
                 <div class="md:hidden flex items-center">
                     <button class="text-slate-600 hover:text-slate-900">
@@ -227,12 +227,12 @@
             </p>
 
             <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-8">
-                <button onclick="window.location.href='signup.html'"
+                <button id="heroStartAuditBtn"
                     class="w-full sm:w-auto px-8 py-4 bg-medical-500 hover:bg-medical-400 text-white font-bold rounded-xl shadow-xl shadow-medical-500/20 transition-all transform hover:-translate-y-1 hover:scale-105 flex items-center justify-center gap-2">
                     Start Free Audit
                     <i class="fa-solid fa-arrow-right"></i>
                 </button>
-                <button onclick="openModal('login')"
+                <button id="heroSignInBtn"
                     class="w-full sm:w-auto px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl border border-slate-700 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
                     Sign In
                 </button>
@@ -906,6 +906,40 @@
                 }
             });
         }
+
+        // Setup Event Listeners
+        document.addEventListener('DOMContentLoaded', () => {
+            const navSignInBtn = document.getElementById('navSignInBtn');
+            const heroStartAuditBtn = document.getElementById('heroStartAuditBtn');
+            const heroSignInBtn = document.getElementById('heroSignInBtn');
+
+            if (navSignInBtn) {
+                navSignInBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    if (typeof openModal === 'function') {
+                        openModal('login');
+                    } else {
+                        console.error('openModal is not defined');
+                    }
+                });
+            }
+
+            if (heroStartAuditBtn) {
+                heroStartAuditBtn.addEventListener('click', () => {
+                    window.location.href = 'signup.html';
+                });
+            }
+
+            if (heroSignInBtn) {
+                heroSignInBtn.addEventListener('click', () => {
+                    if (typeof openModal === 'function') {
+                        openModal('login');
+                    } else {
+                        console.error('openModal is not defined');
+                    }
+                });
+            }
+        });
     </script>
 </body>
 
