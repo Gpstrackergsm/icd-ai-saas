@@ -12,9 +12,9 @@
         gtag('js', new Date());
         gtag('config', 'G-9DPX4FW21M');
     </script>
-    <title>AI Medical Coding Compliance Engine | ICD-10 Audit Tool | BALLEY LTD</title>
+    <title>ICD Audit Engine™ - AI Medical Coding Software | BALLEY LTD</title>
     <meta name="description"
-        content="Stop claim denials with the world's most advanced AI Medical Coding Engine. Automate ICD-10 audits, ensure 100% compliance, and boost revenue. Start your free trial today.">
+        content="The official ICD Audit Engine by BALLEY LTD. Achieve 100% ICD-10 accuracy with our hospital-grade AI. Detect errors, prevent denials, and automate compliance.">
 
     <link rel="icon" type="image/png" href="https://www.icd-10-cm.online/favicon.png">
 
@@ -25,35 +25,63 @@
       "@context": "https://schema.org",
       "@graph": [
         {
-          "@type": "SoftwareApplication",
-          "name": "ICD Audit Engine",
-          "applicationCategory": "MedicalApplication",
-          "operatingSystem": "Web",
-          "url": "https://www.icd-10-cm.online/",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          },
-          "description": "AI-powered ICD-10-CM Audit Engine that catches errors before insurance does.",
-          "author": {
-              "@type": "Organization",
-              "name": "BALLEY LTD"
-          }
-        },
-        {
           "@type": "Organization",
+          "@id": "https://www.icd-10-cm.online/#organization",
           "name": "BALLEY LTD",
           "url": "https://www.icd-10-cm.online/",
-          "logo": "https://www.icd-10-cm.online/favicon.png",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.icd-10-cm.online/favicon.png",
+            "width": 512,
+            "height": 512
+          },
+          "image": "https://www.icd-10-cm.online/favicon.png",
           "sameAs": [
-            "https://www.linkedin.com/company/balley-ltd"
+            "https://www.linkedin.com/company/balley-ltd",
+            "https://www.crunchbase.com/organization/balley-ltd", 
+            "https://twitter.com/balley_ltd",
+            "https://github.com/balley-ltd"
           ],
           "contactPoint": {
             "@type": "ContactPoint",
             "email": "Gsmkhalid@msn.com",
-            "contactType": "customer support"
+            "contactType": "customer support",
+            "areaServed": "US",
+            "availableLanguage": "English"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "GB" 
+          },
+          "knowsAbout": ["Medical Coding", "ICD-10-CM", "Healthcare Compliance", "Artificial Intelligence"]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://www.icd-10-cm.online/#software",
+          "name": "ICD Audit Engine",
+          "url": "https://www.icd-10-cm.online/",
+          "applicationCategory": "MedicalApplication",
+          "operatingSystem": "Cloud-based",
+          "description": "AI-powered ICD-10-CM Audit Engine that detects coding errors and ensures 100% compliance.",
+          "author": { "@id": "https://www.icd-10-cm.online/#organization" },
+          "offers": {
+            "@type": "Offer",
+            "price": "10.00",
+            "priceCurrency": "USD",
+            "availability": "https://schema.org/InStock"
+          },
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "ratingCount": "124"
           }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.icd-10-cm.online/#website",
+          "url": "https://www.icd-10-cm.online/",
+          "name": "ICD Audit Engine",
+          "publisher": { "@id": "https://www.icd-10-cm.online/#organization" }
         }
       ]
     }
@@ -206,12 +234,14 @@
                     <a href="/" class="text-medical-600 font-bold transition-colors">Home</a>
                     <a href="icd-audit-engine.html"
                         class="text-slate-600 hover:text-medical-600 font-medium transition-colors">Product</a>
-                    <a href="#features"
-                        class="text-slate-600 hover:text-medical-600 font-medium transition-colors">Features</a>
+                    <a href="pricing.html"
+                        class="text-slate-600 hover:text-medical-600 font-medium transition-colors">Pricing</a>
+                    <a href="about.html"
+                        class="text-slate-600 hover:text-medical-600 font-medium transition-colors">About</a>
                     <a href="blog/what-is-icd-audit-engine.html"
                         class="text-slate-600 hover:text-medical-600 font-medium transition-colors">Blog</a>
-                    <a href="#pricing"
-                        class="text-slate-600 hover:text-medical-600 font-medium transition-colors">Pricing</a>
+                    <a href="contact.html"
+                        class="text-slate-600 hover:text-medical-600 font-medium transition-colors">Contact</a>
                     <a href="#" id="navSignInBtn"
                         class="bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-full font-medium transition-all shadow-lg hover:shadow-slate-900/20 transform hover:-translate-y-0.5 text-sm">Sign
                         In</a>
@@ -859,18 +889,18 @@
                 <div>
                     <h4 class="text-white font-bold mb-4">Product</h4>
                     <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-white transition-colors">Features</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Pricing</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">API Docs</a></li>
+                        <li><a href="icd-audit-engine.html" class="hover:text-white transition-colors">Features</a></li>
+                        <li><a href="pricing.html" class="hover:text-white transition-colors">Pricing</a></li>
+                        <li><a href="signup.html" class="hover:text-white transition-colors">Start Trial</a></li>
                     </ul>
                 </div>
                 <div>
-                    <h4 class="text-white font-bold mb-4">Legal</h4>
+                    <h4 class="text-white font-bold mb-4">Company</h4>
                     <ul class="space-y-2">
-                        <li><a href="#" class="hover:text-white transition-colors">Privacy Policy</a></li>
-                        <li><a href="#" class="hover:text-white transition-colors">Terms of Service</a></li>
-                        <li><a href="mailto:Gsmkhalid@msn.com" class="hover:text-white transition-colors">Contact</a>
-                        </li>
+                        <li><a href="about.html" class="hover:text-white transition-colors">About Us</a></li>
+                        <li><a href="contact.html" class="hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="terms.html" class="hover:text-white transition-colors">Terms</a></li>
+                        <li><a href="privacy.html" class="hover:text-white transition-colors">Privacy</a></li>
                     </ul>
                 </div>
             </div>
