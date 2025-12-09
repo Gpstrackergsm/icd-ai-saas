@@ -29,10 +29,19 @@ export function resolveRespiratory(text: string): RespiratoryResolution | undefi
     const hypercapnia = /hypercapnia/.test(lower);
     const isPostProcedural = /post[- ]?procedural|following.*procedure|after.*surgery|post[- ]?op/.test(lower);
 
-    const hasPneumonia = /pneumonia/.test(lower);
-    const hasFailure = /respiratory failure/.test(lower);
-    const hasCopd = /copd|chronic obstructive/.test(lower);
-    const hasAsthma = /asthma/.test(lower);
+    // Helper to detect structured negations (key: value) or natural language negations
+    const isNegated = (term: string) => {
+        // Matches "No [condition]", "None [condition]", "Denies [condition]"
+        // OR "[condition]: No", "[condition]: None", "[condition]: 0"
+        const pattern = new RegExp(`(no|none|denies|negative)\\s+${term}|${term}\\s*:\\s*(no|none|denies|negative|0)`, 'i');
+        return pattern.test(lower);
+    };
+
+    const hasPneumonia = /pneumonia/.test(lower) && !isNegated('pneumonia');
+    const hasFailure = /respiratory failure/.test(lower) && !isNegated('respiratory failure');
+    // Group expressions for regex safety in the helper
+    const hasCopd = /copd|chronic obstructive/.test(lower) && !isNegated('(?:copd|chronic obstructive)');
+    const hasAsthma = /asthma/.test(lower) && !isNegated('asthma');
 
     const secondary_conditions: RespiratoryAttributes['secondary_conditions'] = [];
 
