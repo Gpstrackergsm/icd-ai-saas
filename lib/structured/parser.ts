@@ -892,56 +892,59 @@ export function parseInput(text: string): ParseResult {
                 break;
 
             case 'pneumonia':
-                if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                const isPneumoniaNone = lowerValue === 'no' || lowerValue === 'none' || lowerValue === 'false';
+                if (!isPneumoniaNone) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
 
-                // Parse organism and type from value
-                let organism: 'strep_pneumoniae' | 'h_influenzae' | 'klebsiella' | 'pseudomonas' |
-                    'mssa' | 'mrsa' | 'e_coli' | 'mycoplasma' | 'viral' | 'unspecified' | undefined;
-                let type: 'aspiration' | 'bacterial' | 'viral' | 'unspecified' | undefined;
-                let ventilatorAssociated = false;
+                    // Parse organism and type from value
+                    let organism: 'strep_pneumoniae' | 'h_influenzae' | 'klebsiella' | 'pseudomonas' |
+                        'mssa' | 'mrsa' | 'e_coli' | 'mycoplasma' | 'viral' | 'unspecified' | undefined;
+                    let type: 'aspiration' | 'bacterial' | 'viral' | 'unspecified' | undefined;
+                    let ventilatorAssociated = false;
 
-                // Organism detection
-                if (lowerValue.includes('streptococcus pneumoniae') || lowerValue.includes('strep pneumoniae')) {
-                    organism = 'strep_pneumoniae';
-                } else if (lowerValue.includes('haemophilus influenzae') || lowerValue.includes('h. influenzae') || lowerValue.includes('h influenzae')) {
-                    organism = 'h_influenzae';
-                } else if (lowerValue.includes('klebsiella')) {
-                    organism = 'klebsiella';
-                } else if (lowerValue.includes('pseudomonas')) {
-                    organism = 'pseudomonas';
-                } else if (lowerValue.includes('mssa') || lowerValue.includes('methicillin susceptible')) {
-                    organism = 'mssa';
-                } else if (lowerValue.includes('mrsa') || lowerValue.includes('methicillin resistant')) {
-                    organism = 'mrsa';
-                } else if (lowerValue.includes('e. coli') || lowerValue.includes('e.coli') || lowerValue.includes('escherichia coli')) {
-                    organism = 'e_coli';
-                } else if (lowerValue.includes('mycoplasma')) {
-                    organism = 'mycoplasma';
-                } else if (lowerValue.includes('viral')) {
-                    organism = 'viral';
+                    // Organism detection
+                    if (lowerValue.includes('streptococcus pneumoniae') || lowerValue.includes('strep pneumoniae')) {
+                        organism = 'strep_pneumoniae';
+                    } else if (lowerValue.includes('haemophilus influenzae') || lowerValue.includes('h. influenzae') || lowerValue.includes('h influenzae')) {
+                        organism = 'h_influenzae';
+                    } else if (lowerValue.includes('klebsiella')) {
+                        organism = 'klebsiella';
+                    } else if (lowerValue.includes('pseudomonas')) {
+                        organism = 'pseudomonas';
+                    } else if (lowerValue.includes('mssa') || lowerValue.includes('methicillin susceptible')) {
+                        organism = 'mssa';
+                    } else if (lowerValue.includes('mrsa') || lowerValue.includes('methicillin resistant')) {
+                        organism = 'mrsa';
+                    } else if (lowerValue.includes('e. coli') || lowerValue.includes('e.coli') || lowerValue.includes('escherichia coli')) {
+                        organism = 'e_coli';
+                    } else if (lowerValue.includes('mycoplasma')) {
+                        organism = 'mycoplasma';
+                    } else if (lowerValue.includes('viral')) {
+                        organism = 'viral';
+                    }
+
+                    // Type detection
+                    if (lowerValue.includes('aspiration')) {
+                        type = 'aspiration';
+                    } else if (lowerValue.includes('bacterial')) {
+                        type = 'bacterial';
+                        if (!organism) organism = 'unspecified';
+                    } else if (lowerValue.includes('viral')) {
+                        type = 'viral';
+                        if (!organism) organism = 'viral';
+                    }
+
+                    // Ventilator-associated detection
+                    if (lowerValue.includes('ventilator') || lowerValue.includes('vap')) {
+                        ventilatorAssociated = true;
+                    }
+
+                    context.conditions.respiratory.pneumonia = {
+                        organism,
+                        type,
+                        ventilatorAssociated
+                    };
                 }
-
-                // Type detection
-                if (lowerValue.includes('aspiration')) {
-                    type = 'aspiration';
-                } else if (lowerValue.includes('bacterial')) {
-                    type = 'bacterial';
-                    if (!organism) organism = 'unspecified';
-                } else if (lowerValue.includes('viral')) {
-                    type = 'viral';
-                    if (!organism) organism = 'viral';
-                }
-
-                // Ventilator-associated detection
-                if (lowerValue.includes('ventilator') || lowerValue.includes('vap')) {
-                    ventilatorAssociated = true;
-                }
-
-                context.conditions.respiratory.pneumonia = {
-                    organism,
-                    type,
-                    ventilatorAssociated
-                };
                 break;
             case 'pneumonia organism':
                 if (!context.conditions.respiratory?.pneumonia) {
@@ -990,22 +993,25 @@ export function parseInput(text: string): ParseResult {
                 }
                 break;
             case 'asthma':
-                if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                const isAsthmaNone = lowerValue === 'no' || lowerValue === 'none' || lowerValue === 'false';
+                if (!isAsthmaNone) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
 
-                // Parse severity
-                let severity: 'mild_intermittent' | 'mild_persistent' | 'moderate_persistent' | 'severe_persistent' | 'unspecified' = 'unspecified';
-                if (lowerValue.includes('mild intermittent')) severity = 'mild_intermittent';
-                else if (lowerValue.includes('mild persistent')) severity = 'mild_persistent';
-                else if (lowerValue.includes('moderate persistent') || lowerValue.includes('moderate')) severity = 'moderate_persistent';
-                else if (lowerValue.includes('severe persistent') || lowerValue.includes('severe')) severity = 'severe_persistent';
+                    // Parse severity
+                    let severity: 'mild_intermittent' | 'mild_persistent' | 'moderate_persistent' | 'severe_persistent' | 'unspecified' = 'unspecified';
+                    if (lowerValue.includes('mild intermittent')) severity = 'mild_intermittent';
+                    else if (lowerValue.includes('mild persistent')) severity = 'mild_persistent';
+                    else if (lowerValue.includes('moderate persistent') || lowerValue.includes('moderate')) severity = 'moderate_persistent';
+                    else if (lowerValue.includes('severe persistent') || lowerValue.includes('severe')) severity = 'severe_persistent';
 
-                // Parse status
-                let status: 'uncomplicated' | 'exacerbation' | 'status_asthmaticus' = 'uncomplicated';
+                    // Parse status
+                    let status: 'uncomplicated' | 'exacerbation' | 'status_asthmaticus' = 'uncomplicated';
 
-                context.conditions.respiratory.asthma = {
-                    severity,
-                    status
-                };
+                    context.conditions.respiratory.asthma = {
+                        severity,
+                        status
+                    };
+                }
                 break;
             case 'status':
             case 'asthma status':
