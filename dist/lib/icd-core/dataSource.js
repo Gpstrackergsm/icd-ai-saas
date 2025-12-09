@@ -148,8 +148,53 @@ function extractCodesFromText(text) {
     return Array.from(results);
 }
 function toIcdCode(raw) {
-    const shortDescription = raw.shortDescription || raw.title || raw.description || raw.longDescription || raw.code;
-    const longDescription = raw.longDescription || raw.title || raw.description || shortDescription;
+    let shortDescription = raw.shortDescription || raw.title || raw.description || raw.longDescription || raw.code;
+    let longDescription = raw.longDescription || raw.title || raw.description || shortDescription;
+    const synonyms = [];
+    // Fix for massive duplication/concat issues in raw source (e.g. E11.42)
+    // Pattern: "Type 2 diabetes mellitus with diabetic polyneuropathy Type 2 diabetes mellitus with diabetic neuralgia AHA: ..."
+    // We detect if the title contains the same starting phrase twice
+    // Specific fix for "Type 2 diabetes mellitus with" duplication
+    const t2Prefix = "Type 2 diabetes mellitus with ";
+    if (longDescription.includes(t2Prefix) && longDescription.indexOf(t2Prefix) !== longDescription.lastIndexOf(t2Prefix)) {
+        // Start validation
+        const parts = longDescription.split(t2Prefix).filter((p) => p.trim().length > 0);
+        // Since split removes the delimiter, we need to reconstruct
+        // But wait, split behavior: "Type 2 ... with foo Type 2 ... with bar" -> ["", "foo ", "bar"]
+        // So we prepend the prefix back
+        const reconstructed = parts.map((p) => (t2Prefix + p).trim());
+        // The first part is the main description
+        // Subsequent parts are synonyms
+        // Check for AHA reference in the last part
+        // Example: "Type 2 diabetes mellitus with diabetic neuralgia AHA: 2020,1Q,12"
+        if (reconstructed.length > 0) {
+            let mainDesc = reconstructed[0];
+            // Loop through others as synonyms
+            for (let i = 1; i < reconstructed.length; i++) {
+                let syn = reconstructed[i];
+                // Clean AHA ref if present
+                if (syn.includes('AHA:')) {
+                    syn = syn.split('AHA:')[0].trim();
+                }
+                synonyms.push(syn);
+            }
+            // Also clean main description if it has AHA ref (though usually it's at end of string)
+            if (mainDesc.includes('AHA:')) {
+                mainDesc = mainDesc.split('AHA:')[0].trim();
+            }
+            longDescription = mainDesc;
+            shortDescription = mainDesc; // Sync them for consistency
+        }
+    }
+    else {
+        // Generic cleanup for AHA refs if single line
+        if (longDescription.includes('AHA:')) {
+            longDescription = longDescription.split('AHA:')[0].trim();
+        }
+        if (shortDescription.includes('AHA:')) {
+            shortDescription = shortDescription.split('AHA:')[0].trim();
+        }
+    }
     const type = (raw.type || '').toString().toLowerCase();
     const isHeader = raw.isHeader !== undefined ? raw.isHeader : type === 'header';
     const isBillable = raw.isBillable !== undefined ? raw.isBillable : type !== 'header';
@@ -162,6 +207,7 @@ function toIcdCode(raw) {
         block: raw.block || raw.section || raw.category || undefined,
         isBillable,
         isHeader,
+        synonyms: synonyms.length > 0 ? synonyms : undefined
     };
 }
 function normalizeIndexTermsShape(rawTerms) {

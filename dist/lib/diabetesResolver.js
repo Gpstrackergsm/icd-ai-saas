@@ -65,6 +65,17 @@ function detectNeuropathyType(text) {
         return 'autonomic';
     if (/polyneuropathy/.test(text))
         return 'polyneuropathy';
+    // Enhanced polyneuropathy detection rules
+    if (/bilateral/.test(text) ||
+        /stocking\s+distribution/.test(text) ||
+        /numbness/.test(text) ||
+        /tingling/.test(text) ||
+        /burning\s+pain/.test(text) ||
+        /abnormal\s+monofilament/.test(text) ||
+        /decreased\s+vibration/.test(text)) {
+        if (/neuropathy/.test(text))
+            return 'polyneuropathy';
+    }
     if (/neuropathy/.test(text))
         return 'unspecified';
     return undefined;

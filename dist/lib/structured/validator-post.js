@@ -23,20 +23,10 @@ function validateCodeSet(primary, secondary, context) {
             return true;
         });
     }
-    // Rule 2: HTN combination code conflict (I13.x includes HF, cannot report with I50.x)
+    // Rule 2: REMOVED - I13.x REQUIRES I50.x codes per ICD-10-CM guidelines
+    // Per I13 code notes: "Use additional code to identify the type of heart failure (I50.-)"
+    // DO NOT filter out I50 codes when I13 is present
     const hasI13 = validatedCodes.some(c => c.code.startsWith('I13.'));
-    if (hasI13) {
-        validatedCodes = validatedCodes.filter(c => {
-            if (c.code.startsWith('I50.')) {
-                removed.push({
-                    code: c.code,
-                    reason: 'Redundant: I13.x combination code already includes heart failure'
-                });
-                return false;
-            }
-            return true;
-        });
-    }
     // Rule 3: Z-code normalization (Z72.89 → Z72.1 for alcohol use)
     validatedCodes = validatedCodes.map(c => {
         var _a;
