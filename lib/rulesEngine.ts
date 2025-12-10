@@ -35,6 +35,7 @@ export interface EngineResult {
   sequence: Array<Omit<ScoredCode, 'score'>>;
   attributes: DiabetesAttributes;
   warnings: string[];
+  errors: string[]; // Added errors field
   audit: string[];
   rationale: CodeRationale[];
   confidence: ConfidenceAssessment;
@@ -63,6 +64,7 @@ function diabetesEntry(resolution: DiabetesResolution): SequencedCode {
 
 export function runRulesEngine(text: string): EngineResult {
   const warnings: string[] = [];
+  const errors: string[] = []; // Initialize errors
   const diabetes = resolveDiabetes(text);
   let attributes: DiabetesAttributes = diabetes?.attributes || {
     diabetes_type: 'E11',
@@ -306,14 +308,14 @@ export function runRulesEngine(text: string): EngineResult {
 
   // Apply ICD-10-CM sequencing rules
   const sequencingResult = applySequencingRules(uniqueSequence);
-  warnings.push(...sequencingResult.errors);
+  errors.push(...sequencingResult.errors);
   warnings.push(...sequencingResult.warnings);
 
   // Use sequenced codes from sequencing engine
   const sequencedCodes = sequencingResult.sequencedCodes;
 
   const exclusionResult = applyExclusions(sequencedCodes);
-  warnings.push(...exclusionResult.errors);
+  errors.push(...exclusionResult.errors);
 
   const hierarchyResult = validateHierarchy(exclusionResult.filtered);
   warnings.push(...hierarchyResult.warnings);
@@ -335,7 +337,7 @@ export function runRulesEngine(text: string): EngineResult {
   const validationResult = runValidation(withHcc, { text });
   warnings.push(...validationResult.warnings);
   // Errors from validation are hard stops
-  warnings.push(...validationResult.errors);
+  errors.push(...validationResult.errors);
 
   // Build audit trail with sequencing rationale
   const audit = buildAuditTrail(scored, warnings);
@@ -356,6 +358,7 @@ export function runRulesEngine(text: string): EngineResult {
       sequence: [],
       attributes,
       warnings,
+      errors, // Return errors
       audit,
       rationale: [],
       confidence: { overallConfidence: 0, factors: [], explanation: 'Validation failed' }
@@ -366,6 +369,7 @@ export function runRulesEngine(text: string): EngineResult {
     sequence: finalSequence,
     attributes,
     warnings,
+    errors, // Return errors
     audit,
     rationale: rationaleResult.rationales,
     confidence: confidenceResult

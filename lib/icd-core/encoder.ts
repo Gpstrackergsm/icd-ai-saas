@@ -122,6 +122,17 @@ export function encodeDiagnosisText(text: string): EncoderResult {
   // FIRST: Run new domain-specific resolvers
   const domainResult = runRulesEngine(text);
 
+  // CRITICAL: Check for hard-stop errors from the domain engine (Validation Rules)
+  // If strict validation fails (e.g., O80+Complication), we MUST STOP and not fall back to NLP.
+  if (domainResult.errors && domainResult.errors.length > 0) {
+    return {
+      text: normalized,
+      codes: [], // Block generation
+      warnings: [...(domainResult.warnings || [])],
+      errors: domainResult.errors // Return strict errors
+    };
+  }
+
   // If domain resolvers found codes, use them as high-priority candidates
   let workingCandidates: CandidateCode[] = [];
 
