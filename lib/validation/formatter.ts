@@ -84,10 +84,10 @@ export function formatValidationError(result: ValidationRuleResult, index: numbe
                 
                 <!-- Action Buttons (Left Aligned) -->
                 <div class="flex items-center gap-3">
-                    <button class="px-5 py-2 text-xs font-bold rounded shadow-sm transition-colors uppercase tracking-wide border ${styles.primaryBtn}">
+                    <button data-action="fix" data-rule-id="${result.ruleId}" class="px-5 py-2 text-xs font-bold rounded shadow-sm transition-colors uppercase tracking-wide border ${styles.primaryBtn}">
                         Fix Now
                     </button>
-                    <button class="px-4 py-2 text-xs font-bold rounded shadow-sm transition-colors uppercase tracking-wide border ${styles.secondaryBtn}">
+                    <button data-action="view" data-rule-id="${result.ruleId}" data-rule-desc="${result.issue}" class="px-4 py-2 text-xs font-bold rounded shadow-sm transition-colors uppercase tracking-wide border ${styles.secondaryBtn}">
                         View Rule
                     </button>
                 </div>

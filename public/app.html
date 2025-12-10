@@ -936,6 +936,29 @@
       });
     }
 
+    // Global Event Delegation for Validation Buttons
+    document.addEventListener('click', (e) => {
+      const target = e.target.closest('button[data-action]');
+      if (!target) return;
+
+      const action = target.getAttribute('data-action');
+      const ruleId = target.getAttribute('data-rule-id');
+
+      if (action === 'fix') {
+        // Scroll to narrative and focus
+        const narrative = document.getElementById('narrative');
+        if (narrative) {
+          narrative.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          narrative.focus();
+          narrative.classList.add('ring-4', 'ring-red-200');
+          setTimeout(() => narrative.classList.remove('ring-4', 'ring-red-200'), 1000);
+        }
+      } else if (action === 'view') {
+        const desc = target.getAttribute('data-rule-desc');
+        alert(`AUDIT RULE: ${ruleId}\n\n${desc}`);
+      }
+    });
+
   </script>
 </body>
 
