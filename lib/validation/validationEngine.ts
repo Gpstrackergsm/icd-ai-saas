@@ -1,5 +1,6 @@
 import { SequencedCode } from '../rulesEngine';
 import { highRiskRules, ValidationRuleResult } from './highRiskRules';
+import { formatValidationError } from './formatter';
 
 export interface ValidationOutput {
     isValid: boolean;
@@ -15,7 +16,7 @@ export function runValidation(codes: SequencedCode[], context?: any): Validation
         const result = rule(codes, context);
         if (result) {
             if (result.level === 'error') {
-                errors.push(`[${result.ruleId}] ${result.message}`);
+                errors.push(formatValidationError(result));
             } else {
                 warnings.push(`[${result.ruleId}] ${result.message}`);
             }

@@ -773,8 +773,7 @@
                 <div class="flex items-center gap-2 text-red-700 text-sm font-bold mb-2">
                     <i class="fa-solid fa-triangle-exclamation"></i> Validation Alerts
                 </div>
-                <ul class="list-disc list-inside text-xs text-red-600 space-y-1">
-                    ${result.validationErrors.map(e => `<li>${e}</li>`).join('')}
+                    ${result.validationErrors.map(e => `<li class="whitespace-pre-wrap font-mono text-xs my-2">${e}</li>`).join('')}
                 </ul>
             `;
           content.appendChild(errDiv);

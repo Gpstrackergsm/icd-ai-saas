@@ -92,14 +92,28 @@ module.exports = async function handler(req, res) {
         // Extract validated validated codes for checking
         const tempCodes = [validated.codes[0], ...validated.codes.slice(1)].filter(Boolean);
 
-        // [STRICT RULE INJECTION] Enforce High Risk Rules logic inline
-        // Rule: O80 Exclusivity (PREG-002)
-        const hasO80 = tempCodes.some(c => c.code === 'O80');
-        if (hasO80) {
-            const other = tempCodes.find(c => c.code.startsWith('O') && c.code !== 'O80');
-            if (other) {
-                result.validationErrors.push(`[PREG-002] O80 (Normal Delivery) cannot be used with other pregnancy complications (${other.code}). Remove O80.`);
-            }
+        // [STRICT RULE INJECTION] Run high-risk validation rules
+        // This ensures audit-grade validation messages (e.g. O80 exclusivity) are returned
+        const { runValidation } = require('../dist/lib/validation/validationEngine.js');
+
+        // Map to SequencedCode format
+        const sequencedCodes = tempCodes.map(c => ({
+            code: c.code,
+            label: c.label || '',
+            triggeredBy: 'structured_engine',
+            hcc: false
+        }));
+
+        const validationResults = runValidation(sequencedCodes, { text });
+
+        // Add any strict validation failures
+        if (validationResults.errors.length > 0) {
+            result.validationErrors.push(...validationResults.errors);
+        }
+
+        // Add warnings if needed (optional, keeping strict for now)
+        if (validationResults.warnings.length > 0) {
+            result.warnings.push(...validationResults.warnings);
         }
 
         // Block if we have validation errors
