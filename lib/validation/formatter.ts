@@ -74,21 +74,21 @@ export function formatValidationError(result: ValidationRuleResult, index: numbe
             </div>
 
             <!-- Action Area -->
-            <div class="bg-gray-50 rounded-md p-4 border border-gray-100 flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div>
+            <div class="bg-gray-50 rounded-md p-4 border border-gray-100">
+                <div class="mb-4">
                     <strong class="block text-[10px] uppercase tracking-wider text-gray-400 font-bold mb-2">Resolution Required</strong>
                     <div class="space-y-1 font-semibold">
                         ${actionList}
                     </div>
                 </div>
                 
-                <!-- Action Buttons -->
-                <div class="flex items-center gap-3 shrink-0 mt-2 md:mt-0">
-                    <button class="px-4 py-2 text-xs font-bold rounded shadow-sm transition-colors uppercase tracking-wide border ${styles.secondaryBtn}">
-                        View Rule
-                    </button>
+                <!-- Action Buttons (Left Aligned) -->
+                <div class="flex items-center gap-3">
                     <button class="px-5 py-2 text-xs font-bold rounded shadow-sm transition-colors uppercase tracking-wide border ${styles.primaryBtn}">
                         Fix Now
+                    </button>
+                    <button class="px-4 py-2 text-xs font-bold rounded shadow-sm transition-colors uppercase tracking-wide border ${styles.secondaryBtn}">
+                        View Rule
                     </button>
                 </div>
             </div>
