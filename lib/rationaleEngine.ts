@@ -1,5 +1,5 @@
-import { SequencedCode } from './rulesEngine.js';
-import { getGuidelineForCode, GuidelineReference } from './guidelineReferences.js';
+import { SequencedCode } from './rulesEngine';
+import { getGuidelineForCode, GuidelineReference } from './guidelineReferences';
 
 export interface CodeRationale {
     code: string;
