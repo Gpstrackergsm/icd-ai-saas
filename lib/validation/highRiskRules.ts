@@ -203,9 +203,10 @@ export const highRiskRules: ValidationRule[] = [
                 ruleId: 'PREG-001',
                 ruleName: 'Trimester / GA Required',
                 issue: 'Pregnancy encounter detected but no gestational age or trimester provided.',
-                why: 'OB inpatient coding requires trimester specificity.',
+                why: 'This deviation is automatically flagged in audits as it lacks required trimester specificity.',
                 action: [
-                    'Please enter Gestational Age (weeks) OR Trimester (1st, 2nd, 3rd).'
+                    'Please enter Gestational Age (weeks)',
+                    'OR Trimester (1st, 2nd, 3rd)'
                 ],
                 valid: false,
                 level: 'error',
@@ -224,7 +225,7 @@ export const highRiskRules: ValidationRule[] = [
                     ruleId: 'PREG-002',
                     ruleName: 'Normal Delivery Exclusivity',
                     issue: `O80 (Normal Delivery) cannot be used with other pregnancy complications (${otherOCode.code}: ${otherOCode.label || otherOCode.code}).`,
-                    why: 'O80 requires a delivery requiring minimal or no assistance, with no fetal manipulation or instrumental delivery, and a healthy outcome. The presence of other O-codes indicates complications.',
+                    why: 'This code combination is mutually exclusive and will result in immediate claim rejection.',
                     action: [
                         'Remove O80.',
                         'Retain the specific complication code.'
