@@ -1444,7 +1444,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             });
 
             // 2. Delivery Encounter Code
-            if (ob.delivery.type === 'cesarean') {
+            if (ob.delivery.type === 'cesarean' && !ob.vbac) {
                 codes.push({
                     code: 'O82',
                     label: 'Encounter for cesarean delivery without indication',
@@ -1982,46 +1982,70 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         if (code.startsWith('R65.2')) return 20;
 
         // 4. COPD - BEFORE respiratory failure and pneumonia complications
-        if (code.startsWith('J44')) return 25;
+        // NEW PRIORITY MAP (Lower = First):
+        // 1. O72 (PPH) - 4
+        // 2. O14 (Pre-E) - 5
+        // 3. O48 (Post-term) - 6
+        // 4. O30 (Multiples) - 7
+        // 5. Other O-codes - 8
+        // 6. Principal Sepsis (Underlying Infection j15, etc) - 15
+        // 7. Sepsis (A41) - 20
+        // 8. Severe Sepsis (R65) - 25
+        // 9. Acute Organ Dysfunction (J96) - 30
+        // 10. Chronic Conditions (E11, I10, etc) - 50+
+        // 11. Z37 - 75
+        // 12. Z3A - 76
 
-        // 5. Organ Dysfunction (Respiratory Failure, AKI, etc.) - AFTER COPD
-        if (code.startsWith('N17') || code.startsWith('G93') || code === 'G92.8' || code === 'K72.90') return 30;
+        if (code.startsWith('O72')) return 4;
+        if (code.startsWith('O14')) return 5;
+        if (code.startsWith('O48')) return 6;
+        if (code.startsWith('O30')) return 7;
+        if (code.startsWith('O')) return 8;
 
-        // 5.5 Respiratory Failure - Should be PRIMARY if it caused admission (over COPD)
-        // User Rule: Pneumonia/Resp Failure > COPD.
-        // So J96 should be < 25.
-        if (code.startsWith('J96')) return 22;
+        // SEPSIS SEQUENCING (Underlying < Sepsis < Severe Sepsis)
+        // This block handles underlying infections, sepsis, and severe sepsis.
+        // Underlying infections (e.g., J15, L03, N39.0, K65) are prioritized highest within this group.
+        // Sepsis codes (A40, A41, B37) come next.
+        // Severe Sepsis (R65) comes last in this group.
+        if (code.startsWith('R65.2')) return 25; // Severe Sepsis/Septic Shock
+        if (code.startsWith('A40') || code.startsWith('A41') || code.startsWith('B37.7')) return 20; // Sepsis
+        if (code.startsWith('J13') || code.startsWith('J14') || code.startsWith('J15') || code.startsWith('J16') || code.startsWith('J18') || code.startsWith('J11') || // Pneumonia
+            code.startsWith('N30') || code.startsWith('N39') || // UTI
+            code.startsWith('K65') || // Peritonitis
+            code.startsWith('L0') || code.startsWith('L89')) { // Skin/Ulcer
+            return 15; // Underlying infections
+        }
 
-        // 6. Pneumonia - Should be PRIMARY if it caused admission (over COPD)
-        // User Rule: Pneumonia > COPD.
-        // So J1x should be < 25.
-        if (code.startsWith('J13') || code.startsWith('J14') || code.startsWith('J15') || code.startsWith('J16') || code.startsWith('J18') || code.startsWith('J11')) return 23; // Pneumonia/Flu
+        // Organ Dysfunction (Respiratory Failure, AKI, etc.)
+        if (code.startsWith('J96')) return 30; // Acute Respiratory Failure
+        if (code.startsWith('N17') || code.startsWith('G93') || code === 'G92.8' || code === 'K72.90') return 35; // Other Organ Dysfunction
 
-        // 7. Diabetes
+        // COPD
+        if (code.startsWith('J44')) return 40;
+
+        // Diabetes
         if (code.startsWith('E08') || code.startsWith('E09') || code.startsWith('E10') || code.startsWith('E11') || code.startsWith('E13')) return 50;
 
-        // 7.5 Diabetic Ulcer Manifestation (L97) - sequenced after Diabetes
+        // Diabetic Ulcer Manifestation (L97) - sequenced after Diabetes
         if (code.startsWith('L97')) return 55;
 
-        // 7.6 Hypertension -  should come before standalone CKD
-        if (code.startsWith('I10') || code.startsWith('I11') || code.startsWith('I12') || code.startsWith('I13') || code.startsWith('I15')) return 56;
+        // Hypertension & Heart Failure
+        if (code.startsWith('I50')) return 57; // Heart Failure
+        if (code.startsWith('I10') || code.startsWith('I11') || code.startsWith('I12') || code.startsWith('I13') || code.startsWith('I15')) return 56; // Hypertension
 
-        // 7.7 Heart Failure (I50) - after I13 combination codes
-        if (code.startsWith('I50')) return 57;
-
-        // 8. CKD
+        // CKD
         if (code.startsWith('N18')) return 60;
 
-        // 9. Status Codes
+        // Status Codes
         if (code.startsWith('Z99')) return 70;
 
-        // 9.1 Outcome of Delivery (Z37) - Always Secondary to O-codes
+        // Outcome of Delivery (Z37) - Always Secondary to O-codes
         if (code.startsWith('Z37')) return 75;
 
-        // 9.2 Weeks of Gestation (Z3A) - Always Last
+        // Weeks of Gestation (Z3A) - Always Last
         if (code.startsWith('Z3A')) return 76;
 
-        // 10. Others
+        // Others
         return 80;
     };
 
