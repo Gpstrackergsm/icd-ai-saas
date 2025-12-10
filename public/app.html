@@ -639,13 +639,27 @@
 
     // --- ENCODER LOGIC ---
     async function performEncode() {
+      // Scroll to top immediately to show results panel
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
       const text = narrativeInput.value.trim();
-      encodeResults.innerHTML = '';
+
+      // visual loading state
+      encodeResults.innerHTML = `
+        <div class="animate-pulse space-y-4 p-4">
+            <div class="h-8 bg-slate-200 rounded w-1/3 mb-4"></div>
+            <div class="h-32 bg-slate-100 rounded-lg border border-slate-200"></div>
+            <div class="h-24 bg-slate-100 rounded-lg border border-slate-200"></div>
+            <div class="h-24 bg-slate-100 rounded-lg border border-slate-200"></div>
+        </div>
+      `;
+
       encodeStatus.textContent = '';
       copyEncodeBtn.disabled = true;
 
       if (!text) {
         encodeStatus.innerHTML = '<span class="text-amber-500"><i class="fa-solid fa-triangle-exclamation"></i> Please enter a clinical narrative.</span>';
+        encodeResults.innerHTML = '';
         return;
       }
 
@@ -682,12 +696,6 @@
         renderEncodeResults(finalData);
         const count = Array.isArray(finalData) ? finalData.length : 1;
         encodeStatus.innerHTML = `<span class="text-green-600 font-bold"><i class="fa-solid fa-check"></i> ${count} case(s) processed successfully.</span>`;
-
-        // Mobile UX: Scroll to results
-        if (window.innerWidth < 1024) {
-          // Scroll to top of page to account for sticky header and order-1 results
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
 
       } catch (err) {
         encodeStatus.innerHTML = `<span class="text-red-500 font-bold"><i class="fa-solid fa-circle-xmark"></i> ${err.message}</span>`;
