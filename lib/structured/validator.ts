@@ -227,11 +227,14 @@ export function validateContext(ctx: PatientContext): ValidationResult {
     }
 
     // === HARD STOP 22: PREGNANCY REQUIRES TRIMESTER OR GESTATIONAL AGE ===
+    // REMOVED: Handled by highRiskRules PREG-001 with strict audit formatting
+    /*
     if (ctx.conditions.obstetric?.pregnant) {
         if (!ctx.conditions.obstetric.trimester && !ctx.conditions.obstetric.gestationalAge) {
             errors.push('HARD STOP: Pregnancy selected but no trimester or gestational age specified. Trimester (1st, 2nd, 3rd) OR Gestational Age is REQUIRED.');
         }
     }
+    */
 
     // === HARD STOP 23: DELIVERY REQUIRES TYPE ===
     if (ctx.conditions.obstetric?.delivery?.occurred) {
