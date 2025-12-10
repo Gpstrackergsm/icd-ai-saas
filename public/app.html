@@ -722,50 +722,6 @@
         const content = document.createElement('div');
         content.className = 'p-4 space-y-3';
 
-        if (!result.primary && (!result.secondary || !result.secondary.length)) {
-          content.innerHTML = '<div class="p-3 bg-amber-50 text-amber-700 rounded-md border border-amber-200 text-sm">No codes were generated for this scenario.</div>';
-        } else {
-          const createCard = (code, type) => {
-            const isPrimary = type === 'Primary';
-            const colorClass = isPrimary ? 'border-medical-500' : 'border-slate-300';
-            const bgClass = isPrimary ? 'bg-white' : 'bg-slate-50';
-            const badgeClass = isPrimary ? 'bg-medical-100 text-medical-800' : 'bg-slate-200 text-slate-700';
-
-            return `
-                    <div class="border-l-4 ${colorClass} ${bgClass} rounded-r-md p-3 shadow-sm hover:shadow-md transition-shadow">
-                        <div class="flex justify-between items-start mb-1 gap-2">
-                            <div class="flex flex-wrap items-center gap-2">
-                                <span class="text-xs font-bold uppercase tracking-wider ${badgeClass} px-2 py-0.5 rounded">${type}</span>
-                                ${(code.annotations || []).map(a => `<span class="text-xs font-bold bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded border border-indigo-200">${a}</span>`).join('')}
-                            </div>
-                            <span class="font-mono text-lg font-bold text-slate-900 shrink-0">${code.code}</span>
-                        </div>
-                        <div class="text-sm text-slate-800 font-medium mb-1">${code.description || 'No description'}</div>
-                        <div class="text-xs text-slate-500 italic border-t border-slate-100 pt-1 mt-1">
-                           <div class="flex flex-wrap justify-between gap-2">
-                                <span><i class="fa-solid fa-info-circle mr-1"></i> ${code.rationale}</span>
-                                ${(code.references || []).length ? `<span class="text-slate-400" title="Reference"><i class="fa-solid fa-book-medical"></i> ${code.references.join(', ')}</span>` : ''}
-                           </div>
-                        </div>
-                    </div>
-                 `;
-          };
-
-          if (result.primary) {
-            const el = document.createElement('div');
-            el.innerHTML = createCard(result.primary, 'Primary');
-            content.appendChild(el.firstChild.nextSibling || el.firstChild); // Handle HTML string parsing quirk
-          }
-          if (result.secondary) {
-            result.secondary.forEach(code => {
-              const el = document.createElement('div');
-              el.innerHTML = createCard(code, 'Secondary');
-              content.appendChild(el.firstChild.nextSibling || el.firstChild);
-            });
-          }
-        }
-
-        // Validation Errors
         if (result.validationErrors?.length) {
           const errDiv = document.createElement('div');
           errDiv.className = 'mt-6 mb-6';
@@ -803,6 +759,52 @@
                 </div>
             `;
           content.appendChild(errDiv);
+        }
+
+        if (!result.primary && (!result.secondary || !result.secondary.length)) {
+          const noCodesDiv = document.createElement('div');
+          noCodesDiv.className = 'p-3 bg-amber-50 text-amber-700 rounded-md border border-amber-200 text-sm';
+          noCodesDiv.textContent = 'No codes were generated for this scenario.';
+          content.appendChild(noCodesDiv);
+        } else {
+          const createCard = (code, type) => {
+            const isPrimary = type === 'Primary';
+            const colorClass = isPrimary ? 'border-medical-500' : 'border-slate-300';
+            const bgClass = isPrimary ? 'bg-white' : 'bg-slate-50';
+            const badgeClass = isPrimary ? 'bg-medical-100 text-medical-800' : 'bg-slate-200 text-slate-700';
+
+            return `
+                    <div class="border-l-4 ${colorClass} ${bgClass} rounded-r-md p-3 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-1 gap-2">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="text-xs font-bold uppercase tracking-wider ${badgeClass} px-2 py-0.5 rounded">${type}</span>
+                                ${(code.annotations || []).map(a => `<span class="text-xs font-bold bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded border border-indigo-200">${a}</span>`).join('')}
+                            </div>
+                            <span class="font-mono text-lg font-bold text-slate-900 shrink-0">${code.code}</span>
+                        </div>
+                        <div class="text-sm text-slate-800 font-medium mb-1">${code.description || 'No description'}</div>
+                        <div class="text-xs text-slate-500 italic border-t border-slate-100 pt-1 mt-1">
+                           <div class="flex flex-wrap justify-between gap-2">
+                                <span><i class="fa-solid fa-info-circle mr-1"></i> ${code.rationale}</span>
+                                ${(code.references || []).length ? `<span class="text-slate-400" title="Reference"><i class="fa-solid fa-book-medical"></i> ${code.references.join(', ')}</span>` : ''}
+                           </div>
+                        </div>
+                    </div>
+                 `;
+          };
+
+          if (result.primary) {
+            const el = document.createElement('div');
+            el.innerHTML = createCard(result.primary, 'Primary');
+            content.appendChild(el.firstChild.nextSibling || el.firstChild);
+          }
+          if (result.secondary) {
+            result.secondary.forEach(code => {
+              const el = document.createElement('div');
+              el.innerHTML = createCard(code, 'Secondary');
+              content.appendChild(el.firstChild.nextSibling || el.firstChild);
+            });
+          }
         }
 
         itemContainer.appendChild(content);
