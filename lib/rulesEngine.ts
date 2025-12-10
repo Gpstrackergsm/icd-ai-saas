@@ -21,6 +21,7 @@ import { validateSpecificity } from './specificityValidator.js';
 import { validateCompliance } from './complianceValidator.js';
 import { generateRationale, CodeRationale } from './rationaleEngine.js';
 import { calculateConfidence, ConfidenceAssessment } from './confidenceEngine.js';
+import { runValidation } from './validation/validationEngine.js';
 
 export interface SequencedCode {
   code: string;
@@ -329,6 +330,13 @@ export function runRulesEngine(text: string): EngineResult {
   const complianceResult = validateCompliance(withHcc);
   warnings.push(...complianceResult.warnings);
 
+  // STICT VALIDATION (High Risk Rules)
+  // We pass 'text' as context for now, ideally we'd pass parsed object
+  const validationResult = runValidation(withHcc, { text });
+  warnings.push(...validationResult.warnings);
+  // Errors from validation are hard stops
+  warnings.push(...validationResult.errors);
+
   // Build audit trail with sequencing rationale
   const audit = buildAuditTrail(scored, warnings);
   sequencingResult.rationale.forEach(r => audit.push(`[SEQUENCING] ${r}`));
@@ -343,7 +351,7 @@ export function runRulesEngine(text: string): EngineResult {
   audit.push(`\n[RATIONALE] ${rationaleResult.summary}`);
   audit.push(`[CONFIDENCE] Overall: ${confidenceResult.overallConfidence}% - ${confidenceResult.explanation}`);
 
-  if (!hierarchyResult.valid || !exclusionResult.valid || !sequencingResult.valid) {
+  if (!hierarchyResult.valid || !exclusionResult.valid || !sequencingResult.valid || !validationResult.isValid) {
     return {
       sequence: [],
       attributes,
