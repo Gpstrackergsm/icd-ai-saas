@@ -1870,6 +1870,11 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
     const getPriority = (c: StructuredCode): number => {
         const code = c.code;
+
+        // 0. Obstetric Codes (Chapter 15) - PRIORITIZE ABOVE ALL
+        // Per ICD-10 guidelines, Chapter 15 codes take precedence over almost all other chapters
+        if (code.startsWith('O')) return 5;
+
         // 1. Primary Sepsis
         if (code.startsWith('A40') || code.startsWith('A41') || code === 'B37.7' || code === 'A48.1') return 10;
 
@@ -1914,6 +1919,12 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
         // 9. Status Codes
         if (code.startsWith('Z99')) return 70;
+
+        // 9.1 Outcome of Delivery (Z37) - Always Secondary to O-codes
+        if (code.startsWith('Z37')) return 75;
+
+        // 9.2 Weeks of Gestation (Z3A) - Always Last
+        if (code.startsWith('Z3A')) return 76;
 
         // 10. Others
         return 80;
