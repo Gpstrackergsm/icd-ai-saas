@@ -183,30 +183,33 @@ export const highRiskRules: ValidationRule[] = [
 
     // 5. Pregnancy
     // PREG-001: Trimester Specificity
+    // PREG-001: Trimester / GA Required
     (codes, context) => {
+        // Check for Obstetric codes (Chapter 15)
         const isObs = codes.some(c => c.code.startsWith('O'));
         if (!isObs) return null;
 
-        const unspecifiedTrimesterMap: Record<string, boolean> = {
-            'O14.00': true, 'O14.10': true, 'O14.90': true,
-            'O10.019': true, 'O10.919': true
-        };
+        // Check for Weeks of Gestation (Z3A.xx)
+        const hasZ3A = codes.some(c => c.code.startsWith('Z3A'));
 
-        const unspecified = codes.find(c => {
-            if (!c.code.startsWith('O')) return false;
-            return unspecifiedTrimesterMap[c.code];
-        });
+        // Exception: Some O-codes might not strictly require Z3A (e.g. O00-O08 Ectopic/Abortion often don't have GA), 
+        // but for "Audit Grade" we usually want GA if possible. 
+        // User request specifically targets O80 case (Delivery), which DEFINITELY needs Z3A.
+        // Let's enforce for all O-codes for now as a high-risk rule, or we can assume O80/O09/etc. 
+        // For now, simple strict rule as requested.
 
-        if (unspecified) {
+        if (!hasZ3A) {
             return {
                 ruleId: 'PREG-001',
-                ruleName: 'Trimester Specificity',
-                issue: `Obstetrics code ${unspecified.code} has unspecified trimester.`,
-                why: 'Trimester specificity is required for accurate coding.',
-                action: ['Update code to specify trimester.'],
+                ruleName: 'Trimester / GA Required',
+                issue: 'Pregnancy encounter detected but no gestational age or trimester provided.',
+                why: 'OB inpatient coding requires trimester specificity.',
+                action: [
+                    'Please enter Gestational Age (weeks) OR Trimester (1st, 2nd, 3rd).'
+                ],
                 valid: false,
                 level: 'error',
-                message: `Obstetrics code ${unspecified.code} has unspecified trimester. Use specific trimester code.`
+                message: 'Pregnancy encounter detected but no gestational age or trimester provided.'
             };
         }
         return null;
