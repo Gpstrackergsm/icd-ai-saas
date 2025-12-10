@@ -52,6 +52,43 @@ export function parseInput(text: string): ParseResult {
             case 'comments':
             case 'neuropathy type':
                 // Intelligent routing based on content
+
+                // --- OBSTETRIC NARRATIVE SCANNING ---
+                // Scan for Gestational Age (e.g. "39 weeks", "39 weeks gestation", "39 wks")
+                const gaMatch = lowerValue.match(/\b([1-4]?\d)\s*(?:weeks?|wks?)(?:\s+gestation)?(?:\s+ga)?\b/);
+                if (gaMatch) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    context.conditions.obstetric.gestationalAge = parseInt(gaMatch[1]);
+                    // Auto-set trimester
+                    const weeks = parseInt(gaMatch[1]);
+                    if (weeks < 14) context.conditions.obstetric.trimester = 1;
+                    else if (weeks < 28) context.conditions.obstetric.trimester = 2;
+                    else context.conditions.obstetric.trimester = 3;
+                }
+
+                // Scan for Perineal Lacerations
+                if (lowerValue.includes('perineal laceration')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    if (!context.conditions.obstetric.perinealLaceration) context.conditions.obstetric.perinealLaceration = { degree: 'unspecified' };
+
+                    if (lowerValue.includes('first') || lowerValue.includes('1st') || lowerValue.includes('1st degree')) context.conditions.obstetric.perinealLaceration.degree = '1';
+                    else if (lowerValue.includes('second') || lowerValue.includes('2nd') || lowerValue.includes('2nd degree')) context.conditions.obstetric.perinealLaceration.degree = '2';
+                    else if (lowerValue.includes('third') || lowerValue.includes('3rd') || lowerValue.includes('3rd degree')) context.conditions.obstetric.perinealLaceration.degree = '3';
+                    else if (lowerValue.includes('fourth') || lowerValue.includes('4th') || lowerValue.includes('4th degree')) context.conditions.obstetric.perinealLaceration.degree = '4';
+                }
+
+                // Scan for Delivery Type in narrative
+                if (lowerValue.includes('delivery')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    if (!context.conditions.obstetric.delivery) context.conditions.obstetric.delivery = { occurred: true };
+
+                    if (lowerValue.includes('vaginal') || lowerValue.includes('normal') || lowerValue.includes('spontaneous')) {
+                        context.conditions.obstetric.delivery.type = 'vaginal';
+                        // Default outcome if not found yet? No, handle Z37 separately.
+                    }
+                    else if (lowerValue.includes('cesarean') || lowerValue.includes('c-section')) context.conditions.obstetric.delivery.type = 'cesarean';
+                }
+
                 // Hypertension
                 if (lowerValue.includes('hypertension') || lowerValue.includes('hypertensive')) {
                     if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };

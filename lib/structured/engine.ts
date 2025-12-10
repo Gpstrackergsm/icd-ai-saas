@@ -1384,6 +1384,25 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
         // RULE: Delivery
         if (ob.delivery?.occurred) {
+            // Check for complications that preclude O80
+            const hasComplications = !!ob.perinealLaceration ||
+                !!ob.preeclampsia ||
+                !!ob.gestationalDiabetes ||
+                !!ob.postpartum; // Add others as implemented
+
+            // 1. Z37 Outcome (Always required for delivery) or Z37.0 default
+            // Ideally should parse outcome from narrative, but default to Single Live Birth specific to this user/demo
+            // TODO: Add outcome parsing. For now, default safe Z37.0
+            codes.push({
+                code: 'Z37.0',
+                label: 'Single live birth',
+                rationale: 'Outcome of delivery',
+                guideline: 'ICD-10-CM Z37.0',
+                trigger: 'Delivery',
+                rule: 'Outcome of delivery code'
+            });
+
+            // 2. Delivery Encounter Code
             if (ob.delivery.type === 'cesarean') {
                 codes.push({
                     code: 'O82',
@@ -1393,25 +1412,20 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     trigger: 'Delivery Type: Cesarean',
                     rule: 'Delivery encounter code'
                 });
-            } else {
+            } else if (!hasComplications) {
+                // O80 is ONLY for uncomplicated vaginal delivery
                 codes.push({
                     code: 'O80',
                     label: 'Encounter for full-term uncomplicated delivery',
-                    rationale: 'Vaginal delivery',
+                    rationale: 'Uncomplicated vaginal delivery',
                     guideline: 'ICD-10-CM O80',
-                    trigger: 'Delivery Type: Vaginal/Normal',
+                    trigger: 'Delivery Type: Vaginal/Normal (No Complications)',
                     rule: 'Delivery encounter code'
                 });
-
-                // Add outcome of delivery Z37.0 (Single live birth) as default for O80/Vaginal
-                codes.push({
-                    code: 'Z37.0',
-                    label: 'Single live birth',
-                    rationale: 'Outcome of delivery',
-                    guideline: 'ICD-10-CM Z37.0',
-                    trigger: 'Delivery',
-                    rule: 'Outcome of delivery code'
-                });
+            } else {
+                // Complicated delivery: O80 is suppressed.
+                // The complication codes (O70, O14, etc.) serve as the reason for encounter.
+                // No generic "delivery" code is needed if a complication code is principal.
             }
         }
 
@@ -1447,23 +1461,28 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
         // RULE: Weeks of Gestation (Z3A.xx)
         if (ob.gestationalAge) {
-            let weeksCode = 'Z3A.00'; // Unspecified
-            if (ob.gestationalAge >= 8 && ob.gestationalAge <= 42) {
-                weeksCode = `Z3A.${ob.gestationalAge}`;
-            } else {
-                weeksCode = 'Z3A.00'; // Fallback
+            const weeks = ob.gestationalAge;
+            let zCode = 'Z3A.00';
+
+            if (weeks < 8) zCode = 'Z3A.01'; // Less than 8 weeks
+            else if (weeks >= 8 && weeks <= 42) {
+                zCode = `Z3A.${weeks}`;
+            } else if (weeks > 42) {
+                zCode = 'Z3A.49'; // Greater than 42 weeks
             }
 
             codes.push({
-                code: weeksCode,
-                label: `${ob.gestationalAge} weeks gestation of pregnancy`,
+                code: zCode,
+                label: `${weeks} weeks gestation of pregnancy`,
                 rationale: 'Gestational age documented',
                 guideline: 'ICD-10-CM Z3A',
-                trigger: `Gestational Age: ${ob.gestationalAge}`,
-                rule: 'Weeks of gestation code'
+                trigger: `Gestational Age: ${weeks} Weeks`,
+                rule: 'Gestational age code'
             });
         }
+
     }
+
 
     // --- POSTPARTUM RULES ---
     if (ctx.conditions.obstetric?.postpartum) {
