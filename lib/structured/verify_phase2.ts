@@ -69,7 +69,7 @@ runTest('OB/GYN: Pregnant + 30 weeks + Preeclampsia', {
         obstetric: {
             pregnant: true,
             gestationalAge: 30,
-            preeclampsia: true
+            preeclampsia: { present: true, severity: 'unspecified' }
         }
     }
 }, ['O14.93', 'Z3A.30']);

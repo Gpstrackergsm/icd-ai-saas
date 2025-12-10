@@ -161,6 +161,7 @@ export function parseInput(text: string): ParseResult {
 
                 // Detect secondary hypertension
                 if (lowerValue.includes('secondary')) {
+                    if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
                     context.conditions.cardiovascular.secondaryHypertension = true;
                     if (lowerValue.includes('renal')) context.conditions.cardiovascular.hypertensionCause = 'renal';
                 }
