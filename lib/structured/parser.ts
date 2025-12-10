@@ -126,36 +126,45 @@ export function parseInput(text: string): ParseResult {
                 if (lowerValue.includes('hypertension') || lowerValue.includes('hypertensive')) {
                     if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
                     context.conditions.cardiovascular.hypertension = true;
-
-                    // Detect heart failure (NOT just "heart disease")
-                    // "Hypertensive Heart Disease" → I11.9 (no HF)
-                    // "Heart Failure" → I11.0 (with HF)
-                    if (lowerValue.includes('heart failure')) {
-                        context.conditions.cardiovascular.heartFailure = { type: 'unspecified', acuity: 'unspecified' };
-                    } else if (lowerValue.includes('heart')) {
-                        // Set heartDisease flag for "Hypertensive Heart Disease" etc.
-                        context.conditions.cardiovascular.heartDisease = true;
-                    }
-
-                    // Detect CKD
-                    if (lowerValue.includes('kidney') || lowerValue.includes('ckd')) {
-                        if (!context.conditions.renal) context.conditions.renal = {};
-                        context.conditions.renal.ckd = { stage: 'unspecified' };
-
-                        // Extract stage
-                        if (lowerValue.includes('stage 1')) context.conditions.renal.ckd.stage = '1';
-                        else if (lowerValue.includes('stage 2')) context.conditions.renal.ckd.stage = '2';
-                        else if (lowerValue.includes('stage 3')) context.conditions.renal.ckd.stage = '3';
-                        else if (lowerValue.includes('stage 4')) context.conditions.renal.ckd.stage = '4';
-                        else if (lowerValue.includes('stage 5')) context.conditions.renal.ckd.stage = '5';
-                    }
-
-                    // Detect secondary hypertension
-                    if (lowerValue.includes('secondary')) {
-                        context.conditions.cardiovascular.secondaryHypertension = true;
-                        if (lowerValue.includes('renal')) context.conditions.cardiovascular.hypertensionCause = 'renal';
-                    }
+                    // Set heartDisease flag for "Hypertensive Heart Disease" etc.
+                    context.conditions.cardiovascular.heartDisease = true;
                 }
+
+                // Preeclampsia Severity Scanning
+                if (lowerValue.includes('preeclampsia') || lowerValue.includes('pre-eclampsia')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    if (!context.conditions.obstetric.preeclampsia) context.conditions.obstetric.preeclampsia = { present: true, severity: 'unspecified' };
+
+                    if (lowerValue.includes('severe')) context.conditions.obstetric.preeclampsia.severity = 'severe';
+                    else if (lowerValue.includes('mild')) context.conditions.obstetric.preeclampsia.severity = 'mild';
+                    else if (lowerValue.includes('hellp') || lowerValue.includes('h.e.l.l.p')) context.conditions.obstetric.preeclampsia.severity = 'hellp';
+                }
+
+                // HELLP Syndrome explicit check
+                if (lowerValue.includes('hellp syndrome')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    context.conditions.obstetric.preeclampsia = { present: true, severity: 'hellp' };
+                }
+
+                // Detect CKD
+                if (lowerValue.includes('kidney') || lowerValue.includes('ckd')) {
+                    if (!context.conditions.renal) context.conditions.renal = {};
+                    context.conditions.renal.ckd = { stage: 'unspecified' };
+
+                    // Extract stage
+                    if (lowerValue.includes('stage 1')) context.conditions.renal.ckd.stage = '1';
+                    else if (lowerValue.includes('stage 2')) context.conditions.renal.ckd.stage = '2';
+                    else if (lowerValue.includes('stage 3')) context.conditions.renal.ckd.stage = '3';
+                    else if (lowerValue.includes('stage 4')) context.conditions.renal.ckd.stage = '4';
+                    else if (lowerValue.includes('stage 5')) context.conditions.renal.ckd.stage = '5';
+                }
+
+                // Detect secondary hypertension
+                if (lowerValue.includes('secondary')) {
+                    context.conditions.cardiovascular.secondaryHypertension = true;
+                    if (lowerValue.includes('renal')) context.conditions.cardiovascular.hypertensionCause = 'renal';
+                }
+
 
                 // COPD
                 if (lowerValue.includes('copd')) {
@@ -276,7 +285,7 @@ export function parseInput(text: string): ParseResult {
                 // OB/GYN (Moved here to be reachable)
                 if (lowerValue.includes('preeclampsia')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
-                    context.conditions.obstetric.preeclampsia = true;
+                    context.conditions.obstetric.preeclampsia = { present: true, severity: 'unspecified' };
                     context.conditions.obstetric.pregnant = true;
                 }
                 if (lowerValue.includes('pregnant') || lowerValue.includes('pregnancy')) {
@@ -452,7 +461,7 @@ export function parseInput(text: string): ParseResult {
                 // OB/GYN
                 if (lowerValue.includes('preeclampsia')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
-                    context.conditions.obstetric.preeclampsia = true;
+                    context.conditions.obstetric.preeclampsia = { present: true, severity: 'unspecified' };
                     context.conditions.obstetric.pregnant = true;
                 }
                 if (lowerValue.includes('pregnant') || lowerValue.includes('pregnancy')) {
@@ -1593,7 +1602,11 @@ export function parseInput(text: string): ParseResult {
                 break;
             case 'preeclampsia':
                 if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
-                context.conditions.obstetric.preeclampsia = parseBoolean(value);
+                context.conditions.obstetric.preeclampsia = { present: parseBoolean(value), severity: 'unspecified' };
+                // Attempt to parse severity from value string
+                if (lowerValue.includes('severe')) context.conditions.obstetric.preeclampsia.severity = 'severe';
+                else if (lowerValue.includes('mild')) context.conditions.obstetric.preeclampsia.severity = 'mild';
+                else if (lowerValue.includes('hellp')) context.conditions.obstetric.preeclampsia.severity = 'hellp';
                 break;
             case 'gestational diabetes':
                 if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };

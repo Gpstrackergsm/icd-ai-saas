@@ -180,7 +180,10 @@ export interface PatientContext {
                 occurred: boolean;
                 type?: 'vaginal' | 'cesarean';
             };
-            preeclampsia?: boolean;
+            preeclampsia?: {
+                present: boolean;
+                severity?: 'mild' | 'severe' | 'hellp' | 'unspecified';
+            };
             gestationalDiabetes?: boolean;
             perinealLaceration?: {
                 degree: '1' | '2' | '3' | '4' | 'unspecified';

@@ -1353,19 +1353,46 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         }
 
         // RULE: Preeclampsia
-        if (ob.preeclampsia) {
+        if (ob.preeclampsia?.present) {
+            const severity = ob.preeclampsia.severity;
             let code = 'O14.90'; // Unspecified
-            if (trimester === 1) code = 'O14.91';
-            else if (trimester === 2) code = 'O14.92';
-            else if (trimester === 3) code = 'O14.93';
-            else code = 'O14.90';
+            let labelSeverity = 'unspecified';
+
+            if (severity === 'severe') {
+                // Severe preeclampsia O14.1x
+                if (trimester === 1) code = 'O14.12'; // Wait, O14.10 unspecified, .12 is second?
+                // O14.10: Severe pre-eclampsia, unspecified trimester
+                // O14.12: Severe pre-eclampsia, second trimester
+                // O14.13: Severe pre-eclampsia, third trimester
+                if (trimester === 2) code = 'O14.12';
+                else if (trimester === 3) code = 'O14.13';
+                else code = 'O14.10';
+                labelSeverity = 'severe';
+            } else if (severity === 'mild') {
+                // Mild O14.0x
+                if (trimester === 2) code = 'O14.02';
+                else if (trimester === 3) code = 'O14.03';
+                else code = 'O14.00';
+                labelSeverity = 'mild';
+            } else if (severity === 'hellp') {
+                // HELLP Syndrome O14.2x
+                if (trimester === 2) code = 'O14.22';
+                else if (trimester === 3) code = 'O14.23';
+                else code = 'O14.20';
+                labelSeverity = 'HELLP syndrome';
+            } else {
+                // Unspecified O14.9x
+                if (trimester === 2) code = 'O14.92';
+                else if (trimester === 3) code = 'O14.93';
+                else code = 'O14.90';
+            }
 
             codes.push({
                 code: code,
-                label: `Unspecified pre-eclampsia, ${trimester ? trimester + (trimester === 1 ? 'st' : trimester === 2 ? 'nd' : 'rd') + ' trimester' : 'unspecified trimester'}`,
+                label: `Pre-eclampsia, ${labelSeverity}, ${trimester ? trimester + (trimester === 1 ? 'st' : trimester === 2 ? 'nd' : 'rd') + ' trimester' : 'unspecified trimester'}`,
                 rationale: 'Preeclampsia documented',
                 guideline: 'ICD-10-CM O14',
-                trigger: `Preeclampsia = Yes, Trimester: ${trimester}`,
+                trigger: `Preeclampsia = Yes, Severity: ${severity}`,
                 rule: 'Preeclampsia code'
             });
         }
