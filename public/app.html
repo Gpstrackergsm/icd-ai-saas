@@ -770,11 +770,21 @@
           const errDiv = document.createElement('div');
           errDiv.className = 'mt-4 bg-red-50 border border-red-200 rounded-md p-3';
           errDiv.innerHTML = `
-                <div class="flex items-center gap-2 text-red-700 text-sm font-bold mb-2">
-                    <i class="fa-solid fa-triangle-exclamation"></i> Validation Alerts
+                <div class="flex items-center gap-2 text-red-700 text-sm font-bold mb-4 border-b border-red-200 pb-2">
+                    🚫 CODING BLOCKED — ${result.validationErrors.length} issue(s) must be resolved
                 </div>
-                    ${result.validationErrors.map(e => `<li class="whitespace-pre-wrap font-mono text-xs my-2">${e}</li>`).join('')}
-                </ul>
+                <div class="space-y-6">
+                    ${result.validationErrors.map(e => `<div class="whitespace-pre-wrap font-mono text-xs text-red-900 leading-relaxed bg-white/50 p-3 rounded border border-red-100">${e}</div>`).join('')}
+                </div>
+                <div class="mt-6 pt-4 border-t border-red-200 text-xs font-mono text-red-800">
+                    <div class="mb-4">
+                        <strong>EXPECTED CODES AFTER FIXING:</strong><br/>
+                        Not available until issues are resolved
+                    </div>
+                    <div class="font-bold">
+                        CODES WILL BE GENERATED ONLY AFTER ALL ISSUES ARE FIXED.
+                    </div>
+                </div>
             `;
           content.appendChild(errDiv);
         }

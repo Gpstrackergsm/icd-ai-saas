@@ -1,12 +1,9 @@
 import { ValidationRuleResult } from './highRiskRules';
 
-export function formatValidationError(result: ValidationRuleResult): string {
+export function formatValidationError(result: ValidationRuleResult, index: number = 1): string {
     const actionList = result.action.map(step => `• ${step}`).join('\n');
 
-    return `❌ VALIDATION FAILED
-
-RULE: ${result.ruleId} — ${result.ruleName}
-
+    return `${index}) ❌ ${result.ruleId} — ${result.ruleName}
 ISSUE:
 ${result.issue}
 
@@ -14,8 +11,5 @@ WHY THIS MATTERS:
 ${result.why}
 
 ACTION REQUIRED:
-${actionList}
-
-RESTRICTION:
-CODES WILL BE GENERATED ONLY AFTER FIXING THIS ISSUE.`;
+${actionList}`;
 }

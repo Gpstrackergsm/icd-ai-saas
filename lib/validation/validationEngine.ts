@@ -16,7 +16,8 @@ export function runValidation(codes: SequencedCode[], context?: any): Validation
         const result = rule(codes, context);
         if (result) {
             if (result.level === 'error') {
-                errors.push(formatValidationError(result));
+                const index = errors.length + 1;
+                errors.push(formatValidationError(result, index));
             } else {
                 warnings.push(`[${result.ruleId}] ${result.message}`);
             }
