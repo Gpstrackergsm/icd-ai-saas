@@ -286,7 +286,10 @@ export function parseInput(text: string): ParseResult {
                 // OB/GYN (Moved here to be reachable)
                 if (lowerValue.includes('preeclampsia')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
-                    context.conditions.obstetric.preeclampsia = { present: true, severity: 'unspecified' };
+                    // Only initialize if not already present or if currently unspecified and we might find better info (though this block doesn't parse severity)
+                    if (!context.conditions.obstetric.preeclampsia) {
+                        context.conditions.obstetric.preeclampsia = { present: true, severity: 'unspecified' };
+                    }
                     context.conditions.obstetric.pregnant = true;
                 }
                 if (lowerValue.includes('pregnant') || lowerValue.includes('pregnancy')) {
@@ -462,7 +465,9 @@ export function parseInput(text: string): ParseResult {
                 // OB/GYN
                 if (lowerValue.includes('preeclampsia')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
-                    context.conditions.obstetric.preeclampsia = { present: true, severity: 'unspecified' };
+                    if (!context.conditions.obstetric.preeclampsia) {
+                        context.conditions.obstetric.preeclampsia = { present: true, severity: 'unspecified' };
+                    }
                     context.conditions.obstetric.pregnant = true;
                 }
                 if (lowerValue.includes('pregnant') || lowerValue.includes('pregnancy')) {

@@ -1412,25 +1412,23 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         // RULE: Delivery
         if (ob.delivery?.occurred) {
             // Check for complications that preclude O80
+            // STRICT COMPLICATION SUPPRESSION OF O80
             const hasComplications = !!ob.perinealLaceration ||
                 !!ob.preeclampsia ||
                 !!ob.gestationalDiabetes ||
                 !!ob.postpartum ||
                 !!ob.hemorrhage ||
                 !!ob.multipleGestation ||
-                !!ob.vbac || // VBAC is O75.82, precludes O80
+                !!ob.vbac ||
                 (ob.termDocumentation === 'post_term') ||
-                (ob.gestationalAge && ob.gestationalAge > 42);
+                (ob.gestationalAge && ob.gestationalAge > 41); // >41 is 42+ (post term start)
 
-            // 1. Z37 Outcome (Always required for delivery) or Z37.0 default
-            // If Multiple Gestation, Z37 should be Twins/Triplets. 
-            // For now, if multipleGestation is true, default to Z37.2 (Twins, both liveborn) as a placeholder?
-            // "Z37.0" is Single live birth.
-
+            // 1. Z37 Outcome (Always required for delivery or birth encounter)
             let outcomeCode = 'Z37.0';
             let outcomeLabel = 'Single live birth';
             if (ob.multipleGestation) {
-                outcomeCode = 'Z37.2'; // Default to Twins, both liveborn (commonest multiple)
+                // FORCE Z37.2 for Twins if not specified otherwise (per user req? "Twins" -> Z37.2)
+                outcomeCode = 'Z37.2';
                 outcomeLabel = 'Twins, both liveborn';
             }
 
@@ -1444,7 +1442,19 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             });
 
             // 2. Delivery Encounter Code
-            if (ob.delivery.type === 'cesarean' && !ob.vbac) {
+            // VBAC OVERRIDES O82
+            if (ob.vbac) {
+                // If VBAC, do NOT generate O82. Treat C-section as history.
+                // Generate O75.82 for VBAC attempt/labor
+                codes.push({
+                    code: 'O75.82', // Onset (spontaneous) of labor after previous cesarean delivery
+                    label: 'Onset (spontaneous) of labor after previous cesarean delivery',
+                    rationale: 'VBAC documented (blocks O82)',
+                    guideline: 'ICD-10-CM O75.82',
+                    trigger: 'VBAC',
+                    rule: 'VBAC intent/success code'
+                });
+            } else if (ob.delivery.type === 'cesarean') {
                 codes.push({
                     code: 'O82',
                     label: 'Encounter for cesarean delivery without indication',
@@ -1463,11 +1473,8 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     trigger: 'Delivery Type: Vaginal/Normal (No Complications)',
                     rule: 'Delivery encounter code'
                 });
-            } else {
-                // Complicated delivery: O80 is suppressed.
-                // The complication codes (O70, O14, etc.) serve as the reason for encounter.
-                // No generic "delivery" code is needed if a complication code is principal.
             }
+            // If complications exist, O80 is suppressed. 
         }
 
         // RULE: Postpartum Hemorrhage (O72.x)
@@ -1496,21 +1503,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             });
         }
 
-        // RULE: VBAC (O75.82)
-        if (ob.vbac) {
-            codes.push({
-                code: 'O75.82', // Onset (spontaneous) of labor after previous cesarean delivery?
-                // Actually O34.211 is Maternal care for low transverse scar...
-                // O75.82 is "Onset of labor after previous cesarean delivery", used for VBAC ATTEMPT.
-                // If successful VBAC delivery, typically O34.21 + O75.82? Or just O34.21.
-                // User requirement: "IF VBAC... AND O75.82 is absent THEN FAIL". So we must generate O75.82.
-                label: 'Onset (spontaneous) of labor after previous cesarean delivery',
-                rationale: 'VBAC documented',
-                guideline: 'ICD-10-CM O75.82',
-                trigger: 'VBAC',
-                rule: 'VBAC intent/success code'
-            });
-        }
+
 
         // RULE: Post-term (O48.x)
         if (ob.termDocumentation === 'post_term' || (ob.gestationalAge && ob.gestationalAge > 42)) {
@@ -2056,11 +2049,27 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         return 0; // Keep original order if same priority
     });
 
-    // Use the main codes array which is populated above
-    // Append any final codes to it
+    // --- FINAL SEQUENCING (OBSTETRIC PRIORITY) ---
+    // PRIMARY DIAGNOSIS PRIORITY ORDER: O72 > O14 > O48 > O30
+    if (ctx.conditions.obstetric?.pregnant) {
+        codes.sort((a, b) => {
+            const getPriority = (code: string) => {
+                if (code.startsWith('O72')) return 1;
+                if (code.startsWith('O14')) return 2;
+                if (code.startsWith('O48')) return 3;
+                if (code.startsWith('O30')) return 4;
+                if (code.startsWith('Z37')) return 100; // Always secondary
+                if (code.startsWith('Z3A')) return 101; // Always secondary
+                if (code.startsWith('U07')) return 50; // COVID
+                return 50; // Neutral
+            };
+            return getPriority(a.code) - getPriority(b.code);
+        });
+    }
+
     return {
-        primary: finalCodes.length > 0 ? finalCodes[0] : null,
-        secondary: finalCodes.length > 1 ? finalCodes.slice(1) : [],
+        primary: codes.length > 0 ? codes[0] : null,
+        secondary: codes.length > 1 ? codes.slice(1) : [],
         procedures: procedures,
         warnings: warnings,
         validationErrors: validationErrors
