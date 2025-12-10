@@ -186,6 +186,12 @@ export interface PatientContext {
                 degree: '1' | '2' | '3' | '4' | 'unspecified';
             };
             postpartum?: boolean;
+            // Enhanced OB Fields
+            hemorrhage?: boolean; // Postpartum hemorrhage (O72)
+            multipleGestation?: boolean; // Twins/Triplets (O30)
+            vbac?: boolean; // Vaginal birth after cesarean (O75.82)
+            termDocumentation?: 'term' | 'full_term' | 'preterm' | 'post_term'; // For validation checks
+            cSectionIndication?: string; // Captured indication logic if needed
         };
     };
     social?: {

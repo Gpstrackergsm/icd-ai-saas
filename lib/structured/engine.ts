@@ -1388,16 +1388,30 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             const hasComplications = !!ob.perinealLaceration ||
                 !!ob.preeclampsia ||
                 !!ob.gestationalDiabetes ||
-                !!ob.postpartum; // Add others as implemented
+                !!ob.postpartum ||
+                !!ob.hemorrhage ||
+                !!ob.multipleGestation ||
+                !!ob.vbac || // VBAC is O75.82, precludes O80
+                (ob.termDocumentation === 'post_term') ||
+                (ob.gestationalAge && ob.gestationalAge > 42);
 
             // 1. Z37 Outcome (Always required for delivery) or Z37.0 default
-            // Ideally should parse outcome from narrative, but default to Single Live Birth specific to this user/demo
-            // TODO: Add outcome parsing. For now, default safe Z37.0
+            // If Multiple Gestation, Z37 should be Twins/Triplets. 
+            // For now, if multipleGestation is true, default to Z37.2 (Twins, both liveborn) as a placeholder?
+            // "Z37.0" is Single live birth.
+
+            let outcomeCode = 'Z37.0';
+            let outcomeLabel = 'Single live birth';
+            if (ob.multipleGestation) {
+                outcomeCode = 'Z37.2'; // Default to Twins, both liveborn (commonest multiple)
+                outcomeLabel = 'Twins, both liveborn';
+            }
+
             codes.push({
-                code: 'Z37.0',
-                label: 'Single live birth',
+                code: outcomeCode,
+                label: outcomeLabel,
                 rationale: 'Outcome of delivery',
-                guideline: 'ICD-10-CM Z37.0',
+                guideline: 'ICD-10-CM Z37',
                 trigger: 'Delivery',
                 rule: 'Outcome of delivery code'
             });
@@ -1427,6 +1441,60 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 // The complication codes (O70, O14, etc.) serve as the reason for encounter.
                 // No generic "delivery" code is needed if a complication code is principal.
             }
+        }
+
+        // RULE: Postpartum Hemorrhage (O72.x)
+        if (ob.hemorrhage) {
+            codes.push({
+                code: 'O72.1', // Default to Other immediate PPH (most common after delivery)
+                label: 'Other immediate postpartum hemorrhage',
+                rationale: 'Postpartum hemorrhage documented',
+                guideline: 'ICD-10-CM O72.1',
+                trigger: 'Postpartum Hemorrhage / PPH',
+                rule: 'PPH code'
+            });
+        }
+
+        // RULE: Multiple Gestation (O30.x)
+        if (ob.multipleGestation) {
+            codes.push({
+                code: 'O30.003', // Twin pregnancy, unspecified number of placenta and amniotic sacs, third trimester (default)
+                // In real audit engine, would require chorionicity. Validating "unspecified" is Rule 3.
+                // We generate a code so highRiskRules can check specificty.
+                label: 'Twin pregnancy, unspecified number of placenta and amniotic sacs, third trimester',
+                rationale: 'Multiple gestation documented',
+                guideline: 'ICD-10-CM O30',
+                trigger: 'Multiple Gestation',
+                rule: 'Multiple gestation code'
+            });
+        }
+
+        // RULE: VBAC (O75.82)
+        if (ob.vbac) {
+            codes.push({
+                code: 'O75.82', // Onset (spontaneous) of labor after previous cesarean delivery?
+                // Actually O34.211 is Maternal care for low transverse scar...
+                // O75.82 is "Onset of labor after previous cesarean delivery", used for VBAC ATTEMPT.
+                // If successful VBAC delivery, typically O34.21 + O75.82? Or just O34.21.
+                // User requirement: "IF VBAC... AND O75.82 is absent THEN FAIL". So we must generate O75.82.
+                label: 'Onset (spontaneous) of labor after previous cesarean delivery',
+                rationale: 'VBAC documented',
+                guideline: 'ICD-10-CM O75.82',
+                trigger: 'VBAC',
+                rule: 'VBAC intent/success code'
+            });
+        }
+
+        // RULE: Post-term (O48.x)
+        if (ob.termDocumentation === 'post_term' || (ob.gestationalAge && ob.gestationalAge > 42)) {
+            codes.push({
+                code: 'O48.0',
+                label: 'Post-term pregnancy',
+                rationale: 'Post-term gestation > 42 weeks',
+                guideline: 'ICD-10-CM O48.0',
+                trigger: 'Post-term',
+                rule: 'Post-term pregnancy code'
+            });
         }
 
         // RULE: Perineal Laceration (O70.x)

@@ -89,6 +89,39 @@ export function parseInput(text: string): ParseResult {
                     else if (lowerValue.includes('cesarean') || lowerValue.includes('c-section')) context.conditions.obstetric.delivery.type = 'cesarean';
                 }
 
+                // --- STRICT OB AUDIT SCANS ---
+                // 1. Postpartum Hemorrhage (PPH)
+                if (lowerValue.includes('postpartum hemorrhage') || lowerValue.includes('pph') || lowerValue.includes('excessive bleeding')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    context.conditions.obstetric.hemorrhage = true;
+                }
+
+                // 2. Multiple Gestation
+                if (lowerValue.includes('twins') || lowerValue.includes('triplets') || lowerValue.includes('multiple gestation')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    context.conditions.obstetric.multipleGestation = true;
+                }
+
+                // 3. VBAC
+                if (lowerValue.includes('vbac') || lowerValue.includes('vaginal birth after cesarean')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    context.conditions.obstetric.vbac = true;
+                    // Implicit delivery
+                    if (!context.conditions.obstetric.delivery) context.conditions.obstetric.delivery = { occurred: true, type: 'vaginal' };
+                }
+
+                // 4. Term Documentation (for Validation checks)
+                if (lowerValue.includes('full term') || lowerValue.includes('term pregnancy')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    context.conditions.obstetric.termDocumentation = 'term';
+                } else if (lowerValue.includes('preterm') || lowerValue.includes('premature')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    context.conditions.obstetric.termDocumentation = 'preterm';
+                } else if (lowerValue.includes('post term') || lowerValue.includes('post-term')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    context.conditions.obstetric.termDocumentation = 'post_term';
+                }
+
                 // Hypertension
                 if (lowerValue.includes('hypertension') || lowerValue.includes('hypertensive')) {
                     if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };

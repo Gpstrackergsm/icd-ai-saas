@@ -357,5 +357,203 @@ export const highRiskRules: ValidationRule[] = [
             };
         }
         return null;
+    },
+
+    // --- STRICT HOSPITAL OB AUDIT RULES ---
+
+    // 1. HEMORRHAGE (O72 REQUIRED)
+    (codes, context) => {
+        if (!context || !context.text) return null;
+        const text = context.text.toLowerCase();
+        const impliesPPH = text.includes('postpartum hemorrhage') || text.includes('pph') || text.includes('excessive bleeding');
+        const hasO72 = hasRange(codes, 'O72');
+
+        if (impliesPPH && !hasO72) {
+            return {
+                ruleId: 'OB-AUDIT-001',
+                ruleName: 'Hemorrhage Code Required',
+                issue: 'Narrative indicates Postpartum Hemorrhage but O72.x is missing.',
+                why: 'Documentation of PPH requires specific coding (O72.x).',
+                action: ['Add O72.x.'],
+                valid: false,
+                level: 'error',
+                message: 'Documentation indicates Postpartum Hemorrhage. O72.x code is REQUIRED.'
+            };
+        }
+        return null;
+    },
+
+    // 2. PREECLAMPSIA SEVERITY
+    (codes) => {
+        const o14 = codes.find(c => c.code.startsWith('O14'));
+        if (o14) {
+            // O14.0 (Mild), O14.1 (Severe), O14.2 (HELLP), O14.9 (Unspecified)
+            if (o14.code.startsWith('O14.9')) {
+                return {
+                    ruleId: 'OB-AUDIT-002',
+                    ruleName: 'Preeclampsia Severity',
+                    issue: `Preeclampsia code (${o14.code}) is unspecified.`,
+                    why: 'Preeclampsia must be specified as Mild, Severe, or HELLP for audit compliance.',
+                    action: ['Specify severity (O14.0x, O14.1x, O14.2x).'],
+                    valid: false,
+                    level: 'error',
+                    message: `Preeclampsia severity must be specified (Mild, Severe, or HELLP). O14.9 is not audit-compliant.`
+                };
+            }
+        }
+        return null;
+    },
+
+    // 3. MULTIPLE GESTATION SPECIFICITY
+    (codes, context) => {
+        if (!context || !context.text) return null;
+        const text = context.text.toLowerCase();
+        const impliesMultiple = text.includes('twins') || text.includes('triplets') || text.includes('multiple gestation');
+        const o30_9 = codes.find(c => c.code.startsWith('O30.9'));
+
+        if (impliesMultiple && o30_9) {
+            return {
+                ruleId: 'OB-AUDIT-003',
+                ruleName: 'Multiple Gestation Specificity',
+                issue: `Multiple gestation code (${o30_9.code}) is unspecified.`,
+                why: 'Documentation indicates multiples; specific type and chorionicity required.',
+                action: ['Specify Twin/Triplet and Chorionicity.'],
+                valid: false,
+                level: 'error',
+                message: `Multiple gestation code O30.9 is unspecified. Specify number of fetuses and chorionicity/amnionicity.`
+            };
+        }
+        return null;
+    },
+
+    // 4. PRETERM CONTRADICTION
+    (codes, context) => {
+        // Need explicit GA logic check here or rely on Z3A
+        // We can check Z3A codes.
+        const z3a = codes.find(c => c.code.startsWith('Z3A'));
+        if (z3a && context && context.text) {
+            const weeksMatch = z3a.code.match(/Z3A\.(\d+)/);
+            if (weeksMatch) {
+                const weeks = parseInt(weeksMatch[1]);
+                const text = context.text.toLowerCase();
+                // Term is usually 37+ weeks
+                if (weeks < 37 && (text.includes('term') && !text.includes('preterm') && !text.includes('pre-term'))) {
+                    return {
+                        ruleId: 'OB-AUDIT-004',
+                        ruleName: 'Preterm / Term Contradiction',
+                        issue: `Gestational Age is ${weeks} weeks (Preterm) but narrative says 'Term'.`,
+                        why: 'Clinical documentation contradicts the assigned gestational age code.',
+                        action: ['Resolve contradiction between GA and Term status.'],
+                        valid: false,
+                        level: 'error',
+                        message: `Contradiction: Gestational Age (${weeks} weeks) is Preterm, but narrative documents 'Term'.`
+                    };
+                }
+            }
+        }
+        return null;
+    },
+
+    // 5. POST-TERM ENFORCEMENT
+    (codes) => {
+        const z3a = codes.find(c => c.code.startsWith('Z3A'));
+        if (z3a) {
+            // Z3A.49 is > 42 weeks? No, Z3A.42 is 42 weeks. Z3A.49 is > 42 weeks.
+            if (z3a.code === 'Z3A.49' || z3a.code === 'Z3A.43' /* hypothetically */) {
+                const hasO48 = hasRange(codes, 'O48');
+                if (!hasO48) {
+                    return {
+                        ruleId: 'OB-AUDIT-005',
+                        ruleName: 'Post-term Pregnancy Code Required',
+                        issue: `Gestational Age > 42 weeks but O48.0 (Post-term) missing.`,
+                        why: 'Pregnancies > 42 weeks require O48 series codes.',
+                        action: ['Add O48.0 or O48.1.'],
+                        valid: false,
+                        level: 'error',
+                        message: `Gestational Age > 42 weeks requires Post-term pregnancy code (O48.x).`
+                    };
+                }
+            }
+        }
+        return null;
+    },
+
+    // 6. VBAC IDENTIFICATION
+    (codes, context) => {
+        if (!context || !context.text) return null;
+        const text = context.text.toLowerCase();
+        const impliesVBAC = text.includes('vbac') || text.includes('vaginal birth after cesarean');
+        const hasO75_82 = codes.some(c => c.code === 'O75.82');
+
+        if (impliesVBAC && !hasO75_82) {
+            return {
+                ruleId: 'OB-AUDIT-006',
+                ruleName: 'VBAC Code Required',
+                issue: 'Narrative indicates VBAC but O75.82 is missing.',
+                why: 'VBAC attempts require O75.82 (Onset of labor after previous cesarean).',
+                action: ['Add O75.82.'],
+                valid: false,
+                level: 'error',
+                message: 'Documentation indicates VBAC. O75.82 (Onset of labor after previous cesarean) is REQUIRED.'
+            };
+        }
+        return null;
+    },
+
+    // 7. C-SECTION TYPING
+    (codes, context) => {
+        if (!context || !context.text) return null;
+        const text = context.text.toLowerCase();
+        const impliesCS = text.includes('cesarean') || text.includes('c-section');
+        const hasO82 = hasRange(codes, 'O82');
+
+        // If it's a delivery encounter...
+        const isDelivery = codes.some(c => c.code.startsWith('Z37'));
+        if (impliesCS && isDelivery && !hasO82) {
+            // Note: Could be O82 or other complication leading to C-section? 
+            // O82 matches "Encounter for cesarean delivery without indication". 
+            // If indication exists, code usually reflects that.
+            // But strict audit asks for "C-Section Typing".
+            // If O82 is missing, we check if procedure is coded? 
+            // This rule ensures we at least have a C-section diagnosis if narrative says C-section.
+            // But maybe user wants specfiic code.
+            // Let's enforce O82 as a catch-all if no other specific C-section reason is primary?
+            // Actually requirement says "IF narrative contains 'cesarean'... AND no O82.x exists THEN FAIL".
+            // This implies strict O82 requirement for any C-section.
+            return {
+                ruleId: 'OB-AUDIT-007',
+                ruleName: 'Cesarean Diagnosis Required',
+                issue: 'Narrative indicates C-Section but O82 is missing.',
+                why: 'Cesarean deliveries require O82 (or specific indication).',
+                action: ['Add O82 or specific indication code.'],
+                valid: false,
+                level: 'error',
+                message: 'Narrative indicates Cesarean delivery. O82.x code (or valid indication) is REQUIRED.'
+            };
+        }
+        return null;
+    },
+
+    // 8. O80 SUPPRESSION CHECK (Redundant but safe)
+    (codes) => {
+        if (hasCode(codes, 'O80')) {
+            // Check for ANY complication
+            const complications = codes.filter(c =>
+                (c.code.startsWith('O') && c.code !== 'O80') // Any active O code precludes O80
+            );
+            if (complications.length > 0) {
+                return {
+                    ruleId: 'OB-AUDIT-008',
+                    ruleName: 'O80 Violation',
+                    issue: `O80 is present with other O-codes (${complications[0].code}).`,
+                    why: 'O80 is strictly for uncomplicated deliveries with NO other O-codes.',
+                    action: ['Remove O80.'],
+                    valid: false,
+                    level: 'error',
+                    message: `O80 cannot co-exist with any complication code (${complications[0].code}). Remove O80.`
+                };
+            }
+        }
+        return null;
     }
 ];
