@@ -770,11 +770,12 @@
           const errDiv = document.createElement('div');
           errDiv.className = 'mt-4 bg-red-50 border border-red-200 rounded-md p-3';
           errDiv.innerHTML = `
-                <div class="flex items-center gap-2 text-red-700 text-sm font-bold mb-4 border-b border-red-200 pb-2">
-                    🚫 CODING BLOCKED — ${result.validationErrors.length} issue(s) must be resolved
+                <div class="flex items-center gap-2 text-[#991B1B] text-sm font-bold mb-4 border-b border-red-200 pb-2">
+                    <i class="fa-solid fa-lock"></i> AUDIT HOLD — ${result.validationErrors.length} required action(s)
                 </div>
-                <div class="space-y-6">
-                    ${result.validationErrors.map(e => `<div class="whitespace-pre-wrap font-mono text-xs text-red-900 leading-relaxed bg-white/50 p-3 rounded border border-red-100">${e}</div>`).join('')}
+                <!-- Render rich HTML cards directly -->
+                <div class="space-y-2">
+                    ${result.validationErrors.map(e => e).join('')}
                 </div>
                 <div class="mt-6 pt-4 border-t border-red-200 text-xs font-mono text-red-800">
                     <div class="mb-4">
