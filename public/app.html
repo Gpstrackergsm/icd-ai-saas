@@ -767,7 +767,10 @@
 
         // Validation Errors
         if (result.validationErrors?.length) {
-                <div class="mb-6">
+          const errDiv = document.createElement('div');
+          errDiv.className = 'mt-4 bg-white border border-gray-200 rounded-md p-1';
+          errDiv.innerHTML = `
+                <div class="mb-6 px-4 pt-4">
                     <div class="flex items-center gap-2 text-red-900 border-b border-red-100 pb-3">
                         <i class="fa-solid fa-gavel text-xl"></i> 
                         <div>
@@ -778,12 +781,12 @@
                 </div>
 
                 <!-- Render rich HTML cards directly -->
-                <div class="space-y-4">
+                <div class="space-y-4 px-4 pb-4">
                     ${result.validationErrors.map(e => e).join('')}
                 </div>
 
-                <div class="mt-8 pt-6 border-t border-slate-200 text-center">
-                    <div class="inline-flex items-center gap-2 px-5 py-2.5 bg-slate-50 border border-slate-200 rounded-full text-xs font-bold text-slate-500 uppercase tracking-widest shadow-sm">
+                <div class="mt-4 pt-6 border-t border-slate-100 text-center bg-slate-50 rounded-b-md pb-6">
+                    <div class="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 rounded-full text-xs font-bold text-slate-500 uppercase tracking-widest shadow-sm">
                         <i class="fa-solid fa-lock"></i>
                         SYSTEM LOCKED — Pending audit resolution
                     </div>
@@ -792,7 +795,7 @@
                         Validated against ICD-10-CM official audit logic
                     </div>
                 </div>
-          `;
+            `;
           content.appendChild(errDiv);
         }
 
@@ -803,32 +806,42 @@
       copyEncodeBtn.disabled = false;
     }
 
-    encodeBtn.addEventListener('click', performEncode);
+    // Confirm Encode Button Listener
+    if (encodeBtn) {
+      encodeBtn.addEventListener('click', performEncode);
+    } else {
+      console.error('Encode button not found!');
+    }
 
     // Copy Logic
-    document.getElementById('copyEncodeBtn').addEventListener('click', async () => {
-      if (!lastEncoded) return;
-      const results = Array.isArray(lastEncoded) ? lastEncoded : [lastEncoded];
-      const lines = [];
+    const copyBtn = document.getElementById('copyEncodeBtn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        if (!lastEncoded) return;
+        const results = Array.isArray(lastEncoded) ? lastEncoded : [lastEncoded];
+        const lines = [];
 
-      results.forEach((res, idx) => {
-        if (results.length > 1) lines.push(`Case ${ idx + 1 }: ${ res.text } `);
-        if (res.primary) lines.push(`Primary: ${ res.primary.code } - ${ res.primary.label || res.primary.description } `);
-        if (res.secondary && res.secondary.length) {
-          res.secondary.forEach(c => lines.push(`Secondary: ${ c.code } - ${ c.label || c.description } `));
+        results.forEach((res, idx) => {
+          if (results.length > 1) lines.push(`Case ${idx + 1}: ${res.text} `);
+          if (res.primary) lines.push(`Primary: ${res.primary.code} - ${res.primary.label || res.primary.description} `);
+          if (res.secondary && res.secondary.length) {
+            res.secondary.forEach(c => lines.push(`Secondary: ${c.code} - ${c.label || c.description} `));
+          }
+          lines.push('');
+        });
+
+        try {
+          await navigator.clipboard.writeText(lines.join('\n'));
+          const originalText = copyBtn.innerHTML;
+          copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+          setTimeout(() => {
+            copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy All';
+          }, 2000);
+        } catch (e) {
+          console.error(e);
         }
-        lines.push('');
       });
-
-      try {
-        await navigator.clipboard.writeText(lines.join('\n'));
-        const originalText = document.getElementById('copyEncodeBtn').innerHTML;
-        document.getElementById('copyEncodeBtn').innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
-        setTimeout(() => {
-          document.getElementById('copyEncodeBtn').innerHTML = '<i class="fa-regular fa-copy"></i> Copy All';
-        }, 2000);
-      } catch (e) { console.error(e); }
-    });
+    }
 
 
     // --- BATCH LOGIC ---
@@ -841,73 +854,87 @@
     const downloadBtn = document.getElementById('downloadResultsBtn');
     const fileLabel = document.getElementById('fileLabel');
 
-    batchInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        fileLabel.textContent = file.name;
-        processBatchBtn.disabled = false;
-        batchStatus.textContent = '';
-      }
-    });
-
-    document.getElementById('clearBatchBtn').addEventListener('click', () => {
-      batchInput.value = '';
-      fileLabel.textContent = 'TXT files only';
-      processBatchBtn.disabled = true;
-      downloadBtn.style.display = 'none';
-      batchStatus.textContent = '';
-      batchProgress.className = 'hidden mt-4';
-    });
-
-    processBatchBtn.addEventListener('click', async () => {
-      const file = batchInput.files[0];
-      if (!file) return;
-
-      processBatchBtn.disabled = true;
-      batchProgress.classList.remove('hidden');
-      progressBar.style.width = '10%';
-      progressText.textContent = 'Reading file...';
-
-      try {
-        const content = await file.text();
-        progressBar.style.width = '40%';
-        progressText.textContent = 'Processing with AI engine...';
-
-        const token = localStorage.getItem('token');
-        const res = await fetch('/api/batch-encode', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${ token } ` },
-          body: JSON.stringify({ fileContent: content })
-        });
-
-        progressBar.style.width = '80%';
-
-        if (!res.ok) throw new Error('Batch processing error');
-        const data = await res.json();
-
-        progressBar.style.width = '100%';
-        progressText.textContent = 'Done!';
-
-        if (data.success) {
-          batchStatus.innerHTML = `< span class="text-green-600 font-bold" > <i class="fa-solid fa-check-circle"></i> Complete! ${ data.totalCases } cases processed.</span > `;
-          window.batchData = data.output;
-          downloadBtn.style.display = 'inline-flex';
-          downloadBtn.onclick = () => {
-            const blob = new Blob([data.output], { type: 'text/plain' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `audit_results_${ Date.now() }.txt`;
-            a.click();
-          };
+    if (batchInput) {
+      batchInput.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          fileLabel.textContent = file.name;
+          processBatchBtn.disabled = false;
+          batchStatus.textContent = '';
         }
+      });
+    }
 
-      } catch (e) {
-        batchStatus.innerHTML = `< span class="text-red-600 font-bold" > Error: ${ e.message }</span >`;
-      } finally {
-        processBatchBtn.disabled = false;
-      }
-    });
+    const clearBatchBtn = document.getElementById('clearBatchBtn');
+    if (clearBatchBtn) {
+      clearBatchBtn.addEventListener('click', () => {
+        batchInput.value = '';
+        fileLabel.textContent = 'TXT files only';
+        processBatchBtn.disabled = true;
+        downloadBtn.style.display = 'none';
+        batchStatus.textContent = '';
+        batchProgress.className = 'hidden mt-4';
+      });
+    }
+
+    if (processBatchBtn) {
+      processBatchBtn.addEventListener('click', async () => {
+        const file = batchInput.files[0];
+        if (!file) return;
+
+        processBatchBtn.disabled = true;
+        batchProgress.classList.remove('hidden');
+        progressBar.style.width = '10%';
+        progressText.textContent = 'Reading file...';
+
+        try {
+          const content = await file.text();
+          progressBar.style.width = '40%';
+          progressText.textContent = 'Processing with AI engine...';
+
+          const token = localStorage.getItem('token');
+          const res = await fetch('/api/batch-encode', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token} `
+            },
+            body: JSON.stringify({
+              fileContent: content
+            })
+          });
+
+          progressBar.style.width = '80%';
+
+          if (!res.ok) throw new Error('Batch processing error');
+          const data = await res.json();
+
+          progressBar.style.width = '100%';
+          progressText.textContent = 'Done!';
+
+          if (data.success) {
+            batchStatus.innerHTML = `< span class="text-green-600 font-bold" > <i class="fa-solid fa-check-circle"></i> Complete! ${data.totalCases} cases processed.</span > `;
+            window.batchData = data.output;
+            downloadBtn.style.display = 'inline-flex';
+            downloadBtn.onclick = () => {
+              const blob = new Blob([data.output], {
+                type: 'text/plain'
+              });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `audit_results_${Date.now()}.txt`;
+              a.click();
+            };
+          }
+
+        } catch (e) {
+          batchStatus.innerHTML = `< span class="text-red-600 font-bold" > Error: ${e.message}</span >`;
+        } finally {
+          processBatchBtn.disabled = false;
+        }
+      });
+    }
 
   </script>
 </body>
