@@ -26,9 +26,15 @@ module.exports = async function handler(req, res) {
         const { context, errors: parseErrors } = parseInput(text);
 
         if (parseErrors.length > 0) {
-            return res.status(400).json({
-                error: 'Parsing errors',
-                details: parseErrors
+            return res.status(200).json({
+                success: true,
+                data: {
+                    text,
+                    primary: null,
+                    secondary: [],
+                    validationErrors: parseErrors,
+                    warnings: []
+                }
             });
         }
 
@@ -36,10 +42,15 @@ module.exports = async function handler(req, res) {
         const validation = validateContext(context);
 
         if (!validation.valid) {
-            return res.status(400).json({
-                error: 'Validation failed',
-                validationErrors: validation.errors,
-                warnings: validation.warnings
+            return res.status(200).json({
+                success: true,
+                data: {
+                    text,
+                    primary: null,
+                    secondary: [],
+                    validationErrors: validation.errors,
+                    warnings: validation.warnings
+                }
             });
         }
 
@@ -77,6 +88,33 @@ module.exports = async function handler(req, res) {
             }
             return c;
         };
+
+        // Extract validated validated codes for checking
+        const tempCodes = [validated.codes[0], ...validated.codes.slice(1)].filter(Boolean);
+
+        // [STRICT RULE INJECTION] Enforce High Risk Rules logic inline
+        // Rule: O80 Exclusivity (PREG-002)
+        const hasO80 = tempCodes.some(c => c.code === 'O80');
+        if (hasO80) {
+            const other = tempCodes.find(c => c.code.startsWith('O') && c.code !== 'O80');
+            if (other) {
+                result.validationErrors.push(`[PREG-002] O80 (Normal Delivery) cannot be used with other pregnancy complications (${other.code}). Remove O80.`);
+            }
+        }
+
+        // Block if we have validation errors
+        if (result.validationErrors.length > 0) {
+            return res.status(200).json({
+                success: true,
+                data: {
+                    text,
+                    primary: null,
+                    secondary: [],
+                    validationErrors: result.validationErrors,
+                    warnings: [...validation.warnings, ...result.warnings]
+                }
+            });
+        }
 
         // Extract validated primary and secondary codes
         const validatedPrimary = enhanceCode(validated.codes[0] || null);
