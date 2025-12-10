@@ -182,6 +182,9 @@ export interface PatientContext {
             };
             preeclampsia?: boolean;
             gestationalDiabetes?: boolean;
+            perinealLaceration?: {
+                degree: '1' | '2' | '3' | '4' | 'unspecified';
+            };
             postpartum?: boolean;
         };
     };

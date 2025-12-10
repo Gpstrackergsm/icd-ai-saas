@@ -1402,7 +1402,47 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     trigger: 'Delivery Type: Vaginal/Normal',
                     rule: 'Delivery encounter code'
                 });
+
+                // Add outcome of delivery Z37.0 (Single live birth) as default for O80/Vaginal
+                codes.push({
+                    code: 'Z37.0',
+                    label: 'Single live birth',
+                    rationale: 'Outcome of delivery',
+                    guideline: 'ICD-10-CM Z37.0',
+                    trigger: 'Delivery',
+                    rule: 'Outcome of delivery code'
+                });
             }
+        }
+
+        // RULE: Perineal Laceration (O70.x)
+        if (ob.perinealLaceration) {
+            const degree = ob.perinealLaceration.degree;
+            let code = 'O70.9'; // Unspecified
+            let label = 'Perineal laceration during delivery, unspecified';
+
+            if (degree === '1') {
+                code = 'O70.0';
+                label = 'First degree perineal laceration during delivery';
+            } else if (degree === '2') {
+                code = 'O70.1';
+                label = 'Second degree perineal laceration during delivery';
+            } else if (degree === '3') {
+                code = 'O70.2';
+                label = 'Third degree perineal laceration during delivery, unspecified';
+            } else if (degree === '4') {
+                code = 'O70.3';
+                label = 'Fourth degree perineal laceration during delivery';
+            }
+
+            codes.push({
+                code: code,
+                label: label,
+                rationale: `Perineal laceration degree ${degree} documented`,
+                guideline: 'ICD-10-CM O70',
+                trigger: `Perineal Laceration: ${degree} Degree`,
+                rule: 'Perineal laceration code'
+            });
         }
 
         // RULE: Weeks of Gestation (Z3A.xx)
@@ -1867,20 +1907,14 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         return 0; // Keep original order if same priority
     });
 
-    let primary: StructuredCode | null = null;
-    let secondary: StructuredCode[] = [];
-
-    if (finalCodes.length > 0) {
-        primary = finalCodes[0];
-        secondary = finalCodes.slice(1);
-    }
-
+    // Use the main codes array which is populated above
+    // Append any final codes to it
     return {
-        primary,
-        secondary,
-        procedures,
-        warnings,
-        validationErrors
+        primary: finalCodes.length > 0 ? finalCodes[0] : null,
+        secondary: finalCodes.length > 1 ? finalCodes.slice(1) : [],
+        procedures: procedures,
+        warnings: warnings,
+        validationErrors: validationErrors
     };
 }
 

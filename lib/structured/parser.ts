@@ -18,14 +18,22 @@ export function parseInput(text: string): ParseResult {
     const parseBoolean = (val: string) => ['yes', 'true', 'present'].includes(val.toLowerCase());
 
     lines.forEach(line => {
+        let key = '';
+        let value = '';
+
         const parts = line.split(':');
-        if (parts.length < 2) {
-            errors.push(`Invalid format (missing colon): "${line}"`);
-            return;
+
+        // Intelligent Key Detection
+        // If no colon, OR if the "key" is very long (indicating a sentence with a colon inside), treat as narrative
+        if (parts.length < 2 || parts[0].length > 40) {
+            // RELAXED PARSING: Treat entire line as narrative/notes
+            key = 'narrative';
+            value = line.trim();
+        } else {
+            key = parts[0].trim().toLowerCase();
+            value = parts.slice(1).join(':').trim();
         }
 
-        const key = parts[0].trim().toLowerCase();
-        const value = parts.slice(1).join(':').trim();
         const lowerValue = value.toLowerCase();
 
         switch (key) {
@@ -40,6 +48,7 @@ export function parseInput(text: string): ParseResult {
             case 'note':
             case 'narrative':
             case 'comment':
+            case 'comments':
             case 'comments':
             case 'neuropathy type':
                 // Intelligent routing based on content
@@ -193,6 +202,43 @@ export function parseInput(text: string): ParseResult {
                     if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
                     context.conditions.diabetes.neuropathyType = 'autonomic';
                 }
+
+                // OB/GYN (Moved here to be reachable)
+                if (lowerValue.includes('preeclampsia')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    context.conditions.obstetric.preeclampsia = true;
+                    context.conditions.obstetric.pregnant = true;
+                }
+                if (lowerValue.includes('pregnant') || lowerValue.includes('pregnancy')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    context.conditions.obstetric.pregnant = true;
+                }
+
+                // Delivery
+                if (lowerValue.includes('delivery') || lowerValue.includes('svd') || lowerValue.includes('vaginal')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    // If it's a delivery, assume inpatient encounter unless specified
+                    context.encounter.type = 'inpatient';
+                    if (!context.conditions.obstetric.delivery) context.conditions.obstetric.delivery = { occurred: true, type: 'vaginal' };
+
+                    if (lowerValue.includes('caesarean') || lowerValue.includes('c-section')) {
+                        context.conditions.obstetric.delivery.type = 'cesarean';
+                    }
+                }
+
+                // Perineal Laceration
+                if (lowerValue.includes('perineal laceration') || lowerValue.includes('laceration') && lowerValue.includes('perineal')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+
+                    // Determine degree
+                    let degree: '1' | '2' | '3' | '4' | 'unspecified' = 'unspecified';
+                    if (lowerValue.includes('first') || lowerValue.includes('1st') || lowerValue.includes('degree 1')) degree = '1';
+                    else if (lowerValue.includes('second') || lowerValue.includes('2nd') || lowerValue.includes('degree 2')) degree = '2';
+                    else if (lowerValue.includes('third') || lowerValue.includes('3rd') || lowerValue.includes('degree 3')) degree = '3';
+                    else if (lowerValue.includes('fourth') || lowerValue.includes('4th') || lowerValue.includes('degree 4')) degree = '4';
+
+                    context.conditions.obstetric.perinealLaceration = { degree };
+                }
                 break;
 
             case 'source':
@@ -342,6 +388,32 @@ export function parseInput(text: string): ParseResult {
                 if (lowerValue.includes('pregnant') || lowerValue.includes('pregnancy')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     context.conditions.obstetric.pregnant = true;
+                }
+
+                // Delivery
+                if (lowerValue.includes('delivery') || lowerValue.includes('svd') || lowerValue.includes('vaginal')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    // If it's a delivery, assume inpatient encounter unless specified
+                    context.encounter.type = 'inpatient';
+                    if (!context.conditions.obstetric.delivery) context.conditions.obstetric.delivery = { occurred: true, type: 'vaginal' };
+
+                    if (lowerValue.includes('caesarean') || lowerValue.includes('c-section')) {
+                        context.conditions.obstetric.delivery.type = 'cesarean';
+                    }
+                }
+
+                // Perineal Laceration
+                if (lowerValue.includes('perineal laceration') || lowerValue.includes('laceration') && lowerValue.includes('perineal')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+
+                    // Determine degree
+                    let degree: '1' | '2' | '3' | '4' | 'unspecified' = 'unspecified';
+                    if (lowerValue.includes('first') || lowerValue.includes('1st') || lowerValue.includes('degree 1')) degree = '1';
+                    else if (lowerValue.includes('second') || lowerValue.includes('2nd') || lowerValue.includes('degree 2')) degree = '2';
+                    else if (lowerValue.includes('third') || lowerValue.includes('3rd') || lowerValue.includes('degree 3')) degree = '3';
+                    else if (lowerValue.includes('fourth') || lowerValue.includes('4th') || lowerValue.includes('degree 4')) degree = '4';
+
+                    context.conditions.obstetric.perinealLaceration = { degree };
                 }
 
                 // Cancer
