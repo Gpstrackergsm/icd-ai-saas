@@ -768,31 +768,37 @@
         // Validation Errors
         if (result.validationErrors?.length) {
           const errDiv = document.createElement('div');
-          errDiv.className = 'mt-4 bg-white border border-gray-200 rounded-md p-1';
+          errDiv.className = 'mt-6 mb-6';
           errDiv.innerHTML = `
-                <div class="mb-6 px-4 pt-4">
-                    <div class="flex items-center gap-2 text-red-900 border-b border-red-100 pb-3">
-                        <i class="fa-solid fa-gavel text-xl"></i> 
-                        <div>
-                            <span class="block font-bold text-sm uppercase tracking-wide leading-none">CLINICAL COMPLIANCE CONTROL</span>
-                            <span class="text-xs text-red-700 font-medium">Blocking errors detected by automated audit rules.</span>
-                        </div>
+                <!-- Global Header -->
+                <div class="mb-4">
+                    <div class="flex items-center gap-2 mb-1">
+                        <i class="fa-solid fa-gavel text-xl text-slate-800"></i> 
+                        <span class="block font-bold text-sm text-slate-800 uppercase tracking-wide leading-none">CLINICAL COMPLIANCE CONTROL</span>
+                    </div>
+                    <div class="text-xs text-slate-500 font-medium ml-7 mb-3">Blocking errors detected by automated audit rules.</div>
+                    
+                    <!-- State Banner -->
+                    <div class="flex items-center gap-2 bg-[#FEE2E2] border border-[#DC2626] text-[#7F1D1D] rounded-md px-3 py-2 shadow-sm animate-pulse">
+                        <i class="fa-solid fa-shield-halved text-sm"></i> 
+                        <span class="font-bold text-xs uppercase tracking-wide">COMPLIANCE GATE — ${result.validationErrors.length} item(s) pending resolution</span>
                     </div>
                 </div>
 
                 <!-- Render rich HTML cards directly -->
-                <div class="space-y-4 px-4 pb-4">
+                <div class="space-y-4">
                     ${result.validationErrors.map(e => e).join('')}
                 </div>
 
-                <div class="mt-4 pt-6 border-t border-slate-100 text-center bg-slate-50 rounded-b-md pb-6">
-                    <div class="inline-flex items-center gap-2 px-5 py-2.5 bg-white border border-slate-200 rounded-full text-xs font-bold text-slate-500 uppercase tracking-widest shadow-sm">
+                <!-- Footer -->
+                <div class="mt-4 pt-6 text-center border-t border-slate-100">
+                    <div class="inline-flex items-center gap-2 px-5 py-2 bg-slate-100 border border-slate-200 rounded-full text-xs font-bold text-slate-600 uppercase tracking-widest ">
                         <i class="fa-solid fa-lock"></i>
                         SYSTEM LOCKED — Pending audit resolution
                     </div>
-                    <div class="mt-4 flex items-center justify-center gap-2 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
-                        <i class="fa-solid fa-certificate text-slate-300"></i>
-                        Validated against ICD-10-CM official audit logic
+                    <div class="mt-3 flex items-center justify-center gap-2 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+                        <i class="fa-solid fa-circle-check text-green-500"></i>
+                        System ready for coding once all items are cleared.
                     </div>
                 </div>
             `;

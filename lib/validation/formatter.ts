@@ -6,26 +6,26 @@ export function formatValidationError(result: ValidationRuleResult, index: numbe
     // Enterprise Color definitions
     const styles = isError ? {
         // BLOCK (High Risk)
-        cardBg: 'bg-white',
+        cardBg: 'bg-[#FEF2F2]', // Explicit enterprise color
         strip: 'bg-gradient-to-b from-red-600 to-red-800',
         title: 'text-gray-900',
         icon: 'text-red-600',
         text: 'text-gray-700',
-        badge: 'text-red-700 border border-red-200 bg-red-50', // Solid text, subtle bg
+        badge: 'text-red-700 border border-red-200 bg-white', // Solid text, white bg for contrast on tinted card
         label: 'HIGH RISK',
         primaryBtn: 'bg-red-700 text-white hover:bg-red-800 border-transparent',
-        secondaryBtn: 'text-gray-600 border-gray-300 hover:bg-gray-50 hover:text-gray-900'
+        secondaryBtn: 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50 hover:text-gray-900'
     } : {
         // WARNING (Medium Risk)
-        cardBg: 'bg-white',
+        cardBg: 'bg-[#FFF7ED]',
         strip: 'bg-gradient-to-b from-orange-500 to-orange-600',
         title: 'text-gray-900',
         icon: 'text-orange-500',
         text: 'text-gray-700',
-        badge: 'text-orange-700 border border-orange-200 bg-orange-50',
+        badge: 'text-orange-700 border border-orange-200 bg-white',
         label: 'MEDIUM RISK',
         primaryBtn: 'bg-orange-600 text-white hover:bg-orange-700 border-transparent',
-        secondaryBtn: 'text-gray-600 border-gray-300 hover:bg-gray-50 hover:text-gray-900'
+        secondaryBtn: 'bg-white text-gray-600 border-gray-300 hover:bg-gray-50 hover:text-gray-900'
     };
 
     const actionList = result.action.map(step => `
@@ -36,18 +36,17 @@ export function formatValidationError(result: ValidationRuleResult, index: numbe
     `).join('');
 
     return `
-    <div class="relative w-full rounded-lg shadow-sm ${styles.cardBg} border border-gray-200 overflow-hidden mb-4 font-sans group hover:shadow-md transition-all">
+    <div class="relative w-full rounded-[10px] shadow-sm ${styles.cardBg} border border-gray-200 overflow-hidden mb-4 font-sans group hover:shadow-md transition-all">
         <!-- Severity Strip -->
         <div class="absolute left-0 top-0 bottom-0 w-1.5 ${styles.strip}"></div>
         
         <div class="pl-6 p-5">
             <!-- Header -->
-            <div class="flex justify-between items-start mb-4">
+            <div class="flex justify-between items-center mb-4">
                 <div class="flex items-center gap-3">
                     <i class="fa-solid fa-triangle-exclamation ${styles.icon} text-lg"></i>
-                    <div>
-                        <span class="block font-bold text-base ${styles.title} uppercase tracking-tight">${result.ruleId}</span>
-                        <span class="text-xs font-medium text-gray-500 uppercase tracking-wider">${result.ruleName}</span>
+                    <div class="font-bold text-sm ${styles.title} uppercase tracking-tight">
+                        RULE: ${result.ruleId} — <span class="text-gray-500 font-semibold">${result.ruleName}</span>
                     </div>
                 </div>
                 <!-- Risk Badge -->
@@ -74,7 +73,7 @@ export function formatValidationError(result: ValidationRuleResult, index: numbe
             </div>
 
             <!-- Action Area -->
-            <div class="bg-gray-50 rounded-md p-4 border border-gray-100">
+            <div class="bg-white/60 rounded-md p-4 border border-black/5">
                 <div class="mb-4">
                     <strong class="block text-[10px] uppercase tracking-wider text-gray-400 font-bold mb-2">Resolution Required</strong>
                     <div class="space-y-1 font-semibold">
