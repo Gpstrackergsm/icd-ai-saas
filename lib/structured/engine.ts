@@ -1444,11 +1444,19 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             // 2. Delivery Encounter Code
             // VBAC OVERRIDES O82
             if (ob.vbac) {
+                // IMPROVED: Dynamic Label Construction
+                let vbacLabel = 'Vaginal delivery following previous cesarean (VBAC).';
+
+                // Allowed Additions (Strictly Checked)
+                if (ob.termDocumentation === 'term' || ob.termDocumentation === 'full_term') {
+                    vbacLabel += ' Term pregnancy.';
+                }
+
                 // If VBAC, do NOT generate O82. Treat C-section as history.
                 // Generate O75.82 for VBAC attempt/labor
                 codes.push({
                     code: 'O75.82', // Onset (spontaneous) of labor after previous cesarean delivery
-                    label: 'Vaginal delivery following previous cesarean (VBAC)',
+                    label: vbacLabel,
                     rationale: 'VBAC documented (blocks O82)',
                     guideline: 'ICD-10-CM O75.82',
                     trigger: 'VBAC',
@@ -1669,6 +1677,25 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     c.label = newLabel;
                 }
             });
+        }
+
+        // 4. FINAL FAIL-SAFE: O75.82 INTEGRITY CHECK
+        // If the final O75.82 label contains ANY forbidden terms, force reset it.
+        const vbacCode = codes.find(c => c.code === 'O75.82');
+        if (vbacCode) {
+            const forbidden = /delivery by cesarean|planned cesarean|surgical delivery|operative delivery|cesarean occurring|c-section performed|cephalopelvic disproportion|disproportion|O33\.9/i;
+            if (forbidden.test(vbacCode.label)) {
+                // FORCE RESET to Base Template
+                let cleanLabel = 'Vaginal delivery following previous cesarean (VBAC).';
+
+                // Re-apply allowed context if safe
+                if (ob.termDocumentation === 'term' || ob.termDocumentation === 'full_term') {
+                    cleanLabel += ' Term pregnancy.';
+                }
+
+                vbacCode.label = cleanLabel;
+                // Log correction conceptually (internal note: normalized via fail-safe)
+            }
         }
 
     }
