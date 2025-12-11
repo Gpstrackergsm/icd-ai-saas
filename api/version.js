@@ -1,8 +1,8 @@
-export default async function handler(req, res) {
+module.exports = async function handler(req, res) {
     const versionData = {
-        version: '2.0.0',
-        status: 'Deployed',
-        lastUpdate: '2025-12-03T22:34:00Z'
+        version: '3.1.1',
+        status: 'Deployed (CommonJS Fix)',
+        lastUpdate: '2025-12-11T03:57:00Z'
     };
 
     // If requesting JSON, return JSON
