@@ -1762,6 +1762,11 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         // unless it is "history of" or "previous".
         if (hasVBAC) {
             codes.forEach(c => {
+                // WATERMARK TO PROVE DEPLOYMENT
+                if (c.code === 'O75.82') {
+                    c.label += ' [v3.0 Strict]';
+                }
+
                 // Regex to match "cesarean" that is NOT preceded by "previous ", "prior ", "history of "
                 // Negative lookbehind is supported in modern JS/TS (Node 10+)
                 // Pattern: Look for 'cesarean section', 'c-section', 'cesarean delivery'
