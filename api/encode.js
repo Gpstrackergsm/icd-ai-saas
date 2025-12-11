@@ -30,8 +30,10 @@ function loadRuntimeModules() {
     icdModule = require(fs.existsSync(icdDist) ? icdDist : (fs.existsSync(icdJs) ? icdJs : icdTs));
     encoderModule = require(fs.existsSync(encoderDist) ? encoderDist : (fs.existsSync(encoderJs) ? encoderJs : encoderTs));
     return { icdModule, encoderModule };
+    return { icdModule, encoderModule };
   } catch (err) {
-    throw new Error('Failed to load ICD encoder modules');
+    const info = `Dist: ${icdDist}, JS: ${icdJs}`;
+    throw new Error(`Failed to load ICD encoder modules [${err.message}] Paths: ${info} CWD: ${process.cwd()}`);
   }
 }
 
@@ -74,7 +76,7 @@ module.exports = async function handler(req, res) {
     try {
       modules = loadRuntimeModules();
     } catch (err) {
-      return sendError(res, 500, 'Internal error', 'INTERNAL_ERROR');
+      return sendError(res, 500, `Internal load error: ${err.message}`, 'INTERNAL_ERROR');
     }
 
     let body;
