@@ -27,8 +27,8 @@ function loadRuntimeModules() {
   const encoderTs = path.resolve(__dirname, '../lib/icd-core/encoder.ts');
 
   try {
-    icdModule = require(fs.existsSync(icdDist) ? icdDist : (fs.existsSync(icdJs) ? icdJs : icdTs));
-    encoderModule = require(fs.existsSync(encoderDist) ? encoderDist : (fs.existsSync(encoderJs) ? encoderJs : encoderTs));
+    icdModule = require(fs.existsSync(icdJs) ? icdJs : (fs.existsSync(icdTs) ? icdTs : icdDist));
+    encoderModule = require(fs.existsSync(encoderJs) ? encoderJs : (fs.existsSync(encoderTs) ? encoderTs : encoderDist));
     return { icdModule, encoderModule };
     return { icdModule, encoderModule };
   } catch (err) {
