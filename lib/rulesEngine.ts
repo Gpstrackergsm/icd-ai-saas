@@ -22,6 +22,9 @@ import { validateCompliance } from './complianceValidator';
 import { generateRationale, CodeRationale } from './rationaleEngine';
 import { calculateConfidence, ConfidenceAssessment } from './confidenceEngine';
 import { runValidation } from './validation/validationEngine';
+import { parseInput } from './structured/parser';
+import { runStructuredRules } from './structured/engine';
+import { validateCodeSet } from './structured/validator-post';
 
 export interface SequencedCode {
   code: string;
@@ -250,22 +253,25 @@ export function runRulesEngine(text: string): EngineResult {
   }
 
   // 9. Obstetrics
-  const obstetrics = resolveObstetrics(text);
-  if (obstetrics) {
-    sequence.push({ code: obstetrics.code, label: obstetrics.label, triggeredBy: 'obstetrics_resolution', hcc: false });
-    if (obstetrics.warnings) warnings.push(...obstetrics.warnings);
+  // 9. Obstetrics (switched to v2.1 Structured Engine)
+  // const obstetrics = resolveObstetrics(text);
+  const { context: obContext } = parseInput(text);
 
-    // Add secondary codes (Z3A, Z37, etc.)
-    if (obstetrics.secondary_codes) {
-      obstetrics.secondary_codes.forEach(sc => {
-        sequence.push({
-          code: sc.code,
-          label: sc.label,
-          triggeredBy: `obstetrics_${sc.type}`,
-          hcc: false
-        });
+  // Only run if OB indicators are present
+  if (obContext.conditions.obstetric?.pregnant || obContext.conditions.obstetric?.delivery?.occurred) {
+    const obResults = runStructuredRules(obContext);
+    const obValidated = validateCodeSet(obResults.primary, obResults.secondary, obContext);
+
+    obValidated.codes.forEach(c => {
+      sequence.push({
+        code: c.code,
+        label: c.label,
+        triggeredBy: `structured_engine_${c.rule || 'rule'}`,
+        hcc: false // Will be re-calculated by flagHcc
       });
-    }
+    });
+
+    if (obResults.warnings) warnings.push(...obResults.warnings);
   }
 
   // 10. Psychiatric
