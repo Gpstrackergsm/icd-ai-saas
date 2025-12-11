@@ -522,6 +522,8 @@ export function parseInput(text: string): ParseResult {
                     lowerValue.includes('prolonged') ||
                     lowerValue.includes('arrest') ||
                     lowerValue.includes('failure to progress') ||
+                    lowerValue.includes('ftp') ||
+                    lowerValue.includes('slow progress') ||
                     lowerValue.includes('inertia')
                 ) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
@@ -531,7 +533,7 @@ export function parseInput(text: string): ParseResult {
                     if (lowerValue.includes('prolonged second stage')) context.conditions.obstetric.labor.prolongedSecondStage = true;
                     if (lowerValue.includes('arrest of dilation')) context.conditions.obstetric.labor.arrestDilation = true;
                     if (lowerValue.includes('arrest of descent')) context.conditions.obstetric.labor.arrestDescent = true;
-                    if (lowerValue.includes('failure to progress')) context.conditions.obstetric.labor.failureToProgress = true;
+                    if (lowerValue.includes('failure to progress') || lowerValue.includes('ftp') || lowerValue.includes('slow progress')) context.conditions.obstetric.labor.failureToProgress = true;
                     if (lowerValue.includes('primary inertia')) context.conditions.obstetric.labor.primaryInertia = true;
                     if (lowerValue.includes('secondary inertia') || lowerValue.includes('secondary uterine inertia')) context.conditions.obstetric.labor.secondaryInertia = true;
                 }

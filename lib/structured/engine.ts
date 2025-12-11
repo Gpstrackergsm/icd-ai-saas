@@ -1643,13 +1643,13 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     rule: 'Labor complication code'
                 });
             }
-            // O62.2 Secondary uterine inertia (Explicit)
-            if (ob.labor.secondaryInertia && !codes.some(c => c.code === 'O62.2')) {
+            // O62.1 Secondary uterine inertia (Explicit)
+            if (ob.labor.secondaryInertia && !codes.some(c => c.code === 'O62.1')) {
                 codes.push({
-                    code: 'O62.2',
-                    label: 'Other secondary uterine inertia',
+                    code: 'O62.1',
+                    label: 'Secondary uterine inertia',
                     rationale: 'Secondary inertia documented',
-                    guideline: 'ICD-10-CM O62.2',
+                    guideline: 'ICD-10-CM O62.1',
                     trigger: 'Secondary Inertia',
                     rule: 'Labor complication code'
                 });
