@@ -1448,7 +1448,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 // Generate O75.82 for VBAC attempt/labor
                 codes.push({
                     code: 'O75.82', // Onset (spontaneous) of labor after previous cesarean delivery
-                    label: 'Onset (spontaneous) of labor after previous cesarean delivery',
+                    label: 'Vaginal delivery following previous cesarean (VBAC)',
                     rationale: 'VBAC documented (blocks O82)',
                     guideline: 'ICD-10-CM O75.82',
                     trigger: 'VBAC',
@@ -1611,6 +1611,56 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         codes.sort((a, b) => {
             return getPriority(a.code) - getPriority(b.code);
         });
+
+        // 3. STRICT DESCRIPTION SANITIZATION
+        // If VBAC is present, sanitize ALL descriptions to remove "cesarean" implications
+        // unless it is "history of" or "previous".
+        if (hasVBAC) {
+            codes.forEach(c => {
+                // Regex to match "cesarean" that is NOT preceded by "previous ", "prior ", "history of "
+                // Negative lookbehind is supported in modern JS/TS (Node 10+)
+                // Pattern: Look for 'cesarean section', 'c-section', 'cesarean delivery'
+                // Replace with 'delivery' or empty string depending on context.
+                // Safest: Replace "cesarean delivery" -> "delivery"
+
+                // Note: JS regex lookbehind `(?<!...)`
+                // We want to replace "Cesarean delivery" with "Delivery"
+                // And "C-section" with "Delivery" ?? Or just strip it?
+                // User said: REMOVE any mention of "cesarean delivery", "delivery by cesarean", "planned cesarean", "c-section performed"
+
+                let newLabel = c.label;
+
+                // Case 1: "Cesarean delivery" -> "Delivery"
+                // BUT protect "previous cesarean delivery" -> keep as is.
+                // So we only replace if NOT preceded by history terms.
+
+                const historyPrefix = '(?<!previous |prior |old |history of )';
+
+                // 1. "Cesarean delivery" -> "Delivery"
+                newLabel = newLabel.replace(new RegExp(`${historyPrefix}cesarean delivery`, 'gi'), 'Delivery');
+
+                // 2. "Delivery by cesarean" -> "Delivery"
+                newLabel = newLabel.replace(new RegExp(`${historyPrefix}delivery by cesarean`, 'gi'), 'Delivery');
+
+                // 3. "Planned cesarean" -> "Planned delivery" (or just remove?) 
+                newLabel = newLabel.replace(new RegExp(`${historyPrefix}planned cesarean`, 'gi'), 'Planned delivery');
+
+                // 4. "C-section performed" -> "Delivery performed"
+                newLabel = newLabel.replace(new RegExp(`${historyPrefix}c-section performed`, 'gi'), 'Delivery performed');
+
+                // 5. Naked "Cesarean" or "C-section" that might imply procedure?
+                // If the label is just "Cesarean section", maybe replace with "Delivery"?
+                // Avoid over-sanitizing "Previous cesarean section" (OOSP).
+                // Let's stick to the explicit phrases user removed first, plus generic "cesarean" check?
+
+                // Generic cleanup: "cesarean" -> "" if not history?
+                // "Encounter for cesarean delivery without indication" -> "Encounter for delivery without indication" (O82 is removed anyway, but good for safety)
+
+                if (newLabel !== c.label) {
+                    c.label = newLabel;
+                }
+            });
+        }
 
     }
 
