@@ -1,5 +1,5 @@
-// Engine version: 2.1.0-STRICT (Fixed Import)
-// Timestamp: 2025-12-11_03-08
+// Engine version: 2.1.0-STRICT (v3.1)
+// Timestamp: 2025-12-11_03-33
 
 
 import { PatientContext } from './context';
@@ -1764,7 +1764,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             codes.forEach(c => {
                 // WATERMARK TO PROVE DEPLOYMENT
                 if (c.code === 'O75.82') {
-                    c.label += ' [v3.0 Strict]';
+                    c.label += ' [v3.1 Strict]';
                 }
 
                 // Regex to match "cesarean" that is NOT preceded by "previous ", "prior ", "history of "
