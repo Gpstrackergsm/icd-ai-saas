@@ -86,7 +86,12 @@ export function parseInput(text: string): ParseResult {
                         context.conditions.obstetric.delivery.type = 'vaginal';
                         // Default outcome if not found yet? No, handle Z37 separately.
                     }
-                    else if (lowerValue.includes('cesarean') || lowerValue.includes('c-section')) context.conditions.obstetric.delivery.type = 'cesarean';
+                    else if (lowerValue.includes('cesarean') || lowerValue.includes('c-section')) {
+                        const isHistory = lowerValue.includes('history') || lowerValue.includes('prior') || lowerValue.includes('previous') || lowerValue.includes('old') || lowerValue.includes('status');
+                        if (!isHistory) {
+                            context.conditions.obstetric.delivery.type = 'cesarean';
+                        }
+                    }
                 }
 
                 // --- STRICT OB AUDIT SCANS ---
@@ -298,14 +303,19 @@ export function parseInput(text: string): ParseResult {
                 }
 
                 // Delivery
-                if (lowerValue.includes('delivery') || lowerValue.includes('svd') || lowerValue.includes('vaginal')) {
+                if (lowerValue.includes('delivery') || lowerValue.includes('svd') || lowerValue.includes('vaginal') || lowerValue.includes('cesarean') || lowerValue.includes('c-section')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     // If it's a delivery, assume inpatient encounter unless specified
                     context.encounter.type = 'inpatient';
                     if (!context.conditions.obstetric.delivery) context.conditions.obstetric.delivery = { occurred: true, type: 'vaginal' };
 
-                    if (lowerValue.includes('caesarean') || lowerValue.includes('c-section')) {
+                    // Cesarean Detection - STRICT HISTORY EXCLUSION
+                    const isHistory = lowerValue.includes('history') || lowerValue.includes('prior') || lowerValue.includes('previous') || lowerValue.includes('old') || lowerValue.includes('status');
+
+                    if ((lowerValue.includes('caesarean') || lowerValue.includes('c-section')) && !isHistory) {
                         context.conditions.obstetric.delivery.type = 'cesarean';
+                    } else if (lowerValue.includes('vaginal') || lowerValue.includes('svd')) {
+                        context.conditions.obstetric.delivery.type = 'vaginal';
                     }
                 }
 
@@ -476,14 +486,19 @@ export function parseInput(text: string): ParseResult {
                 }
 
                 // Delivery
-                if (lowerValue.includes('delivery') || lowerValue.includes('svd') || lowerValue.includes('vaginal')) {
+                if (lowerValue.includes('delivery') || lowerValue.includes('svd') || lowerValue.includes('vaginal') || lowerValue.includes('cesarean') || lowerValue.includes('c-section')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     // If it's a delivery, assume inpatient encounter unless specified
                     context.encounter.type = 'inpatient';
                     if (!context.conditions.obstetric.delivery) context.conditions.obstetric.delivery = { occurred: true, type: 'vaginal' };
 
-                    if (lowerValue.includes('caesarean') || lowerValue.includes('c-section')) {
+                    // Cesarean Detection - STRICT HISTORY EXCLUSION
+                    const isHistory = lowerValue.includes('history') || lowerValue.includes('prior') || lowerValue.includes('previous') || lowerValue.includes('old') || lowerValue.includes('status');
+
+                    if ((lowerValue.includes('caesarean') || lowerValue.includes('c-section')) && !isHistory) {
                         context.conditions.obstetric.delivery.type = 'cesarean';
+                    } else if (lowerValue.includes('vaginal') || lowerValue.includes('svd')) {
+                        context.conditions.obstetric.delivery.type = 'vaginal';
                     }
                 }
 
