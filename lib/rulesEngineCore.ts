@@ -25,6 +25,7 @@ import { runValidation } from './validation/validationEngine';
 import { parseInput } from './structured/parser';
 import { runStructuredRules } from './structured/engine';
 import { validateCodeSet } from './structured/validator-post';
+import { parseCardiology, resolveCardiologyCodes } from './domains/cardiology/module';
 
 export interface SequencedCode {
   code: string;
@@ -272,6 +273,23 @@ export function runRulesEngine(text: string): EngineResult {
     });
 
     if (obResults.warnings) warnings.push(...obResults.warnings);
+  }
+
+  // 9.5 Cardiology (Domain-Specific Module)
+  const cardiologyKeywords = /\b(htn|hypertension|heart failure|chf|hfref|hfpef|cad|coronary|angina|mi|myocardial|stemi|nstemi|afib|atrial fibrillation|cardiomyopathy|ckd|chronic kidney)\b/i;
+
+  if (cardiologyKeywords.test(text)) {
+    const cardioAttrs = parseCardiology(text);
+    const cardioCodes = resolveCardiologyCodes(cardioAttrs);
+
+    cardioCodes.forEach(c => {
+      sequence.push({
+        code: c.code,
+        label: c.label,
+        triggeredBy: `cardiology_${c.triggeredBy}`,
+        hcc: c.hcc
+      });
+    });
   }
 
   // 10. Psychiatric
