@@ -1,6 +1,6 @@
-// Engine version: 2.1.0-STRICT
-// Timestamp: 2025-12-11_03-05
-import { GeneratedCode } from './validator';
+// Engine version: 2.1.0-STRICT (Fixed Import)
+// Timestamp: 2025-12-11_03-08
+
 
 import { PatientContext } from './context';
 
