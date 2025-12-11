@@ -57,6 +57,27 @@ module.exports = async function handler(req, res) {
         // Run the rules engine
         const result = runStructuredRules(context);
 
+        // CARDIOLOGY MODULE INTEGRATION (v3.3)
+        // Detect cardiology keywords and augment results with domain-specific codes
+        const cardiologyKeywords = /\b(htn|hypertension|heart failure|chf|hfref|hfpef|cad|coronary|angina|mi|myocardial|stemi|nstemi|afib|atrial fibrillation|cardiomyopathy|ckd|chronic kidney)\b/i;
+
+        if (cardiologyKeywords.test(text)) {
+            const { parseCardiology, resolveCardiologyCodes } = require('../dist/lib/domains/cardiology/module.js');
+            const cardioAttrs = parseCardiology(text);
+            const cardioCodes = resolveCardiologyCodes(cardioAttrs);
+
+            // Merge cardiology codes into secondary (they'll be sequenced later)
+            cardioCodes.forEach(c => {
+                result.secondary.push({
+                    code: c.code,
+                    label: c.label,
+                    rationale: `Cardiology domain module: ${c.triggeredBy}`,
+                    trigger: c.triggeredBy,
+                    rule: 'cardiology_module'
+                });
+            });
+        }
+
         // Apply ICD-10-CM validation for claim compliance
         const validated = validateCodeSet(result.primary, result.secondary, context);
 
