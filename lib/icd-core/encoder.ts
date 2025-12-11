@@ -5,7 +5,7 @@
 // Responsibility: High-level encoder orchestrating NLP, rules, and ordering
 
 import { getCode, initIcdData, searchIndex } from './dataSource';
-import { applyGuidelineRules } from './rulesEngineCore';
+import { applyGuidelineRules } from './rulesEngine';
 import type { CandidateCode } from './models';
 import { extractClinicalConcepts, mapConceptsToCandidateCodes, normalizeText } from './nlpParser';
 import { runRulesEngine } from '../rulesEngineCore';
