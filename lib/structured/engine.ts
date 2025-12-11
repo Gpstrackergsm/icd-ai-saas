@@ -1492,6 +1492,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             });
         }
 
+
         // RULE: Multiple Gestation (O30.x)
         if (ob.multipleGestation) {
             codes.push({
@@ -1504,6 +1505,26 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 trigger: 'Multiple Gestation',
                 rule: 'Multiple gestation code'
             });
+
+            // STRICT OUTCOME ENFORCEMENT: Twins -> Z37.2
+            // If we just added O30, we MUST ensure Z37 reflects twins.
+            // Remove any existing single birth code (Z37.0)
+            const singleIndex = codes.findIndex(c => c.code === 'Z37.0');
+            if (singleIndex !== -1) {
+                codes.splice(singleIndex, 1);
+            }
+
+            // Check if Z37.2 exists, if not add it
+            if (!codes.some(c => c.code === 'Z37.2')) {
+                codes.push({
+                    code: 'Z37.2',
+                    label: 'Twins, both liveborn',
+                    rationale: 'Multiple gestation requires matching outcome code',
+                    guideline: 'ICD-10-CM Z37.2',
+                    trigger: 'Twin Gestation (Auto-Correction)',
+                    rule: 'Outcome of delivery code'
+                });
+            }
         }
 
 
@@ -1591,23 +1612,47 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         }
 
         // 2. PRIMARY SELECTION LOGIC (Sort by Clinical Weight)
-        // Priority:
-        // 1. Acute Complications (O72, O14, O30, O48, O70, etc.) - anything O-code except O80, O82, O75.82? 
-        //    Actually O75.82 is high priority but complications like PPH/Pre-E might be higher? 
-        //    User said: "a) Active OB Complications... b) VBAC"
-        // 2. VBAC (O75.82)
-        // 3. O82 / O80 (Delivery Codes) - if no complications?
-        // 4. Outcome (Z37)
-        // 5. GA (Z3A)
-        // 6. History (Z codes?) - Z3A is history? No, Z3A is GA. History is Z87?
+        // Hierarchy from User:
+        // 1. Severe Complications (O14.1x Severe Pre-E, O14.2x HELLP, O15.x Eclampsia)
+        // 2. VBAC (O75.82) - Primary unless severe complication
+        // 3. Other O Codes (Mild/Moderate Pre-E, PPH, Lacerations, O30 Twins, etc.)
+        // 4. Delivery Encounter (O80/O82)
+        // 5. Outcome (Z37)
+        // 6. Gestational Age (Z3A)
+        // 7. Other Z Codes
 
         const getPriority = (c: string) => {
+            // Priority 1: Severe / Critical OB Conditions
+            if (
+                c.startsWith('O14.1') || // Severe Pre-eclampsia
+                c.startsWith('O14.2') || // HELLP
+                c.startsWith('O15') || // Eclampsia (O15.0, O15.1, O15.9)
+                c === 'O14.93'           // Unspecified Pre-E (User wants it flagged, but if generated it might be primary if implied severe? No, treat as Priority 3 usually. But logic says "flag as error". Let's put it in Priority 3)
+            ) {
+                // Wait, check spec again: "Mild or moderate... must NOT override VBAC." 
+                // "O14.93 -> flag as error". 
+                // So Severe IS Priority 1.
+                if (c === 'O14.93') return 3; // Unspecified -> Below VBAC
+                return 1;
+            }
+
+            // Priority 2: VBAC
             if (c === 'O75.82') return 2;
-            if (c.startsWith('Z37')) return 4;
-            if (c.startsWith('Z3A')) return 5;
-            if (c === 'O80' || c === 'O82') return 3;
-            if (c.startsWith('O')) return 1; // All other O codes are complications
-            if (c.startsWith('Z')) return 6; // Other Z codes (History, screening)
+
+            // Priority 3: All other O codes (Mild Pre-E, PPH, O30, etc.)
+            // This ensures PPH (O72) and Mild Pre-E (O14.0) come AFTER VBAC.
+            if (c.startsWith('O') && c !== 'O80' && c !== 'O82') return 3;
+
+            // Priority 4: Delivery Codes
+            if (c === 'O80' || c === 'O82') return 4;
+
+            // Priority 5: Outcome
+            if (c.startsWith('Z37')) return 5;
+
+            // Priority 6: Gestational Age
+            if (c.startsWith('Z3A')) return 6;
+
+            // Priority 7: Other / Standard Z
             return 7;
         };
 
