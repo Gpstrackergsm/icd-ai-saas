@@ -66,16 +66,51 @@ module.exports = async function handler(req, res) {
             const cardioAttrs = parseCardiology(text);
             const cardioCodes = resolveCardiologyCodes(cardioAttrs);
 
-            // Merge cardiology codes into secondary (they'll be sequenced later)
-            cardioCodes.forEach(c => {
-                result.secondary.push({
-                    code: c.code,
-                    label: c.label,
-                    rationale: `Cardiology domain module: ${c.triggeredBy}`,
-                    trigger: c.triggeredBy,
-                    rule: 'cardiology_module'
-                });
-            });
+            if (cardioCodes.length > 0) {
+                // SEQUENCING PATCH v3.3: Respect cardiology module's internal sequencing
+                // The first code returned is the PRIMARY per ICD-10-CM/UHDDS
+                const cardioPrimary = cardioCodes[0];
+                const cardioSecondary = cardioCodes.slice(1);
+
+                // If cardiology returns I13.x (HTN+CKD+HF combo), it MUST be PRIMARY
+                if (cardioPrimary.code.startsWith('I13')) {
+                    // Override any existing primary with I13.x
+                    result.primary = {
+                        code: cardioPrimary.code,
+                        label: cardioPrimary.label,
+                        rationale: `Cardiology domain: HTN+CKD+HF combination code (UHDDS principal)`,
+                        trigger: cardioPrimary.triggeredBy,
+                        rule: 'cardiology_module_primary'
+                    };
+
+                    // Add remaining cardiology codes to secondary
+                    cardioSecondary.forEach(c => {
+                        result.secondary.push({
+                            code: c.code,
+                            label: c.label,
+                            rationale: `Cardiology domain module: ${c.triggeredBy}`,
+                            trigger: c.triggeredBy,
+                            rule: 'cardiology_module'
+                        });
+                    });
+
+                    // ESRD SUPPRESSION: Remove N18.5 from secondary if cardiology provides codes
+                    // (cardiology already handles ESRD suppression internally)
+                    result.secondary = result.secondary.filter(c => c.code !== 'N18.5');
+
+                } else {
+                    // For other cardiology cases (MI, AF, etc.), add all to secondary
+                    cardioCodes.forEach(c => {
+                        result.secondary.push({
+                            code: c.code,
+                            label: c.label,
+                            rationale: `Cardiology domain module: ${c.triggeredBy}`,
+                            trigger: c.triggeredBy,
+                            rule: 'cardiology_module'
+                        });
+                    });
+                }
+            }
         }
 
         // Apply ICD-10-CM validation for claim compliance
