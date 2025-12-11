@@ -1595,18 +1595,23 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
         // === STRICT AUDIT SEQUENCING & SAFETY NET ===
 
-        // 1. AUTO-REMOVAL SAFETY: If VBAC (O75.82) is present, REMOVE O82.
+        // 1. AUTO-REMOVAL SAFETY: If VBAC (O75.82) is present, REMOVE O82...
+        // UNLESS the delivery was explicitly Cesarean (Failed VBAC).
         const hasVBAC = codes.some(c => c.code === 'O75.82');
         if (hasVBAC) {
-            // Filter out O82
-            const initialLength = codes.length;
-            // Reassign to filter
-            // Note: codes is a const? No, usually `const codes: GeneratedCode[] = []` at start of function. 
-            // Wait, I need to check if `codes` is const. If so, I can't reassign. I'll verify in next step or use splice.
-            // Assuming splice for safety if const.
-            for (let i = codes.length - 1; i >= 0; i--) {
-                if (codes[i].code === 'O82') {
-                    codes.splice(i, 1);
+            // Check if delivery was Cesarean (Failed Trial of Labor)
+            // Ideally we check ob.delivery?.type or codes for O82 trigger?
+            // Rely on ob context from outer scope.
+            const isFailedVBAC = ob.delivery?.type === 'cesarean';
+
+            if (!isFailedVBAC) {
+                // If SUCCESSFUL VBAC (or unspecified), we block O82.
+                // If FAILED VBAC (Cesarean), we ALLOW O82 to coexist.
+                const initialLength = codes.length;
+                for (let i = codes.length - 1; i >= 0; i--) {
+                    if (codes[i].code === 'O82') {
+                        codes.splice(i, 1);
+                    }
                 }
             }
         }
