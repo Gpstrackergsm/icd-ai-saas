@@ -1444,13 +1444,8 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             // 2. Delivery Encounter Code
             // VBAC OVERRIDES O82
             if (ob.vbac) {
-                // IMPROVED: Dynamic Label Construction
-                let vbacLabel = 'Vaginal delivery following previous cesarean (VBAC).';
-
-                // Allowed Additions (Strictly Checked)
-                if (ob.termDocumentation === 'term' || ob.termDocumentation === 'full_term') {
-                    vbacLabel += ' Term pregnancy.';
-                }
+                // STRICT OVERRIDE: Exact string only. No dynamic additions.
+                const vbacLabel = 'Vaginal delivery following previous cesarean (VBAC)'; // Exact short description
 
                 // If VBAC, do NOT generate O82. Treat C-section as history.
                 // Generate O75.82 for VBAC attempt/labor
@@ -1684,17 +1679,15 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         const vbacCode = codes.find(c => c.code === 'O75.82');
         if (vbacCode) {
             const forbidden = /delivery by cesarean|planned cesarean|surgical delivery|operative delivery|cesarean occurring|c-section performed|cephalopelvic disproportion|disproportion|O33\.9/i;
+            // Also enforce strict equality to the required short description if needed, 
+            // but primarily strip forbidden terms and ensure "cleanliness".
+            // User requirement: "If any forbidden wording is detected: Delete entire description -> Replace with short/override description ONLY."
+
             if (forbidden.test(vbacCode.label)) {
-                // FORCE RESET to Base Template
-                let cleanLabel = 'Vaginal delivery following previous cesarean (VBAC).';
-
-                // Re-apply allowed context if safe
-                if (ob.termDocumentation === 'term' || ob.termDocumentation === 'full_term') {
-                    cleanLabel += ' Term pregnancy.';
-                }
-
-                vbacCode.label = cleanLabel;
-                // Log correction conceptually (internal note: normalized via fail-safe)
+                // FORCE RESET to Exempt Short Description
+                // NO Conditionals.
+                vbacCode.label = 'Vaginal delivery following previous cesarean (VBAC)';
+                // Log correction conceptually
             }
         }
 
