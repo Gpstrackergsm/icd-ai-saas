@@ -1,4 +1,4 @@
-import { SequencedCode } from '../rulesEngine';
+import { SequencedCode } from '../rulesEngineCore';
 
 export interface ValidationRuleResult {
     ruleId: string;

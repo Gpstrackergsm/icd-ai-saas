@@ -1,5 +1,5 @@
 
-import { runRulesEngine } from './lib/rulesEngine';
+import { runRulesEngine } from './lib/rulesEngineCore';
 
 const input = `Patient: 32-year-old female
 History: G4P2, 2 prior cesarean deliveries, Candidate for VBAC

@@ -1,4 +1,4 @@
-import { SequencedCode } from './rulesEngine.js';
+import { SequencedCode } from './rulesEngineCore.js';
 
 export function buildAuditTrail(sequence: SequencedCode[], warnings: string[]): string[] {
   const audit: string[] = [];

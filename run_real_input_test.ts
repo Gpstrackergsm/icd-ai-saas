@@ -1,5 +1,5 @@
 
-import { runRulesEngine } from './lib/rulesEngine';
+import { runRulesEngine } from './lib/rulesEngineCore';
 
 const inputCASE = `CASE DEMO: 
 28-year-old female admitted for Spontaneous Vaginal Delivery (SVD). 

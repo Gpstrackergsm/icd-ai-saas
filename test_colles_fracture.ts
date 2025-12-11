@@ -1,5 +1,5 @@
 
-import { runRulesEngine } from './lib/rulesEngine';
+import { runRulesEngine } from './lib/rulesEngineCore';
 
 const text = 'acute fracture of the left wrist (distal radius) with documented severe, acute post-traumatic pain from a fall';
 const result = runRulesEngine(text);

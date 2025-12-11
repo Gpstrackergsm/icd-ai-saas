@@ -1,4 +1,4 @@
-import { SequencedCode } from './rulesEngine.js';
+import { SequencedCode } from './rulesEngineCore.js';
 
 export type PoisoningIntent = 1 | 2 | 3 | 4 | 5 | 6;
 

@@ -1,5 +1,5 @@
 
-import { runRulesEngine } from './lib/rulesEngine';
+import { runRulesEngine } from './lib/rulesEngineCore';
 
 const text = 'Severe urosepsis due to a chronic urinary tract infection (UTI), leading to septic shock in a patient with a history of Type 2 Diabetes Mellitus (T2DM)';
 const result = runRulesEngine(text);

@@ -1,4 +1,4 @@
-import { runRulesEngine } from './lib/rulesEngine';
+import { runRulesEngine } from './lib/rulesEngineCore';
 
 const testCases = [
     {

@@ -1,5 +1,5 @@
 
-import { runRulesEngine } from './lib/rulesEngine';
+import { runRulesEngine } from './lib/rulesEngineCore';
 
 const text = 'Patient diagnosed with acute pyelonephritis (kidney infection) due to Escherichia coli (E. coli)';
 const result = runRulesEngine(text);

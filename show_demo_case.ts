@@ -1,5 +1,5 @@
 
-import { runRulesEngine } from './lib/rulesEngine';
+import { runRulesEngine } from './lib/rulesEngineCore';
 import { highRiskRules } from './lib/validation/highRiskRules';
 
 // Manual trigger verification to demonstrate the rule logic specifically

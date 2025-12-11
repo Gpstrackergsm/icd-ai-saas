@@ -1,6 +1,6 @@
 
 import assert from 'assert';
-import { runRulesEngine } from '../rulesEngine.js';
+import { runRulesEngine } from '../rulesEngineCore.js';
 
 function describe(name: string, fn: () => void) {
     console.log(`\n${name}`);

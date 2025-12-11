@@ -1,4 +1,4 @@
-import { runRulesEngine } from './lib/rulesEngine.js';
+import { runRulesEngine } from './lib/rulesEngineCore.js';
 
 console.log('='.repeat(80));
 console.log('TEST 1: Sepsis with Septic Shock (Urosepsis)');

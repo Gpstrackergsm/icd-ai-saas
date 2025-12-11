@@ -1,4 +1,4 @@
-import { SequencedCode } from './rulesEngine.js';
+import { SequencedCode } from './rulesEngineCore.js';
 
 export interface ConfidenceAssessment {
     overallConfidence: number; // 0-100

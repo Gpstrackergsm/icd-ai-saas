@@ -1,4 +1,4 @@
-import { SequencedCode } from '../rulesEngine';
+import { SequencedCode } from '../rulesEngineCore';
 import { highRiskRules, ValidationRuleResult } from './highRiskRules';
 import { formatValidationError } from './formatter';
 

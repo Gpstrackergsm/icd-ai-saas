@@ -7,7 +7,7 @@ const fs = require('fs');
 // But we want to confirm what happens if we use the COMPILED CODE in dist
 
 try {
-    const rulesEnginePath = path.resolve(__dirname, './dist/lib/rulesEngine.js');
+    const rulesEnginePath = path.resolve(__dirname, './dist/lib/rulesEngineCore.js');
     if (!fs.existsSync(rulesEnginePath)) {
         console.error("DIST rulesEngine not found at", rulesEnginePath);
         console.error("Please run 'npm run build' first.");

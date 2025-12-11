@@ -8,7 +8,7 @@ import * as assert from 'node:assert/strict';
 import { before, describe, it } from 'node:test';
 
 import { encodeDiagnosisText } from '../encoder';
-import { applyGuidelineRules } from '../rulesEngine';
+import { applyGuidelineRules } from '../rulesEngineCore';
 import { getICDEntry, initIcdData } from '../dataSource';
 
 before(async () => {

@@ -1,4 +1,4 @@
-import { runRulesEngine } from './lib/rulesEngine';
+import { runRulesEngine } from './lib/rulesEngineCore';
 
 const complexScenario = `67-year-old female patient admitted with acute exacerbation of congestive heart failure and acute kidney injury. Patient has a history of type 2 diabetes mellitus with diabetic nephropathy and stage 4 chronic kidney disease. She also has longstanding hypertensive heart and chronic kidney disease. During hospitalization, patient developed hospital-acquired pneumonia due to Pseudomonas aeruginosa. Patient is currently on hemodialysis three times per week. She also has a non-healing diabetic ulcer on the plantar surface of her left foot with exposed muscle. Initial encounter for the foot ulcer.`;
 

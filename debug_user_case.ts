@@ -49,7 +49,7 @@ if (errors.length > 0) {
 const result = runStructuredRules(context);
 
 console.log("\nGenerated ICD-10-CM Codes:");
-const codes = [];
+const codes: string[] = [];
 if (result.primary) {
     codes.push(result.primary.code);
     console.log(`Primary: ${result.primary.code}`);

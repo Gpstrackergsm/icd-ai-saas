@@ -1,5 +1,5 @@
 import assert from 'assert';
-import { runRulesEngine } from '../rulesEngine.js';
+import { runRulesEngine } from '../rulesEngineCore.js';
 import { applyExclusions } from '../exclusionEngine.js';
 import { validateHierarchy } from '../hierarchyValidator.js';
 

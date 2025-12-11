@@ -1,4 +1,4 @@
-import { SequencedCode } from './rulesEngine.js';
+import { SequencedCode } from './rulesEngineCore.js';
 
 export interface ComplianceResult {
     valid: boolean;

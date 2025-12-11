@@ -6,11 +6,24 @@
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "strict": true,
+    "noImplicitAny": false,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "lib": ["ES2021"]
+    "lib": [
+      "ES2021"
+    ]
   },
-  "include": ["lib/**/*", "api/**/*", "data/**/*", "public/**/*", "*.ts"],
-  "exclude": ["node_modules", "dist", "lib/icd-core/icdTextParser.ts"]
+  "include": [
+    "lib/**/*",
+    "api/**/*",
+    "data/**/*",
+    "public/**/*",
+    "*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "lib/icd-core/icdTextParser.ts"
+  ]
 }

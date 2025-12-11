@@ -1,6 +1,6 @@
 
 import { highRiskRules } from './lib/validation/highRiskRules';
-import { SequencedCode } from './lib/rulesEngine';
+import { SequencedCode } from './lib/rulesEngineCore';
 
 interface TestCase {
     name: string;

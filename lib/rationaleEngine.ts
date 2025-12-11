@@ -1,4 +1,4 @@
-import { SequencedCode } from './rulesEngine';
+import { SequencedCode } from './rulesEngineCore';
 import { getGuidelineForCode, GuidelineReference } from './guidelineReferences';
 
 export interface CodeRationale {
