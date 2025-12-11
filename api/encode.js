@@ -1,4 +1,4 @@
-// ICD-10-CM Encoder core – generated with Codex helper
+// ICD-10-CM Encoder core – generated with Codex helper (v3.2 FORCE UPDATE)
 // Responsibility: HTTP handler to encode free-text narratives into ICD-10-CM codes
 
 const fs = require('fs');

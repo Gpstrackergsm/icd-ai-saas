@@ -3,7 +3,7 @@ const { validateContext } = require('../dist/lib/structured/validator.js');
 const { runStructuredRules } = require('../dist/lib/structured/engine.js');
 const { validateCodeSet } = require('../dist/lib/structured/validator-post.js');
 const { requireAuth } = require('../dist/lib/auth/middleware.js');
-
+// FORCE UPDATE CHECK v3.2
 const { lookupDetail } = require('../lib/icd-dictionary.js');
 
 module.exports = async function handler(req, res) {
