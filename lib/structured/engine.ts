@@ -1569,6 +1569,49 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             });
         }
 
+        // === STRICT AUDIT SEQUENCING & SAFETY NET ===
+
+        // 1. AUTO-REMOVAL SAFETY: If VBAC (O75.82) is present, REMOVE O82.
+        const hasVBAC = codes.some(c => c.code === 'O75.82');
+        if (hasVBAC) {
+            // Filter out O82
+            const initialLength = codes.length;
+            // Reassign to filter
+            // Note: codes is a const? No, usually `const codes: GeneratedCode[] = []` at start of function. 
+            // Wait, I need to check if `codes` is const. If so, I can't reassign. I'll verify in next step or use splice.
+            // Assuming splice for safety if const.
+            for (let i = codes.length - 1; i >= 0; i--) {
+                if (codes[i].code === 'O82') {
+                    codes.splice(i, 1);
+                }
+            }
+        }
+
+        // 2. PRIMARY SELECTION LOGIC (Sort by Clinical Weight)
+        // Priority:
+        // 1. Acute Complications (O72, O14, O30, O48, O70, etc.) - anything O-code except O80, O82, O75.82? 
+        //    Actually O75.82 is high priority but complications like PPH/Pre-E might be higher? 
+        //    User said: "a) Active OB Complications... b) VBAC"
+        // 2. VBAC (O75.82)
+        // 3. O82 / O80 (Delivery Codes) - if no complications?
+        // 4. Outcome (Z37)
+        // 5. GA (Z3A)
+        // 6. History (Z codes?) - Z3A is history? No, Z3A is GA. History is Z87?
+
+        const getPriority = (c: string) => {
+            if (c === 'O75.82') return 2;
+            if (c.startsWith('Z37')) return 4;
+            if (c.startsWith('Z3A')) return 5;
+            if (c === 'O80' || c === 'O82') return 3;
+            if (c.startsWith('O')) return 1; // All other O codes are complications
+            if (c.startsWith('Z')) return 6; // Other Z codes (History, screening)
+            return 7;
+        };
+
+        codes.sort((a, b) => {
+            return getPriority(a.code) - getPriority(b.code);
+        });
+
     }
 
 
