@@ -175,7 +175,17 @@ module.exports = async function handler(req, res) {
 
     return sendJson(res, 200, {
       success: true,
-      data: result,
+      data: {
+        ...result,
+        debug_meta: {
+          ver: 'v4.0 PROBE',
+          loaded_icd: fs.existsSync(icdDist) ? 'DIST' : (fs.existsSync(icdJs) ? 'JS' : 'TS'),
+          loaded_encoder: fs.existsSync(encoderDist) ? 'DIST' : (fs.existsSync(encoderJs) ? 'JS' : 'TS'),
+          cwd: process.cwd(),
+          root_files: (() => { try { return fs.readdirSync(path.resolve(__dirname, '..')); } catch (e) { return e.message; } })(),
+          timestamp: new Date().toISOString()
+        }
+      },
     });
 
   } catch (err) {
