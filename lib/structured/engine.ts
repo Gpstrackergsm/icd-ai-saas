@@ -1648,7 +1648,16 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 // 4. "C-section performed" -> "Delivery performed"
                 newLabel = newLabel.replace(new RegExp(`${historyPrefix}c-section performed`, 'gi'), 'Delivery performed');
 
-                // 5. Naked "Cesarean" or "C-section" that might imply procedure?
+                // 5. "Cesarean occurring" -> "Delivery occurring"
+                newLabel = newLabel.replace(new RegExp(`${historyPrefix}cesarean occurring`, 'gi'), 'Delivery occurring');
+
+                // 6. "Surgical delivery" -> "Delivery"
+                newLabel = newLabel.replace(new RegExp(`${historyPrefix}surgical delivery`, 'gi'), 'Delivery');
+
+                // 7. "Operative delivery" -> "Delivery"
+                newLabel = newLabel.replace(new RegExp(`${historyPrefix}operative delivery`, 'gi'), 'Delivery');
+
+                // 8. Naked "Cesarean" or "C-section" that might imply procedure?
                 // If the label is just "Cesarean section", maybe replace with "Delivery"?
                 // Avoid over-sanitizing "Previous cesarean section" (OOSP).
                 // Let's stick to the explicit phrases user removed first, plus generic "cesarean" check?
