@@ -18,14 +18,17 @@ function loadRuntimeModules() {
     throw new Error('TypeScript runtime support is unavailable; install ts-node and typescript');
   }
 
+  const icdDist = path.resolve(__dirname, '../dist/lib/icd-core/dataSource.js');
   const icdJs = path.resolve(__dirname, '../lib/icd-core/dataSource.js');
   const icdTs = path.resolve(__dirname, '../lib/icd-core/dataSource.ts');
+
+  const encoderDist = path.resolve(__dirname, '../dist/lib/icd-core/encoder.js');
   const encoderJs = path.resolve(__dirname, '../lib/icd-core/encoder.js');
   const encoderTs = path.resolve(__dirname, '../lib/icd-core/encoder.ts');
 
   try {
-    icdModule = require(fs.existsSync(icdJs) ? icdJs : icdTs);
-    encoderModule = require(fs.existsSync(encoderJs) ? encoderJs : encoderTs);
+    icdModule = require(fs.existsSync(icdDist) ? icdDist : (fs.existsSync(icdJs) ? icdJs : icdTs));
+    encoderModule = require(fs.existsSync(encoderDist) ? encoderDist : (fs.existsSync(encoderJs) ? encoderJs : encoderTs));
     return { icdModule, encoderModule };
   } catch (err) {
     throw new Error('Failed to load ICD encoder modules');
