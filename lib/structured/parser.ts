@@ -514,6 +514,26 @@ export function parseInput(text: string): ParseResult {
                     else if (lowerValue.includes('fourth') || lowerValue.includes('4th') || lowerValue.includes('degree 4')) degree = '4';
 
                     context.conditions.obstetric.perinealLaceration = { degree };
+                    context.conditions.obstetric.perinealLaceration = { degree };
+                }
+
+                // LABOR-001: Prolonged Labor & Arrest Disorders
+                if (
+                    lowerValue.includes('prolonged') ||
+                    lowerValue.includes('arrest') ||
+                    lowerValue.includes('failure to progress') ||
+                    lowerValue.includes('inertia')
+                ) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    if (!context.conditions.obstetric.labor) context.conditions.obstetric.labor = {};
+
+                    if (lowerValue.includes('prolonged first stage')) context.conditions.obstetric.labor.prolongedFirstStage = true;
+                    if (lowerValue.includes('prolonged second stage')) context.conditions.obstetric.labor.prolongedSecondStage = true;
+                    if (lowerValue.includes('arrest of dilation')) context.conditions.obstetric.labor.arrestDilation = true;
+                    if (lowerValue.includes('arrest of descent')) context.conditions.obstetric.labor.arrestDescent = true;
+                    if (lowerValue.includes('failure to progress')) context.conditions.obstetric.labor.failureToProgress = true;
+                    if (lowerValue.includes('primary inertia')) context.conditions.obstetric.labor.primaryInertia = true;
+                    if (lowerValue.includes('secondary inertia') || lowerValue.includes('secondary uterine inertia')) context.conditions.obstetric.labor.secondaryInertia = true;
                 }
 
                 // Cancer

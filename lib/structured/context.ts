@@ -185,6 +185,15 @@ export interface PatientContext {
                 severity?: 'mild' | 'severe' | 'hellp' | 'unspecified';
             };
             gestationalDiabetes?: boolean;
+            labor?: {
+                prolongedFirstStage?: boolean;
+                prolongedSecondStage?: boolean;
+                arrestDilation?: boolean;
+                arrestDescent?: boolean;
+                failureToProgress?: boolean;
+                primaryInertia?: boolean;
+                secondaryInertia?: boolean;
+            };
             perinealLaceration?: {
                 degree: '1' | '2' | '3' | '4' | 'unspecified';
             };

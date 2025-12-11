@@ -1571,6 +1571,91 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             });
         }
 
+        // RULE: LABOR-001 Prolonged Labor & Arrest Disorders
+        if (ob.labor) {
+            // O63.0 Prolonged first stage
+            if (ob.labor.prolongedFirstStage) {
+                codes.push({
+                    code: 'O63.0',
+                    label: 'Prolonged first stage (of labor)',
+                    rationale: 'Prolonged first stage documented',
+                    guideline: 'ICD-10-CM O63.0',
+                    trigger: 'Prolonged First Stage',
+                    rule: 'Labor complication code'
+                });
+            }
+            // O63.1 Prolonged second stage
+            if (ob.labor.prolongedSecondStage) {
+                codes.push({
+                    code: 'O63.1',
+                    label: 'Prolonged second stage (of labor)',
+                    rationale: 'Prolonged second stage documented',
+                    guideline: 'ICD-10-CM O63.1',
+                    trigger: 'Prolonged Second Stage',
+                    rule: 'Labor complication code'
+                });
+            }
+            // O62.1 Secondary uterine inertia (Arrest of dilation - often mapped here or O62.0? User said O62.1 for arrest of dilation)
+            // User Mapping: "O62.1 for arrest of dilation"
+            if (ob.labor.arrestDilation) {
+                codes.push({
+                    code: 'O62.1',
+                    label: 'Secondary uterine inertia (Arrest of dilation)',
+                    rationale: 'Arrest of dilation documented',
+                    guideline: 'ICD-10-CM O62.1',
+                    trigger: 'Arrest of Dilation',
+                    rule: 'Labor complication code'
+                });
+            }
+            // O62.2 Other secondary uterine inertia (Arrest of descent)
+            // User Mapping: "O62.2 for arrest of descent"
+            if (ob.labor.arrestDescent) {
+                codes.push({
+                    code: 'O62.2',
+                    label: 'Other secondary uterine inertia (Arrest of descent)',
+                    rationale: 'Arrest of descent documented',
+                    guideline: 'ICD-10-CM O62.2',
+                    trigger: 'Arrest of Descent',
+                    rule: 'Labor complication code'
+                });
+            }
+            // O62.2 Failure to progress (Secondary uterine inertia)
+            // Determine if O62.2 is already added to avoid dupe? 
+            // Engine usually allows dupes if logic pushes multiple, but we should check.
+            if (ob.labor.failureToProgress && !codes.some(c => c.code === 'O62.2')) {
+                codes.push({
+                    code: 'O62.2',
+                    label: 'Other secondary uterine inertia (Failure to progress)',
+                    rationale: 'Failure to progress documented',
+                    guideline: 'ICD-10-CM O62.2',
+                    trigger: 'Failure to Progress',
+                    rule: 'Labor complication code'
+                });
+            }
+            // O62.0 Primary uterine inertia
+            if (ob.labor.primaryInertia) {
+                codes.push({
+                    code: 'O62.0',
+                    label: 'Primary inadequate contractions',
+                    rationale: 'Primary inertia documented',
+                    guideline: 'ICD-10-CM O62.0',
+                    trigger: 'Primary Inertia',
+                    rule: 'Labor complication code'
+                });
+            }
+            // O62.2 Secondary uterine inertia (Explicit)
+            if (ob.labor.secondaryInertia && !codes.some(c => c.code === 'O62.2')) {
+                codes.push({
+                    code: 'O62.2',
+                    label: 'Other secondary uterine inertia',
+                    rationale: 'Secondary inertia documented',
+                    guideline: 'ICD-10-CM O62.2',
+                    trigger: 'Secondary Inertia',
+                    rule: 'Labor complication code'
+                });
+            }
+        }
+
         // RULE: Weeks of Gestation (Z3A.xx)
         if (ob.gestationalAge) {
             const weeks = ob.gestationalAge;
