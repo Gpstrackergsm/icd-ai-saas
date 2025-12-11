@@ -15,7 +15,7 @@ import { resolveGastro } from './gastroResolver';
 import { resolveRespiratory } from './respiratoryResolver';
 import { resolveNeoplasm } from './neoplasmResolver';
 import { resolveTrauma } from './traumaResolver';
-import { resolveObstetrics } from './obstetricsResolver';
+// import { resolveObstetrics } from './obstetricsResolver';
 import { resolvePsychiatric } from './psychiatricResolver';
 import { validateSpecificity } from './specificityValidator';
 import { validateCompliance } from './complianceValidator';
