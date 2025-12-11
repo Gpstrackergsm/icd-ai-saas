@@ -1,4 +1,4 @@
-// ICD-10-CM Encoder core – generated with Codex helper (v3.2 FORCE UPDATE)
+// ICD-10-CM Encoder core – generated with Codex helper (v3.3 CARDIOLOGY MODULE INTEGRATION)
 // Responsibility: HTTP handler to encode free-text narratives into ICD-10-CM codes
 
 const fs = require('fs');
