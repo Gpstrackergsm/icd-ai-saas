@@ -102,7 +102,7 @@ export function parseInput(text: string): ParseResult {
                 }
 
                 // 2. Multiple Gestation
-                if (lowerValue.includes('twins') || lowerValue.includes('triplets') || lowerValue.includes('multiple gestation')) {
+                if (lowerValue.includes('twin') || lowerValue.includes('triplets') || lowerValue.includes('multiple gestation')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     context.conditions.obstetric.multipleGestation = true;
                 }
