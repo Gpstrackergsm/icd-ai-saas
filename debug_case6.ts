@@ -1,12 +1,10 @@
-import { parseInput } from './lib/structured/parser';
-import { validateContext } from './lib/structured/validator';
+import { parseCardiology } from './lib/domains/cardiology/module';
 
-const test6 = "Age: 65\nGender: Female\nEncounter Type: Inpatient\nDiabetes Type: Type 2\nComplications: Chronic Kidney Disease";
+const text = "75-year-old male with prior MI 2 years ago, now admitted for HF exacerbation. No new MI. Acute combined systolic and diastolic HF.";
+const attrs = parseCardiology(text);
 
-console.log('Test 6:');
-const { context } = parseInput(test6);
-console.log('Diabetes complications:', context.conditions.diabetes?.complications);
-console.log('CKD object:', context.conditions.ckd);
-
-const validation = validateContext(context);
-console.log('\nValidation:', validation);
+console.log('Input:', text);
+console.log('Parsed attributes:');
+console.log('  acute_mi:', attrs.acute_mi);
+console.log('  old_mi:', attrs.old_mi);
+console.log('  mi_type:', attrs.mi_type);
