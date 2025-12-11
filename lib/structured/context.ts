@@ -203,6 +203,8 @@ export interface PatientContext {
             multipleGestation?: boolean; // Twins/Triplets (O30)
             multipleGestationDetail?: 'dichorionic_diamniotic' | 'monochorionic_monoamniotic' | 'monochorionic_diamniotic' | 'unspecified';
             vbac?: boolean; // Vaginal birth after cesarean (O75.82)
+            failedVbac?: boolean; // Failed trial of labor after cesarean (O66.41)
+            prom?: boolean; // Premature rupture of membranes (O42)
             historyOfCesarean?: boolean; // For O34.21
             termDocumentation?: 'term' | 'full_term' | 'preterm' | 'post_term'; // For validation checks
             cSectionIndication?: string; // Captured indication logic if needed

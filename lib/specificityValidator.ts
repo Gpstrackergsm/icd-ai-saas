@@ -14,11 +14,15 @@ const SPECIFICITY_RULES: Array<{ pattern: RegExp; minLength: number; message: st
     // V, W, X, Y (External Causes): Most require 7 characters
     { pattern: /^[VWXY]\d{2}/, minLength: 7, message: 'External cause codes usually require 7 characters' },
 
-    // O-codes (Obstetrics): Many require 6 or 7 characters (trimester, fetus)
-    { pattern: /^O\d{2}/, minLength: 5, message: 'Obstetrics codes often require 5-7 characters to specify trimester/fetus' },
+    // O-codes (Obstetrics): Many require 6 or 7 characters, but O80/O82 are 3 chars
+    // We relax to 3 but warn for others. Actually better to use exception logic below.
+    // For now, let's set minLength to 3 but rely on message implies "often".
+    // Better: split rule.
+    { pattern: /^O(?!8[02])\d{2}/, minLength: 5, message: 'Obstetrics codes often require 5-7 characters to specify trimester/fetus' },
 
-    // Diabetes (E08-E13): Usually 5-6 characters
-    { pattern: /^E(0[89]|1[013])/, minLength: 5, message: 'Diabetes codes usually require at least 5 characters to specify complication' },
+    // Diabetes (E08-E13): E11.9 is 4 chars. E11.21 is 5 chars.
+    // Allow 4 chars for unspecified/uncomplicated (E11.9).
+    { pattern: /^E(0[89]|1[013])/, minLength: 4, message: 'Diabetes codes usually require at least 5 characters to specify complication' },
 
     // C-codes (Neoplasms): Often 5-6 characters for site/laterality
     { pattern: /^C\d{2}/, minLength: 4, message: 'Neoplasm codes usually require 4-6 characters' },

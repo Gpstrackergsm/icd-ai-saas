@@ -17,6 +17,8 @@ function isBillable(code: string): boolean {
     'C61', // Malignant neoplasm of prostate
     'E15', // Nondiabetic hypoglycemic coma
     'I10', // Essential (primary) hypertension
+    'O80', // Encounter for full-term uncomplicated delivery
+    'O82', // Encounter for cesarean delivery without indication
   ]);
 
   if (threeCharBillable.has(code)) return true;

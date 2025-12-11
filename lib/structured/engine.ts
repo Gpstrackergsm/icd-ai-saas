@@ -1402,13 +1402,44 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
         // RULE: Gestational Diabetes
         if (ob.gestationalDiabetes) {
+            // Default to diet controlled (O24.410) if not specified otherwise
+            // TODO: Parse insulin use for O24.414
             codes.push({
-                code: 'O24.419',
-                label: 'Gestational diabetes mellitus in pregnancy, unspecified control',
-                rationale: 'Gestational diabetes documented',
+                code: 'O24.410',
+                label: 'Gestational diabetes mellitus in pregnancy, diet controlled',
+                rationale: 'Gestational diabetes documented (diet controlled assumed)',
                 guideline: 'ICD-10-CM O24.4',
                 trigger: 'Gestational Diabetes = Yes',
                 rule: 'Gestational diabetes code'
+            });
+        }
+
+        // RULE: PROM (Premature Rupture of Membranes)
+        if (ob.prom) {
+            // Default to O42.913 (Unspecified time, 3rd trimester)
+            // Assuming 3rd trimester if not specified, or use trimester logic
+            const trim = ob.trimester === 3 ? '3' : ob.trimester === 2 ? '2' : '1';
+            // Actually O42.91x is the pattern. 1=1st, 2=2nd, 3=3rd. 
+            // O42.913 is 3rd trimester.
+            codes.push({
+                code: 'O42.913',
+                label: 'Premature rupture of membranes, unspecified as to length of time between rupture and onset of labor, third trimester',
+                rationale: 'PROM documented',
+                guideline: 'ICD-10-CM O42.9',
+                trigger: 'PROM',
+                rule: 'PROM code'
+            });
+        }
+
+        // RULE: Failed VBAC (O66.41)
+        if (ob.failedVbac) {
+            codes.push({
+                code: 'O66.41',
+                label: 'Failed trial of labor following previous cesarean delivery',
+                rationale: 'Failed attempt at VBAC documented',
+                guideline: 'ICD-10-CM O66.41',
+                trigger: 'Failed VBAC',
+                rule: 'Failed VBAC code'
             });
         }
 

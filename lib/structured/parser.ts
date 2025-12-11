@@ -54,6 +54,13 @@ export function parseInput(text: string): ParseResult {
             case 'neuropathy type':
             case 'pregnancy type':
             case 'delivery outcome':
+            case 'outcome':
+            case 'complications':
+            case 'labor':
+            case 'indication':
+            case 'assessment':
+            case 'plan':
+            case 'hospital course':
             case 'current encounter':
                 // Intelligent routing based on content
 
@@ -81,19 +88,20 @@ export function parseInput(text: string): ParseResult {
                     else if (lowerValue.includes('fourth') || lowerValue.includes('4th') || lowerValue.includes('4th degree')) context.conditions.obstetric.perinealLaceration.degree = '4';
                 }
 
-                // Scan for Delivery Type in narrative
                 if (lowerValue.includes('delivery')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     if (!context.conditions.obstetric.delivery) context.conditions.obstetric.delivery = { occurred: true };
 
-                    if (lowerValue.includes('vaginal') || lowerValue.includes('normal') || lowerValue.includes('spontaneous')) {
-                        context.conditions.obstetric.delivery.type = 'vaginal';
-                        // Default outcome if not found yet? No, handle Z37 separately.
-                    }
-                    else if (lowerValue.includes('cesarean') || lowerValue.includes('c-section')) {
+                    if (lowerValue.includes('cesarean') || lowerValue.includes('c-section')) {
                         const isHistory = lowerValue.includes('history') || lowerValue.includes('prior') || lowerValue.includes('previous') || lowerValue.includes('old') || lowerValue.includes('status');
                         if (!isHistory) {
                             context.conditions.obstetric.delivery.type = 'cesarean';
+                        }
+                    }
+                    else if (lowerValue.includes('vaginal') || lowerValue.includes('normal') || lowerValue.includes('spontaneous')) {
+                        // Only set vaginal if not already set to cesarean (e.g. by failed vbac logic)
+                        if (context.conditions.obstetric.delivery.type !== 'cesarean') {
+                            context.conditions.obstetric.delivery.type = 'vaginal';
                         }
                     }
                 }
@@ -133,11 +141,36 @@ export function parseInput(text: string): ParseResult {
                 }
 
                 // 3. VBAC & History of C-Section
-                if (lowerValue.includes('vbac') || lowerValue.includes('vaginal birth after cesarean')) {
+
+                // FAILED VBAC CHECK (Must be before generic VBAC)
+                // Relaxed logic: Check for "failed" AND ("vbac" OR "trial of labor") anywhere in the string
+                const isFailed = lowerValue.includes('failed') || lowerValue.includes('unsuccessful') || lowerValue.includes('arrest');
+                const isTrial = lowerValue.includes('vbac') || lowerValue.includes('trial of labor') || lowerValue.includes('tolac');
+
+                if (isFailed && isTrial) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    context.conditions.obstetric.failedVbac = true;
+                    context.conditions.obstetric.delivery = { occurred: true, type: 'cesarean' };
+                }
+                else if (lowerValue.includes('vbac') || lowerValue.includes('vaginal birth after cesarean')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     context.conditions.obstetric.vbac = true;
-                    // Implicit delivery
+                    // Implicit delivery - successful unless failed flag already set
                     if (!context.conditions.obstetric.delivery) context.conditions.obstetric.delivery = { occurred: true, type: 'vaginal' };
+                }
+
+                // PROM
+                if (lowerValue.includes('prom ') || lowerValue.includes('premature rupture of membranes') || lowerValue.includes('rupture of membranes')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    context.conditions.obstetric.prom = true;
+                }
+
+                // Gestational Diabetes
+                if (lowerValue.includes('gestational diabetes') || lowerValue.includes('gdm')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    context.conditions.obstetric.gestationalDiabetes = true;
+                    // Ensure generic diabetes doesn't override with type2
+                    if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'secondary', complications: [] }; // Set as secondary/other for now so generic logic doesn't default to T2
                 }
 
                 // History of Cesarean (Explicit)

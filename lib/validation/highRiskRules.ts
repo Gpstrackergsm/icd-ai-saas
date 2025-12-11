@@ -484,8 +484,10 @@ export const highRiskRules: ValidationRule[] = [
         const text = context.text.toLowerCase();
         const impliesVBAC = text.includes('vbac') || text.includes('vaginal birth after cesarean');
         const hasO75_82 = codes.some(c => c.code === 'O75.82');
+        // ALLOW O66.41 (Failed Trial of Labor/VBAC) as valid alternative
+        const hasO66_41 = codes.some(c => c.code === 'O66.41');
 
-        if (impliesVBAC && !hasO75_82) {
+        if (impliesVBAC && !hasO75_82 && !hasO66_41) {
             return {
                 ruleId: 'OB-AUDIT-006',
                 ruleName: 'VBAC Code Required',
