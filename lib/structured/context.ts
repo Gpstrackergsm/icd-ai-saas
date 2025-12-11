@@ -201,9 +201,16 @@ export interface PatientContext {
             // Enhanced OB Fields
             hemorrhage?: boolean; // Postpartum hemorrhage (O72)
             multipleGestation?: boolean; // Twins/Triplets (O30)
+            multipleGestationDetail?: 'dichorionic_diamniotic' | 'monochorionic_monoamniotic' | 'monochorionic_diamniotic' | 'unspecified';
             vbac?: boolean; // Vaginal birth after cesarean (O75.82)
+            historyOfCesarean?: boolean; // For O34.21
             termDocumentation?: 'term' | 'full_term' | 'preterm' | 'post_term'; // For validation checks
             cSectionIndication?: string; // Captured indication logic if needed
+            outcome?: {
+                deliveryCount: number; // 1 for single, 2 for twins
+                liveborn: number;
+                stillborn: number;
+            };
         };
     };
     social?: {

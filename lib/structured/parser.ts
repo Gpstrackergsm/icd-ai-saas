@@ -50,7 +50,11 @@ export function parseInput(text: string): ParseResult {
             case 'comment':
             case 'comments':
             case 'comments':
+            case 'comments':
             case 'neuropathy type':
+            case 'pregnancy type':
+            case 'delivery outcome':
+            case 'current encounter':
                 // Intelligent routing based on content
 
                 // --- OBSTETRIC NARRATIVE SCANNING ---
@@ -101,18 +105,46 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.obstetric.hemorrhage = true;
                 }
 
-                // 2. Multiple Gestation
+                // 2. Multiple Gestation / Twins
                 if (lowerValue.includes('twin') || lowerValue.includes('triplets') || lowerValue.includes('multiple gestation')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     context.conditions.obstetric.multipleGestation = true;
+                    if (lowerValue.includes('dichorionic')) {
+                        if (lowerValue.includes('diamniotic')) context.conditions.obstetric.multipleGestationDetail = 'dichorionic_diamniotic';
+                    }
+                    else if (lowerValue.includes('monochorionic')) {
+                        if (lowerValue.includes('monoamniotic')) context.conditions.obstetric.multipleGestationDetail = 'monochorionic_monoamniotic';
+                        else if (lowerValue.includes('diamniotic')) context.conditions.obstetric.multipleGestationDetail = 'monochorionic_diamniotic';
+                    }
                 }
 
-                // 3. VBAC
+                // Outcome Scanning (Liveborn/Stillborn)
+                if (lowerValue.includes('liveborn') || lowerValue.includes('stillborn')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    if (!context.conditions.obstetric.outcome) context.conditions.obstetric.outcome = { deliveryCount: 0, liveborn: 0, stillborn: 0 };
+
+                    // Simple heuristic counting
+                    const liveCount = (lowerValue.match(/liveborn/g) || []).length;
+                    const stillCount = (lowerValue.match(/stillborn/g) || []).length;
+
+                    context.conditions.obstetric.outcome.liveborn += liveCount;
+                    context.conditions.obstetric.outcome.stillborn += stillCount;
+                    context.conditions.obstetric.outcome.deliveryCount = context.conditions.obstetric.outcome.liveborn + context.conditions.obstetric.outcome.stillborn;
+                }
+
+                // 3. VBAC & History of C-Section
                 if (lowerValue.includes('vbac') || lowerValue.includes('vaginal birth after cesarean')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     context.conditions.obstetric.vbac = true;
                     // Implicit delivery
                     if (!context.conditions.obstetric.delivery) context.conditions.obstetric.delivery = { occurred: true, type: 'vaginal' };
+                }
+
+                // History of Cesarean (Explicit)
+                if ((lowerValue.includes('prior') || lowerValue.includes('history of') || lowerValue.includes('previous')) &&
+                    (lowerValue.includes('cesarean') || lowerValue.includes('c-section'))) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    context.conditions.obstetric.historyOfCesarean = true;
                 }
 
                 // 4. Term Documentation (for Validation checks)
@@ -142,6 +174,7 @@ export function parseInput(text: string): ParseResult {
 
                     if (lowerValue.includes('severe')) context.conditions.obstetric.preeclampsia.severity = 'severe';
                     else if (lowerValue.includes('mild')) context.conditions.obstetric.preeclampsia.severity = 'mild';
+                    else if (lowerValue.includes('moderate')) context.conditions.obstetric.preeclampsia.severity = 'mild'; // ICD-10 maps mild/moderate same often, or we treat as mild for now unless specified
                     else if (lowerValue.includes('hellp') || lowerValue.includes('h.e.l.l.p')) context.conditions.obstetric.preeclampsia.severity = 'hellp';
                 }
 
@@ -478,6 +511,9 @@ export function parseInput(text: string): ParseResult {
                     if (!context.conditions.obstetric.preeclampsia) {
                         context.conditions.obstetric.preeclampsia = { present: true, severity: 'unspecified' };
                     }
+                    if (lowerValue.includes('severe')) context.conditions.obstetric.preeclampsia.severity = 'severe';
+                    else if (lowerValue.includes('mild')) context.conditions.obstetric.preeclampsia.severity = 'mild';
+                    else if (lowerValue.includes('hellp')) context.conditions.obstetric.preeclampsia.severity = 'hellp';
                     context.conditions.obstetric.pregnant = true;
                 }
                 if (lowerValue.includes('pregnant') || lowerValue.includes('pregnancy')) {

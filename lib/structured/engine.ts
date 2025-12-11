@@ -1426,23 +1426,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 (ob.termDocumentation === 'post_term') ||
                 (ob.gestationalAge && ob.gestationalAge > 41); // >41 is 42+ (post term start)
 
-            // 1. Z37 Outcome (Always required for delivery or birth encounter)
-            let outcomeCode = 'Z37.0';
-            let outcomeLabel = 'Single live birth';
-            if (ob.multipleGestation) {
-                // FORCE Z37.2 for Twins if not specified otherwise (per user req? "Twins" -> Z37.2)
-                outcomeCode = 'Z37.2';
-                outcomeLabel = 'Twins, both liveborn';
-            }
-
-            codes.push({
-                code: outcomeCode,
-                label: outcomeLabel,
-                rationale: 'Outcome of delivery',
-                guideline: 'ICD-10-CM Z37',
-                trigger: 'Delivery',
-                rule: 'Outcome of delivery code'
-            });
+            // 1. Z37 Outcome replaced by centralized rule below
 
             // 2. Delivery Encounter Code
             // VBAC OVERRIDES O82
@@ -1496,39 +1480,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         }
 
 
-        // RULE: Multiple Gestation (O30.x)
-        if (ob.multipleGestation) {
-            codes.push({
-                code: 'O30.003', // Twin pregnancy, unspecified number of placenta and amniotic sacs, third trimester (default)
-                // In real audit engine, would require chorionicity. Validating "unspecified" is Rule 3.
-                // We generate a code so highRiskRules can check specificty.
-                label: 'Twin pregnancy, unspecified number of placenta and amniotic sacs, third trimester',
-                rationale: 'Multiple gestation documented',
-                guideline: 'ICD-10-CM O30',
-                trigger: 'Multiple Gestation',
-                rule: 'Multiple gestation code'
-            });
-
-            // STRICT OUTCOME ENFORCEMENT: Twins -> Z37.2
-            // If we just added O30, we MUST ensure Z37 reflects twins.
-            // Remove any existing single birth code (Z37.0)
-            const singleIndex = codes.findIndex(c => c.code === 'Z37.0');
-            if (singleIndex !== -1) {
-                codes.splice(singleIndex, 1);
-            }
-
-            // Check if Z37.2 exists, if not add it
-            if (!codes.some(c => c.code === 'Z37.2')) {
-                codes.push({
-                    code: 'Z37.2',
-                    label: 'Twins, both liveborn',
-                    rationale: 'Multiple gestation requires matching outcome code',
-                    guideline: 'ICD-10-CM Z37.2',
-                    trigger: 'Twin Gestation (Auto-Correction)',
-                    rule: 'Outcome of delivery code'
-                });
-            }
-        }
+        // Legacy O30 rule removed (replaced by detailed rule below)
 
 
 
@@ -1541,6 +1493,119 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 guideline: 'ICD-10-CM O48.0',
                 trigger: 'Post-term',
                 rule: 'Post-term pregnancy code'
+            });
+        }
+
+        // RULE: Multiple Gestation (O30)
+        if (ob.multipleGestation) {
+            let code = 'O30.003'; // Default to twins, unspecified, trimester 3 (assuming delivery usually T3)
+            let typeLabel = 'Twin pregnancy';
+
+            if (ob.multipleGestationDetail === 'dichorionic_diamniotic') {
+                // O30.04x
+                if (trimester === 1) code = 'O30.041';
+                else if (trimester === 2) code = 'O30.042';
+                else if (trimester === 3) code = 'O30.043';
+                else code = 'O30.049';
+                typeLabel = 'Twin pregnancy, dichorionic/diamniotic';
+            } else if (ob.multipleGestationDetail === 'monochorionic_diamniotic') {
+                // O30.03x
+                if (trimester === 1) code = 'O30.031';
+                else if (trimester === 2) code = 'O30.032';
+                else if (trimester === 3) code = 'O30.033';
+                else code = 'O30.039';
+                typeLabel = 'Twin pregnancy, monochorionic/diamniotic';
+            } else if (ob.multipleGestationDetail === 'monochorionic_monoamniotic') {
+                // O30.01x
+                if (trimester === 1) code = 'O30.011';
+                else if (trimester === 2) code = 'O30.012';
+                else if (trimester === 3) code = 'O30.013';
+                else code = 'O30.019';
+                typeLabel = 'Twin pregnancy, monochorionic/monoamniotic';
+            } else {
+                // Unspecified Twins O30.00x
+                if (trimester === 1) code = 'O30.001';
+                else if (trimester === 2) code = 'O30.002';
+                else if (trimester === 3) code = 'O30.003';
+                else code = 'O30.009';
+            }
+
+            codes.push({
+                code: code,
+                label: `${typeLabel}, ${trimester ? 'third trimester' : 'unspecified trimester'}`, // Simplification for label
+                rationale: 'Multiple gestation documented',
+                guideline: 'ICD-10-CM O30',
+                trigger: `Multiple Gestation: ${ob.multipleGestationDetail || 'Twins'}`,
+                rule: 'Multiple gestation code'
+            });
+        }
+
+        // RULE: Maternal Care for Scar from Previous Cesarean (O34.21)
+        if (ob.historyOfCesarean) {
+            codes.push({
+                code: 'O34.219', // Unspecified type of scar
+                label: 'Maternal care for unspecified type scar from previous cesarean delivery',
+                rationale: 'History of previous cesarean delivery affecting pregnancy',
+                guideline: 'ICD-10-CM O34.21',
+                trigger: 'History of Cesarean',
+                rule: 'Maternal care for C-section scar'
+            });
+        }
+
+        // RULE: Weeks of Gestation (Z3A.xx)
+        if (ob.gestationalAge) {
+            let z3aCode = 'Z3A.00';
+            if (ob.gestationalAge >= 8 && ob.gestationalAge <= 42) {
+                z3aCode = `Z3A.${ob.gestationalAge}`;
+            } else if (ob.gestationalAge > 42) {
+                z3aCode = 'Z3A.49'; // Greater than 42 weeks
+            } else if (ob.gestationalAge < 8) {
+                z3aCode = 'Z3A.01'; // Less than 8 weeks
+            }
+
+            codes.push({
+                code: z3aCode,
+                label: `${ob.gestationalAge} weeks gestation of pregnancy`,
+                rationale: 'Weeks of gestation documented',
+                guideline: 'ICD-10-CM Z3A',
+                trigger: `Gestational Age: ${ob.gestationalAge} weeks`,
+                rule: 'Z3A weeks of gestation'
+            });
+        }
+
+        // RULE: Delivery Outcome (Z37.x)
+        if (ob.outcome && ob.delivery?.occurred) {
+            let z37Code = 'Z37.0'; // Default single live birth
+            let z37Label = 'Single live birth';
+
+            if (ob.outcome.deliveryCount === 2) {
+                if (ob.outcome.liveborn === 2) {
+                    z37Code = 'Z37.2';
+                    z37Label = 'Twins, both liveborn';
+                } else if (ob.outcome.liveborn === 1 && ob.outcome.stillborn === 1) {
+                    z37Code = 'Z37.3';
+                    z37Label = 'Twins, one liveborn and one stillborn';
+                } else if (ob.outcome.stillborn === 2) {
+                    z37Code = 'Z37.4';
+                    z37Label = 'Twins, both stillborn';
+                }
+            } else if (ob.outcome.deliveryCount === 1) {
+                if (ob.outcome.liveborn === 1) {
+                    z37Code = 'Z37.0';
+                    z37Label = 'Single live birth';
+                } else if (ob.outcome.stillborn === 1) {
+                    z37Code = 'Z37.1';
+                    z37Label = 'Single stillbirth';
+                }
+            }
+
+            codes.push({
+                code: z37Code,
+                label: z37Label,
+                rationale: 'Outcome of delivery documented',
+                guideline: 'ICD-10-CM Z37',
+                trigger: `Outcome: ${ob.outcome.liveborn} live, ${ob.outcome.stillborn} still`,
+                rule: 'Outcome of delivery code'
             });
         }
 
@@ -1659,27 +1724,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             }
         }
 
-        // RULE: Weeks of Gestation (Z3A.xx)
-        if (ob.gestationalAge) {
-            const weeks = ob.gestationalAge;
-            let zCode = 'Z3A.00';
-
-            if (weeks < 8) zCode = 'Z3A.01'; // Less than 8 weeks
-            else if (weeks >= 8 && weeks <= 42) {
-                zCode = `Z3A.${weeks}`;
-            } else if (weeks > 42) {
-                zCode = 'Z3A.49'; // Greater than 42 weeks
-            }
-
-            codes.push({
-                code: zCode,
-                label: `${weeks} weeks gestation of pregnancy`,
-                rationale: 'Gestational age documented',
-                guideline: 'ICD-10-CM Z3A',
-                trigger: `Gestational Age: ${weeks} Weeks`,
-                rule: 'Gestational age code'
-            });
-        }
+        // Legacy Z3A rule removed
 
         // === STRICT AUDIT SEQUENCING & SAFETY NET ===
 
