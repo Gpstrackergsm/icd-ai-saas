@@ -14,11 +14,11 @@ const SPECIFICITY_RULES: Array<{ pattern: RegExp; minLength: number; message: st
     // V, W, X, Y (External Causes): Most require 7 characters
     { pattern: /^[VWXY]\d{2}/, minLength: 7, message: 'External cause codes usually require 7 characters' },
 
-    // O-codes (Obstetrics): Many require 6 or 7 characters, but O80/O82 are 3 chars
+    // O-codes (Obstetrics): Many require 6 or 7 characters, but O80/O82 are 3 chars. O63 is 4 chars.
     // We relax to 3 but warn for others. Actually better to use exception logic below.
     // For now, let's set minLength to 3 but rely on message implies "often".
     // Better: split rule.
-    { pattern: /^O(?!8[02])\d{2}/, minLength: 5, message: 'Obstetrics codes often require 5-7 characters to specify trimester/fetus' },
+    { pattern: /^O(?!8[02]|63)\d{2}/, minLength: 5, message: 'Obstetrics codes often require 5-7 characters to specify trimester/fetus' },
 
     // Diabetes (E08-E13): E11.9 is 4 chars. E11.21 is 5 chars.
     // Allow 4 chars for unspecified/uncomplicated (E11.9).

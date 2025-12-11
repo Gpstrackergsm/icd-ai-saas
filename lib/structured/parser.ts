@@ -192,6 +192,19 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.obstetric.termDocumentation = 'post_term';
                 }
 
+                // 5. Labor Complications Scanning (Prolonged/Arrest)
+                if (lowerValue.includes('prolonged') || lowerValue.includes('arrest') || lowerValue.includes('failure to progress') || lowerValue.includes('inertia')) {
+                    if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
+                    if (!context.conditions.obstetric.labor) context.conditions.obstetric.labor = {};
+                    const labor = context.conditions.obstetric.labor;
+
+                    if (lowerValue.includes('prolonged second stage')) labor.prolongedSecondStage = true;
+                    else if (lowerValue.includes('prolonged first stage') || lowerValue.includes('prolonged labor')) labor.prolongedFirstStage = true; // Default to 1st/unspecified for "prolonged labor"
+                    else if (lowerValue.includes('arrest of dilation') || lowerValue.includes('arrest of dilatation')) labor.arrestDilation = true;
+                    else if (lowerValue.includes('arrest of descent')) labor.arrestDescent = true;
+                    else if (lowerValue.includes('failure to progress')) labor.failureToProgress = true;
+                }
+
                 // Hypertension
                 if (lowerValue.includes('hypertension') || lowerValue.includes('hypertensive')) {
                     if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
