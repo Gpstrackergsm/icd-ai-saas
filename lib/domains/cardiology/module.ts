@@ -255,6 +255,9 @@ export function parseCardiology(text: string): CardiologyAttributes {
 export function resolveCardiologyCodes(attrs: CardiologyAttributes): SequencedCode[] {
     const codes: SequencedCode[] = [];
 
+    // Track if we have HTN+CKD+HF combination for sequencing priority
+    const hasHtnCkdHf = attrs.hypertension && attrs.heart_failure && attrs.ckd_stage;
+
     // --- HYPERTENSION FAMILY LOGIC (I10-I15) ---
     if (attrs.hypertension) {
         if (attrs.heart_failure && attrs.ckd_stage) {
@@ -364,6 +367,78 @@ export function resolveCardiologyCodes(attrs: CardiologyAttributes): SequencedCo
         else codes.push({ code: 'I42.9', label: 'Cardiomyopathy, unspecified', triggeredBy: 'cmp', hcc: true }); // I42.9 is HCC? Commonly yes.
     }
 
+    // SEQUENCING PATCH: Apply ICD-10-CM/UHDDS sequencing rules
+    return applyCardiologySequencing(codes, attrs);
+}
+
+// =======================================================
+// SEQUENCING PATCH v3.3 - ICD-10-CM/UHDDS COMPLIANCE
+// =======================================================
+
+/**
+ * Apply cardiology-specific sequencing rules per ICD-10-CM guidelines
+ * 
+ * RULES ENFORCED:
+ * 1. ESRD Suppression: Remove N18.5 if N18.6 exists
+ * 2. HTN+CKD+HF Priority: I13.x is PRIMARY for acute HF admissions
+ * 3. Code Ordering: I13.x → I50.xx → N18.x
+ * 4. Prohibited: N18.5+N18.6 together, N18.x as primary when I13.x exists
+ */
+function applyCardiologySequencing(codes: SequencedCode[], attrs: CardiologyAttributes): SequencedCode[] {
+    if (codes.length === 0) return codes;
+
+    // RULE 1: ESRD Suppression - Remove N18.5 if N18.6 is present
+    const hasEsrd = codes.some(c => c.code === 'N18.6');
+    if (hasEsrd) {
+        codes = codes.filter(c => c.code !== 'N18.5');
+    }
+
+    // RULE 2-3: HTN+CKD+HF Priority Sequencing
+    const hasHtnCkdHf = attrs.hypertension && attrs.heart_failure && attrs.ckd_stage;
+
+    if (hasHtnCkdHf) {
+        // Find the I13.x combination code
+        const i13Code = codes.find(c => c.code.startsWith('I13'));
+        const i50Code = codes.find(c => c.code.startsWith('I50'));
+        const n18Code = codes.find(c => c.code.startsWith('N18'));
+
+        if (i13Code) {
+            // Enforce sequence: I13.x (PRIMARY) → I50.xx → N18.x
+            const orderedCodes: SequencedCode[] = [i13Code];
+
+            if (i50Code) orderedCodes.push(i50Code);
+            if (n18Code) orderedCodes.push(n18Code);
+
+            // Add any remaining codes (AF, MI, CAD, etc.) after the HTN+CKD+HF triad
+            const remainingCodes = codes.filter(c =>
+                !c.code.startsWith('I13') &&
+                !c.code.startsWith('I50') &&
+                !c.code.startsWith('N18')
+            );
+
+            return [...orderedCodes, ...remainingCodes];
+        }
+    }
+
+    // RULE 4: Acute HF without HTN+CKD → I50.xx should be first
+    if (attrs.heart_failure && attrs.hf_acuity && attrs.hf_acuity !== 'unspecified') {
+        const i50Code = codes.find(c => c.code.startsWith('I50'));
+        if (i50Code) {
+            const otherCodes = codes.filter(c => !c.code.startsWith('I50'));
+            return [i50Code, ...otherCodes];
+        }
+    }
+
+    // RULE 5: Acute MI priority
+    if (attrs.acute_mi) {
+        const i21Code = codes.find(c => c.code.startsWith('I21'));
+        if (i21Code) {
+            const otherCodes = codes.filter(c => !c.code.startsWith('I21'));
+            return [i21Code, ...otherCodes];
+        }
+    }
+
+    // Default: return as-is
     return codes;
 }
 
@@ -395,16 +470,27 @@ function addHeartFailureCode(codes: SequencedCode[], attrs: CardiologyAttributes
 
 function addCkdCode(codes: SequencedCode[], attrs: CardiologyAttributes) {
     if (!attrs.ckd_stage) return;
+
+    // PATCH RULE 1: ESRD Suppression - If ESRD detected, ONLY use N18.6, never N18.5
+    // When "on dialysis" or "ESRD" keywords are present, ckd_stage should be 'esrd'
     const map: Record<string, string> = {
         '1': 'N18.1',
         '2': 'N18.2',
-        '3': 'N18.3', // Needs 3a/3b? Standard ICD usually N18.30-N18.32, keeping simple N18.3 for now or N18.30
+        '3': 'N18.3',
         '4': 'N18.4',
-        '5': 'N18.5',
+        '5': 'N18.5',  // Will be suppressed if ESRD also present
         'esrd': 'N18.6'
     };
+
     const c = map[attrs.ckd_stage] || 'N18.9';
-    codes.push({ code: c, label: `Chronic kidney disease, stage ${attrs.ckd_stage}`, triggeredBy: 'ckd_stage', hcc: ['4', '5', 'esrd'].includes(attrs.ckd_stage) });
+    const isHcc = ['4', '5', 'esrd'].includes(attrs.ckd_stage);
+
+    codes.push({
+        code: c,
+        label: `Chronic kidney disease, stage ${attrs.ckd_stage === 'esrd' ? 'end stage' : attrs.ckd_stage}`,
+        triggeredBy: 'ckd_stage',
+        hcc: isHcc
+    });
 }
 
 
