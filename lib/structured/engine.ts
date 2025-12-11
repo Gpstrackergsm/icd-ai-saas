@@ -1,3 +1,6 @@
+// Engine version: 2.1.0-STRICT
+// Timestamp: 2025-12-11_03-05
+import { GeneratedCode } from './validator';
 
 import { PatientContext } from './context';
 
@@ -1726,8 +1729,12 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 return 1;
             }
 
+
             // Priority 2: VBAC
             if (c === 'O75.82') return 2;
+
+            // EXPLICIT: Mild/Moderate Pre-E is Priority 3 (Secondary)
+            if (c.startsWith('O14.0')) return 3;
 
             // Priority 3: All other O codes (Mild Pre-E, PPH, O30, etc.)
             // This ensures PPH (O72) and Mild Pre-E (O14.0) come AFTER VBAC.
