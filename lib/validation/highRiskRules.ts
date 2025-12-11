@@ -504,22 +504,35 @@ export const highRiskRules: ValidationRule[] = [
     (codes, context) => {
         if (!context || !context.text) return null;
         const text = context.text.toLowerCase();
-        const impliesCS = text.includes('cesarean') || text.includes('c-section');
+
+        // EXCEPTIONS:
+        // 1. VBAC code present (O75.82) -> O82 not required (Superseded)
+        if (codes.some(c => c.code === 'O75.82')) return null;
+
+        // 2. VBAC explicitly mentioned -> O82 not required (likely successful VBAC)
+        if (text.includes('vbac') || text.includes('vaginal birth after cesarean')) return null;
+
+        // 3. Historical C-Section Check
+        // If "cesarean" appears BUT it's part of "history/prior/previous", ignore it.
+        // We use a regex to see if 'cesarean' exists WITHOUT such qualifiers.
+        // This is a simplified check: if ANY "cesarean" is found that ISN'T preceded by history terms?
+        // Easier: Split by newline? The context.text might be joined.
+
+        // Strict regex: Look for 'cesarean' or 'c-section' NOT preceded by history terms within a reasonable window?
+        // Or simply:
+        const impliesCS = (text.includes('cesarean') || text.includes('c-section')) &&
+            !text.includes('history of cesarean') &&
+            !text.includes('prior cesarean') &&
+            !text.includes('previous cesarean') &&
+            !text.includes('history of c-section') &&
+            !text.includes('prior c-section') &&
+            !text.includes('previous c-section');
+
         const hasO82 = hasRange(codes, 'O82');
 
         // If it's a delivery encounter...
         const isDelivery = codes.some(c => c.code.startsWith('Z37'));
         if (impliesCS && isDelivery && !hasO82) {
-            // Note: Could be O82 or other complication leading to C-section? 
-            // O82 matches "Encounter for cesarean delivery without indication". 
-            // If indication exists, code usually reflects that.
-            // But strict audit asks for "C-Section Typing".
-            // If O82 is missing, we check if procedure is coded? 
-            // This rule ensures we at least have a C-section diagnosis if narrative says C-section.
-            // But maybe user wants specfiic code.
-            // Let's enforce O82 as a catch-all if no other specific C-section reason is primary?
-            // Actually requirement says "IF narrative contains 'cesarean'... AND no O82.x exists THEN FAIL".
-            // This implies strict O82 requirement for any C-section.
             return {
                 ruleId: 'OB-AUDIT-007',
                 ruleName: 'Cesarean Diagnosis Required',
