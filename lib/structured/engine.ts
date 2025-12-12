@@ -27,6 +27,34 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     const validationErrors: string[] = [];
     const procedures: StructuredCode[] = [];
 
+    // --- CRITICAL: ENCOUNTER-BASED SEQUENCING (UHDDS PRINCIPAL DIAGNOSIS) ---
+    // These codes MUST be principal diagnosis when they are the reason for admission
+    // Per ICD-10-CM Official Guidelines Section II (Selection of Principal Diagnosis)
+
+    // RULE: Routine Dialysis Encounter → Z49.31 MUST be principal
+    if (ctx.encounter?.reasonForAdmission === 'dialysis') {
+        codes.push({
+            code: 'Z49.31',
+            label: 'Encounter for adequacy testing for hemodialysis',
+            rationale: 'Patient admitted for routine dialysis - Z49.31 is principal diagnosis per UHDDS',
+            guideline: 'ICD-10-CM I.C.21.c.3',
+            trigger: 'Reason for Admission = Dialysis',
+            rule: 'Dialysis encounter principal diagnosis'
+        });
+    }
+
+    // RULE: Routine Follow-up Encounter → Z09 MUST be principal
+    if (ctx.encounter?.reasonForAdmission === 'routine_followup') {
+        codes.push({
+            code: 'Z09',
+            label: 'Encounter for follow-up examination after completed treatment for conditions other than malignant neoplasm',
+            rationale: 'Patient admitted for routine follow-up - Z09 is principal diagnosis per UHDDS',
+            guideline: 'ICD-10-CM I.C.21',
+            trigger: 'Reason for Admission = Routine Follow-up',
+            rule: 'Follow-up encounter principal diagnosis'
+        });
+    }
+
     // --- DIABETES RULES (DETERMINISTIC) ---
     if (ctx.conditions.diabetes) {
         const d = ctx.conditions.diabetes;

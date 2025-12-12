@@ -251,7 +251,31 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.renal.ckd = { stage: 'esrd' };
                 }
 
-                // Myocardial Infarction (MI) detection
+                // Dialysis encounter detection - for proper UHDDS principal diagnosis sequencing
+                // STRICT: Only trigger if "routine dialysis" or "admitted for dialysis" is explicitly stated
+                const isRoutineDialysis = lowerValue.includes('routine dialysis') ||
+                    (lowerValue.includes('admitted for dialysis') && !lowerValue.includes('admitted for') && !lowerValue.includes('due to'));
+                const isAdmittedForDialysisOnly = (lowerValue.includes('admitted for') || lowerValue.includes('admission for')) &&
+                    (lowerValue.includes('routine dialysis') ||
+                        (lowerValue.includes('dialysis') && !lowerValue.includes('due to') && !lowerValue.includes('for worsening') &&
+                            !lowerValue.includes('for acute') && !lowerValue.includes('exacerbation')));
+
+                if (isRoutineDialysis || isAdmittedForDialysisOnly) {
+                    // Mark this as a dialysis encounter - Z49.31 should be principal
+                    if (!context.encounter) context.encounter = { type: 'inpatient' };
+                    context.encounter.reasonForAdmission = 'dialysis';
+                    // Use conditions.ckd (not renal.ckd) which has onDialysis field
+                    if (!context.conditions.ckd) context.conditions.ckd = {
+                        stage: 'esrd',
+                        onDialysis: true,
+                        dialysisType: 'chronic',
+                        aki: false,
+                        transplantStatus: false
+                    };
+                    context.conditions.ckd.onDialysis = true;
+                    context.conditions.ckd.dialysisType = 'chronic';
+                }
+
                 if (lowerValue.includes('myocardial infarction') || lowerValue.includes(' mi ') ||
                     lowerValue.includes('nstemi') || lowerValue.includes('stemi') ||
                     lowerValue.includes('heart attack')) {

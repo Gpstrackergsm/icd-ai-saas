@@ -6,6 +6,7 @@ export interface PatientContext {
     };
     encounter: {
         type: 'initial' | 'subsequent' | 'sequela' | 'inpatient' | 'outpatient' | 'ed';
+        reasonForAdmission?: 'dialysis' | 'routine_followup' | 'other';
     };
     conditions: {
         diabetes?: {
