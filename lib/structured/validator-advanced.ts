@@ -476,8 +476,11 @@ export function applyComprehensiveMedicalRules(
     const hfAcuity = lower.match(/heart failure acuity:\s*([^\n]+)/i)?.[1]?.toLowerCase();
 
     // Rule 14-16: HTN combinations
-    const hasHTN = lower.includes('hypertension: yes');
-    const hasHF = lower.includes('heart failure:') && !lower.includes('heart failure: none');
+    const hasHTN = lower.includes('hypertension: yes') || (lower.includes('hypertension') && !/(no|without)\s+hypertension/.test(lower));
+    // Check for HF, but also detect negation patterns in narratives
+    const hfNegationPatterns = /(without|no)\s+(hf\b|heart failure|chf)(\s+(documented|noted|seen|present|evidence|found))?/i;
+    const hasHF = (lower.includes('heart failure:') && !lower.includes('heart failure: none') && !lower.includes('heart failure: no'))
+        || (lower.includes('heart failure') && !hfNegationPatterns.test(lower));
 
     if (hasHTN && hasHF && hasCKD) {
         // Rule 16: HTN + HF + CKD → I13.x
