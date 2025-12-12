@@ -200,6 +200,10 @@ module.exports = async function handler(req, res) {
             validationChanges: {
                 removed: validated.removed,
                 added: validated.added
+            },
+            _debug: {
+                apiVersion: 'v3.4-HF-FIX',
+                buildTime: '2025-12-12T14:10:00Z'
             }
         };
 
