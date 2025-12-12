@@ -196,7 +196,15 @@ module.exports = async function handler(req, res) {
 
         // Extract validated primary and secondary codes
         const validatedPrimary = enhanceCode(validated.codes[0] || null);
-        const validatedSecondary = validated.codes.slice(1).map(enhanceCode);
+        let validatedSecondary = validated.codes.slice(1).map(enhanceCode);
+
+        // DEDUPLICATE: Remove duplicate codes from secondary
+        const seenCodes = new Set([validatedPrimary?.code].filter(Boolean));
+        validatedSecondary = validatedSecondary.filter(c => {
+            if (!c || seenCodes.has(c.code)) return false;
+            seenCodes.add(c.code);
+            return true;
+        });
 
         // Format response with claim-ready codes
         const response = {
