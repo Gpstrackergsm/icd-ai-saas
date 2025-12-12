@@ -117,8 +117,9 @@ export function parseCardiology(text: string): CardiologyAttributes {
     // HEART FAILURE
     // Fix Cases 7, 20, 33: Improved negation patterns
     if (/\b(chf|heart failure|hf|hfrr|hfpef|biventricular failure|pulmonary edema)\b/.test(t)) {
-        // Enhanced negation: "without HF", "no HF", "no heart failure", "no HF exacerbation" (but allow "no HF exacerbation" with chronic HF)
-        const hasHfNegation = /(without|no)\s+(hf\b|heart failure|chf)(?!\s+exacerbation)/.test(t);
+        // Enhanced negation: "without HF", "no HF", "no heart failure", "no HF documented", etc.
+        // Allow trailing words after negation target: "no heart failure documented", "no HF noted", etc.
+        const hasHfNegation = /(without|no)\s+(hf\b|heart failure|chf)(\s+(documented|noted|seen|present|evidence|found))?(?!\s+exacerbation)/.test(t);
         if (!hasHfNegation) {
             attrs.heart_failure = true;
         }
