@@ -41,6 +41,9 @@ export interface CardiologyAttributes {
 
     tobacco_use: boolean;
     hyperlipidemia: boolean;
+
+    // Encounter/Admission Reason (for Z codes)
+    encounter_type: 'routine_dialysis' | 'routine_followup' | 'acute' | null;
 }
 
 export function parseCardiology(text: string): CardiologyAttributes {
@@ -81,6 +84,7 @@ export function parseCardiology(text: string): CardiologyAttributes {
 
         tobacco_use: false,
         hyperlipidemia: false,
+        encounter_type: null  // Initialize encounter type
     };
 
 
@@ -285,6 +289,17 @@ export function parseCardiology(text: string): CardiologyAttributes {
         // Should default null/unknown
     }
 
+    // ENCOUNTER TYPE DETECTION (for Z codes)
+    // "admitted for routine dialysis" → Z49.31 should be PRIMARY
+    // "routine follow-up" → Z09 should be PRIMARY
+    if (/admitted for routine dialysis|routine.*dialysis/.test(t)) {
+        attrs.encounter_type = 'routine_dialysis';
+    } else if (/routine.*(follow.?up|cardiology|evaluation)|follow.?up visit/.test(t) && !/(acute|exacerbation|worsening)/.test(t)) {
+        attrs.encounter_type = 'routine_followup';
+    } else if (/(acute|exacerbation|worsening|emergent)/.test(t)) {
+        attrs.encounter_type = 'acute';
+    }
+
     return attrs;
 }
 
@@ -297,6 +312,25 @@ export function resolveCardiologyCodes(attrs: CardiologyAttributes): SequencedCo
 
     // Track if we have HTN+CKD+HF combination for sequencing priority
     const hasHtnCkdHf = attrs.hypertension && attrs.heart_failure && attrs.ckd_stage;
+
+    // ENCOUNTER CODES (Z codes) - May become PRIMARY for routine admissions
+    const encounterCodes: SequencedCode[] = [];
+
+    if (attrs.encounter_type === 'routine_dialysis') {
+        encounterCodes.push({
+            code: 'Z49.31',
+            label: 'Encounter for adequacy testing for hemodialysis',
+            triggeredBy: 'routine_dialysis_encounter',
+            hcc: false
+        });
+    } else if (attrs.encounter_type === 'routine_followup') {
+        encounterCodes.push({
+            code: 'Z09',
+            label: 'Encounter for follow-up examination after completed treatment',
+            triggeredBy: 'routine_followup_encounter',
+            hcc: false
+        });
+    }
 
     // --- HYPERTENSION FAMILY LOGIC (I10-I15) ---
     if (attrs.hypertension) {
@@ -385,7 +419,7 @@ export function resolveCardiologyCodes(attrs: CardiologyAttributes): SequencedCo
         } // else stable/unspecified often not coded if underlying cause unknown? Or I20.9
     }
 
-    // --- ISOLATED UNSTABLE ANGINA LOGIC --- 
+    // --- ISOLATED UNSTABLE ANGINA LOGIC ---
     // (Covered above: if CAD present -> I25.110. If no CAD -> I20.0)
 
     // --- ATRIAL FIBRILLATION ---
@@ -407,8 +441,8 @@ export function resolveCardiologyCodes(attrs: CardiologyAttributes): SequencedCo
         else codes.push({ code: 'I42.9', label: 'Cardiomyopathy, unspecified', triggeredBy: 'cmp', hcc: true }); // I42.9 is HCC? Commonly yes.
     }
 
-    // SEQUENCING PATCH: Apply ICD-10-CM/UHDDS sequencing rules
-    return applyCardiologySequencing(codes, attrs);
+    // SEQUENCING PATCH: Apply ICD-10-CM/UHDDS sequencing rules + Encounter code logic
+    return applyCardiologySequencing(codes, encounterCodes, attrs);
 }
 
 // =======================================================
@@ -416,21 +450,29 @@ export function resolveCardiologyCodes(attrs: CardiologyAttributes): SequencedCo
 // =======================================================
 
 /**
- * Apply cardiology-specific sequencing rules per ICD-10-CM guidelines
- * 
+ * Apply cardiology-specific sequencing rules per ICD-10-CM guidelines + Encounter codes
+ *
  * RULES ENFORCED:
  * 1. ESRD Suppression: Remove N18.5 if N18.6 exists
- * 2. HTN+CKD+HF Priority: I13.x is PRIMARY for acute HF admissions
- * 3. Code Ordering: I13.x → I50.xx → N18.x
- * 4. Prohibited: N18.5+N18.6 together, N18.x as primary when I13.x exists
+ * 2. Encounter Code Priority: Z codes as PRIMARY for routine admissions
+ * 3. HTN+CKD+HF Priority: I13.x is PRIMARY for acute HF admissions
+ * 4. Code Ordering: Z → I13.x → I50.xx → N18.x OR I50.xx → I11.0 (sequencing based on acuity)
+ * 5. Prohibited: N18.5+N18.6 together
  */
-function applyCardiologySequencing(codes: SequencedCode[], attrs: CardiologyAttributes): SequencedCode[] {
-    if (codes.length === 0) return codes;
+function applyCardiologySequencing(codes: SequencedCode[], encounterCodes: SequencedCode[], attrs: CardiologyAttributes): SequencedCode[] {
+    if (codes.length === 0 && encounterCodes.length === 0) return codes;
 
     // RULE 1: ESRD Suppression - Remove N18.5 if N18.6 is present
     const hasEsrd = codes.some(c => c.code === 'N18.6');
     if (hasEsrd) {
         codes = codes.filter(c => c.code !== 'N18.5');
+    }
+
+    // RULE 2: Encounter Code Priority for Routine Admissions
+    // If this is a routine encounter (not acute), Z code goes PRIMARY
+    if (encounterCodes.length > 0 && attrs.encounter_type !== 'acute') {
+        // Routine encounter: Z code PRIMARY, conditions SECONDARY
+        return [...encounterCodes, ...codes];
     }
 
     // RULE 2-3: HTN+CKD+HF Priority Sequencing
