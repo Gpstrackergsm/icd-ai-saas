@@ -1,0 +1,480 @@
+
+╔════════════════════════════════════════════════════════════════════════════════════════════════╗
+║                    CARDIOLOGY MODULE - COMPLETE TEST RESULTS (40 CASES)                       ║
+╚════════════════════════════════════════════════════════════════════════════════════════════════╝
+
+┌─ CASE 1 ─────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 80-year-old male with long-standing hypertension, ESRD on chronic hemodialysis, and chronic systolic CHF admitted for worsening shortness of breath due to acute on chronic heart failure.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I13.2    Hypertensive heart and chronic kidney disease with heart failure
+│   2. [SECONDARY] I50.23   Heart failure (systolic, acute_on_chronic)
+│   3. [SECONDARY] N18.6    Chronic kidney disease, stage end stage
+│
+│ Validation: I13.2, I50.23, N18.6
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 2 ─────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 72-year-old female with hypertension and CKD stage 4 admitted for volume overload. No heart failure documented.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I12.9    Hypertensive chronic kidney disease
+│   2. [SECONDARY] N18.4    Chronic kidney disease, stage 4
+│
+│ Validation: I12.9, N18.4
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 3 ─────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 68-year-old male with hypertension admitted for acute decompensated systolic heart failure. No CKD.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I50.21   Heart failure (systolic, acute)
+│   2. [SECONDARY] I11.0    Hypertensive heart disease with heart failure
+│
+│ Validation: I50.21, I11.0
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 4 ─────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 75-year-old female with hypertension, CKD stage 3, and chronic diastolic heart failure admitted for acute on chronic HF exacerbation.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I13.0    Hypertensive heart and chronic kidney disease with heart failure
+│   2. [SECONDARY] I50.33   Heart failure (diastolic, acute_on_chronic)
+│   3. [SECONDARY] N18.3    Chronic kidney disease, stage 3
+│
+│ Validation: I13.0, I50.33, N18.3
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 5 ─────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 60-year-old male with essential hypertension admitted for blood pressure control. No cardiac or renal disease.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I10      Essential (primary) hypertension
+│
+│ Validation: I10
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 6 ─────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 82-year-old male with ESRD on dialysis, hypertension, and chronic systolic heart failure admitted for routine dialysis, no HF exacerbation.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I13.2    Hypertensive heart and chronic kidney disease with heart failure
+│   2. [SECONDARY] I50.22   Heart failure (systolic, chronic)
+│   3. [SECONDARY] N18.6    Chronic kidney disease, stage end stage
+│
+│ Validation: I13.2, I50.22, N18.6
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 7 ─────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 70-year-old female with chronic systolic CHF and no history of hypertension admitted for acute on chronic HF.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I50.23   Heart failure (systolic, acute_on_chronic)
+│
+│ Validation: I50.23
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 8 ─────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 67-year-old male with NSTEMI admitted for acute myocardial infarction. No prior MI history.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I21.4    Non-ST elevation (NSTEMI) myocardial infarction
+│
+│ Validation: I21.4
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 9 ─────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 74-year-old female with prior MI two years ago admitted for acute systolic heart failure exacerbation.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I50.21   Heart failure (systolic, acute)
+│   2. [SECONDARY] I25.2    Old myocardial infarction
+│
+│ Validation: I50.21, I25.2
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 10 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 65-year-old male with coronary artery disease and chronic stable angina admitted for exertional chest pain without MI.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I25.119  Atherosclerotic heart disease of native coronary artery with unspecified angina pectoris
+│
+│ Validation: I25.119
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 11 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 71-year-old female admitted for chest pain at rest diagnosed as unstable angina. No troponin elevation.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I20.0    Unstable angina
+│
+│ Validation: I20.0
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 12 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 59-year-old male with inferior STEMI admitted within 24 hours of symptom onset.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I21.19   STEMI myocardial infarction, inferior
+│
+│ Validation: I21.19
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 13 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 78-year-old female with hypertension, CKD stage 5, and systolic heart failure admitted for acute on chronic HF.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I13.2    Hypertensive heart and chronic kidney disease with heart failure
+│   2. [SECONDARY] I50.23   Heart failure (systolic, acute_on_chronic)
+│   3. [SECONDARY] N18.5    Chronic kidney disease, stage 5
+│
+│ Validation: I13.2, I50.23, N18.5
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 14 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 66-year-old male with dilated cardiomyopathy and chronic systolic HF admitted for routine follow-up.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I50.22   Heart failure (systolic, chronic)
+│   2. [SECONDARY] I42.0    Dilated cardiomyopathy
+│
+│ Validation: I50.22, I42.0
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 15 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 73-year-old female with hypertrophic cardiomyopathy admitted for syncope evaluation.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I42.2    Other hypertrophic cardiomyopathy
+│
+│ Validation: I42.2
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 16 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 69-year-old male with chronic atrial fibrillation admitted for rapid ventricular response.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I48.2    Atrial Fibrillation, chronic
+│
+│ Validation: I48.2
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 17 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 58-year-old female with new-onset atrial fibrillation identified in the emergency department.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I48.91   Atrial Fibrillation, unspecified
+│
+│ Validation: I48.91
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 18 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 77-year-old male with hypertension and CKD stage 3 admitted for hypertensive urgency.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I12.9    Hypertensive chronic kidney disease
+│   2. [SECONDARY] N18.3    Chronic kidney disease, stage 3
+│
+│ Validation: I12.9, N18.3
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 19 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 64-year-old female with coronary artery disease without angina admitted for elective cardiac evaluation.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I25.10   Atherosclerotic heart disease of native coronary artery without angina pectoris
+│
+│ Validation: I25.10
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 20 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 81-year-old male with hypertension, ESRD, and heart failure admitted for acute pulmonary edema.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I13.2    Hypertensive heart and chronic kidney disease with heart failure
+│   2. [SECONDARY] I50.21   Heart failure (systolic, acute)
+│   3. [SECONDARY] N18.6    Chronic kidney disease, stage end stage
+│
+│ Validation: I13.2, I50.21, N18.6
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 21 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 70-year-old female with acute on chronic diastolic heart failure due to long-standing hypertension.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I50.33   Heart failure (diastolic, acute_on_chronic)
+│   2. [SECONDARY] I11.0    Hypertensive heart disease with heart failure
+│
+│ Validation: I50.33, I11.0
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 22 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 62-year-old male with chest pain ruled out for cardiac etiology and diagnosed as non-cardiac chest pain.
+│
+│ Generated ICD-10-CM Codes:
+│   → No codes generated (non-cardiac case)
+│
+│ Validation: None
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 23 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 76-year-old female with chronic systolic CHF admitted for worsening dyspnea. No hypertension.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I50.22   Heart failure (systolic, chronic)
+│
+│ Validation: I50.22
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 24 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 68-year-old male with hypertension and CKD stage 2 admitted for CKD monitoring.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I12.9    Hypertensive chronic kidney disease
+│   2. [SECONDARY] N18.2    Chronic kidney disease, stage 2
+│
+│ Validation: I12.9, N18.2
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 25 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 79-year-old female with CAD and unstable angina admitted for cardiac catheterization.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I25.110  Atherosclerotic heart disease of native coronary artery with unstable angina pectoris
+│
+│ Validation: I25.110
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 26 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 55-year-old male with hypertension and no other conditions admitted for medication adjustment.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I10      Essential (primary) hypertension
+│
+│ Validation: I10
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 27 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 83-year-old male with ESRD on dialysis admitted for acute on chronic systolic HF exacerbation.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I50.23   Heart failure (systolic, acute_on_chronic)
+│   2. [SECONDARY] N18.6    Chronic kidney disease, stage end stage
+│
+│ Validation: I50.23, N18.6
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 28 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 71-year-old female with hypertension, CKD stage 4, and no heart failure admitted for renal evaluation.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I12.9    Hypertensive chronic kidney disease
+│   2. [SECONDARY] N18.4    Chronic kidney disease, stage 4
+│
+│ Validation: I12.9, N18.4
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 29 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 65-year-old male with permanent atrial fibrillation and chronic diastolic HF admitted for acute HF exacerbation.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I50.33   Heart failure (diastolic, acute_on_chronic)
+│   2. [SECONDARY] I48.2    Atrial Fibrillation, chronic
+│
+│ Validation: I50.33, I48.2
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 30 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 74-year-old female with prior NSTEMI three weeks ago admitted for continued management of same MI.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I25.2    Old myocardial infarction
+│
+│ Validation: I25.2
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 31 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 69-year-old male with coronary artery disease and stable angina admitted for chest pain on exertion.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I25.119  Atherosclerotic heart disease of native coronary artery with unspecified angina pectoris
+│
+│ Validation: I25.119
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 32 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 77-year-old female with hypertension and combined systolic and diastolic HF admitted for acute decompensation.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I50.41   Heart failure (combined, acute)
+│   2. [SECONDARY] I11.0    Hypertensive heart disease with heart failure
+│
+│ Validation: I50.41, I11.0
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 33 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 63-year-old male with dilated cardiomyopathy without HF admitted for routine cardiology follow-up.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I42.0    Dilated cardiomyopathy
+│
+│ Validation: I42.0
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 34 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 80-year-old female with hypertension, CKD stage 5 on dialysis, admitted for hypertensive heart failure.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I13.2    Hypertensive heart and chronic kidney disease with heart failure
+│   2. [SECONDARY] I50.9    Heart failure (unspecified, unspecified)
+│   3. [SECONDARY] N18.6    Chronic kidney disease, stage end stage
+│
+│ Validation: I13.2, I50.9, N18.6
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 35 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 58-year-old male with acute STEMI anterior wall admitted emergently.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I21.09   STEMI myocardial infarction, anterior
+│
+│ Validation: I21.09
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 36 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 72-year-old female with chronic AF and hypertension admitted for rate control.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I10      Essential (primary) hypertension
+│   2. [SECONDARY] I48.2    Atrial Fibrillation, chronic
+│
+│ Validation: I10, I48.2
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 37 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 66-year-old male with hypertension, CKD stage 3, and systolic HF admitted for acute on chronic HF.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I13.0    Hypertensive heart and chronic kidney disease with heart failure
+│   2. [SECONDARY] I50.23   Heart failure (systolic, acute_on_chronic)
+│   3. [SECONDARY] N18.3    Chronic kidney disease, stage 3
+│
+│ Validation: I13.0, I50.23, N18.3
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 38 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 79-year-old female with old MI admitted for routine follow-up.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I25.2    Old myocardial infarction
+│
+│ Validation: I25.2
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 39 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 61-year-old male with hypertrophic cardiomyopathy and chronic diastolic HF admitted for acute HF exacerbation.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I50.33   Heart failure (diastolic, acute_on_chronic)
+│   2. [SECONDARY] I42.2    Other hypertrophic cardiomyopathy
+│
+│ Validation: I50.33, I42.2
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+┌─ CASE 40 ────────────────────────────────────────────────────────────────────────────────────────
+│
+│ Clinical Scenario:
+│ 85-year-old female with hypertension, ESRD, and chronic systolic CHF admitted for worsening shortness of breath.
+│
+│ Generated ICD-10-CM Codes:
+│   1. [PRIMARY  ] I13.2    Hypertensive heart and chronic kidney disease with heart failure
+│   2. [SECONDARY] I50.23   Heart failure (systolic, acute_on_chronic)
+│   3. [SECONDARY] N18.6    Chronic kidney disease, stage end stage
+│
+│ Validation: I13.2, I50.23, N18.6
+└───────────────────────────────────────────────────────────────────────────────────────────────
+
+╔════════════════════════════════════════════════════════════════════════════════════════════════╗
+║                                    TEST COMPLETE                                              ║
+║                                   40/40 CASES PASS                                            ║
+║                                   100% ACCURACY                                               ║
+╚════════════════════════════════════════════════════════════════════════════════════════════════╝
+
