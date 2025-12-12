@@ -132,15 +132,18 @@ export function parseCardiology(text: string): CardiologyAttributes {
         }
     }
 
-    // CKD
-    if (/\b(ckd|chronic kidney disease|renal failure)\b/.test(t)) {
-        if (/stage 5|esrd|end stage/.test(t)) attrs.ckd_stage = '5';
+    // CKD - Fix: Detect standalone "ESRD" keyword
+    if (/\b(ckd|chronic kidney disease|renal failure|esrd|end.?stage renal)\b/.test(t)) {
+        // Check for ESRD first (highest priority)
+        if (/\besrd\b|end.?stage renal/.test(t)) attrs.ckd_stage = 'esrd';
+        else if (/stage 5/.test(t)) attrs.ckd_stage = '5';
         else if (/stage 4/.test(t)) attrs.ckd_stage = '4';
         else if (/stage 3/.test(t)) attrs.ckd_stage = '3';
         else if (/stage 2/.test(t)) attrs.ckd_stage = '2';
         else if (/stage 1/.test(t)) attrs.ckd_stage = '1';
 
-        if (/dialysis/.test(t)) attrs.ckd_stage = 'esrd';
+        // "on dialysis" or "hemodialysis" → ESRD
+        if (/\b(dialysis|hemodialysis)\b/.test(t)) attrs.ckd_stage = 'esrd';
     }
 
     // ISCHEMIC HEART DISEASE / CAD
