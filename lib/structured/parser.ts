@@ -218,9 +218,14 @@ export function parseInput(text: string): ParseResult {
 
                 // Heart Failure detection from narrative - with type and acuity parsing
                 if (lowerValue.includes('heart failure') || lowerValue.includes('chf') || /\bhf\b/.test(lowerValue)) {
-                    // Check for negation first
+                    // Check for negation - but NOT for "no HF exacerbation" which means HF exists but isn't exacerbating
                     const hfNegation = /(without|no|denies|negative for)\s+(heart failure|chf|hf)(\s+(documented|noted|seen|present))?/i.test(lowerValue);
-                    if (!hfNegation) {
+                    const isExacerbationNegation = /no\s+(hf|heart failure|chf)\s+exacerbation/i.test(lowerValue);
+                    const hasPositiveHF = /(chronic|acute|systolic|diastolic)\s+(systolic\s+)?heart failure/i.test(lowerValue) ||
+                        /(chronic|acute|systolic|diastolic)\s+(systolic\s+)?chf/i.test(lowerValue);
+
+                    // If we have positive HF indicators OR it's just an exacerbation negation, detect HF
+                    if (hasPositiveHF || isExacerbationNegation || !hfNegation) {
                         if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
 
                         // Parse type
@@ -229,14 +234,21 @@ export function parseInput(text: string): ParseResult {
                         else if (lowerValue.includes('systolic') || lowerValue.includes('hfref')) type = 'systolic';
                         else if (lowerValue.includes('diastolic') || lowerValue.includes('hfpef')) type = 'diastolic';
 
-                        // Parse acuity
+                        // Parse acuity - if "no HF exacerbation", it's chronic (stable)
                         let acuity: 'acute' | 'chronic' | 'acute_on_chronic' | 'unspecified' = 'unspecified';
                         if (lowerValue.includes('acute on chronic') || lowerValue.includes('acute-on-chronic')) acuity = 'acute_on_chronic';
-                        else if (lowerValue.includes('acute') || lowerValue.includes('decompensated')) acuity = 'acute';
-                        else if (lowerValue.includes('chronic')) acuity = 'chronic';
+                        else if ((lowerValue.includes('acute') || lowerValue.includes('decompensated')) && !isExacerbationNegation) acuity = 'acute';
+                        else if (lowerValue.includes('chronic') || isExacerbationNegation) acuity = 'chronic';
 
                         context.conditions.cardiovascular.heartFailure = { type, acuity };
                     }
+                }
+
+                // ESRD detection
+                if (lowerValue.includes('esrd') || lowerValue.includes('end stage renal') ||
+                    lowerValue.includes('end-stage renal') || lowerValue.includes('stage 5 ckd')) {
+                    if (!context.conditions.renal) context.conditions.renal = {};
+                    context.conditions.renal.ckd = { stage: 'esrd' };
                 }
 
                 // Myocardial Infarction (MI) detection
