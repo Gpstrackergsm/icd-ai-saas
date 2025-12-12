@@ -33,14 +33,23 @@ export interface PatientContext {
                 type: 'systolic' | 'diastolic' | 'combined' | 'unspecified';
                 acuity: 'acute' | 'chronic' | 'acute_on_chronic' | 'unspecified';
             };
-            cad?: boolean;
+            cad?: { present: boolean };
             previousMI?: boolean;
-            atrialFib?: boolean;
             mi?: {
                 type: 'stemi' | 'nstemi' | 'unspecified';
                 timing: 'initial' | 'subsequent' | 'old';
+                location?: 'anterior' | 'inferior' | 'lateral' | 'posterior';
             };
-            atrialFibrillation?: boolean;
+            angina?: {
+                type: 'stable' | 'unstable' | 'unspecified';
+            };
+            atrialFibrillation?: {
+                type: 'paroxysmal' | 'persistent' | 'permanent' | 'chronic' | 'unspecified';
+            };
+            cardiomyopathy?: {
+                type: 'dilated' | 'hypertrophic' | 'restrictive' | 'unspecified';
+            };
+            atrialFib?: boolean; // Legacy field
             historyOfMI?: boolean;
         };
         renal?: {

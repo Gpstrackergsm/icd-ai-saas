@@ -427,6 +427,108 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 rule: 'Old MI code'
             });
         }
+
+        // RULE: Acute Myocardial Infarction (STEMI/NSTEMI)
+        if (c.mi) {
+            let miCode = 'I21.9'; // Default unspecified
+            let miLabel = 'Acute myocardial infarction, unspecified';
+
+            if (c.mi.timing === 'old') {
+                miCode = 'I25.2';
+                miLabel = 'Old myocardial infarction';
+            } else if (c.mi.timing === 'subsequent') {
+                // Subsequent MI (within 4 weeks)
+                if (c.mi.type === 'stemi') {
+                    miCode = 'I22.9';
+                    miLabel = 'Subsequent STEMI of unspecified site';
+                } else if (c.mi.type === 'nstemi') {
+                    miCode = 'I22.2';
+                    miLabel = 'Subsequent non-ST elevation myocardial infarction';
+                }
+            } else {
+                // Initial MI
+                if (c.mi.type === 'stemi') {
+                    if (c.mi.location === 'anterior') miCode = 'I21.09';
+                    else if (c.mi.location === 'inferior') miCode = 'I21.19';
+                    else if (c.mi.location === 'lateral') miCode = 'I21.29';
+                    else miCode = 'I21.3'; // ST elevation MI of unspecified site
+                    miLabel = `ST elevation myocardial infarction${c.mi.location ? ' of ' + c.mi.location + ' wall' : ''}`;
+                } else if (c.mi.type === 'nstemi') {
+                    miCode = 'I21.4';
+                    miLabel = 'Non-ST elevation myocardial infarction';
+                }
+            }
+
+            codes.push({
+                code: miCode,
+                label: miLabel,
+                rationale: `${c.mi.type?.toUpperCase() || 'Acute'} MI documented`,
+                guideline: 'ICD-10-CM I21-I22',
+                trigger: `MI Type: ${c.mi.type}, Timing: ${c.mi.timing}`,
+                rule: 'Myocardial infarction code'
+            });
+        }
+
+        // RULE: Coronary Artery Disease (CAD)
+        if (c.cad?.present) {
+            codes.push({
+                code: 'I25.10',
+                label: 'Atherosclerotic heart disease of native coronary artery without angina pectoris',
+                rationale: 'Coronary artery disease documented',
+                guideline: 'ICD-10-CM I25',
+                trigger: 'CAD = Yes',
+                rule: 'CAD code'
+            });
+        }
+
+        // RULE: Angina
+        if (c.angina) {
+            let anginaCode = 'I20.9'; // Unspecified angina
+            let anginaLabel = 'Angina pectoris, unspecified';
+
+            if (c.angina.type === 'unstable') {
+                anginaCode = 'I20.0';
+                anginaLabel = 'Unstable angina';
+            } else if (c.angina.type === 'stable') {
+                anginaCode = 'I25.111';
+                anginaLabel = 'Atherosclerotic heart disease with angina pectoris with documented spasm';
+            }
+
+            codes.push({
+                code: anginaCode,
+                label: anginaLabel,
+                rationale: `${c.angina.type} angina documented`,
+                guideline: 'ICD-10-CM I20',
+                trigger: `Angina Type: ${c.angina.type}`,
+                rule: 'Angina code'
+            });
+        }
+
+        // RULE: Cardiomyopathy
+        if (c.cardiomyopathy) {
+            let cmCode = 'I42.9'; // Unspecified
+            let cmLabel = 'Cardiomyopathy, unspecified';
+
+            if (c.cardiomyopathy.type === 'dilated') {
+                cmCode = 'I42.0';
+                cmLabel = 'Dilated cardiomyopathy';
+            } else if (c.cardiomyopathy.type === 'hypertrophic') {
+                cmCode = 'I42.2';
+                cmLabel = 'Other hypertrophic cardiomyopathy';
+            } else if (c.cardiomyopathy.type === 'restrictive') {
+                cmCode = 'I42.5';
+                cmLabel = 'Other restrictive cardiomyopathy';
+            }
+
+            codes.push({
+                code: cmCode,
+                label: cmLabel,
+                rationale: `${c.cardiomyopathy.type} cardiomyopathy documented`,
+                guideline: 'ICD-10-CM I42',
+                trigger: `Cardiomyopathy Type: ${c.cardiomyopathy.type}`,
+                rule: 'Cardiomyopathy code'
+            });
+        }
     }
 
     // --- RENAL RULES (DETERMINISTIC) ---

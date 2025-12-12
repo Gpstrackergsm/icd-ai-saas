@@ -239,7 +239,76 @@ export function parseInput(text: string): ParseResult {
                     }
                 }
 
-                // Preeclampsia Severity Scanning
+                // Myocardial Infarction (MI) detection
+                if (lowerValue.includes('myocardial infarction') || lowerValue.includes(' mi ') ||
+                    lowerValue.includes('nstemi') || lowerValue.includes('stemi') ||
+                    lowerValue.includes('heart attack')) {
+                    if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
+
+                    let miType: 'stemi' | 'nstemi' | 'unspecified' = 'unspecified';
+                    let miLocation: 'anterior' | 'inferior' | 'lateral' | 'posterior' | undefined;
+                    let miTiming: 'initial' | 'subsequent' | 'old' = 'initial';
+
+                    if (lowerValue.includes('stemi') && !lowerValue.includes('nstemi')) miType = 'stemi';
+                    else if (lowerValue.includes('nstemi') || lowerValue.includes('non-st')) miType = 'nstemi';
+
+                    if (lowerValue.includes('anterior')) miLocation = 'anterior';
+                    else if (lowerValue.includes('inferior')) miLocation = 'inferior';
+                    else if (lowerValue.includes('lateral')) miLocation = 'lateral';
+                    else if (lowerValue.includes('posterior')) miLocation = 'posterior';
+
+                    if (lowerValue.includes('old mi') || lowerValue.includes('prior mi') ||
+                        lowerValue.includes('previous mi') || lowerValue.includes('history of mi')) miTiming = 'old';
+                    else if (lowerValue.includes('subsequent') || lowerValue.includes('weeks ago')) miTiming = 'subsequent';
+
+                    context.conditions.cardiovascular.mi = { type: miType, location: miLocation, timing: miTiming };
+                }
+
+                // Coronary Artery Disease (CAD) detection
+                if (lowerValue.includes('coronary artery disease') || lowerValue.includes('cad') ||
+                    lowerValue.includes('coronary heart disease') || lowerValue.includes('ischemic heart')) {
+                    if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
+                    context.conditions.cardiovascular.cad = { present: true };
+                }
+
+                // Angina detection  
+                if (lowerValue.includes('angina')) {
+                    if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
+
+                    let anginaType: 'stable' | 'unstable' | 'unspecified' = 'unspecified';
+                    if (lowerValue.includes('unstable')) anginaType = 'unstable';
+                    else if (lowerValue.includes('stable') || lowerValue.includes('chronic')) anginaType = 'stable';
+
+                    context.conditions.cardiovascular.angina = { type: anginaType };
+                }
+
+                // Atrial Fibrillation (AF) detection
+                if (lowerValue.includes('atrial fibrillation') || lowerValue.includes('afib') ||
+                    /\baf\b/.test(lowerValue) || lowerValue.includes('a-fib')) {
+                    if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
+
+                    let afType: 'paroxysmal' | 'persistent' | 'permanent' | 'chronic' | 'unspecified' = 'unspecified';
+                    if (lowerValue.includes('paroxysmal')) afType = 'paroxysmal';
+                    else if (lowerValue.includes('persistent')) afType = 'persistent';
+                    else if (lowerValue.includes('permanent')) afType = 'permanent';
+                    else if (lowerValue.includes('chronic')) afType = 'chronic';
+                    else if (lowerValue.includes('new-onset') || lowerValue.includes('new onset')) afType = 'paroxysmal';
+
+                    context.conditions.cardiovascular.atrialFibrillation = { type: afType };
+                }
+
+                // Cardiomyopathy detection
+                if (lowerValue.includes('cardiomyopathy')) {
+                    if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
+
+                    let cmType: 'dilated' | 'hypertrophic' | 'restrictive' | 'unspecified' = 'unspecified';
+                    if (lowerValue.includes('dilated')) cmType = 'dilated';
+                    else if (lowerValue.includes('hypertrophic') || lowerValue.includes('hcm')) cmType = 'hypertrophic';
+                    else if (lowerValue.includes('restrictive')) cmType = 'restrictive';
+
+                    context.conditions.cardiovascular.cardiomyopathy = { type: cmType };
+                }
+
                 if (lowerValue.includes('preeclampsia') || lowerValue.includes('pre-eclampsia')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     if (!context.conditions.obstetric.preeclampsia) context.conditions.obstetric.preeclampsia = { present: true, severity: 'unspecified' };
@@ -1189,7 +1258,9 @@ export function parseInput(text: string): ParseResult {
             case 'atrial fibrillation':
             case 'afib':
                 if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
-                context.conditions.cardiovascular.atrialFibrillation = parseBoolean(value);
+                if (parseBoolean(value)) {
+                    context.conditions.cardiovascular.atrialFibrillation = { type: 'unspecified' };
+                }
                 break;
 
             case 'prior mi':
