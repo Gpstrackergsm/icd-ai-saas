@@ -216,6 +216,29 @@ export function parseInput(text: string): ParseResult {
                     }
                 }
 
+                // Heart Failure detection from narrative - with type and acuity parsing
+                if (lowerValue.includes('heart failure') || lowerValue.includes('chf') || /\bhf\b/.test(lowerValue)) {
+                    // Check for negation first
+                    const hfNegation = /(without|no|denies|negative for)\s+(heart failure|chf|hf)(\s+(documented|noted|seen|present))?/i.test(lowerValue);
+                    if (!hfNegation) {
+                        if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
+
+                        // Parse type
+                        let type: 'systolic' | 'diastolic' | 'combined' | 'unspecified' = 'unspecified';
+                        if (lowerValue.includes('systolic') && lowerValue.includes('diastolic')) type = 'combined';
+                        else if (lowerValue.includes('systolic') || lowerValue.includes('hfref')) type = 'systolic';
+                        else if (lowerValue.includes('diastolic') || lowerValue.includes('hfpef')) type = 'diastolic';
+
+                        // Parse acuity
+                        let acuity: 'acute' | 'chronic' | 'acute_on_chronic' | 'unspecified' = 'unspecified';
+                        if (lowerValue.includes('acute on chronic') || lowerValue.includes('acute-on-chronic')) acuity = 'acute_on_chronic';
+                        else if (lowerValue.includes('acute') || lowerValue.includes('decompensated')) acuity = 'acute';
+                        else if (lowerValue.includes('chronic')) acuity = 'chronic';
+
+                        context.conditions.cardiovascular.heartFailure = { type, acuity };
+                    }
+                }
+
                 // Preeclampsia Severity Scanning
                 if (lowerValue.includes('preeclampsia') || lowerValue.includes('pre-eclampsia')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
@@ -233,8 +256,10 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.obstetric.preeclampsia = { present: true, severity: 'hellp' };
                 }
 
-                // Detect CKD
-                if (lowerValue.includes('kidney') || lowerValue.includes('ckd')) {
+                // Detect CKD - but check for negation first
+                const ckdNegation = /(no|without|denies|negative for)\s+(ckd|chronic kidney|kidney disease)/i.test(lowerValue);
+                if (!ckdNegation && (lowerValue.includes('kidney disease') || lowerValue.includes('ckd stage') ||
+                    (lowerValue.includes('ckd') && !lowerValue.includes('no ckd')))) {
                     if (!context.conditions.renal) context.conditions.renal = {};
                     context.conditions.renal.ckd = { stage: 'unspecified' };
 
@@ -763,9 +788,27 @@ export function parseInput(text: string): ParseResult {
                     };
                 }
 
-                if (lowerValue.includes('heart failure')) {
-                    if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
-                    context.conditions.cardiovascular.heartFailure = { type: 'unspecified', acuity: 'unspecified' };
+                // Detect heart failure from narrative - with type and acuity parsing
+                if (lowerValue.includes('heart failure') || lowerValue.includes('chf') || lowerValue.includes('hf ')) {
+                    // Check for negation first
+                    const hfNegation = /(without|no|denies|negative for)\s+(heart failure|chf|hf)(\s+(documented|noted|seen|present))?/i.test(lowerValue);
+                    if (!hfNegation) {
+                        if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
+
+                        // Parse type
+                        let type: 'systolic' | 'diastolic' | 'combined' | 'unspecified' = 'unspecified';
+                        if (lowerValue.includes('systolic') && lowerValue.includes('diastolic')) type = 'combined';
+                        else if (lowerValue.includes('systolic') || lowerValue.includes('hfref')) type = 'systolic';
+                        else if (lowerValue.includes('diastolic') || lowerValue.includes('hfpef')) type = 'diastolic';
+
+                        // Parse acuity
+                        let acuity: 'acute' | 'chronic' | 'acute_on_chronic' | 'unspecified' = 'unspecified';
+                        if (lowerValue.includes('acute on chronic') || lowerValue.includes('acute-on-chronic')) acuity = 'acute_on_chronic';
+                        else if (lowerValue.includes('acute') || lowerValue.includes('decompensated')) acuity = 'acute';
+                        else if (lowerValue.includes('chronic')) acuity = 'chronic';
+
+                        context.conditions.cardiovascular.heartFailure = { type, acuity };
+                    }
                 }
 
                 // Detect HTN from free text
