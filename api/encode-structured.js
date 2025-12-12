@@ -99,15 +99,23 @@ module.exports = async function handler(req, res) {
                     result.secondary = result.secondary.filter(c => c.code !== 'N18.5');
 
                 } else {
-                    // For other cardiology cases (MI, AF, etc.), add all to secondary
+                    // For other cardiology cases (MI, AF, etc.), add to secondary if not duplicate
+                    const existingCodes = new Set([
+                        result.primary?.code,
+                        ...result.secondary.map(c => c.code)
+                    ].filter(Boolean));
+
                     cardioCodes.forEach(c => {
-                        result.secondary.push({
-                            code: c.code,
-                            label: c.label,
-                            rationale: `Cardiology domain module: ${c.triggeredBy}`,
-                            trigger: c.triggeredBy,
-                            rule: 'cardiology_module'
-                        });
+                        if (!existingCodes.has(c.code)) {
+                            result.secondary.push({
+                                code: c.code,
+                                label: c.label,
+                                rationale: `Cardiology domain module: ${c.triggeredBy}`,
+                                trigger: c.triggeredBy,
+                                rule: 'cardiology_module'
+                            });
+                            existingCodes.add(c.code);
+                        }
                     });
                 }
             }
