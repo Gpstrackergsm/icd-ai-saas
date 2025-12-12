@@ -1,17 +1,21 @@
-import { parseInput } from './lib/structured/parser';
+import { parseCardiology, resolveCardiologyCodes } from './lib/domains/cardiology/module';
 
-// Test failing cases
-const cases = [
-    { num: 7, input: "Age: 62\nGender: Female\nEncounter Type: Inpatient\nCondition: Hypertension with Chronic Kidney Disease Stage 3" },
-    { num: 10, input: "Age: 59\nGender: Male\nEncounter Type: Outpatient\nCondition: Secondary Hypertension due to renal disease" },
-    { num: 19, input: "Age: 82\nGender: Male\nEncounter Type: Inpatient\nCondition: Pneumonia due to COVID-19" },
+const debugCases = [
+    { id: 6, text: "82-year-old male with ESRD on dialysis, hypertension, and chronic systolic heart failure admitted for routine dialysis, no HF exacerbation." },
+    { id: 20, text: "81-year-old male with hypertension, ESRD, and heart failure admitted for acute pulmonary edema." },
+    { id: 23, text: "76-year-old female with chronic systolic CHF admitted for worsening dyspnea.  No hypertension." },
+    { id: 30, text: "74-year-old female with prior NSTEMI three weeks ago admitted for continued management of same MI." }
 ];
 
-cases.forEach(c => {
-    console.log(`\nCase ${c.num}:`);
-    const { context } = parseInput(c.input);
-    console.log('Cardiovascular:', JSON.stringify(context.conditions.cardiovascular, null, 2));
-    console.log('Renal:', JSON.stringify(context.conditions.renal, null, 2));
-    console.log('Respiratory:', JSON.stringify(context.conditions.respiratory, null, 2));
-    console.log('Infection:', JSON.stringify(context.conditions.infection, null, 2));
+debugCases.forEach(c => {
+    console.log(`\nCase ${c.id}:`);
+    console.log(`Text: "${c.text}"`);
+    const attrs = parseCardiology(c.text);
+    console.log(`  hf_type: ${attrs.hf_type}`);
+    console.log(`  hf_acuity: ${attrs.hf_acuity}`);
+    console.log(`  acute_mi: ${attrs.acute_mi}`);
+    console.log(`  old_mi: ${attrs.old_mi}`);
+
+    const codes = resolveCardiologyCodes(attrs);
+    console.log(`  Codes: ${codes.map(c => c.code).join(', ')}`);
 });

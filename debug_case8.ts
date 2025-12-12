@@ -1,16 +1,20 @@
-import { parseInput } from './lib/structured/parser';
-import { runStructuredRules } from './lib/structured/engine';
+import { parseCardiology, resolveCardiologyCodes } from './lib/domains/cardiology/module';
 
-const test8 = "Age: 48\nGender: Female\nEncounter Type: Outpatient\nDiabetes Type: Type 2\nComplications: Nephropathy";
+const text = "67-year-old male with NSTEMI admitted for acute myocardial infarction. No prior MI history.";
+console.log('Text:', text);
+console.log('Lowercase:', text.toLowerCase());
+const attrs = parseCardiology(text);
+console.log('\nParsed Attributes:');
+console.log('  acute_mi:', attrs.acute_mi);
+console.log('  old_mi:', attrs.old_mi);
+console.log('  mi_type:', attrs.mi_type);
 
-console.log('Test 8 (Nephropathy only):');
-const { context } = parseInput(test8);
-console.log('Diabetes complications:', context.conditions.diabetes?.complications);
-console.log('CKD object:', context.conditions.ckd);
+// Check regex matches
+const t = text.toLowerCase();
+console.log('\nRegex Tests:');
+console.log('  /\\bnstemi\\b/.test:', /\bnstemi\b/.test(t));
+console.log('  /(prior|previous|old|history).*nstemi/.test:', /(prior|previous|old|history).*nstemi/.test(t));
+console.log('  !/continued.*management|follow.?up.*mi/.test:', !/continued.*management|follow.?up.*mi/.test(t));
 
-const result = runStructuredRules(context);
-const codes = [result.primary, ...result.secondary]
-    .filter((c): c is NonNullable<typeof c> => c !== null && c !== undefined)
-    .map(c => c.code);
-console.log('Generated codes:', codes);
-console.log('Expected: E11.21 only');
+const codes = resolveCardiologyCodes(attrs);
+console.log('\nGenerated Codes:', codes.map(c => c.code));
