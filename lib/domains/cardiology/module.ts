@@ -1,4 +1,4 @@
-
+// Cardiology Module v3.4 - HF negation fix (2025-12-12)
 import { SequencedCode } from '../../rulesEngineCore';
 
 // =======================================================
