@@ -33,7 +33,11 @@ function detectCkd(text: string): { hasCkd: boolean; stage?: CardiovascularAttri
 }
 
 function detectHeartFailure(text: string): { hasHf: boolean; type: CardiovascularAttributes['failure_type']; acuity: CardiovascularAttributes['acuity'] } {
-    const hasHf = /heart failure|chf|congestive/.test(text);
+    // Check for negation patterns first
+    const hasHfNegation = /(without|no)\s+(hf\b|heart failure|chf)(\s+(documented|noted|seen|present|evidence|found))?/i.test(text);
+    const hasHfMention = /heart failure|chf|congestive/.test(text);
+    const hasHf = hasHfMention && !hasHfNegation;
+
     let type: CardiovascularAttributes['failure_type'] = 'unspecified';
     if (/systolic/.test(text) && /diastolic/.test(text)) type = 'combined';
     else if (/systolic/.test(text)) type = 'systolic';
