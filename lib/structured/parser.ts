@@ -209,8 +209,11 @@ export function parseInput(text: string): ParseResult {
                 if (lowerValue.includes('hypertension') || lowerValue.includes('hypertensive')) {
                     if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
                     context.conditions.cardiovascular.hypertension = true;
-                    // Set heartDisease flag for "Hypertensive Heart Disease" etc.
-                    context.conditions.cardiovascular.heartDisease = true;
+                    // ONLY set heartDisease for "Hypertensive Heart Disease", "heart and kidney disease", etc.
+                    // NOT for plain "hypertension" + CKD
+                    if (lowerValue.includes('heart disease') || lowerValue.includes('heart and')) {
+                        context.conditions.cardiovascular.heartDisease = true;
+                    }
                 }
 
                 // Preeclampsia Severity Scanning
