@@ -205,8 +205,10 @@ export function parseInput(text: string): ParseResult {
                     else if (lowerValue.includes('failure to progress')) labor.failureToProgress = true;
                 }
 
-                // Hypertension
-                if (lowerValue.includes('hypertension') || lowerValue.includes('hypertensive')) {
+                // Hypertension (check for negation first)
+                const hasHtnNegation = text.toLowerCase().includes('no history of hypertension') ||
+                    text.toLowerCase().includes('no hypertension');
+                if ((lowerValue.includes('hypertension') || lowerValue.includes('hypertensive')) && !hasHtnNegation) {
                     if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
                     context.conditions.cardiovascular.hypertension = true;
                     // ONLY set heartDisease for "Hypertensive Heart Disease", "heart and kidney disease", etc.
@@ -923,7 +925,10 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.cardiovascular.hypertension = true;
                 }
 
-                if (lowerValue.includes('hypertension') || lowerValue.includes('hypertensive')) {
+                // Check for negation before setting hypertension
+                const htnNegated = text.toLowerCase().includes('no history of hypertension') ||
+                    text.toLowerCase().includes('no hypertension');
+                if ((lowerValue.includes('hypertension') || lowerValue.includes('hypertensive')) && !htnNegated) {
                     if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
                     context.conditions.cardiovascular.hypertension = true;
                 }
@@ -1248,7 +1253,13 @@ export function parseInput(text: string): ParseResult {
                 break;
             case 'hypertension':
                 if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
-                context.conditions.cardiovascular.hypertension = parseBoolean(value);
+                // Check for explicit negation first
+                const isHtnNegated = lowerValue === 'no' || lowerValue === 'none' || lowerValue === 'false' ||
+                    text.toLowerCase().includes('no history of hypertension') ||
+                    text.toLowerCase().includes('no hypertension');
+                if (!isHtnNegated) {
+                    context.conditions.cardiovascular.hypertension = parseBoolean(value);
+                }
                 break;
             case 'heart failure':
             case 'hf':

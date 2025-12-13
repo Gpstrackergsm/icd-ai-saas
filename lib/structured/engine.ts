@@ -420,16 +420,21 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         }
 
         // RULE: Heart Failure (detailed)
+        // SKIP if already added via HTN combination codes (I11.0, I13.x)
         if (c.heartFailure) {
             const hfCode = mapHeartFailureCode(c.heartFailure.type, c.heartFailure.acuity);
-            codes.push({
-                code: hfCode,
-                label: `Heart failure, ${c.heartFailure.type}, ${c.heartFailure.acuity}`,
-                rationale: 'Specific heart failure type and acuity',
-                guideline: 'ICD-10-CM I.C.9',
-                trigger: `Heart Failure Type: ${c.heartFailure.type}, Acuity: ${c.heartFailure.acuity}`,
-                rule: 'Heart failure specificity mapping'
-            });
+            const alreadyAdded = codes.some(code => code.code === hfCode);
+
+            if (!alreadyAdded) {
+                codes.push({
+                    code: hfCode,
+                    label: `Heart failure, ${c.heartFailure.type}, ${c.heartFailure.acuity}`,
+                    rationale: 'Specific heart failure type and acuity',
+                    guideline: 'ICD-10-CM I.C.9',
+                    trigger: `Heart Failure Type: ${c.heartFailure.type}, Acuity: ${c.heartFailure.acuity}`,
+                    rule: 'Heart failure specificity mapping'
+                });
+            }
         }
 
         // RULE: Atrial Fibrillation
