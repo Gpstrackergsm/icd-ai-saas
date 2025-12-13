@@ -563,7 +563,9 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         }
 
         // RULE: Coronary Artery Disease (CAD)
-        if (c.cad?.present) {
+        // SKIP if angina is present - angina codes (I25.111, I20.0, etc.) already capture CAD context
+        // Exception: unstable angina (I20.0) is separate and CAD should still be coded
+        if (c.cad?.present && !c.angina) {
             codes.push({
                 code: 'I25.10',
                 label: 'Atherosclerotic heart disease of native coronary artery without angina pectoris',
@@ -584,7 +586,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 anginaLabel = 'Unstable angina';
             } else if (c.angina.type === 'stable') {
                 anginaCode = 'I25.111';
-                anginaLabel = 'Atherosclerotic heart disease with angina pectoris with documented spasm';
+                anginaLabel = 'Atherosclerotic heart disease of native coronary artery with angina pectoris with documented spasm';
             }
 
             codes.push({
@@ -595,6 +597,18 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 trigger: `Angina Type: ${c.angina.type}`,
                 rule: 'Angina code'
             });
+
+            // If unstable angina with CAD, add CAD as secondary code
+            if (c.angina.type === 'unstable' && c.cad?.present) {
+                codes.push({
+                    code: 'I25.10',
+                    label: 'Atherosclerotic heart disease of native coronary artery without angina pectoris',
+                    rationale: 'Underlying CAD documented with unstable angina',
+                    guideline: 'ICD-10-CM I25',
+                    trigger: 'CAD + Unstable Angina',
+                    rule: 'CAD secondary to unstable angina'
+                });
+            }
         }
 
         // RULE: Cardiomyopathy
@@ -2561,6 +2575,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
         // Diabetic Ulcer Manifestation (L97) - sequenced after Diabetes
         if (code.startsWith('L97')) return 55;
+
+        // Angina (Acute cardiac conditions - higher priority)
+        if (code.startsWith('I20')) return 45; // Unstable/variant angina (acute condition)
+        if (code.startsWith('I25.11')) return 46; // Stable angina with CAD (chronic)
 
         // Hypertension & Heart Failure
         if (code.startsWith('I50')) return 57; // Heart Failure

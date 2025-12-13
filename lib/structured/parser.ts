@@ -344,8 +344,10 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.cardiovascular.cad = { present: true };
                 }
 
-                // Angina detection  
-                if (lowerValue.includes('angina')) {
+
+                // Angina detection - check for negation first
+                const anginaNegation = /(without|no|denies|negative for)\s+angina/i.test(lowerValue);
+                if (lowerValue.includes('angina') && !anginaNegation) {
                     if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
 
                     let anginaType: 'stable' | 'unstable' | 'unspecified' = 'unspecified';
@@ -354,6 +356,7 @@ export function parseInput(text: string): ParseResult {
 
                     context.conditions.cardiovascular.angina = { type: anginaType };
                 }
+
 
                 // Atrial Fibrillation (AF) detection
                 if (lowerValue.includes('atrial fibrillation') || lowerValue.includes('afib') ||
