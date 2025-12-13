@@ -57,69 +57,10 @@ module.exports = async function handler(req, res) {
         // Run the rules engine
         const result = runStructuredRules(context);
 
-        // CARDIOLOGY MODULE INTEGRATION (v3.3)
-        // Detect cardiology keywords and augment results with domain-specific codes
-        const cardiologyKeywords = /\b(htn|hypertension|heart failure|chf|hfref|hfpef|cad|coronary|angina|mi|myocardial|stemi|nstemi|afib|atrial fibrillation|cardiomyopathy|ckd|chronic kidney)\b/i;
+        // CARDIOLOGY HANDLING: Now fully integrated into lib/structured/engine.ts
+        // The structured engine handles all cardiology sequencing correctly per UHDDS
+        // No additional override needed here
 
-        if (cardiologyKeywords.test(text)) {
-            const { parseCardiology, resolveCardiologyCodes } = require('../dist/lib/domains/cardiology/module.js');
-            const cardioAttrs = parseCardiology(text);
-            const cardioCodes = resolveCardiologyCodes(cardioAttrs);
-
-            if (cardioCodes.length > 0) {
-                // SEQUENCING PATCH v3.3: Respect cardiology module's internal sequencing
-                // The first code returned is the PRIMARY per ICD-10-CM/UHDDS
-                const cardioPrimary = cardioCodes[0];
-                const cardioSecondary = cardioCodes.slice(1);
-
-                // If cardiology returns I13.x (HTN+CKD+HF combo), it MUST be PRIMARY
-                if (cardioPrimary.code.startsWith('I13')) {
-                    // Override any existing primary with I13.x
-                    result.primary = {
-                        code: cardioPrimary.code,
-                        label: cardioPrimary.label,
-                        rationale: `Cardiology domain: HTN+CKD+HF combination code (UHDDS principal)`,
-                        trigger: cardioPrimary.triggeredBy,
-                        rule: 'cardiology_module_primary'
-                    };
-
-                    // Add remaining cardiology codes to secondary
-                    cardioSecondary.forEach(c => {
-                        result.secondary.push({
-                            code: c.code,
-                            label: c.label,
-                            rationale: `Cardiology domain module: ${c.triggeredBy}`,
-                            trigger: c.triggeredBy,
-                            rule: 'cardiology_module'
-                        });
-                    });
-
-                    // ESRD SUPPRESSION: Remove N18.5 from secondary if cardiology provides codes
-                    // (cardiology already handles ESRD suppression internally)
-                    result.secondary = result.secondary.filter(c => c.code !== 'N18.5');
-
-                } else {
-                    // For other cardiology cases (MI, AF, etc.), add to secondary if not duplicate
-                    const existingCodes = new Set([
-                        result.primary?.code,
-                        ...result.secondary.map(c => c.code)
-                    ].filter(Boolean));
-
-                    cardioCodes.forEach(c => {
-                        if (!existingCodes.has(c.code)) {
-                            result.secondary.push({
-                                code: c.code,
-                                label: c.label,
-                                rationale: `Cardiology domain module: ${c.triggeredBy}`,
-                                trigger: c.triggeredBy,
-                                rule: 'cardiology_module'
-                            });
-                            existingCodes.add(c.code);
-                        }
-                    });
-                }
-            }
-        }
 
         // Apply ICD-10-CM validation for claim compliance
         const validated = validateCodeSet(result.primary, result.secondary, context);
@@ -218,9 +159,9 @@ module.exports = async function handler(req, res) {
                 added: validated.added
             },
             _debug: {
-                apiVersion: 'v3.5-ANGINA-FIX',
-                buildTime: '2025-12-13T14:30:00Z',
-                gitCommit: 'b8a8e90'
+                apiVersion: 'v3.6-CARDIO-OVERRIDE-REMOVED',
+                buildTime: '2025-12-13T14:35:00Z',
+                gitCommit: 'PENDING'
             }
         };
 
