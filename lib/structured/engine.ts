@@ -394,19 +394,53 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 rule: 'CKD stage code'
             });
         }
-        // RULE: HTN + HF → I11.0
+        // RULE: HTN + HF (no CKD) → I11.0
         else if (c.hypertension && hasHF) {
-            codes.push({
-                code: 'I11.0',
-                label: 'Hypertensive heart disease with heart failure',
-                rationale: 'HTN with documented heart failure',
-                guideline: 'ICD-10-CM I.C.9.a.1',
-                trigger: 'Hypertension + Heart Failure',
-                rule: 'HTN combination code logic'
-            });
+            // CRITICAL SEQUENCING: If HF is acute or acute_on_chronic, the specific HF code should be PRINCIPAL
+            // The combination code (I11.0) should be SECONDARY (same logic as HTN+HF+CKD)
+            const isAcuteHF = c.heartFailure?.acuity === 'acute' || c.heartFailure?.acuity === 'acute_on_chronic';
+            const hfCode = c.heartFailure ? mapHeartFailureCode(c.heartFailure.type, c.heartFailure.acuity) : 'I50.9';
+            const hfLabel = c.heartFailure ? `Heart failure, ${c.heartFailure.type} ${c.heartFailure.acuity}` : 'Heart failure, unspecified';
 
-            // NOTE: Specific heart failure code will be added by the heart failure rule below
-            // Do NOT add I50.9 here to avoid duplicate codes
+            if (isAcuteHF) {
+                // Add acute HF code FIRST (principal diagnosis)
+                codes.push({
+                    code: hfCode,
+                    label: hfLabel,
+                    rationale: 'Acute heart failure is principal diagnosis when reason for admission',
+                    guideline: 'ICD-10-CM I.C.9.a.1 + UHDDS Section II',
+                    trigger: `Heart Failure: ${c.heartFailure?.type || 'unspecified'}, ${c.heartFailure?.acuity || 'unspecified'}`,
+                    rule: 'Acute HF principal diagnosis'
+                });
+                // Then add I11.0 as secondary
+                codes.push({
+                    code: 'I11.0',
+                    label: 'Hypertensive heart disease with heart failure',
+                    rationale: 'HTN with heart disease (secondary when HF is acute)',
+                    guideline: 'ICD-10-CM I.C.9.a.1',
+                    trigger: 'Hypertension + Heart Failure',
+                    rule: 'HTN heart disease code'
+                });
+            } else {
+                // Chronic HF: I11.0 first, then specific HF code
+                codes.push({
+                    code: 'I11.0',
+                    label: 'Hypertensive heart disease with heart failure',
+                    rationale: 'HTN with heart disease',
+                    guideline: 'ICD-10-CM I.C.9.a.1',
+                    trigger: 'Hypertension + Heart Failure',
+                    rule: 'HTN heart disease code'
+                });
+                // Add specific HF code as secondary
+                codes.push({
+                    code: hfCode,
+                    label: hfLabel,
+                    rationale: 'Specific heart failure code required with I11.0',
+                    guideline: 'ICD-10-CM I.C.9.a.1',
+                    trigger: `Heart Failure: ${c.heartFailure?.type || 'unspecified'}, ${c.heartFailure?.acuity || 'unspecified'}`,
+                    rule: 'Heart failure code with I11.0 combination'
+                });
+            }
         }
         // RULE: HTN + Heart Disease (WITHOUT HF) → I11.9
         else if (c.hypertension && c.heartDisease && !hasHF) {
