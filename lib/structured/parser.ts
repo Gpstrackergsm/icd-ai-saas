@@ -246,6 +246,7 @@ export function parseInput(text: string): ParseResult {
                     }
                 }
 
+
                 // ESRD detection
                 if (lowerValue.includes('esrd') || lowerValue.includes('end stage renal') ||
                     lowerValue.includes('end-stage renal') || lowerValue.includes('stage 5 ckd')) {
@@ -255,12 +256,17 @@ export function parseInput(text: string): ParseResult {
 
                 // Dialysis encounter detection - for proper UHDDS principal diagnosis sequencing
                 // STRICT: Only trigger if "routine dialysis" or "admitted for dialysis" is explicitly stated
-                const isRoutineDialysis = lowerValue.includes('routine dialysis') ||
-                    (lowerValue.includes('admitted for dialysis') && !lowerValue.includes('admitted for') && !lowerValue.includes('due to'));
-                const isAdmittedForDialysisOnly = (lowerValue.includes('admitted for') || lowerValue.includes('admission for')) &&
-                    (lowerValue.includes('routine dialysis') ||
-                        (lowerValue.includes('dialysis') && !lowerValue.includes('due to') && !lowerValue.includes('for worsening') &&
-                            !lowerValue.includes('for acute') && !lowerValue.includes('exacerbation')));
+                // Do NOT trigger if admitted for other acute conditions (HF, pulmonary edema, etc.)
+                const fullText = text.toLowerCase();
+                const isRoutineDialysis = fullText.includes('routine dialysis');
+                const isAdmittedForDialysisOnly = (fullText.includes('admitted for dialysis') ||
+                    fullText.includes('admission for dialysis')) &&
+                    !fullText.includes('for worsening') &&
+                    !fullText.includes('for acute') &&
+                    !fullText.includes('exacerbation') &&
+                    !fullText.includes('for hypertensive') &&
+                    !fullText.includes('for pulmonary') &&
+                    !fullText.includes('heart failure');
 
                 if (isRoutineDialysis || isAdmittedForDialysisOnly) {
                     // Mark this as a dialysis encounter - Z49.31 should be principal
@@ -276,6 +282,20 @@ export function parseInput(text: string): ParseResult {
                     };
                     context.conditions.ckd.onDialysis = true;
                     context.conditions.ckd.dialysisType = 'chronic';
+                }
+
+                // Routine follow-up encounter detection - Z09 as principal
+                // Only trigger if "routine follow-up" and NOT for acute conditions
+                const isRoutineFollowup = (fullText.includes('routine follow-up') ||
+                    fullText.includes('routine followup')) &&
+                    !fullText.includes('acute') &&
+                    !fullText.includes('exacerbation') &&
+                    !fullText.includes('worsening') &&
+                    !fullText.includes('admitted for dialysis');
+
+                if (isRoutineFollowup && !context.encounter?.reasonForAdmission) {
+                    if (!context.encounter) context.encounter = { type: 'inpatient' };
+                    context.encounter.reasonForAdmission = 'routine_followup';
                 }
 
                 if (lowerValue.includes('myocardial infarction') || lowerValue.includes(' mi ') ||
@@ -295,9 +315,24 @@ export function parseInput(text: string): ParseResult {
                     else if (lowerValue.includes('lateral')) miLocation = 'lateral';
                     else if (lowerValue.includes('posterior')) miLocation = 'posterior';
 
-                    if (lowerValue.includes('old mi') || lowerValue.includes('prior mi') ||
-                        lowerValue.includes('previous mi') || lowerValue.includes('history of mi')) miTiming = 'old';
-                    else if (lowerValue.includes('subsequent') || lowerValue.includes('weeks ago')) miTiming = 'subsequent';
+                    // Timing detection - check in specific order to avoid false positives
+                    const fullTextLower = text.toLowerCase();
+
+                    // Check for subsequent MI first (within 4 weeks)
+                    if (fullTextLower.includes('weeks ago') || fullTextLower.includes('continued management')) {
+                        miTiming = 'subsequent';
+                    }
+                    // Check for old MI - but NOT if it's in a negation context like "No prior MI"
+                    else if ((fullTextLower.includes('old mi') && !fullTextLower.includes('no old mi')) ||
+                        (fullTextLower.includes('prior mi') && !fullTextLower.includes('no prior mi')) ||
+                        (fullTextLower.includes('previous mi') && !fullTextLower.includes('no previous mi')) ||
+                        (fullTextLower.includes('history of mi') && !fullTextLower.includes('no history of mi'))) {
+                        miTiming = 'old';
+                    }
+                    // Check for acute MI
+                    else if (fullTextLower.includes('acute') || fullTextLower.includes('admitted for')) {
+                        miTiming = 'initial';
+                    }
 
                     context.conditions.cardiovascular.mi = { type: miType, location: miLocation, timing: miTiming };
                 }

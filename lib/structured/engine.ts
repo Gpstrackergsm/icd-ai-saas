@@ -263,26 +263,52 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 ? 'Hypertensive heart and chronic kidney disease with heart failure and with stage 5 chronic kidney disease, or end stage renal disease'
                 : 'Hypertensive heart and chronic kidney disease with heart failure and stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease';
 
-            codes.push({
-                code: code,
-                label: label,
-                rationale: 'Combination code for HTN, HF, and CKD',
-                guideline: 'ICD-10-CM I.C.9.a.2',
-                trigger: 'Hypertension + Heart Failure + CKD',
-                rule: 'HTN combination code logic'
-            });
-
-            // Add specific I50.xx heart failure code (not just I50.9)
+            // CRITICAL SEQUENCING: If HF is acute or acute_on_chronic, the specific HF code should be PRINCIPAL
+            // The combination code (I13.x) should be SECONDARY
+            const isAcuteHF = c.heartFailure?.acuity === 'acute' || c.heartFailure?.acuity === 'acute_on_chronic';
             const hfCode = c.heartFailure ? mapHeartFailureCode(c.heartFailure.type, c.heartFailure.acuity) : 'I50.9';
             const hfLabel = c.heartFailure ? `Heart failure, ${c.heartFailure.type} ${c.heartFailure.acuity}` : 'Heart failure, unspecified';
-            codes.push({
-                code: hfCode,
-                label: hfLabel,
-                rationale: 'Specific heart failure code required with I13.x per ICD-10-CM guidelines',
-                guideline: 'ICD-10-CM I.C.9.a.2',
-                trigger: `Heart Failure: ${c.heartFailure?.type || 'unspecified'}, ${c.heartFailure?.acuity || 'unspecified'}`,
-                rule: 'Heart failure code with I13 combination'
-            });
+
+            if (isAcuteHF) {
+                // Add acute HF code FIRST (principal diagnosis)
+                codes.push({
+                    code: hfCode,
+                    label: hfLabel,
+                    rationale: 'Acute heart failure is principal diagnosis when reason for admission',
+                    guideline: 'ICD-10-CM I.C.9.a.2 + UHDDS Section II',
+                    trigger: `Heart Failure: ${c.heartFailure?.type || 'unspecified'}, ${c.heartFailure?.acuity || 'unspecified'}`,
+                    rule: 'Acute HF principal diagnosis'
+                });
+                // Then add combination code as secondary
+                codes.push({
+                    code: code,
+                    label: label,
+                    rationale: 'Combination code for HTN, HF, and CKD (secondary when HF is acute)',
+                    guideline: 'ICD-10-CM I.C.9.a.2',
+                    trigger: 'Hypertension + Heart Failure + CKD',
+                    rule: 'HTN combination code logic'
+                });
+            } else {
+                // Chronic HF: combination code first, then specific HF code
+                codes.push({
+                    code: code,
+                    label: label,
+                    rationale: 'Combination code for HTN, HF, and CKD',
+                    guideline: 'ICD-10-CM I.C.9.a.2',
+                    trigger: 'Hypertension + Heart Failure + CKD',
+                    rule: 'HTN combination code logic'
+                });
+
+                // Add specific I50.xx heart failure code (not just I50.9)
+                codes.push({
+                    code: hfCode,
+                    label: hfLabel,
+                    rationale: 'Specific heart failure code required with I13.x per ICD-10-CM guidelines',
+                    guideline: 'ICD-10-CM I.C.9.a.2',
+                    trigger: `Heart Failure: ${c.heartFailure?.type || 'unspecified'}, ${c.heartFailure?.acuity || 'unspecified'}`,
+                    rule: 'Heart failure code with I13 combination'
+                });
+            }
 
             // Add CKD stage code
             const ckdCode = ckdStage === '1' ? 'N18.1' :
