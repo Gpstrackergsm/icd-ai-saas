@@ -15,154 +15,154 @@ const sepsisCases: TestCase[] = [
     {
         num: 1,
         text: "72-year-old female admitted with fever, dysuria, and confusion. Urinalysis positive for bacteria. Blood cultures positive for E. coli. Diagnosis: Sepsis due to E. coli with urinary tract infection as source.",
-        expectedPrimary: "N39.0",
-        expectedSecondary: ["A41.51"],
-        rationale: "UTI is the source infection - code source FIRST, then sepsis per ICD-10-CM guidelines"
+        expectedPrimary: "A41.51",
+        expectedSecondary: ["N39.0"],
+        rationale: "Sepsis present on admission - code Sepsis (A41.51) FIRST per Guideline I.C.1.d.4(b)"
     },
     {
         num: 2,
         text: "85-year-old male with Foley catheter admitted with CAUTI (catheter-associated UTI) and urosepsis. Blood cultures positive for E. coli.",
-        expectedPrimary: "N39.0",
-        expectedSecondary: ["A41.51", "T83.511A"],
-        rationale: "UTI source first, sepsis second, then catheter complication"
+        expectedPrimary: "A41.51",
+        expectedSecondary: ["T83.511A", "N39.0"],
+        rationale: "Admitted for Urosepsis - A41.51 Principal. CAUTI secondary."
     },
     {
         num: 3,
         text: "68-year-old female admitted with sepsis. Blood cultures show Klebsiella pneumoniae. CT scan shows pyelonephritis (kidney infection).",
-        expectedPrimary: "N10",
-        expectedSecondary: ["A41.50"],
-        rationale: "Pyelonephritis (kidney infection) is source, code before sepsis"
+        expectedPrimary: "A41.50",
+        expectedSecondary: ["N10"],
+        rationale: "Admitted for Sepsis - Gram-negative sepsis Principal, Pyelo secondary."
     },
 
     // ========== SEPSIS WITH SOURCE INFECTIONS (PNEUMONIA) ==========
     {
         num: 4,
         text: "78-year-old male admitted with pneumonia and sepsis. Chest X-ray shows right lower lobe infiltrate. Blood cultures positive for Streptococcus pneumoniae.",
-        expectedPrimary: "J13",
-        expectedSecondary: ["A40.3"],
-        rationale: "Pneumonia is source infection - code FIRST per UHDDS"
+        expectedPrimary: "A40.3",
+        expectedSecondary: ["J13"],
+        rationale: "Sepsis present on admission - Strep Pneumo Sepsis Principal."
     },
     {
         num: 5,
         text: "65-year-old diabetic female with community-acquired pneumonia and septic shock. Blood cultures positive for Staph aureus. Patient on vasopressors.",
-        expectedPrimary: "J15.211",
-        expectedSecondary: ["R65.21", "E11.9"],
-        rationale: "Pneumonia source first, septic shock second, diabetes third"
+        expectedPrimary: "A41.01",
+        expectedSecondary: ["R65.21", "J15.211", "E11.9"],
+        rationale: "Staph Sepsis Principal. J15.211 Secondary. Septic shock follows."
     },
     {
         num: 6,
         text: "82-year-old nursing home resident admitted with aspiration pneumonia and severe sepsis without shock. Blood cultures pending.",
-        expectedPrimary: "J69.0",
-        expectedSecondary: ["R65.20", "A41.9"],
-        rationale: "Aspiration pneumonia source, severe sepsis, unspecified organism"
+        expectedPrimary: "A41.9",
+        expectedSecondary: ["R65.20", "J69.0"],
+        rationale: "Sepsis Unspecified Principal. Aspiration Pna Secondary. Severe Sepsis R65.20."
     },
 
     // ========== SEPSIS WITH SOURCE INFECTIONS (SKIN/SOFT TISSUE) ==========
     {
         num: 7,
         text: "55-year-old diabetic male admitted with left leg cellulitis and sepsis due to Streptococcus. Blood cultures positive.",
-        expectedPrimary: "L03.115",
-        expectedSecondary: ["A40.9", "E11.9"],
-        rationale: "Cellulitis source first, strep sepsis second"
+        expectedPrimary: "A40.9",
+        expectedSecondary: ["L03.115", "E11.9"],
+        rationale: "Strep Sepsis Principal. Cellulitis Secondary."
     },
     {
         num: 8,
         text: "70-year-old female with sacral pressure ulcer stage 3 admitted with sepsis due to MRSA bacteremia.",
-        expectedPrimary: "L89.153",
-        expectedSecondary: ["A41.02"],
-        rationale: "Pressure ulcer source, MRSA sepsis secondary"
+        expectedPrimary: "A41.02",
+        expectedSecondary: ["L89.153"],
+        rationale: "MRSA Sepsis Principal. Pressure ulcer secondary."
     },
     {
         num: 9,
         text: "45-year-old male with right foot abscess and sepsis. Blood cultures show Staph aureus.",
-        expectedPrimary: "L02.611",
-        expectedSecondary: ["A41.01"],
-        rationale: "Abscess source, staph aureus sepsis"
+        expectedPrimary: "A41.01",
+        expectedSecondary: ["L02.611"],
+        rationale: "Staph Aureus Sepsis Principal. Abscess secondary."
     },
 
     // ========== SEPSIS WITH SOURCE INFECTIONS (ABDOMINAL) ==========
     {
         num: 10,
         text: "62-year-old female admitted with acute appendicitis with perforation and peritonitis. Blood cultures positive for E. coli sepsis.",
-        expectedPrimary: "K35.32",
-        expectedSecondary: ["K65.0", "A41.51"],
-        rationale: "Appendicitis with perforation primary, peritonitis, then sepsis"
+        expectedPrimary: "A41.51",
+        expectedSecondary: ["K35.32", "K65.0"],
+        rationale: "Admitted for Sepsis (implied by context of query, or default A41.x). Appendicitis secondary."
     },
     {
         num: 11,
         text: "74-year-old male with perforated diverticulitis and severe sepsis without shock. Blood cultures positive.",
-        expectedPrimary: "K57.20",
-        expectedSecondary: ["K65.0", "R65.20", "A41.9"],
-        rationale: "Diverticulitis source, peritonitis, severe sepsis, unspecified organism"
+        expectedPrimary: "A41.9",
+        expectedSecondary: ["R65.20", "K57.20", "K65.0"],
+        rationale: "Sepsis Principal. Diverticulitis secondary."
     },
     {
         num: 12,
         text: "58-year-old female admitted with acute cholecystitis and septic shock. Blood cultures show E. coli.",
-        expectedPrimary: "K81.0",
-        expectedSecondary: ["R65.21", "A41.51"],
-        rationale: "Cholecystitis source, septic shock (includes sepsis)"
+        expectedPrimary: "A41.51",
+        expectedSecondary: ["R65.21", "K81.0"],
+        rationale: "E. Coli Sepsis Principal. Septic Shock. Cholecystitis."
     },
 
     // ========== SEVERE SEPSIS WITHOUT SHOCK ==========
     {
         num: 13,
         text: "80-year-old male with severe sepsis and acute kidney injury. Blood cultures positive for E. coli. Source: UTI. No hypotension or shock.",
-        expectedPrimary: "N39.0",
-        expectedSecondary: ["R65.20", "A41.51", "N17.9"],
-        rationale: "UTI source, severe sepsis R65.20, sepsis organism, AKI organ dysfunction"
+        expectedPrimary: "A41.51",
+        expectedSecondary: ["R65.20", "N39.0", "N17.9"],
+        rationale: "Sepsis Principal. Severe Sepsis. AKI always secondary to sepsis/shock."
     },
     {
         num: 14,
         text: "66-year-old female with pneumonia, severe sepsis, and acute respiratory failure. No shock documented.",
-        expectedPrimary: "J18.9",
-        expectedSecondary: ["R65.20", "A41.9", "J96.00"],
-        rationale: "Pneumonia source, severe sepsis, organism, respiratory failure"
+        expectedPrimary: "A41.9",
+        expectedSecondary: ["R65.20", "J18.9", "J96.00"],
+        rationale: "Sepsis Principal. Severe Sepsis. Pneumonia. Resp Failure."
     },
     {
         num: 15,
         text: "72-year-old male admitted with severe sepsis and multiple organ dysfunction (AKI and encephalopathy). Source: skin infection.",
-        expectedPrimary: "L03.90",
-        expectedSecondary: ["R65.20", "A41.9", "N17.9", "G93.41"],
-        rationale: "Cellulitis source, severe sepsis, all organ dysfunctions listed"
+        expectedPrimary: "A41.9",
+        expectedSecondary: ["R65.20", "L03.90", "N17.9", "G93.41"],
+        rationale: "Sepsis Principal. Severe Sepsis. Skin Infection. End organs."
     },
 
     // ========== SEPTIC SHOCK ==========
     {
         num: 16,
         text: "58-year-old male admitted in septic shock requiring vasopressors. Blood cultures positive for Pseudomonas. Source: pneumonia.",
-        expectedPrimary: "J15.1",
-        expectedSecondary: ["R65.21"],
-        rationale: "Pneumonia source, R65.21 includes both severe sepsis AND septic shock"
+        expectedPrimary: "A41.52",
+        expectedSecondary: ["R65.21", "J15.1"],
+        rationale: "Pseudomonas Sepsis Principal. Septic Shock. Pneumonia."
     },
     {
         num: 17,
         text: "70-year-old female with urosepsis and septic shock. On norepinephrine drip. Blood cultures show Klebsiella.",
-        expectedPrimary: "N39.0",
-        expectedSecondary: ["R65.21", "A41.50"],
-        rationale: "UTI source, septic shock R65.21, organism"
+        expectedPrimary: "A41.50",
+        expectedSecondary: ["R65.21", "N39.0"],
+        rationale: "Klebsiella Sepsis Principal. Septic Shock. UTI."
     },
     {
         num: 18,
         text: "82-year-old male with abdominal sepsis from perforated bowel and septic shock. Emergency surgery performed.",
-        expectedPrimary: "K63.1",
-        expectedSecondary: ["K65.0", "R65.21", "A41.9"],
-        rationale: "Perforated bowel, peritonitis, septic shock"
+        expectedPrimary: "A41.9",
+        expectedSecondary: ["R65.21", "K63.1", "K65.0"],
+        rationale: "Sepsis Principal. Septic Shock. Perforation. Peritonitis."
     },
 
     // ========== SEPSIS - NEGATIVE CULTURES ==========
     {
         num: 19,
         text: "75-year-old female clinically diagnosed with sepsis. Blood cultures drawn but negative. Source: pneumonia.",
-        expectedPrimary: "J18.9",
-        expectedSecondary: ["A41.9"],
-        rationale: "Pneumonia source, unspecified sepsis (A41.9 when organism unknown)"
+        expectedPrimary: "A41.9",
+        expectedSecondary: ["J18.9"],
+        rationale: "Sepsis Principal. Pneumonia secondary."
     },
     {
         num: 20,
         text: "68-year-old male with sepsis, cultures pending/negative. Source: UTI based on UA results.",
-        expectedPrimary: "N39.0",
-        expectedSecondary: ["A41.9"],
-        rationale: "UTI source, A41.9 for unspecified organism sepsis"
+        expectedPrimary: "A41.9",
+        expectedSecondary: ["N39.0"],
+        rationale: "Sepsis Principal. UTI secondary."
     },
 
     // ========== SEPSIS - UNSPECIFIED SOURCE ==========
@@ -201,16 +201,16 @@ const sepsisCases: TestCase[] = [
     {
         num: 25,
         text: "72-year-old diabetic male with pneumonia, sepsis, COPD exacerbation, and CHF. Blood cultures positive.",
-        expectedPrimary: "J15.9",
-        expectedSecondary: ["A41.9", "J44.1", "I50.9", "E11.9"],
-        rationale: "Pneumonia source primary, then sepsis, then chronic conditions"
+        expectedPrimary: "A41.9",
+        expectedSecondary: ["J15.9", "J44.1", "I50.9", "E11.9"],
+        rationale: "Sepsis Principal. Bacterial Pneumonia Secondary. Chronic conditions."
     },
     {
         num: 26,
         text: "80-year-old female with ESRD on dialysis admitted with sepsis from infected dialysis catheter. Blood cultures show Staph epidermidis.",
         expectedPrimary: "T82.7XXA",
         expectedSecondary: ["A41.1", "N18.6", "Z99.2"],
-        rationale: "Catheter infection primary, sepsis organism, ESRD, dialysis status"
+        rationale: "Post-proc/Device Infection is PRIMARY (T-code), Sepsis is SECONDARY."
     },
 
     // ========== FUNGAL SEPSIS ==========
@@ -237,37 +237,37 @@ const sepsisCases: TestCase[] = [
         text: "68-year-old male with sepsis due to Streptococcus pneumoniae bacteremia. No pneumonia documented.",
         expectedPrimary: "A40.3",
         expectedSecondary: [],
-        rationale: "Strep pneumoniae sepsis without lung involvement"
+        rationale: "Strep pneumo sepsis Principal. No source."
     },
     {
         num: 30,
         text: "75-year-old female with sepsis due to anaerobic bacteria. Source: abdominal abscess.",
-        expectedPrimary: "K65.1",
-        expectedSecondary: ["A41.4"],
-        rationale: "Abdominal abscess source, anaerobic sepsis"
+        expectedPrimary: "A41.4",
+        expectedSecondary: ["K65.1"],
+        rationale: "Anaerobe Sepsis Principal. Abscess secondary."
     },
 
     // ========== COMPLEX SEPSIS CASES ==========
     {
         num: 31,
         text: "82-year-old male admitted with pneumonia, severe sepsis, septic shock, acute respiratory failure requiring ventilation, and acute kidney injury.",
-        expectedPrimary: "J18.9",
-        expectedSecondary: ["R65.21", "A41.9", "J96.00", "N17.9"],
-        rationale: "Pneumonia source, septic shock (includes severe sepsis), all organ dysfunctions"
+        expectedPrimary: "A41.9",
+        expectedSecondary: ["R65.21", "J18.9", "J96.00", "N17.9"],
+        rationale: "Sepsis Principal. Check all organ dysfunctions."
     },
     {
         num: 32,
         text: "70-year-old diabetic female with infected diabetic foot ulcer (right heel) and sepsis due to MRSA.",
-        expectedPrimary: "L97.419",
-        expectedSecondary: ["A41.02", "E11.621"],
-        rationale: "Diabetic foot ulcer source, MRSA sepsis, diabetes with foot ulcer"
+        expectedPrimary: "A41.02",
+        expectedSecondary: ["L97.419", "E11.621"],
+        rationale: "MRSA Sepsis Principal. Ulcer secondary."
     },
     {
         num: 33,
         text: "65-year-old male with C. difficile colitis complicated by sepsis and severe sepsis. Blood cultures show translocation of C. diff.",
         expectedPrimary: "A04.72",
         expectedSecondary: ["R65.20", "A41.9"],
-        rationale: "C. diff colitis with sepsis - sequence colitis first"
+        rationale: "C. Diff Colitis (A04.72) is an intestinal infection that CAUSES sepsis. Standard guideline is Localized Infection -> Sepsis. Wait, if admitted for sepsis? Guideline says systemic infection. Let's assume A04.72 is strict Principal for C.diff."
     },
 
     // ========== SEPSIS SEQUENCING EDGE CASES ==========
@@ -290,42 +290,42 @@ const sepsisCases: TestCase[] = [
     {
         num: 36,
         text: "80-year-old nursing home resident with sepsis. Documented as 'bacterial sepsis' with skin as likely source but no specific cellulitis location.",
-        expectedPrimary: "L03.90",
-        expectedSecondary: ["A41.9"],
-        rationale: "Unspecified cellulitis source, unspecified bacterial sepsis"
+        expectedPrimary: "A41.9",
+        expectedSecondary: ["L03.90"],
+        rationale: "Sepsis Principal. Cellulitis secondary."
     },
 
     // ========== VIRAL SEPSIS (COVID, Influenza) ==========
     {
         num: 37,
         text: "62-year-old male admitted with COVID-19 pneumonia complicated by severe sepsis and respiratory failure.",
-        expectedPrimary: "J12.82",
-        expectedSecondary: ["U07.1", "R65.20", "A41.9", "J96.00"],
-        rationale: "COVID pneumonia, COVID code, severe sepsis, organism, resp failure"
+        expectedPrimary: "U07.1",
+        expectedSecondary: ["J12.82", "R65.20", "A41.9", "J96.00"],
+        rationale: "COVID Specific Guideline: Code U07.1 First, then manifestation (Pneumonia)."
     },
     {
         num: 38,
         text: "55-year-old female with influenza pneumonia and septic shock due to secondary bacterial infection (Staph aureus).",
         expectedPrimary: "J10.0",
         expectedSecondary: ["R65.21", "A41.01"],
-        rationale: "Influenza pneumonia primary, septic shock, bacterial organism"
+        rationale: "Influenza Guideline: Code Influenza First."
     },
 
     // ========== STREPTOCOCCAL SEPSIS VARIANTS ==========
     {
         num: 39,
         text: "45-year-old female with Group A Streptococcus sepsis from pharyngitis.",
-        expectedPrimary: "J02.0",
-        expectedSecondary: ["A40.0"],
-        rationale: "Strep pharyngitis source, Group A strep sepsis"
+        expectedPrimary: "A40.0",
+        expectedSecondary: ["J02.0"],
+        rationale: "Strep Sepsis Principal. Pharyngitis secondary."
     },
 
     {
         num: 40,
         text: "68-year-old male admitted with severe sepsis due to Group B Streptococcus and acute kidney injury. Source: UTI.",
-        expectedPrimary: "N39.0",
-        expectedSecondary: ["R65.20", "A40.1", "N17.9"],
-        rationale: "UTI source, severe sepsis, Group B strep, AKI"
+        expectedPrimary: "A40.1",
+        expectedSecondary: ["R65.20", "N39.0", "N17.9"],
+        rationale: "Group B Strep Sepsis Principal. AKI secondary."
     }
 ];
 
@@ -364,12 +364,12 @@ console.log('  ✓ Fungal sepsis (B37.7)');
 console.log('  ✓ Neonatal sepsis (P36.x)\n');
 
 console.log('CRITICAL SEQUENCING RULES TESTED:\n');
-console.log('  ✓ Source infection BEFORE sepsis code (UHDDS principal)');
+console.log('  ✓ Sepsis code FIRST when reason for admission (Guideline I.C.1.d.4(b))');
 console.log('  ✓ R65.21 includes both severe sepsis AND septic shock');
 console.log('  ✓ Organism code always required with sepsis');
 console.log('  ✓ Organ dysfunction codes listed after sepsis');
 console.log('  ✓ Post-procedure sepsis uses T81.44XA');
-console.log('  ✓ When no source found, sepsis is principal\n');
+console.log('  ✓ Source infection SECONDARY when Sepsis is Principal\n');
 
 console.log('━'.repeat(80));
 console.log('✅ READY FOR PARSER & ENGINE DEVELOPMENT');

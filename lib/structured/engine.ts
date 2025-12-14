@@ -2965,18 +2965,25 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         // 1. Acute MI (Principal if Reason for Admission)
         if (code.startsWith('I21') && (ctx.encounter?.reasonForAdmission?.includes('mi') || ctx.encounter?.reasonForAdmission?.includes('heart attack'))) return 10;
 
-        // 2. Source Infections (Principal for Sepsis) - Include ALL source codes
+        // 2. High Priority Source Infections (Override Sepsis)
+        // Post-procedural Sepsis (T81.4), Device Infections (T82, T84, T85), Viral (COVID/Flu), C. Diff (A04.7)
+        // NOTE: T83 (CAUTI) usually falls below Sepsis in strict sequencing unless specific complication override
+        if (code.startsWith('T81.4') || code.startsWith('T82') || code.startsWith('T84') || code.startsWith('T85') ||
+            code.startsWith('U07.1') || code.startsWith('J09') || code.startsWith('J10') || code.startsWith('J11') || code.startsWith('A04.7')) {
+            return 8;
+        }
+
+        // 3. Sepsis Organism Codes (Principal for Sepsis-on-Admission cases) 
+        if (code.startsWith('A40') || code.startsWith('A41') || code === 'B37.7' || code.startsWith('P36')) return 12;
+
+        // 4. Standard Source Infections (Secondary to Sepsis)
         if (code.startsWith('J1') || code.startsWith('J0') || code.startsWith('J2') || // Respiratory
             code.startsWith('N10') || code.startsWith('N30') || code.startsWith('N39') || // Urinary
             code.startsWith('K35') || code.startsWith('K57') || code.startsWith('K65') || code.startsWith('K81') || code.startsWith('K63') || // Abdominal
             code.startsWith('L0') || code.startsWith('L89') || code.startsWith('L97') || // Skin
-            code.startsWith('T81') || code.startsWith('T83') || code.startsWith('A04') || // Post-proc/Other
-            code.startsWith('T84') || code.startsWith('T85')) {
-            return 15;
+            code.startsWith('A04')) { // Other intestinal
+            return 20;
         }
-
-        // 3. Sepsis Organism Codes (Secondary to Source, Primary if no Source)
-        if (code.startsWith('A40') || code.startsWith('A41') || code === 'B37.7' || code.startsWith('P36')) return 20;
 
         // 4. Severe Sepsis / Septic Shock (Always Secondary to Sepsis)
         if (code.startsWith('R65.2')) return 25;
@@ -3039,6 +3046,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
     if (hasSepsis && hasSepsisSource) {
         let admissionReasonCodes: StructuredCode[] = [];
+        let highPrioritySourceCodes: StructuredCode[] = []; // NEW: For T-codes, Viral, C.diff
         let sourceInfectionCodes: StructuredCode[] = [];
         let r65Codes: StructuredCode[] = [];
         let organismCodes: StructuredCode[] = [];
@@ -3055,11 +3063,16 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             if (p <= 10) {
                 admissionReasonCodes.push(code);
             }
-            // Source infections
+            // High Priority Source infections (T81.4, T82, T84, T85, Viral, C.diff)
+            else if (c.startsWith('T81.4') || c.startsWith('T82') || c.startsWith('T84') || c.startsWith('T85') ||
+                c.startsWith('U07.1') || c.startsWith('J09') || c.startsWith('J10') || c.startsWith('J11') || c.startsWith('A04.7')) {
+                highPrioritySourceCodes.push(code);
+            }
+            // Standard Source infections (Includes T83, T84, etc.)
             else if (c.startsWith('J') || c.startsWith('N39.0') || c.startsWith('N10') || c.startsWith('N30') ||
                 c.startsWith('L0') || c.startsWith('L8') || c.startsWith('L9') ||
                 c.startsWith('K35') || c.startsWith('K57') || c.startsWith('K81') || c.startsWith('K65') || c.startsWith('K63') ||
-                c.startsWith('T81') || c.startsWith('T82') || c.startsWith('T83') || c.startsWith('T84') || c.startsWith('T85') ||
+                c.startsWith('T8') || // T83, T84, T85 fall here now
                 c.startsWith('A04') || c.startsWith('B37') && c !== 'B37.7') { // B37.7 is sepsis
                 sourceInfectionCodes.push(code);
             }
@@ -3103,11 +3116,13 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         otherCodes = dedupe(otherCodes);
 
         // Reassemble and use as final codes
-        // FIXED ORDER: Source -> Organism -> Severe Sepsis/Shock -> Organ Dysfunction -> Other
+        // FIXED ORDER (Guideline I.C.1.d.4(b)): High Priority -> Organism (Sepsis) -> Standard Source
         let reorderedCodes = [
-            ...dedupe(admissionReasonCodes),
-            ...dedupe(sourceInfectionCodes),
-            ...dedupe(organismCodes),
+            ...dedupe(admissionReasonCodes), // MI, etc.
+            ...dedupe(highPrioritySourceCodes), // Post-proc, Viral, C.diff
+            ...dedupe(organismCodes),        // Sepsis
+            ...dedupe(sourceInfectionCodes), // Standard Sources (UTI, Pna, Abscess)
+
             ...dedupe(r65Codes),
             ...dedupe(organDysfunctionCodes),
             ...dedupe(otherCodes),
