@@ -3,10 +3,11 @@ export interface PatientContext {
     demographics: {
         age?: number;
         gender?: 'male' | 'female';
+        isNeonatal?: boolean; // For neonatal sepsis detection (P36.x codes)
     };
     encounter: {
         type: 'initial' | 'subsequent' | 'sequela' | 'inpatient' | 'outpatient' | 'ed';
-        reasonForAdmission?: 'dialysis' | 'routine_followup' | 'other';
+        reasonForAdmission?: 'dialysis' | 'routine_followup' | 'mi' | 'other';
     };
     conditions: {
         diabetes?: {
@@ -88,7 +89,7 @@ export interface PatientContext {
         infection?: {
             present: boolean;
             site?: 'lung' | 'urinary' | 'skin' | 'blood' | 'abdominal' | 'other';
-            organism?: 'e_coli' | 'pseudomonas' | 'mrsa' | 'mssa' | 'klebsiella' | 'strep' | 'proteus' | 'enterococcus' | 'bacteroides' | 'enterobacter' | 'candida' | 'staph' | 'gram_negative' | 'gram_positive' | 'viral' | 'unspecified';
+            organism?: 'e_coli' | 'pseudomonas' | 'mrsa' | 'mssa' | 'klebsiella' | 'strep' | 'strep_group_a' | 'strep_group_b' | 'strep_pneumoniae' | 'proteus' | 'enterococcus' | 'bacteroides' | 'enterobacter' | 'candida' | 'staph' | 'staph_epidermidis' | 'gram_negative' | 'gram_positive' | 'viral' | 'unspecified';
             source?: string; // e.g., "urinary tract infection", "pneumonia", "cellulitis"
             sepsis?: {
                 present: boolean;
@@ -99,6 +100,18 @@ export interface PatientContext {
             hiv?: boolean;
             tuberculosis?: boolean;
             covid19?: boolean;
+            // Location-specific details for sepsis source coding
+            cellulitisLocation?: {
+                site: 'lower_limb' | 'upper_limb' | 'trunk' | 'face' | 'unspecified';
+                laterality: 'left' | 'right' | 'bilateral' | 'unspecified';
+            };
+            abscessLocation?: 'right_foot' | 'left_foot' | 'right_hand' | 'left_hand' | 'abdominal' | 'cutaneous' | 'unspecified';
+            pressureUlcerDetails?: {
+                location: 'sacral' | 'hip' | 'heel' | 'buttock' | 'unspecified';
+                stage: '1' | '2' | '3' | '4' | 'unstageable' | 'unspecified';
+            };
+            catheterAssociated?: boolean; // For CAUTI - T83.511A
+            diabeticUlcerSource?: boolean; // For diabetic foot ulcer as sepsis source
         };
         wounds?: {
             present: boolean;
