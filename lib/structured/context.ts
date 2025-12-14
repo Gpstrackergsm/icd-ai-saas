@@ -59,12 +59,15 @@ export interface PatientContext {
                 stage: '1' | '2' | '3' | '4' | '5' | 'esrd' | 'unspecified';
             };
             aki?: boolean;
+            cause?: string;
         };
+        smoker?: boolean;
         respiratory?: {
             failure?: {
                 type: 'none' | 'acute' | 'chronic' | 'acute_on_chronic' | 'unspecified';
                 withHypoxia?: boolean;
                 withHypercapnia?: boolean;
+                isPostProcedural?: boolean;
             };
             copd?: {
                 present: boolean;
@@ -85,6 +88,13 @@ export interface PatientContext {
                 present: boolean;
                 duration?: number; // hours
             };
+            emphysema?: boolean; // J43.9
+            chronicBronchitis?: boolean; // J41.0
+            pulmonaryEdema?: boolean;
+            pleuralEffusion?: boolean;
+            pneumothorax?: boolean;
+            pulmonaryEmbolism?: boolean;
+            oxygenDependence?: boolean;
         };
         infection?: {
             present: boolean;
@@ -237,7 +247,8 @@ export interface PatientContext {
                 stillborn: number;
             };
         };
-    };
+    }; // End of conditions
+
     social?: {
         smoking?: 'never' | 'current' | 'former';
         packYears?: number;

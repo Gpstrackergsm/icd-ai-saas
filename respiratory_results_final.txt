@@ -1,0 +1,329 @@
+
+╔════════════════════════════════════════════════════════════════╗
+║      RESPIRATORY MODULE - RUNNING 40 TEST CASES             ║
+╚════════════════════════════════════════════════════════════════╝
+
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 1: PASS
+   📝 Input: "68-year-old male with history of COPD admitted for worsening shortness of breath and increased sputum. Diagnosed with acute COPD exacerbation."
+   🎯 Expected Primary:   J44.1
+   🤖 Actual Primary:     J44.1
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 2: PASS
+   📝 Input: "72-year-old female with COPD admitted with acute exacerbation triggered by acute bronchitis."
+   🎯 Expected Primary:   J44.1
+   🤖 Actual Primary:     J44.1
+   🎯 Expected Secondary: [J44.0, J20.9]
+   🤖 Actual Secondary:   [J44.0, J20.9]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 3: PASS
+   📝 Input: "80-year-old male with COPD admitted with left lower lobe pneumonia."
+   🎯 Expected Primary:   J18.9
+   🤖 Actual Primary:     J18.9
+   🎯 Expected Secondary: [J44.0]
+   🤖 Actual Secondary:   [J44.0]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 4: PASS
+   📝 Input: "65-year-old male with emphysema seen for routine checkup."
+   🎯 Expected Primary:   J43.9
+   🤖 Actual Primary:     J43.9
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 5: PASS
+   📝 Input: "55-year-old female with simple chronic bronchitis."
+   🎯 Expected Primary:   J41.0
+   🤖 Actual Primary:     J41.0
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 6: PASS
+   📝 Input: "70-year-old male with Asthma and COPD. Admitted for difficulty breathing."
+   🎯 Expected Primary:   J44.9
+   🤖 Actual Primary:     J44.9
+   🎯 Expected Secondary: [J45.909]
+   🤖 Actual Secondary:   [J45.909]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 7: PASS
+   📝 Input: "62-year-old female with COPD and Asthma, both acutely exacerbated."
+   🎯 Expected Primary:   J44.1
+   🤖 Actual Primary:     J44.1
+   🎯 Expected Secondary: [J45.901]
+   🤖 Actual Secondary:   [J45.901]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 8: PASS
+   📝 Input: "75-year-old male with emphysema admitted for acute exacerbation of emphysema."
+   🎯 Expected Primary:   J44.1
+   🤖 Actual Primary:     J44.1
+   🎯 Expected Secondary: [J43.9]
+   🤖 Actual Secondary:   [J43.9]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 9: PASS
+   📝 Input: "60-year-old male smoker with COPD."
+   🎯 Expected Primary:   J44.9
+   🤖 Actual Primary:     J44.9
+   🎯 Expected Secondary: [F17.210]
+   🤖 Actual Secondary:   [F17.210]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 10: PASS
+   📝 Input: "58-year-old female with chronic obstructive asthma."
+   🎯 Expected Primary:   J44.9
+   🤖 Actual Primary:     J44.9
+   🎯 Expected Secondary: [J45.909]
+   🤖 Actual Secondary:   [J45.909]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 11: PASS
+   📝 Input: "85-year-old male admitted for decompensated COPD."
+   🎯 Expected Primary:   J44.1
+   🤖 Actual Primary:     J44.1
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 12: PASS
+   📝 Input: "40-year-old with COPD and acute bronchiolitis."
+   🎯 Expected Primary:   J44.0
+   🤖 Actual Primary:     J44.0
+   🎯 Expected Secondary: [J21.9]
+   🤖 Actual Secondary:   [J21.9]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 13: PASS
+   📝 Input: "70-year-old female with bacterial pneumonia."
+   🎯 Expected Primary:   J15.9
+   🤖 Actual Primary:     J15.9
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 14: PASS
+   📝 Input: "45-year-old male with pneumonia due to Streptococcus pneumoniae."
+   🎯 Expected Primary:   J13
+   🤖 Actual Primary:     J13
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 15: PASS
+   📝 Input: "60-year-old with Methicillin-susceptible Staphylococcus aureus pneumonia."
+   🎯 Expected Primary:   J15.211
+   🤖 Actual Primary:     J15.211
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 16: PASS
+   📝 Input: "80-year-old with Methicillin-resistant Staph aureus pneumonia."
+   🎯 Expected Primary:   J15.212
+   🤖 Actual Primary:     J15.212
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 17: PASS
+   📝 Input: "65-year-old with Pseudomonas aeruginosa pneumonia."
+   🎯 Expected Primary:   J15.1
+   🤖 Actual Primary:     J15.1
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 18: PASS
+   📝 Input: "20-year-old with walking pneumonia (Mycoplasma pneumoniae)."
+   🎯 Expected Primary:   J15.7
+   🤖 Actual Primary:     J15.7
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 19: PASS
+   📝 Input: "50-year-old with viral pneumonia."
+   🎯 Expected Primary:   J12.9
+   🤖 Actual Primary:     J12.9
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 20: PASS
+   📝 Input: "40-year-old with Influenza A pneumonia."
+   🎯 Expected Primary:   J10.0
+   🤖 Actual Primary:     J10.0
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 21: PASS
+   📝 Input: "55-year-old admitted with COVID-19 pneumonia."
+   🎯 Expected Primary:   U07.1
+   🤖 Actual Primary:     U07.1
+   🎯 Expected Secondary: [J12.82]
+   🤖 Actual Secondary:   [J12.82]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 22: PASS
+   📝 Input: "85-year-old nursing home resident with aspiration pneumonia."
+   🎯 Expected Primary:   J69.0
+   🤖 Actual Primary:     J69.0
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 23: PASS
+   📝 Input: "70-year-old admitted with acute respiratory failure."
+   🎯 Expected Primary:   J96.00
+   🤖 Actual Primary:     J96.00
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 24: PASS
+   📝 Input: "60-year-old with acute hypoxic respiratory failure."
+   🎯 Expected Primary:   J96.01
+   🤖 Actual Primary:     J96.01
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 25: PASS
+   📝 Input: "65-year-old with acute hypercapnic respiratory failure."
+   🎯 Expected Primary:   J96.02
+   🤖 Actual Primary:     J96.02
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 26: PASS
+   📝 Input: "80-year-old on home oxygen with chronic respiratory failure."
+   🎯 Expected Primary:   J96.10
+   🤖 Actual Primary:     J96.10
+   🎯 Expected Secondary: [Z99.81]
+   🤖 Actual Secondary:   [Z99.81]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 27: PASS
+   📝 Input: "75-year-old with acute on chronic respiratory failure."
+   🎯 Expected Primary:   J96.20
+   🤖 Actual Primary:     J96.20
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 28: PASS
+   📝 Input: "68-year-old admitted for COPD exacerbation leading to acute respiratory failure."
+   🎯 Expected Primary:   J44.1
+   🤖 Actual Primary:     J44.1
+   🎯 Expected Secondary: [J96.00]
+   🤖 Actual Secondary:   [J96.00]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 29: PASS
+   📝 Input: "72-year-old admitted with pneumonia resulting in acute hypoxic respiratory failure."
+   🎯 Expected Primary:   J18.9
+   🤖 Actual Primary:     J18.9
+   🎯 Expected Secondary: [J96.01]
+   🤖 Actual Secondary:   [J96.01]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 30: PASS
+   📝 Input: "50-year-old developed acute respiratory failure following surgery yesterday."
+   🎯 Expected Primary:   J95.821
+   🤖 Actual Primary:     J95.821
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 31: PASS
+   📝 Input: "70-year-old male with COPD admitted for right lower lobe pneumonia and acute hypoxic respiratory failure."
+   🎯 Expected Primary:   J18.9
+   🤖 Actual Primary:     J18.9
+   🎯 Expected Secondary: [J44.0, J96.01]
+   🤖 Actual Secondary:   [J44.0, J96.01]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 32: PASS
+   📝 Input: "65-year-old female with COPD exacerbation and acute hypercapnic respiratory failure."
+   🎯 Expected Primary:   J44.1
+   🤖 Actual Primary:     J44.1
+   🎯 Expected Secondary: [J96.02]
+   🤖 Actual Secondary:   [J96.02]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 33: PASS
+   📝 Input: "55-year-old on ventilator developed ventilator-associated pneumonia (Pseudomonas)."
+   🎯 Expected Primary:   J95.851
+   🤖 Actual Primary:     J95.851
+   🎯 Expected Secondary: [B96.5]
+   🤖 Actual Secondary:   [B96.5]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 34: PASS
+   📝 Input: "40-year-old with Influenza A, pneumonia, and acute respiratory failure."
+   🎯 Expected Primary:   J10.0
+   🤖 Actual Primary:     J10.0
+   🎯 Expected Secondary: [J96.00]
+   🤖 Actual Secondary:   [J96.00]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 35: PASS
+   📝 Input: "80-year-old with COPD admitted for aspiration pneumonia."
+   🎯 Expected Primary:   J69.0
+   🤖 Actual Primary:     J69.0
+   🎯 Expected Secondary: [J44.0]
+   🤖 Actual Secondary:   [J44.0]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 36: PASS
+   📝 Input: "30-year-old with severe asthma exacerbation and acute respiratory failure."
+   🎯 Expected Primary:   J45.901
+   🤖 Actual Primary:     J45.901
+   🎯 Expected Secondary: [J96.00]
+   🤖 Actual Secondary:   [J96.00]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 37: PASS
+   📝 Input: "60-year-old with acute pulmonary edema, non-cardiogenic."
+   🎯 Expected Primary:   J81.0
+   🤖 Actual Primary:     J81.0
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 38: PASS
+   📝 Input: "75-year-old with Congestive Heart Failure and pleural effusion."
+   🎯 Expected Primary:   I50.9
+   🤖 Actual Primary:     I50.9
+   🎯 Expected Secondary: [J91.8]
+   🤖 Actual Secondary:   [J91.8]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 39: PASS
+   📝 Input: "25-year-old male with spontaneous pneumothorax."
+   🎯 Expected Primary:   J93.11
+   🤖 Actual Primary:     J93.11
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 40: PASS
+   📝 Input: "50-year-old female with acute saddle pulmonary embolism."
+   🎯 Expected Primary:   I26.02
+   🤖 Actual Primary:     I26.02
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FINAL SCORE: 40/40 (100%)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

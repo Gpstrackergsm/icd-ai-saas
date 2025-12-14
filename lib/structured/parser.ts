@@ -448,16 +448,63 @@ export function parseInput(text: string): ParseResult {
                 }
 
 
-                // COPD
-                if (lowerValue.includes('copd')) {
+                // COPD - Enhanced Parsing
+                if (lowerValue.includes('copd') || lowerValue.includes('chronic obstructive pulmonary') || lowerValue.includes('chronic obstructive asthma')) {
                     if (!context.conditions.respiratory) context.conditions.respiratory = {};
-                    const withExacerbation = lowerValue.includes('exacerbation');
-                    const withInfection = lowerValue.includes('infection') || lowerValue.includes('respiratory infection');
+
+                    // Exacerbation logic
+                    // Case 2 bug fix: don't exclude if infection is present. Exacerbation is exacerbation.
+                    // Exacerbation logic
+                    // Case 2 bug fix: don't exclude if infection is present. Exacerbation is exacerbation.
+                    const withExacerbation = lowerValue.includes('exacerbation') || lowerValue.includes('exacerbated') || lowerValue.includes('decompensated') || lowerValue.includes('worsening');
+
+                    // Infection logic
+                    const withInfection = lowerValue.includes('infection') ||
+                        lowerValue.includes('bronchitis') ||
+                        lowerValue.includes('bronchiolitis') || // Added bronchiolitis
+                        lowerValue.includes('pneumonia') || // Case 3: COPD + Pneumonia = J44.0
+                        lowerValue.includes('lower respiratory infection');
+
+                    if (lowerValue.includes('bronchitis')) {
+                        if (!context.conditions.infection) context.conditions.infection = { present: true };
+                        context.conditions.infection.source = 'bronchitis';
+                    }
+
                     context.conditions.respiratory.copd = {
                         present: true,
-                        withExacerbation: withExacerbation && !withInfection,
+                        withExacerbation: withExacerbation,
                         withInfection: withInfection
                     };
+
+                    // For Chronic Obstructive Asthma, we MUST also trigger 'asthma'
+                    if (lowerValue.includes('chronic obstructive asthma')) {
+                        // Logic below will catch 'asthma' keyword, but let's be safe.
+                        // Actually, lines 473+ match 'asthma', so standard asthma parsing will run too.
+                        // So we just ensure COPD logic catches it here.
+                    }
+                }
+
+                if (lowerValue.includes('emphysema')) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                    context.conditions.respiratory.emphysema = true;
+
+                    // Emphysema Exacerbation -> J44.1
+                    if (lowerValue.includes('exacerbation')) {
+                        if (!context.conditions.respiratory.copd) context.conditions.respiratory.copd = { present: true, withExacerbation: true };
+                        else context.conditions.respiratory.copd.withExacerbation = true;
+                    }
+
+                    // Emphysema often implies COPD, but if specified as 'emphysema', we use J43.9.
+                    // If 'COPD' is also mentioned, J43.9 usually takes precedence or describes the type of COPD?
+                    // Excluding 'Emphysema' from standard COPD J44.9 logic is handled in engine.
+                }
+
+                // Chronic Bronchitis (J41.0) - Simple
+                if (lowerValue.includes('chronic bronchitis') && !lowerValue.includes('copd') && !lowerValue.includes('obstructive')) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                    // Check for 'simple' -> J41.0. If 'mucopurulent' -> J41.1. Unspecified -> J42?
+                    // Case 5: "Simple chronic bronchitis" -> J41.0.
+                    context.conditions.respiratory.chronicBronchitis = true;
                 }
 
                 // Asthma
@@ -467,6 +514,11 @@ export function parseInput(text: string): ParseResult {
                     let status: 'uncomplicated' | 'exacerbation' | 'status_asthmaticus' = 'uncomplicated';
 
                     // Status first (to avoid confusing "acute severe" with "severe persistent")
+                    if (lowerValue.includes('chronic obstructive')) {
+                        // Chronic Obstructive Asthma -> Unspecified severity usually, or mapped to COPD + Asthma?
+                        // It triggers COPD block separately.
+                        // But we should treat it as 'unspecified' asthma unless severity is mentioned.
+                    }
                     if (lowerValue.includes('acute')) status = 'exacerbation';
                     else if (lowerValue.includes('exacerbation')) status = 'exacerbation';
                     else if (lowerValue.includes('status asthmaticus')) status = 'status_asthmaticus';
@@ -510,6 +562,30 @@ export function parseInput(text: string): ParseResult {
                         type = 'viral';
                         organism = 'viral';
                     }
+                    else if (lowerValue.includes('pseudomonas')) {
+                        type = 'bacterial';
+                        organism = 'pseudomonas';
+                    }
+                    else if (lowerValue.includes('mssa') || lowerValue.includes('methicillin-susceptible') || lowerValue.includes('methicillin susceptible')) {
+                        type = 'bacterial';
+                        organism = 'mssa';
+                    }
+                    else if (lowerValue.includes('mrsa') || lowerValue.includes('methicillin-resistant') || lowerValue.includes('methicillin resistant')) {
+                        type = 'bacterial';
+                        organism = 'mrsa';
+                    }
+                    else if (lowerValue.includes('mycoplasma') || lowerValue.includes('walking pneumonia')) {
+                        type = 'bacterial';
+                        organism = 'mycoplasma';
+                    }
+                    else if (lowerValue.includes('klebsiella')) {
+                        type = 'bacterial';
+                        organism = 'klebsiella';
+                    }
+                    else if (lowerValue.includes('e. coli') || lowerValue.includes('e.coli')) {
+                        type = 'bacterial';
+                        organism = 'e_coli';
+                    }
                     else if (lowerValue.includes('aspiration')) type = 'aspiration';
 
                     // COVID-19
@@ -530,9 +606,93 @@ export function parseInput(text: string): ParseResult {
                         }
                     }
 
-                    context.conditions.respiratory.pneumonia = { organism, type };
+                    context.conditions.respiratory.pneumonia = { organism, type, ventilatorAssociated: lowerValue.includes('ventilator') };
                 }
 
+                // Respiratory failure - Enhanced Parsing (Top-Level)
+                if ((lowerValue.includes('respiratory failure') || lowerValue.includes('acute respiratory failure')) && !lowerValue.includes('no respiratory failure')) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
+
+                    let type: 'acute' | 'chronic' | 'acute_on_chronic' | 'unspecified' = 'unspecified';
+                    let isPostProcedural = lowerValue.includes('post-procedural') || lowerValue.includes('postprocedural') || lowerValue.includes('following surgery');
+
+                    if (lowerValue.includes('acute') && lowerValue.includes('chronic')) type = 'acute_on_chronic';
+                    else if (lowerValue.includes('acute')) type = 'acute';
+                    else if (lowerValue.includes('chronic')) type = 'chronic';
+                    else if (isPostProcedural) {
+                        type = 'acute';
+                    } else {
+                        type = 'unspecified';
+                        if (lowerValue.includes('acute')) type = 'acute';
+                    }
+
+                    // Specificity
+                    const withHypoxia = lowerValue.includes('hypoxia') || lowerValue.includes('hypoxic');
+                    const withHypercapnia = lowerValue.includes('hypercapnia') || lowerValue.includes('hypercapnic');
+
+                    context.conditions.respiratory.failure = {
+                        type,
+                        withHypoxia,
+                        withHypercapnia,
+                        isPostProcedural
+                    };
+                }
+
+                // INFLUENZA
+                if (lowerValue.includes('influenza') || lowerValue.includes('flu ')) {
+                    if (!context.conditions.infection) context.conditions.infection = { present: true };
+                    context.conditions.infection.source = 'influenza';
+                    context.conditions.infection.organism = 'viral';
+                }
+
+                // PULMONARY EDEMA
+                if (lowerValue.includes('pulmonary edema')) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                    context.conditions.respiratory.pulmonaryEdema = true;
+                }
+
+                // PLEURAL EFFUSION
+                if (lowerValue.includes('pleural effusion')) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                    context.conditions.respiratory.pleuralEffusion = true;
+                }
+
+                // PNEUMOTHORAX
+                if (lowerValue.includes('pneumothorax')) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                    context.conditions.respiratory.pneumothorax = true;
+                }
+
+                // PULMONARY EMBOLISM
+                if (lowerValue.includes('pulmonary embolism') || (lowerValue.includes('embolism') && lowerValue.includes('pulmonary')) || lowerValue.includes('saddle embolus')) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                    context.conditions.respiratory.pulmonaryEmbolism = true;
+                }
+
+                // OXYGEN DEPENDENCE
+                if (lowerValue.includes('home oxygen') || (lowerValue.includes('oxygen') && lowerValue.includes('dependent')) || lowerValue.includes('supplemental oxygen') || lowerValue.includes('on oxygen')) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                    context.conditions.respiratory.oxygenDependence = true;
+                }
+
+                // BRONCHIOLITIS
+                if (lowerValue.includes('bronchiolitis')) {
+                    if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                    // We need a place for this. Add 'bronchiolitis' to conditions?
+                    // For now, let's treat it as a triggered infection site? 
+                    // Actually, engine usually handles J21 via keyword match?
+                    // Engine has no explicit 'bronchiolitis' rule yet. 
+                    // I'll add 'bronchiolitis' to respiratory context effectively.
+                    // But I cannot change context interface easily in this step without error.
+                    // I will check if I can use 'infection' context.
+                    if (!context.conditions.infection) context.conditions.infection = { present: true };
+                    context.conditions.infection.source = 'bronchiolitis'; // Store as source
+                }
+
+                // SMOKER / TOBACCO
+                if (lowerValue.includes('smoker') || lowerValue.includes('tobacco')) {
+                    if (!context.conditions.smoker) context.conditions.smoker = true;
+                }
                 // CAUTI Detection (Case 2) - Catheter-associated UTI
                 if (lowerValue.includes('cauti') || lowerValue.includes('catheter-associated uti') ||
                     (lowerValue.includes('foley') && (lowerValue.includes('uti') || lowerValue.includes('urosepsis')))) {
@@ -580,12 +740,34 @@ export function parseInput(text: string): ParseResult {
                         if (!context.conditions.renal) context.conditions.renal = {};
                         context.conditions.renal.aki = true;
                     }
-                    // Respiratory failure
-                    if (lowerValue.includes('respiratory failure') || lowerValue.includes('acute respiratory failure')) {
+                    // Respiratory failure - Enhanced Parsing
+                    if ((lowerValue.includes('respiratory failure') || lowerValue.includes('acute respiratory failure')) && !lowerValue.includes('no respiratory failure')) {
                         if (!context.conditions.respiratory) context.conditions.respiratory = {};
-                        if (!context.conditions.respiratory.failure) {
-                            context.conditions.respiratory.failure = { type: 'acute' };
+
+                        let type: 'acute' | 'chronic' | 'acute_on_chronic' | 'unspecified' = 'unspecified';
+                        if (lowerValue.includes('acute') && lowerValue.includes('chronic')) type = 'acute_on_chronic';
+                        else if (lowerValue.includes('acute')) type = 'acute';
+                        else if (lowerValue.includes('chronic')) type = 'chronic';
+                        else if (lowerValue.includes('post-procedural') || lowerValue.includes('postprocedural')) {
+                            // This is usually implied by context, but if explicit
+                            type = 'acute'; // Usually acute
+                        } else {
+                            // Default to acute if unspecified? No, J96.90 is unspecified. 
+                            // But usually "Respiratory Failure" implies acute in clinical notes unless specified chronic.
+                            // Let's stick to unspecified if not stated.
+                            type = 'unspecified';
+                            if (lowerValue.includes('acute')) type = 'acute'; // Redundant check but safe
                         }
+
+                        // Specificity
+                        const withHypoxia = lowerValue.includes('hypoxia') || lowerValue.includes('hypoxic');
+                        const withHypercapnia = lowerValue.includes('hypercapnia') || lowerValue.includes('hypercapnic');
+
+                        context.conditions.respiratory.failure = {
+                            type,
+                            withHypoxia,
+                            withHypercapnia
+                        };
                     }
                     // Encephalopathy
                     if (lowerValue.includes('encephalopathy')) {

@@ -1,6 +1,6 @@
 import { parseInput } from './lib/structured/parser';
 import { runStructuredRules } from './lib/structured/engine';
-import { sepsisCases } from './test_sepsis_40_cases';
+import { respiratoryCases } from './test_respiratory_40_cases';
 
 interface TestResult {
     num: number;
@@ -15,18 +15,25 @@ interface TestResult {
 function codesMatch(actual: string[], expected: string[]): boolean {
     if (actual.length !== expected.length) return false;
     // STRICT ORDER MATCHING - No sorting
+    // But for initial baseline, let's start with loose matching?
+    // No, let's keep it strict to identify issues early, but we can relax if needed.
+    // Actually, for respiratory, order matters (e.g. Failure vs COPD).
+    // Let's use strict ordering from the start.
     return actual.every((code, idx) => code === expected[idx]);
 }
 
-async function runSepsisTests() {
+async function runRespiratoryTests() {
     const results: TestResult[] = [];
     let passCount = 0;
 
     console.log('\n╔════════════════════════════════════════════════════════════════╗');
-    console.log('║         SEPSIS MODULE - RUNNING 40 TEST CASES               ║');
+    console.log('║      RESPIRATORY MODULE - RUNNING 40 TEST CASES             ║');
     console.log('╚════════════════════════════════════════════════════════════════╝\n');
 
-    for (const testCase of sepsisCases) {
+    // Filter for specific test cases if needed (debugging)
+    const casesToRun = respiratoryCases; // Run all cases
+
+    for (const testCase of casesToRun) {
         const errors: string[] = [];
 
         try {
@@ -99,25 +106,7 @@ async function runSepsisTests() {
     console.log(`FINAL SCORE: ${passCount}/40 (${Math.round(passCount / 40 * 100)}%)`);
     console.log('━'.repeat(80));
 
-    // Group failures by type
-    const failures = results.filter(r => !r.passed);
-    if (failures.length > 0) {
-        console.log('\n📋 FAILURE BREAKDOWN:\n');
-
-        const primaryFails = failures.filter(f => f.actualPrimary !== f.expectedPrimary);
-        console.log(`Primary Sequencing Issues: ${primaryFails.length} cases`);
-        primaryFails.forEach(f => {
-            console.log(`  Case ${f.num}: ${f.actualPrimary} → ${f.expectedPrimary}`);
-        });
-
-        const secondaryFails = failures.filter(f => !codesMatch(f.actualSecondary, f.expectedSecondary));
-        console.log(`\nSecondary Code Issues: ${secondaryFails.length} cases`);
-        secondaryFails.forEach(f => {
-            console.log(`  Case ${f.num}: [${f.actualSecondary.join(', ')}] → [${f.expectedSecondary.join(', ')}]`);
-        });
-    }
-
     return { passCount, total: 40, results };
 }
 
-runSepsisTests().then(() => process.exit(0));
+runRespiratoryTests().then(() => process.exit(0));
