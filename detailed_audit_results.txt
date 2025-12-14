@@ -1,0 +1,687 @@
+════════════════════════════════════════════════════════════════════════════════════════════════════
+                         DETAILED CARDIOLOGY AUDIT - CASE BY CASE REVIEW
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 1: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 80-year-old male with long-standing hypertension, ESRD on chronic hemodialysis, and chronic systolic CHF admitted for worsening shortness of breath due to acute on chronic heart failure.
+
+Expected Rationale: Admitted for acute on chronic HF - I50.23 is principal per UHDDS
+
+PRIMARY DIAGNOSIS:
+  Expected: I50.23
+  Actual:   I50.23 ✅
+  Label:    Heart failure, systolic acute_on_chronic
+
+SECONDARY DIAGNOSES:
+  Expected: I13.2, N18.6
+  Actual:   I13.2, N18.6 ✅
+    1. I13.2 - Hypertensive heart and chronic kidney disease with heart failure and with stage 5 chronic kidney disease, or end stage renal disease 
+    2. N18.6 - Chronic kidney disease, stage esrd 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 2: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 72-year-old female with hypertension and CKD stage 4 admitted for volume overload. No heart failure documented.
+
+Expected Rationale: HTN+CKD without HF - I12.9 is principal
+
+PRIMARY DIAGNOSIS:
+  Expected: I12.9
+  Actual:   I12.9 ✅
+  Label:    Hypertensive chronic kidney disease with stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease
+
+SECONDARY DIAGNOSES:
+  Expected: N18.4
+  Actual:   N18.4 ✅
+    1. N18.4 - Chronic kidney disease, stage 4 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 3: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 68-year-old male with hypertension admitted for acute decompensated systolic heart failure. No CKD.
+
+Expected Rationale: Acute systolic HF - I50.21 principal, I11.0 secondary
+
+PRIMARY DIAGNOSIS:
+  Expected: I50.21
+  Actual:   I50.21 ✅
+  Label:    Heart failure, systolic acute
+
+SECONDARY DIAGNOSES:
+  Expected: I11.0
+  Actual:   I11.0 ✅
+    1. I11.0 - Hypertensive heart disease with heart failure 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 4: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 75-year-old female with hypertension, CKD stage 3, and chronic diastolic heart failure admitted for acute on chronic HF exacerbation.
+
+Expected Rationale: Acute on chronic diastolic HF - I50.33 principal
+
+PRIMARY DIAGNOSIS:
+  Expected: I50.33
+  Actual:   I50.33 ✅
+  Label:    Heart failure, diastolic acute_on_chronic
+
+SECONDARY DIAGNOSES:
+  Expected: I13.0, N18.3
+  Actual:   I13.0, N18.3 ✅
+    1. I13.0 - Hypertensive heart and chronic kidney disease with heart failure and stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease 
+    2. N18.3 - Chronic kidney disease, stage 3 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 5: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 60-year-old male with essential hypertension admitted for blood pressure control. No cardiac or renal disease.
+
+Expected Rationale: Essential HTN only - I10
+
+PRIMARY DIAGNOSIS:
+  Expected: I10
+  Actual:   I10 ✅
+  Label:    Essential (primary) hypertension
+
+SECONDARY DIAGNOSES:
+  Expected: (none)
+  Actual:   (none) ✅
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 6: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 82-year-old male with ESRD on dialysis, hypertension, and chronic systolic heart failure admitted for routine dialysis, no HF exacerbation.
+
+Expected Rationale: Routine dialysis - Z49.31 principal per UHDDS
+
+PRIMARY DIAGNOSIS:
+  Expected: Z49.31
+  Actual:   Z49.31 ✅
+  Label:    Encounter for adequacy testing for hemodialysis
+
+SECONDARY DIAGNOSES:
+  Expected: I13.2, I50.22, N18.6, Z99.2
+  Actual:   I13.2, I50.22, N18.6, Z99.2 ✅
+    1. I13.2 - Hypertensive heart and chronic kidney disease with heart failure and with stage 5 chronic kidney disease, or end stage renal disease 
+    2. I50.22 - Heart failure, systolic chronic 
+    3. N18.6 - Chronic kidney disease, stage esrd 
+    4. Z99.2 - Dependence on renal dialysis 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 7: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 70-year-old female with chronic systolic CHF and no history of hypertension admitted for acute on chronic HF.
+
+Expected Rationale: No HTN - only I50.23
+
+PRIMARY DIAGNOSIS:
+  Expected: I50.23
+  Actual:   I50.23 ✅
+  Label:    Heart failure, systolic, acute_on_chronic
+
+SECONDARY DIAGNOSES:
+  Expected: (none)
+  Actual:   (none) ✅
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 8: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 67-year-old male with NSTEMI admitted for acute myocardial infarction. No prior MI history.
+
+Expected Rationale: Acute NSTEMI - I21.4
+
+PRIMARY DIAGNOSIS:
+  Expected: I21.4
+  Actual:   I21.4 ✅
+  Label:    Non-ST elevation myocardial infarction
+
+SECONDARY DIAGNOSES:
+  Expected: (none)
+  Actual:   (none) ✅
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 9: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 74-year-old female with prior MI two years ago admitted for acute systolic heart failure exacerbation.
+
+Expected Rationale: Acute systolic HF principal, old MI secondary
+
+PRIMARY DIAGNOSIS:
+  Expected: I50.21
+  Actual:   I50.21 ✅
+  Label:    Heart failure, systolic, acute
+
+SECONDARY DIAGNOSES:
+  Expected: I25.2
+  Actual:   I25.2 ✅
+    1. I25.2 - Old myocardial infarction 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 10: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 65-year-old male with coronary artery disease and chronic stable angina admitted for exertional chest pain without MI.
+
+Expected Rationale: CAD with stable angina - I25.111
+
+PRIMARY DIAGNOSIS:
+  Expected: I25.111
+  Actual:   I25.111 ✅
+  Label:    Atherosclerotic heart disease of native coronary artery with angina pectoris with documented spasm
+
+SECONDARY DIAGNOSES:
+  Expected: (none)
+  Actual:   (none) ✅
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 11: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 71-year-old female admitted for chest pain at rest diagnosed as unstable angina. No troponin elevation.
+
+Expected Rationale: Unstable angina - I20.0
+
+PRIMARY DIAGNOSIS:
+  Expected: I20.0
+  Actual:   I20.0 ✅
+  Label:    Unstable angina
+
+SECONDARY DIAGNOSES:
+  Expected: (none)
+  Actual:   (none) ✅
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 12: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 59-year-old male with inferior STEMI admitted within 24 hours of symptom onset.
+
+Expected Rationale: Acute inferior STEMI - I21.19
+
+PRIMARY DIAGNOSIS:
+  Expected: I21.19
+  Actual:   I21.19 ✅
+  Label:    ST elevation myocardial infarction of inferior wall
+
+SECONDARY DIAGNOSES:
+  Expected: (none)
+  Actual:   (none) ✅
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 13: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 78-year-old female with hypertension, CKD stage 5, and systolic heart failure admitted for acute on chronic HF.
+
+Expected Rationale: Acute on chronic HF principal
+
+PRIMARY DIAGNOSIS:
+  Expected: I50.23
+  Actual:   I50.23 ✅
+  Label:    Heart failure, systolic acute_on_chronic
+
+SECONDARY DIAGNOSES:
+  Expected: I13.2, N18.5
+  Actual:   I13.2, N18.5 ✅
+    1. I13.2 - Hypertensive heart and chronic kidney disease with heart failure and with stage 5 chronic kidney disease, or end stage renal disease 
+    2. N18.5 - Chronic kidney disease, stage 5 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 14: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 66-year-old male with dilated cardiomyopathy and chronic systolic HF admitted for routine follow-up.
+
+Expected Rationale: Routine follow-up - Z09 principal
+
+PRIMARY DIAGNOSIS:
+  Expected: Z09
+  Actual:   Z09 ✅
+  Label:    Encounter for follow-up examination after completed treatment for conditions other than malignant neoplasm
+
+SECONDARY DIAGNOSES:
+  Expected: I50.22, I42.0
+  Actual:   I50.22, I42.0 ✅
+    1. I50.22 - Heart failure, systolic, chronic 
+    2. I42.0 - Dilated cardiomyopathy 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 15: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 73-year-old female with hypertrophic cardiomyopathy admitted for syncope evaluation.
+
+Expected Rationale: Hypertrophic cardiomyopathy - I42.2
+
+PRIMARY DIAGNOSIS:
+  Expected: I42.2
+  Actual:   I42.2 ✅
+  Label:    Other hypertrophic cardiomyopathy
+
+SECONDARY DIAGNOSES:
+  Expected: (none)
+  Actual:   (none) ✅
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 16: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 69-year-old male with chronic atrial fibrillation admitted for rapid ventricular response.
+
+Expected Rationale: Chronic AF - I48.91
+
+PRIMARY DIAGNOSIS:
+  Expected: I48.91
+  Actual:   I48.91 ✅
+  Label:    Unspecified atrial fibrillation
+
+SECONDARY DIAGNOSES:
+  Expected: (none)
+  Actual:   (none) ✅
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 17: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 58-year-old female with new-onset atrial fibrillation identified in the emergency department.
+
+Expected Rationale: New-onset AF - I48.91
+
+PRIMARY DIAGNOSIS:
+  Expected: I48.91
+  Actual:   I48.91 ✅
+  Label:    Unspecified atrial fibrillation
+
+SECONDARY DIAGNOSES:
+  Expected: (none)
+  Actual:   (none) ✅
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 18: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 77-year-old male with hypertension and CKD stage 3 admitted for hypertensive urgency.
+
+Expected Rationale: HTN+CKD - I12.9 principal
+
+PRIMARY DIAGNOSIS:
+  Expected: I12.9
+  Actual:   I12.9 ✅
+  Label:    Hypertensive chronic kidney disease with stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease
+
+SECONDARY DIAGNOSES:
+  Expected: N18.3
+  Actual:   N18.3 ✅
+    1. N18.3 - Chronic kidney disease, stage 3 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 19: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 64-year-old female with coronary artery disease without angina admitted for elective cardiac evaluation.
+
+Expected Rationale: CAD without angina - I25.10
+
+PRIMARY DIAGNOSIS:
+  Expected: I25.10
+  Actual:   I25.10 ✅
+  Label:    Atherosclerotic heart disease of native coronary artery without angina pectoris
+
+SECONDARY DIAGNOSES:
+  Expected: (none)
+  Actual:   (none) ✅
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 20: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 81-year-old male with hypertension, ESRD, and heart failure admitted for acute pulmonary edema.
+
+Expected Rationale: Acute pulmonary edema (HF) principal
+
+PRIMARY DIAGNOSIS:
+  Expected: I50.9
+  Actual:   I50.9 ✅
+  Label:    Heart failure, unspecified acute
+
+SECONDARY DIAGNOSES:
+  Expected: I13.2, N18.6
+  Actual:   I13.2, N18.6 ✅
+    1. I13.2 - Hypertensive heart and chronic kidney disease with heart failure and with stage 5 chronic kidney disease, or end stage renal disease 
+    2. N18.6 - Chronic kidney disease, stage esrd 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 21: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 70-year-old female with acute on chronic diastolic heart failure due to long-standing hypertension.
+
+Expected Rationale: Acute on chronic diastolic HF principal
+
+PRIMARY DIAGNOSIS:
+  Expected: I50.33
+  Actual:   I50.33 ✅
+  Label:    Heart failure, diastolic acute_on_chronic
+
+SECONDARY DIAGNOSES:
+  Expected: I11.0
+  Actual:   I11.0 ✅
+    1. I11.0 - Hypertensive heart disease with heart failure 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 22: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 62-year-old male with chest pain ruled out for cardiac etiology and diagnosed as non-cardiac chest pain.
+
+Expected Rationale: Non-cardiac - no cardiac codes
+
+PRIMARY DIAGNOSIS:
+  Expected: NONE
+  Actual:   NONE ✅
+
+SECONDARY DIAGNOSES:
+  Expected: (none)
+  Actual:   (none) ✅
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 23: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 76-year-old female with chronic systolic CHF admitted for worsening dyspnea. No hypertension.
+
+Expected Rationale: No HTN - only I50.22
+
+PRIMARY DIAGNOSIS:
+  Expected: I50.22
+  Actual:   I50.22 ✅
+  Label:    Heart failure, systolic, chronic
+
+SECONDARY DIAGNOSES:
+  Expected: (none)
+  Actual:   (none) ✅
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 24: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 68-year-old male with hypertension and CKD stage 2 admitted for CKD monitoring.
+
+Expected Rationale: HTN+CKD - I12.9 principal
+
+PRIMARY DIAGNOSIS:
+  Expected: I12.9
+  Actual:   I12.9 ✅
+  Label:    Hypertensive chronic kidney disease with stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease
+
+SECONDARY DIAGNOSES:
+  Expected: N18.2
+  Actual:   N18.2 ✅
+    1. N18.2 - Chronic kidney disease, stage 2 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 25: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 79-year-old female with CAD and unstable angina admitted for cardiac catheterization.
+
+Expected Rationale: Unstable angina principal
+
+PRIMARY DIAGNOSIS:
+  Expected: I20.0
+  Actual:   I20.0 ✅
+  Label:    Unstable angina
+
+SECONDARY DIAGNOSES:
+  Expected: I25.10
+  Actual:   I25.10 ✅
+    1. I25.10 - Atherosclerotic heart disease of native coronary artery without angina pectoris 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 26: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 55-year-old male with hypertension and no other conditions admitted for medication adjustment.
+
+Expected Rationale: Essential HTN - I10
+
+PRIMARY DIAGNOSIS:
+  Expected: I10
+  Actual:   I10 ✅
+  Label:    Essential (primary) hypertension
+
+SECONDARY DIAGNOSES:
+  Expected: (none)
+  Actual:   (none) ✅
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 27: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 83-year-old male with ESRD on dialysis admitted for acute on chronic systolic HF exacerbation.
+
+Expected Rationale: Acute on chronic HF principal
+
+PRIMARY DIAGNOSIS:
+  Expected: I50.23
+  Actual:   I50.23 ✅
+  Label:    Heart failure, systolic, acute_on_chronic
+
+SECONDARY DIAGNOSES:
+  Expected: N18.6
+  Actual:   N18.6 ✅
+    1. N18.6 - Chronic kidney disease, stage esrd 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 28: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 71-year-old female with hypertension, CKD stage 4, and no heart failure admitted for renal evaluation.
+
+Expected Rationale: HTN+CKD - I12.9 principal
+
+PRIMARY DIAGNOSIS:
+  Expected: I12.9
+  Actual:   I12.9 ✅
+  Label:    Hypertensive chronic kidney disease with stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease
+
+SECONDARY DIAGNOSES:
+  Expected: N18.4
+  Actual:   N18.4 ✅
+    1. N18.4 - Chronic kidney disease, stage 4 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 29: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 65-year-old male with permanent atrial fibrillation and chronic diastolic HF admitted for acute HF exacerbation.
+
+Expected Rationale: Acute diastolic HF principal
+
+PRIMARY DIAGNOSIS:
+  Expected: I50.31
+  Actual:   I50.31 ✅
+  Label:    Heart failure, diastolic, acute
+
+SECONDARY DIAGNOSES:
+  Expected: I48.91
+  Actual:   I48.91 ✅
+    1. I48.91 - Unspecified atrial fibrillation 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 30: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 74-year-old female with prior NSTEMI three weeks ago admitted for continued management of same MI.
+
+Expected Rationale: Subsequent NSTEMI within 4 weeks - I22.2
+
+PRIMARY DIAGNOSIS:
+  Expected: I22.2
+  Actual:   I22.2 ✅
+  Label:    Subsequent non-ST elevation myocardial infarction
+
+SECONDARY DIAGNOSES:
+  Expected: (none)
+  Actual:   (none) ✅
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 31: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 69-year-old male with coronary artery disease and stable angina admitted for chest pain on exertion.
+
+Expected Rationale: CAD with stable angina - I25.111
+
+PRIMARY DIAGNOSIS:
+  Expected: I25.111
+  Actual:   I25.111 ✅
+  Label:    Atherosclerotic heart disease of native coronary artery with angina pectoris with documented spasm
+
+SECONDARY DIAGNOSES:
+  Expected: (none)
+  Actual:   (none) ✅
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 32: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 77-year-old female with hypertension and combined systolic and diastolic HF admitted for acute decompensation.
+
+Expected Rationale: Acute combined HF principal
+
+PRIMARY DIAGNOSIS:
+  Expected: I50.41
+  Actual:   I50.41 ✅
+  Label:    Heart failure, combined acute
+
+SECONDARY DIAGNOSES:
+  Expected: I11.0
+  Actual:   I11.0 ✅
+    1. I11.0 - Hypertensive heart disease with heart failure 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 33: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 63-year-old male with dilated cardiomyopathy without HF admitted for routine cardiology follow-up.
+
+Expected Rationale: Dilated cardiomyopathy - I42.0
+
+PRIMARY DIAGNOSIS:
+  Expected: I42.0
+  Actual:   I42.0 ✅
+  Label:    Dilated cardiomyopathy
+
+SECONDARY DIAGNOSES:
+  Expected: (none)
+  Actual:   (none) ✅
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 34: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 80-year-old female with hypertension, CKD stage 5 on dialysis, admitted for hypertensive heart failure.
+
+Expected Rationale: Admitted for HF - I13.2 principal
+
+PRIMARY DIAGNOSIS:
+  Expected: I13.2
+  Actual:   I13.2 ✅
+  Label:    Hypertensive heart and chronic kidney disease with heart failure and with stage 5 chronic kidney disease, or end stage renal disease
+
+SECONDARY DIAGNOSES:
+  Expected: I50.9, N18.5
+  Actual:   I50.9, N18.5 ✅
+    1. I50.9 - Heart failure, unspecified unspecified 
+    2. N18.5 - Chronic kidney disease, stage 5 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 35: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 58-year-old male with acute STEMI anterior wall admitted emergently.
+
+Expected Rationale: Acute anterior STEMI - I21.09
+
+PRIMARY DIAGNOSIS:
+  Expected: I21.09
+  Actual:   I21.09 ✅
+  Label:    ST elevation myocardial infarction of anterior wall
+
+SECONDARY DIAGNOSES:
+  Expected: (none)
+  Actual:   (none) ✅
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 36: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 72-year-old female with chronic AF and hypertension admitted for rate control.
+
+Expected Rationale: HTN principal for rate control admission
+
+PRIMARY DIAGNOSIS:
+  Expected: I10
+  Actual:   I10 ✅
+  Label:    Essential (primary) hypertension
+
+SECONDARY DIAGNOSES:
+  Expected: I48.91
+  Actual:   I48.91 ✅
+    1. I48.91 - Unspecified atrial fibrillation 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 37: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 66-year-old male with hypertension, CKD stage 3, and systolic HF admitted for acute on chronic HF.
+
+Expected Rationale: Acute on chronic HF principal
+
+PRIMARY DIAGNOSIS:
+  Expected: I50.23
+  Actual:   I50.23 ✅
+  Label:    Heart failure, systolic acute_on_chronic
+
+SECONDARY DIAGNOSES:
+  Expected: I13.0, N18.3
+  Actual:   I13.0, N18.3 ✅
+    1. I13.0 - Hypertensive heart and chronic kidney disease with heart failure and stage 1 through stage 4 chronic kidney disease, or unspecified chronic kidney disease 
+    2. N18.3 - Chronic kidney disease, stage 3 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 38: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 79-year-old female with old MI admitted for routine follow-up.
+
+Expected Rationale: Routine follow-up - Z09 principal
+
+PRIMARY DIAGNOSIS:
+  Expected: Z09
+  Actual:   Z09 ✅
+  Label:    Encounter for follow-up examination after completed treatment for conditions other than malignant neoplasm
+
+SECONDARY DIAGNOSES:
+  Expected: I25.2
+  Actual:   I25.2 ✅
+    1. I25.2 - Old myocardial infarction 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 39: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 61-year-old male with hypertrophic cardiomyopathy and chronic diastolic HF admitted for acute HF exacerbation.
+
+Expected Rationale: Acute diastolic HF principal
+
+PRIMARY DIAGNOSIS:
+  Expected: I50.31
+  Actual:   I50.31 ✅
+  Label:    Heart failure, diastolic, acute
+
+SECONDARY DIAGNOSES:
+  Expected: I42.2
+  Actual:   I42.2 ✅
+    1. I42.2 - Other hypertrophic cardiomyopathy 
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+CASE 40: ✅ PASS
+────────────────────────────────────────────────────────────────────────────────────────────────────
+Clinical Scenario: 85-year-old female with hypertension, ESRD, and chronic systolic CHF admitted for worsening shortness of breath.
+
+Expected Rationale: Worsening SOB but chronic HF - I13.2 principal
+
+PRIMARY DIAGNOSIS:
+  Expected: I13.2
+  Actual:   I13.2 ✅
+  Label:    Hypertensive heart and chronic kidney disease with heart failure and with stage 5 chronic kidney disease, or end stage renal disease
+
+SECONDARY DIAGNOSES:
+  Expected: I50.22, N18.6
+  Actual:   I50.22, N18.6 ✅
+    1. I50.22 - Heart failure, systolic chronic 
+    2. N18.6 - Chronic kidney disease, stage esrd 
+
+════════════════════════════════════════════════════════════════════════════════════════════════════
+                                    FINAL RESULTS
+════════════════════════════════════════════════════════════════════════════════════════════════════
+
+✅ Correct: 40/40 (100.0%)
+❌ Incorrect: 0/40
+
+🎉 PERFECT SCORE! ALL 40 CASES PASSED!
+
+════════════════════════════════════════════════════════════════════════════════════════════════════

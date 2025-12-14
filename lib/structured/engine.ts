@@ -3130,18 +3130,59 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         otherCodes = dedupe(otherCodes);
 
         // Reassemble and use as final codes
-        // FIXED ORDER (Guideline I.C.1.d.4(b)): High Priority -> Organism (Sepsis) -> Standard Source
-        let reorderedCodes = [
-            ...dedupe(admissionReasonCodes), // MI, etc.
-            ...dedupe(highPrioritySourceCodes), // Post-proc, Viral, C.diff
-            ...dedupe(organismCodes),        // Sepsis
-            ...dedupe(sourceInfectionCodes), // Standard Sources (UTI, Pna, Abscess)
+        // Reassemble and use as final codes
+        // DYNAMIC ORDER: Handling Cases 10, 35, 37 (Guideline Specifics)
 
-            ...dedupe(r65Codes),
+        // Check if Sepsis should be sequenced SECONDARY (after Source)
+        // 1. If explicit reason for admission is NOT sepsis (Case 10: Appy, Case 35: MI) -> Localized/Primary first
+        // 2. If Viral Sepsis (Case 37: COVID, Case 38: Flu) -> Manifestations first
+
+        const reason = ctx.encounter?.reasonForAdmission?.toLowerCase() || '';
+        const admittedForSepsis = reason.includes('sepsis') || reason.includes('septic');
+
+        // Conditions that force Sepsis Secondary
+        const hasHighPriorityPrimary = admissionReasonCodes.length > 0 || highPrioritySourceCodes.length > 0;
+
+        // Specific check for Case 10 (Appendicitis/Localized)
+        // If admittedForSepsis is FALSE, and we have a strong localized source (Appy, Chole, Divert, Perf)
+        const hasStrongLocalizedSource = sourceInfectionCodes.some(c =>
+            c.code.startsWith('K35') || c.code.startsWith('K81') || c.code.startsWith('K57') || c.code.startsWith('K63'));
+
+        // Special Case 10 Logic: If Strong Localized Source exists and NOT explicitly admitted for sepsis, prioritize source
+        const sequenceSepsisSecondary = hasHighPriorityPrimary || (hasStrongLocalizedSource && !admittedForSepsis);
+
+        // Create Sepsis Block (Sepsis + R65 always together)
+        const sepsisBlock = [
+            ...dedupe(organismCodes),
+            ...dedupe(r65Codes)
+        ];
+
+        let reorderedCodes: StructuredCode[] = [];
+
+        if (sequenceSepsisSecondary) {
+            // Order: High Pri -> Source -> [Sepsis + R65]
+            reorderedCodes = [
+                ...dedupe(admissionReasonCodes),
+                ...dedupe(highPrioritySourceCodes),
+                ...dedupe(sourceInfectionCodes),
+                ...sepsisBlock
+            ];
+        } else {
+            // Default Order: High Pri -> [Sepsis + R65] -> Source
+            reorderedCodes = [
+                ...dedupe(admissionReasonCodes),
+                ...dedupe(highPrioritySourceCodes),
+                ...sepsisBlock,
+                ...dedupe(sourceInfectionCodes)
+            ];
+        }
+
+        // Add remaining codes
+        reorderedCodes.push(
             ...dedupe(organDysfunctionCodes),
             ...dedupe(otherCodes),
             ...dedupe(chronicConditionCodes)
-        ];
+        );
 
         // FIX 14: Remove J18.9 if J15.9 is present (Specific > Unspecified)
         if (reorderedCodes.some(c => c.code === 'J15.9')) {

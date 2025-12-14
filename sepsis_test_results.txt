@@ -1,5 +1,5 @@
 SEPSIS MODULE - COMPREHENSIVE TEST RESULTS
-Generated: 2025-12-14T13:19:43.967Z
+Generated: 2025-12-14T13:40:05.232Z
 Total Cases: 40
 Pass Rate: 40/40 (100%)
 ================================================================================
@@ -50,12 +50,12 @@ Actual Secondary:   [J15.211, R65.21, E11.9]
 --------------------------------------------------------------------------------
 
 CASE 6: ✅ PASS
-Narrative: 82-year-old nursing home resident admitted with aspiration pneumonia and severe sepsis without shock. Blood cultures pending.
+Narrative: 82-year-old nursing home resident admitted with aspiration pneumonia and severe sepsis. Patient is confused and obtunded (metabolic encephalopathy). Blood cultures pending.
 Rationale: Sepsis Unspecified Principal. Aspiration Pna Secondary. Severe Sepsis R65.20.
 Expected Primary:   A41.9
 Actual Primary:     A41.9
-Expected Secondary: [R65.20, J69.0]
-Actual Secondary:   [J69.0, R65.20]
+Expected Secondary: [R65.20, J69.0, G93.41]
+Actual Secondary:   [J69.0, R65.20, G93.41]
 --------------------------------------------------------------------------------
 
 CASE 7: ✅ PASS
@@ -95,12 +95,12 @@ Actual Secondary:   [K35.32, K65.0]
 --------------------------------------------------------------------------------
 
 CASE 11: ✅ PASS
-Narrative: 74-year-old male with perforated diverticulitis and severe sepsis without shock. Blood cultures positive.
+Narrative: 74-year-old male with perforated diverticulitis and severe sepsis without shock. Acute kidney injury noted. Blood cultures positive.
 Rationale: Sepsis Principal. Diverticulitis secondary.
 Expected Primary:   A41.9
 Actual Primary:     A41.9
-Expected Secondary: [R65.20, K57.20, K65.0]
-Actual Secondary:   [K57.20, K65.0, R65.20]
+Expected Secondary: [R65.20, K57.20, K65.0, N17.9]
+Actual Secondary:   [K57.20, K65.0, R65.20, N17.9]
 --------------------------------------------------------------------------------
 
 CASE 12: ✅ PASS
@@ -293,12 +293,12 @@ Actual Secondary:   [L97.419, E11.621]
 --------------------------------------------------------------------------------
 
 CASE 33: ✅ PASS
-Narrative: 65-year-old male with C. difficile colitis complicated by sepsis and severe sepsis. Blood cultures show translocation of C. diff.
+Narrative: 65-year-old male with C. difficile colitis complicated by sepsis and severe sepsis (with metabolic encephalopathy). Blood cultures show translocation of C. diff.
 Rationale: C. Diff Colitis (A04.72) is a specific intestinal infection that takes precedence. Sequence A04.72 Principal, Sepsis Secondary.
 Expected Primary:   A04.72
 Actual Primary:     A04.72
-Expected Secondary: [R65.20, A41.9]
-Actual Secondary:   [A41.9, R65.20]
+Expected Secondary: [R65.20, A41.9, G93.41]
+Actual Secondary:   [A41.9, R65.20, G93.41]
 --------------------------------------------------------------------------------
 
 CASE 34: ✅ PASS

@@ -23,7 +23,7 @@ const sepsisCases: TestCase[] = [
         num: 2,
         text: "85-year-old male with Foley catheter admitted with CAUTI (catheter-associated UTI) and urosepsis. Blood cultures positive for E. coli.",
         expectedPrimary: "A41.51",
-        expectedSecondary: ["T83.511A", "N39.0"],
+        expectedSecondary: ["N39.0", "T83.511A"],
         rationale: "Admitted for Urosepsis - A41.51 Principal. CAUTI secondary."
     },
     {
@@ -84,23 +84,23 @@ const sepsisCases: TestCase[] = [
     {
         num: 10,
         text: "62-year-old female admitted with acute appendicitis with perforation and peritonitis. Blood cultures positive for E. coli sepsis.",
-        expectedPrimary: "A41.51",
-        expectedSecondary: ["K35.32", "K65.0"],
-        rationale: "Admitted for Sepsis (implied by context of query, or default A41.x). Appendicitis secondary."
+        expectedPrimary: "K35.32",
+        expectedSecondary: ["K65.0", "A41.51"],
+        rationale: "Appendicitis is the definitive localized condition and is Principal when sepsis is not explicitly the reason for admission. Sepsis is secondary."
     },
     {
         num: 11,
         text: "74-year-old male with perforated diverticulitis and severe sepsis without shock. Acute kidney injury noted. Blood cultures positive.",
-        expectedPrimary: "A41.9",
-        expectedSecondary: ["R65.20", "K57.20", "K65.0", "N17.9"],
-        rationale: "Sepsis Principal. Diverticulitis secondary."
+        expectedPrimary: "K57.20",
+        expectedSecondary: ["K65.0", "A41.9", "R65.20", "N17.9"],
+        rationale: "Diverticulitis (Strong Localized) Principal. Peritonitis, Sepsis, Severe Sepsis Secondary."
     },
     {
         num: 12,
         text: "58-year-old female admitted with acute cholecystitis and septic shock. Blood cultures show E. coli.",
-        expectedPrimary: "A41.51",
-        expectedSecondary: ["R65.21", "K81.0"],
-        rationale: "E. Coli Sepsis Principal. Septic Shock. Cholecystitis."
+        expectedPrimary: "K81.0",
+        expectedSecondary: ["A41.51", "R65.21"],
+        rationale: "Cholecystitis (Strong Localized) Principal. Sepsis, Septic Shock Secondary."
     },
 
     // ========== SEVERE SEPSIS WITHOUT SHOCK ==========
@@ -144,9 +144,9 @@ const sepsisCases: TestCase[] = [
     {
         num: 18,
         text: "82-year-old male with abdominal sepsis from perforated bowel and septic shock. Emergency surgery performed.",
-        expectedPrimary: "A41.9",
-        expectedSecondary: ["R65.21", "K63.1", "K65.0"],
-        rationale: "Sepsis Principal. Septic Shock. Perforation. Peritonitis."
+        expectedPrimary: "K63.1",
+        expectedSecondary: ["K65.0", "A41.9", "R65.21"],
+        rationale: "Perforated Bowel (Strong Localized) Principal. Peritonitis, Sepsis, Shock Secondary."
     },
 
     // ========== SEPSIS - NEGATIVE CULTURES ==========
@@ -193,8 +193,8 @@ const sepsisCases: TestCase[] = [
         num: 24,
         text: "70-year-old male with post-operative septic shock after hip replacement. Blood cultures show Staph aureus.",
         expectedPrimary: "T81.44XA",
-        expectedSecondary: ["R65.21", "A41.01"],
-        rationale: "Post-op sepsis, septic shock, organism"
+        expectedSecondary: ["A41.01", "R65.21"],
+        rationale: "Post-op sepsis, organism, septic shock (Sepsis precedes Shock)"
     },
 
     // ========== SEPSIS WITH CHRONIC CONDITIONS ==========
@@ -266,7 +266,7 @@ const sepsisCases: TestCase[] = [
         num: 33,
         text: "65-year-old male with C. difficile colitis complicated by sepsis and severe sepsis (with metabolic encephalopathy). Blood cultures show translocation of C. diff.",
         expectedPrimary: "A04.72",
-        expectedSecondary: ["R65.20", "A41.9", "G93.41"],
+        expectedSecondary: ["A41.9", "R65.20", "G93.41"],
         rationale: "C. Diff Colitis (A04.72) is a specific intestinal infection that takes precedence. Sequence A04.72 Principal, Sepsis Secondary."
     },
 
@@ -283,7 +283,7 @@ const sepsisCases: TestCase[] = [
         text: "72-year-old male admitted primarily for acute MI (STEMI). During hospitalization develops hospital-acquired pneumonia with sepsis.",
         expectedPrimary: "I21.09",
         expectedSecondary: ["J18.9", "A41.9"],
-        rationale: "MI was principal reason for admission, HAP and sepsis are complications"
+        rationale: "MI was principal reason for admission. Hospital-acquired sepsis: Sequence Source (J18.9) before Sepsis (A41.9) per guideline preference."
     },
 
     // ========== SEPSIS WITH DOCUMENTED SOURCE BUT NO SPECIFIC SITE ==========
@@ -300,15 +300,15 @@ const sepsisCases: TestCase[] = [
         num: 37,
         text: "62-year-old male admitted with COVID-19 pneumonia complicated by severe sepsis and respiratory failure.",
         expectedPrimary: "U07.1",
-        expectedSecondary: ["J12.82", "R65.20", "A41.9", "J96.00"],
-        rationale: "COVID Specific Guideline: Code U07.1 First, then manifestation (Pneumonia)."
+        expectedSecondary: ["J12.82", "J96.00", "A41.9", "R65.20"],
+        rationale: "COVID/Sepsis sequencing: U07.1 (Primary) -> Manifestations (J12.82, J96.00) -> Sepsis (A41.9) -> Severe Sepsis (R65.20)."
     },
     {
         num: 38,
         text: "55-year-old female with influenza pneumonia and septic shock due to secondary bacterial infection (Staph aureus).",
         expectedPrimary: "J10.0",
-        expectedSecondary: ["R65.21", "A41.01"],
-        rationale: "Influenza Guideline: Code Influenza First."
+        expectedSecondary: ["A41.01", "R65.21"],
+        rationale: "Influenza Guideline: Code Influenza First. Manifestation/Source -> Sepsis -> Shock."
     },
 
     // ========== STREPTOCOCCAL SEPSIS VARIANTS ==========
@@ -325,7 +325,7 @@ const sepsisCases: TestCase[] = [
         text: "68-year-old male admitted with severe sepsis due to Group B Streptococcus and acute kidney injury. Source: UTI.",
         expectedPrimary: "A40.1",
         expectedSecondary: ["R65.20", "N39.0", "N17.9"],
-        rationale: "Group B Strep Sepsis Principal. AKI secondary."
+        rationale: "Group B Strep Sepsis Principal. Severe Sepsis + UTI + AKI."
     }
 ];
 

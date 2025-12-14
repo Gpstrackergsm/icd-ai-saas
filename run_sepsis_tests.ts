@@ -14,9 +14,8 @@ interface TestResult {
 
 function codesMatch(actual: string[], expected: string[]): boolean {
     if (actual.length !== expected.length) return false;
-    const sortedActual = [...actual].sort();
-    const sortedExpected = [...expected].sort();
-    return sortedActual.every((code, idx) => code === sortedExpected[idx]);
+    // STRICT ORDER MATCHING - No sorting
+    return actual.every((code, idx) => code === expected[idx]);
 }
 
 async function runSepsisTests() {
