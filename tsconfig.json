@@ -24,6 +24,12 @@
   "exclude": [
     "node_modules",
     "dist",
-    "lib/icd-core/icdTextParser.ts"
+    "lib/icd-core/icdTextParser.ts",
+    "debug_*.ts",
+    "test_*.ts",
+    "run_*.ts",
+    "show_*.ts",
+    "audit_*.ts",
+    "strict_*.ts"
   ]
 }

@@ -25,11 +25,11 @@ export function validateContext(ctx: PatientContext): ValidationResult {
     // CKD validation is now handled below (line ~70) with diabetes-specific logic
 
     // === HARD STOP 3: DIABETES FOOT ULCER - RELAXED VALIDATION ===
-    if (ctx.conditions.diabetes) {
-        const d = ctx.conditions.diabetes;
+    if (ctx.conditions.endocrine?.diabetes) {
+        const d = ctx.conditions.endocrine.diabetes;
 
         // Foot ulcer validation - make site/severity optional
-        if (d.complications.includes('foot_ulcer')) {
+        if (d.complications?.includes('foot_ulcer')) {
             if (!d.ulcerSite) {
                 warnings.push('Foot ulcer site not specified. Will use unspecified location.');
             }
@@ -39,7 +39,7 @@ export function validateContext(ctx: PatientContext): ValidationResult {
         }
 
         // Warn if ulcer fields without foot ulcer
-        if (!d.complications.includes('foot_ulcer')) {
+        if (!d.complications?.includes('foot_ulcer')) {
             if (d.ulcerSite || d.ulcerSeverity) {
                 warnings.push('Ulcer site/severity specified but Foot Ulcer not in complications.');
             }
@@ -56,7 +56,7 @@ export function validateContext(ctx: PatientContext): ValidationResult {
     // If CKD is only mentioned as diabetes complication, don't require stage
     if (ctx.conditions.ckd) {
         const ckd = ctx.conditions.ckd;
-        const hasDiabetesCKD = ctx.conditions.diabetes?.complications.includes('ckd');
+        const hasDiabetesCKD = ctx.conditions.endocrine?.diabetes?.complications?.includes('ckd');
 
         // Only validate stage if CKD exists independently (not just as diabetes complication)
         if (!hasDiabetesCKD) {
@@ -155,7 +155,7 @@ export function validateContext(ctx: PatientContext): ValidationResult {
 
     // CONFLICT: Diabetic ulcer without diabetes
     if (ctx.conditions.wounds?.type === 'diabetic') {
-        if (!ctx.conditions.diabetes) {
+        if (!ctx.conditions.endocrine?.diabetes) {
             errors.push('CONFLICT: Diabetic ulcer selected but no diabetes documented. Diabetes Type is REQUIRED for diabetic ulcer.');
         }
     }
@@ -270,8 +270,8 @@ export function validateContext(ctx: PatientContext): ValidationResult {
     // === WARNINGS (NOT HARD STOPS) ===
 
     // WARN: CKD + Diabetes but CKD not in diabetes complications
-    if (ctx.conditions.diabetes && ctx.conditions.ckd) {
-        if (!ctx.conditions.diabetes.complications.includes('ckd')) {
+    if (ctx.conditions.endocrine?.diabetes && ctx.conditions.ckd) {
+        if (!ctx.conditions.endocrine.diabetes.complications?.includes('ckd')) {
             warnings.push('WARNING: CKD is present but not listed in diabetes complications. Consider adding "Nephropathy/CKD" to diabetes complications if they are related.');
         }
     }
