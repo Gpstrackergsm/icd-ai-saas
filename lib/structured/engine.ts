@@ -945,7 +945,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     codes.push({
                         code: 'T83.511A',
                         label: 'Infection and inflammatory reaction due to indwelling urinary catheter, initial encounter',
-                        rationale: 'CAUTI - catheter-associated UTI complication',
+                        rationale: 'CAUTI - device complication linked to N39.0',
                         guideline: 'ICD-10-CM I.C.1.d + T-code guidelines',
                         trigger: 'Catheter-associated UTI',
                         rule: 'Catheter complication code'
@@ -1161,7 +1161,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     codes.push({
                         code: 'T82.7XXA',
                         label: 'Infection and inflammatory reaction due to other cardiac and vascular devices, implants and grafts, initial encounter',
-                        rationale: 'Infected dialysis catheter is the source of sepsis',
+                        rationale: 'Infected dialysis catheter - device complication linked to Sepsis (Guideline I.C.1.d.4(b))',
                         guideline: 'ICD-10-CM I.C.1.d + UHDDS Section II',
                         trigger: 'Sepsis source: Dialysis catheter infection',
                         rule: 'Device complication as principal diagnosis'
@@ -1207,7 +1207,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 codes.push({
                     code: 'T84.54XA',
                     label: 'Infection and inflammatory reaction due to internal joint prosthesis, initial encounter',
-                    rationale: 'Surgical site infection following joint replacement',
+                    rationale: 'Surgical site infection - device complication linked to Sepsis (Guideline I.C.1.d.4(b))',
                     guideline: 'ICD-10-CM I.C.1.d.5.b + UHDDS Section II',
                     trigger: 'Sepsis source: Surgical site infection',
                     rule: 'Device complication as principal diagnosis'

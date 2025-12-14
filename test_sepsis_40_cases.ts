@@ -210,7 +210,7 @@ const sepsisCases: TestCase[] = [
         text: "80-year-old female with ESRD on dialysis admitted with sepsis from infected dialysis catheter. Blood cultures show Staph epidermidis.",
         expectedPrimary: "T82.7XXA",
         expectedSecondary: ["A41.1", "N18.6", "Z99.2"],
-        rationale: "Post-proc/Device Infection is PRIMARY (T-code), Sepsis is SECONDARY."
+        rationale: "Infected dialysis catheter - device complication linked to Sepsis (Guideline I.C.1.d.4(b))"
     },
 
     // ========== FUNGAL SEPSIS ==========
@@ -267,7 +267,7 @@ const sepsisCases: TestCase[] = [
         text: "65-year-old male with C. difficile colitis complicated by sepsis and severe sepsis. Blood cultures show translocation of C. diff.",
         expectedPrimary: "A04.72",
         expectedSecondary: ["R65.20", "A41.9"],
-        rationale: "C. Diff Colitis (A04.72) is an intestinal infection that CAUSES sepsis. Standard guideline is Localized Infection -> Sepsis. Wait, if admitted for sepsis? Guideline says systemic infection. Let's assume A04.72 is strict Principal for C.diff."
+        rationale: "C. Diff Colitis (A04.72) is a specific intestinal infection that takes precedence. Sequence A04.72 Principal, Sepsis Secondary."
     },
 
     // ========== SEPSIS SEQUENCING EDGE CASES ==========
@@ -276,7 +276,7 @@ const sepsisCases: TestCase[] = [
         text: "78-year-old female admitted for elective knee replacement. Post-op day 3 develops sepsis from surgical site infection.",
         expectedPrimary: "T84.54XA",
         expectedSecondary: ["A41.9"],
-        rationale: "Surgical site infection primary, sepsis secondary (not the reason for admission)"
+        rationale: "Surgical site infection - device complication linked to Sepsis (Guideline I.C.1.d.4(b))"
     },
     {
         num: 35,
