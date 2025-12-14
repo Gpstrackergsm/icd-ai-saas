@@ -35,6 +35,7 @@ export function parseInput(text: string): ParseResult {
         }
 
         const lowerValue = value.toLowerCase();
+        // console.log(`[TRACE] Line: "${line}", Key: "${key}"`);
 
         switch (key) {
             // Generic Diagnosis/History Parsing
@@ -170,7 +171,8 @@ export function parseInput(text: string): ParseResult {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     context.conditions.obstetric.gestationalDiabetes = true;
                     // Ensure generic diabetes doesn't override with type2
-                    if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'secondary', complications: [] }; // Set as secondary/other for now so generic logic doesn't default to T2
+                    if (!context.conditions.endocrine) context.conditions.endocrine = {};
+                    if (!context.conditions.endocrine.diabetes) context.conditions.endocrine.diabetes = { type: 'secondary', complicationDetails: {} }; // Set as secondary/other for now so generic logic doesn't default to T2
                 }
 
                 // History of Cesarean (Explicit)
@@ -588,19 +590,12 @@ export function parseInput(text: string): ParseResult {
                     }
                     else if (lowerValue.includes('aspiration')) type = 'aspiration';
 
-                    // COVID-19
-                    if (lowerValue.includes('covid')) {
-                        if (!context.conditions.infection) context.conditions.infection = { present: true };
-                        context.conditions.infection.covid19 = true;
-                    }
 
-                    // Sepsis
-                    if (lowerValue.includes('sepsis')) {
-                        if (!context.conditions.infection) context.conditions.infection = { present: true };
-                        context.conditions.infection.sepsis = { present: true };
+                    // End of Organism Checks - Fall through to final assignments
 
-                        // If pneumonia is mentioned, set infection site to lung
-                        if (lowerValue.includes('pneumonia')) {
+                    if (lowerValue.includes('pneumonia')) {
+                        if (!context.conditions.infection) context.conditions.infection = { present: true, site: 'lung', source: 'pneumonia' };
+                        else {
                             context.conditions.infection.site = 'lung';
                             context.conditions.infection.source = 'pneumonia';
                         }
@@ -608,6 +603,22 @@ export function parseInput(text: string): ParseResult {
 
                     context.conditions.respiratory.pneumonia = { organism, type, ventilatorAssociated: lowerValue.includes('ventilator') };
                 }
+
+                // COVID-19 (Moved outside Pneumonia block)
+                if (lowerValue.includes('covid')) {
+                    if (!context.conditions.infection) context.conditions.infection = { present: true };
+                    context.conditions.infection.covid19 = true;
+                }
+
+                // Hyperglycemia Check (Standalone)
+                if (lowerValue.includes('high blood sugar') || lowerValue.includes('hyperglycemia') || lowerValue.includes('elevated blood glucose')) {
+                    if (!context.conditions.endocrine) context.conditions.endocrine = {};
+                    if (!context.conditions.endocrine.hyperglycemia) {
+                        context.conditions.endocrine.hyperglycemia = { present: true, type: 'unspecified' };
+                    }
+                }
+
+                // Sepsis
 
                 // Respiratory failure - Enhanced Parsing (Top-Level)
                 if ((lowerValue.includes('respiratory failure') || lowerValue.includes('acute respiratory failure')) && !lowerValue.includes('no respiratory failure')) {
@@ -986,13 +997,15 @@ export function parseInput(text: string): ParseResult {
                     lowerValue.includes('vibration') ||
                     lowerValue.includes('polyneuropathy')
                 ) {
-                    if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                    context.conditions.diabetes.neuropathyType = 'polyneuropathy';
-                }
-
-                if (lowerValue.includes('autonomic')) {
-                    if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                    context.conditions.diabetes.neuropathyType = 'autonomic';
+                    if (!context.conditions.endocrine) context.conditions.endocrine = {};
+                    if (!context.conditions.endocrine.diabetes) context.conditions.endocrine.diabetes = { type: 'type2', complicationDetails: {} };
+                    if (!context.conditions.endocrine.diabetes.complicationDetails) context.conditions.endocrine.diabetes.complicationDetails = {};
+                    context.conditions.endocrine.diabetes.complicationDetails.polyneuropathy = true;
+                } else if (lowerValue.includes('autonomic')) {
+                    if (!context.conditions.endocrine) context.conditions.endocrine = {};
+                    if (!context.conditions.endocrine.diabetes) context.conditions.endocrine.diabetes = { type: 'type2', complicationDetails: {} };
+                    if (!context.conditions.endocrine.diabetes.complicationDetails) context.conditions.endocrine.diabetes.complicationDetails = {};
+                    context.conditions.endocrine.diabetes.complicationDetails.autonomic = true;
                 }
 
                 // OB/GYN (Moved here to be reachable)
@@ -1155,8 +1168,10 @@ export function parseInput(text: string): ParseResult {
                     if (lowerValue.includes('esrd')) context.conditions.ckd.stage = 'esrd';
                 }
                 if (lowerValue.includes('nephropathy')) {
-                    if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                    context.conditions.diabetes.complications.push('nephropathy'); // Changed from 'ckd' to 'nephropathy'
+                    if (!context.conditions.endocrine) context.conditions.endocrine = {};
+                    if (!context.conditions.endocrine.diabetes) context.conditions.endocrine.diabetes = { type: 'type2', complicationDetails: {} };
+                    if (!context.conditions.endocrine.diabetes.complicationDetails) context.conditions.endocrine.diabetes.complicationDetails = {};
+                    context.conditions.endocrine.diabetes.complicationDetails.nephropathy = true;
                 }
 
                 // Sepsis & Infection
@@ -1447,128 +1462,254 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.hematology.anemia = { type: 'unspecified' };
                     if (lowerValue.includes('iron deficiency')) context.conditions.hematology.anemia.type = 'iron_deficiency';
                 }
-
-                // Diabetes Complications (Generic) - removed nephropathy/ckd as they're handled in complications section
-                if (lowerValue.includes('diabetic') || lowerValue.includes('diabetes')) {
-                    if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                    if (lowerValue.includes('neuropathy')) {
-                        context.conditions.diabetes.complications.push('neuropathy');
-                        if (
-                            lowerValue.includes('polyneuropathy') ||
-                            lowerValue.includes('bilateral') ||
-                            lowerValue.includes('stocking') ||
-                            lowerValue.includes('numbness') ||
-                            lowerValue.includes('tingling') ||
-                            lowerValue.includes('burning') ||
-                            lowerValue.includes('monofilament') ||
-                            lowerValue.includes('vibration')
-                        ) {
-                            context.conditions.diabetes.neuropathyType = 'polyneuropathy';
-                        }
-                    }
-                    if (lowerValue.includes('retinopathy')) {
-                        context.conditions.diabetes.complications.push('retinopathy');
-                        // Check for macular edema
-                        if (lowerValue.includes('macular edema') || lowerValue.includes('macular oedema')) {
-                            context.conditions.diabetes.macular_edema = true;
-                        }
-                    }
-                    if (lowerValue.includes('ketoacidosis')) context.conditions.diabetes.complications.push('ketoacidosis');
-                    if (lowerValue.includes('foot ulcer')) {
-                        context.conditions.diabetes.complications.push('foot_ulcer');
-                        // Don't set wounds.present - diabetic foot ulcers are handled in diabetes section
-                    }
+                if (lowerValue.includes('sickle cell')) {
+                    if (!context.conditions.hematology) context.conditions.hematology = {};
+                    context.conditions.hematology.sickleCell = { type: 'hgb_ss' }; // Default
+                    if (lowerValue.includes('trait')) context.conditions.hematology.sickleCell.type = 'trait';
+                    else if (lowerValue.includes('thalassemia')) context.conditions.hematology.sickleCell.type = 'thalassemia';
                 }
 
-                if (
-                    lowerValue.includes('bilateral') ||
-                    lowerValue.includes('stocking') ||
-                    lowerValue.includes('numbness') ||
-                    lowerValue.includes('tingling') ||
-                    lowerValue.includes('burning') ||
-                    lowerValue.includes('monofilament') ||
-                    lowerValue.includes('vibration')
-                ) {
-                    if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                    context.conditions.diabetes.neuropathyType = 'polyneuropathy';
+                // --- DIABETES MEDS & COMPLICATIONS (Narrative) ---
+                // Insulin
+                if (lowerValue.includes('insulin')) {
+                    if (!context.conditions.endocrine) context.conditions.endocrine = {};
+                    if (lowerValue.includes('on insulin') || lowerValue.includes('takes insulin') || lowerValue.includes('uses insulin') || lowerValue.includes('long-term insulin')) {
+                        context.conditions.endocrine.insulinUse = true;
+                    }
+                }
+                if (lowerValue.includes('metformin') || lowerValue.includes('glipizide') || lowerValue.includes('glyburide') || lowerValue.includes('oral hypoglycemic')) {
+                    if (!context.conditions.endocrine) context.conditions.endocrine = {};
+                    context.conditions.endocrine.oralMeds = true;
                 }
 
-                // Fallback to specific logic if key matches specific cases below
+                // Complications (Narrative / List)
+                if (context.conditions.endocrine?.diabetes) {
+                    const d = context.conditions.endocrine.diabetes;
+                    if (!d.complicationDetails) d.complicationDetails = {};
+                    const lc = lowerValue;
+
+                    // Neuropathy Subtypes
+                    if (lc.includes('neuropathy') || lc.includes('gastroparesis') || lc.includes('burning') || lc.includes('tingling')) {
+                        if (lc.includes('polyneuropathy')) d.complicationDetails.polyneuropathy = true;
+                        else if (lc.includes('autonomic')) d.complicationDetails.autonomic = true;
+                        else if (lc.includes('gastroparesis')) d.complicationDetails.gastroparesis = true;
+                        else if (lc.includes('neuropathy')) d.complicationDetails.neuropathy = true;
+                    }
+
+                    // PVD / Gangrene
+                    if (lc.includes('peripheral vascular') || lc.includes('pvd') || lc.includes('angiopathy')) d.complicationDetails.pvd = true;
+                    if (lc.includes('gangrene')) d.complicationDetails.gangrene = true;
+                }
+                else if (lowerValue.includes('pvd') || lowerValue.includes('angiopathy') || lowerValue.includes('gangrene')) {
+                    // Detection before Diabetes object exists? 
+                    // Store temporarily or generic?
+                    // Ideally Diabetes detected first.
+                }
+
+                // Specific handling for 'complications' Key
                 if (key === 'complications' || key === 'diabetes complications') {
-                    // Existing logic for complications key will run below if we don't break
-                    // But we should probably let it fall through or handle it here.
-                    // The switch case will execute this block for 'complications'.
-                    // We need to ensure we don't double parse or skip the specific diabetes logic below.
-                    // Actually, the specific 'complications' case below is unreachable if we match here.
-                    // So we must include the specific logic here or merge them.
-                    // Let's merge the specific diabetes logic here.
-                    if (lowerValue.trim() === 'none') break;
-                    const comps = lowerValue.split(',').map(c => c.trim());
-                    comps.forEach(c => {
-                        const lc = c.toLowerCase();
-                        if (lc.includes('neuropathy')) {
-                            if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                            context.conditions.diabetes.complications.push('neuropathy');
-                            if (
-                                lc.includes('polyneuropathy') ||
-                                lowerValue.includes('bilateral') ||
-                                lowerValue.includes('stocking') ||
-                                lowerValue.includes('numbness') ||
-                                lowerValue.includes('tingling') ||
-                                lowerValue.includes('burning') ||
-                                lowerValue.includes('monofilament') ||
-                                lowerValue.includes('vibration')
-                            ) {
-                                context.conditions.diabetes.neuropathyType = 'polyneuropathy';
+                    if (!context.conditions.endocrine) context.conditions.endocrine = {};
+
+                    // Diabetes Complications (Generic) - removed nephropathy/ckd as they're handled in complications section
+                    if (lowerValue.includes('diabetic') || lowerValue.includes('diabetes') || lowerValue.includes('dm') ||
+                        lowerValue.includes('npdr') || lowerValue.includes('pdr') || lowerValue.includes('retinopathy')) {
+
+                        // Check for Negation (Updated Regex)
+                        const isNegated = /(rule out|r\/o|ruled out|negative|no history|no)\s+(for\s+|of\s+)?(diabetes|dm)/.test(lowerValue);
+
+                        // Check for Pre-diabetes
+                        if (lowerValue.includes('pre-diabetes') || lowerValue.includes('prediabetes')) {
+                            context.conditions.endocrine.prediabetes = true;
+                        }
+
+                        if (!isNegated && !context.conditions.endocrine.prediabetes) {
+                            if (!context.conditions.endocrine.diabetes) {
+                                // Smart Type Detection
+                                let dType: any = 'type2'; // Default
+                                let secCause: string | undefined = undefined;
+
+                                if (lowerValue.includes('type 1') || lowerValue.includes('type i ') || lowerValue.includes('juvenile') || lowerValue.includes('childhood')) dType = 'type1';
+                                else if (lowerValue.includes('post-pancreatectomy') || lowerValue.includes('post pancreatectomy') || (lowerValue.includes('surgical') && lowerValue.includes('diabetes'))) {
+                                    dType = 'secondary';
+                                    secCause = 'post_procedural';
+                                }
+                                else if (lowerValue.includes('secondary') || lowerValue.includes('due to')) {
+                                    dType = 'secondary';
+                                    if (lowerValue.includes('pancreatic') || lowerValue.includes('pancreas') || lowerValue.includes('cancer')) secCause = 'pancreatic';
+                                    // Post-proc handle above
+                                }
+                                else if (lowerValue.includes('drug induced') || lowerValue.includes('drug-induced') ||
+                                    lowerValue.includes('steroid induced') || lowerValue.includes('steroid-induced') || lowerValue.includes('steroid dependent')) {
+                                    dType = 'drug_induced';
+                                    secCause = 'steroid';
+                                }
+
+                                context.conditions.endocrine.diabetes = { type: dType, complicationDetails: { secondaryCause: secCause } };
+                                console.log(`[DEBUG] Initialized Diabetes: Type=${dType}, Secondary=${secCause} for "${lowerValue}"`);
+                            }
+
+                            if (!context.conditions.endocrine) context.conditions.endocrine = {};
+                            if (!context.conditions.endocrine.diabetes) {
+                                // If we got here but diabetes wasn't initialized (rare, implies fallback), init default
+                                context.conditions.endocrine.diabetes = { type: 'type2', complicationDetails: {} };
+                            }
+                            const d = context.conditions.endocrine.diabetes!;
+                            console.log(`[DEBUG] Processing Diabetes Complications for: "${lowerValue}" inside block. Current D:`, JSON.stringify(d));
+                            if (!d.complicationDetails) d.complicationDetails = {};
+                            const lc = lowerValue;
+
+                            // Meds (Redundant check for single line)
+                            if (lc.includes('insulin')) {
+                                if (lc.includes('on insulin') || lc.includes('takes insulin') || lc.includes('uses insulin') || lc.includes('long-term insulin')) {
+                                    context.conditions.endocrine.insulinUse = true;
+                                }
+                            }
+                            if (lc.includes('metformin') || lc.includes('glipizide') || lc.includes('glyburide') || lc.includes('oral hypoglycemic')) {
+                                context.conditions.endocrine.oralMeds = true;
+                            }
+
+                            // Complications (DKA/HHS/etc)
+                            if (lc.includes('ketoacidosis') || lc.includes('dka')) d.complicationDetails.ketoacidosis = true;
+                            if (lc.includes('hyperosmolar') || lc.includes('hhs')) d.complicationDetails.hyperosmolarity = true;
+                            if (lc.includes('coma')) d.complicationDetails.coma = true;
+                            if (lc.includes('hypoglycemia')) d.complicationDetails.hypoglycemia = true;
+
+                            // Neuropathy
+                            if (lc.includes('neuropathy') || lc.includes('gastroparesis') || lc.includes('burning') || lc.includes('tingling') || lc.includes('autonomic')) {
+                                if (lc.includes('polyneuropathy')) d.complicationDetails.polyneuropathy = true;
+                                else if (lc.includes('autonomic')) d.complicationDetails.autonomic = true;
+                                else if (lc.includes('gastroparesis')) d.complicationDetails.gastroparesis = true;
+                                else if (lc.includes('neuropathy')) d.complicationDetails.neuropathy = true;
+                            }
+
+                            // PVD / Gangrene
+                            if (lc.includes('peripheral vascular') || lc.includes('pvd') || lc.includes('angiopathy')) d.complicationDetails.pvd = true;
+                            if (lc.includes('gangrene')) d.complicationDetails.gangrene = true;
+
+                            // Retinopathy (Basic)
+                            if (lc.includes('retinopathy')) d.complicationDetails.retinopathy = true;
+
+                            // Foot Ulcer
+                            if (lowerValue.includes('foot ulcer') || (lowerValue.includes('ulcer') && (lowerValue.includes('toe') || lowerValue.includes('heel') || lowerValue.includes('foot') || lowerValue.includes('ankle')))) {
+                                d.complicationDetails.footUlcer = true;
+                                // Extract Site (Basic)
+                                // Refine site
+                                if (!d.ulcerSite) {
+                                    // Try to match specific enums first
+                                    const isLeft = lowerValue.includes('left');
+                                    if (lowerValue.includes('heel')) d.ulcerSite = isLeft ? 'left_heel' : 'right_heel' as any;
+                                    else if (lowerValue.includes('toe')) d.ulcerSite = isLeft ? 'left_toe' : 'right_toe' as any;
+                                    else if (lowerValue.includes('ankle')) d.ulcerSite = isLeft ? 'left_ankle' : 'right_ankle' as any;
+                                    else if (lowerValue.includes('calf')) d.ulcerSite = isLeft ? 'left_calf' : 'right_calf' as any;
+                                    else if (lowerValue.includes('thigh')) d.ulcerSite = isLeft ? 'left_thigh' : 'right_thigh' as any;
+                                    else if (lowerValue.includes('foot')) d.ulcerSite = isLeft ? 'left_foot' : 'right_foot';
+                                }
+
+                                // Extract Severity (Basic)
+                                if (!d.ulcerSeverity) {
+                                    if (lowerValue.includes('bone') || lowerValue.includes('grade 4') || lowerValue.includes('stage 4')) d.ulcerSeverity = 'bone';
+                                    else if (lowerValue.includes('muscle') || lowerValue.includes('grade 3') || lowerValue.includes('stage 3')) d.ulcerSeverity = 'muscle';
+                                    else if (lowerValue.includes('fat') || lowerValue.includes('grade 2') || lowerValue.includes('stage 2')) d.ulcerSeverity = 'fat';
+                                    else if (lowerValue.includes('skin') || lowerValue.includes('grade 1') || lowerValue.includes('stage 1') || lowerValue.includes('breakdown')) d.ulcerSeverity = 'skin';
+                                }
                             }
                         }
-                        else if (lc.includes('nephropathy') || lc.includes('ckd') || lc.includes('chronic kidney disease')) {
-                            if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                            // Distinguish: "Nephropathy" alone → nephropathy, "CKD" or "Chronic Kidney Disease" → ckd
-                            if (lc.includes('ckd') || lc.includes('chronic kidney disease')) {
-                                context.conditions.diabetes.complications.push('ckd');
-                                // Create CKD object for explicit CKD
+                    }
+
+                    if (
+                        lowerValue.includes('bilateral') ||
+                        lowerValue.includes('stocking') ||
+                        lowerValue.includes('numbness') ||
+                        lowerValue.includes('tingling') ||
+                        lowerValue.includes('burning') ||
+                        lowerValue.includes('monofilament') ||
+                        lowerValue.includes('vibration')
+                    ) {
+                        if (!context.conditions.endocrine.diabetes) context.conditions.endocrine.diabetes = { type: 'type2', complicationDetails: {} };
+                        if (!context.conditions.endocrine.diabetes.complicationDetails) context.conditions.endocrine.diabetes.complicationDetails = {};
+                        context.conditions.endocrine.diabetes.complicationDetails.polyneuropathy = true;
+                    }
+
+                    // Fallback to specific logic if key matches specific cases below
+                    if (key === 'complications' || key === 'diabetes complications') {
+                        // Existing logic for complications key will run below if we don't break
+                        // But we should probably let it fall through or handle it here.
+                        // The switch case will execute this block for 'complications'.
+                        // We need to ensure we don't double parse or skip the specific diabetes logic below.
+                        // Actually, the specific 'complications' case below is unreachable if we match here.
+                        // So we must include the specific logic here or merge them.
+                        // Let's merge the specific diabetes logic here.
+                        if (lowerValue.trim() === 'none') break;
+                        const comps = lowerValue.split(',').map(c => c.trim());
+                        comps.forEach(c => {
+                            const lc = c.toLowerCase();
+
+                            // Ensure diabetes object exists
+                            if (!context.conditions.endocrine) context.conditions.endocrine = {};
+                            if (!context.conditions.endocrine.diabetes) context.conditions.endocrine.diabetes = { type: 'type2', complicationDetails: {} };
+                            const d = context.conditions.endocrine.diabetes;
+                            if (!d.complicationDetails) d.complicationDetails = {};
+
+                            if (lc.includes('neuropathy')) {
+                                d.complicationDetails.neuropathy = true;
+                                if (
+                                    lc.includes('polyneuropathy') ||
+                                    lowerValue.includes('bilateral') ||
+                                    lowerValue.includes('stocking') ||
+                                    lowerValue.includes('numbness') ||
+                                    lowerValue.includes('tingling') ||
+                                    lowerValue.includes('burning') ||
+                                    lowerValue.includes('monofilament') ||
+                                    lowerValue.includes('vibration')
+                                ) {
+                                    d.complicationDetails.polyneuropathy = true;
+                                }
+                            }
+                            else if (lc.includes('nephropathy') || lc.includes('ckd') || lc.includes('chronic kidney disease')) {
+                                // Distinguish: "Nephropathy" alone → nephropathy, "CKD" or "Chronic Kidney Disease" → ckd
+                                if (lc.includes('ckd') || lc.includes('chronic kidney disease')) {
+                                    // We don't have separate CKD flag in complications, handled by Ckd module
+                                    // But legacy might expect it. We use nephropathy for E11.21/22 selection.
+                                    d.complicationDetails.nephropathy = true;
+                                    // Create CKD object for explicit CKD
+                                    if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
+                                } else {
+                                    // Just "nephropathy" without CKD
+                                    d.complicationDetails.nephropathy = true;
+                                }
+                            }
+                            else if (lc.includes('foot ulcer')) {
+                                d.complicationDetails.footUlcer = true;
+                                // Don't set wounds.present - handled in diabetes section
+                            }
+                            else if (lc.includes('retinopathy')) {
+                                d.complicationDetails.retinopathy = true;
+                            }
+                            else if (lc.includes('hypoglycemia')) {
+                                d.complicationDetails.hypoglycemia = true;
+                            }
+                            else if (lc.includes('ketoacidosis')) {
+                                d.complicationDetails.ketoacidosis = true;
+                            }
+                            else if (lc.includes('ascites')) { // Handle ascites in complications
+                                if (!context.conditions.gastro) context.conditions.gastro = {};
+                                context.conditions.gastro.ascites = true;
+                            }
+                            else if (lc.includes('respiratory failure')) {
+                                if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                                context.conditions.respiratory.failure = { type: 'acute' }; // Default to acute if in complications
+                            }
+                            else if (lc.includes('kidney failure') || lc.includes('aki')) {
                                 if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
-                            } else {
-                                // Just "nephropathy" without CKD
-                                context.conditions.diabetes.complications.push('nephropathy');
+                                context.conditions.ckd.aki = true;
                             }
-                        }
-                        else if (lc.includes('foot ulcer')) {
-                            if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                            context.conditions.diabetes.complications.push('foot_ulcer');
-                            // Don't set wounds.present - handled in diabetes section
-                        }
-                        else if (lc.includes('retinopathy')) {
-                            if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                            context.conditions.diabetes.complications.push('retinopathy');
-                        }
-                        else if (lc.includes('hypoglycemia')) {
-                            if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                            context.conditions.diabetes.complications.push('hypoglycemia');
-                        }
-                        else if (lc.includes('ketoacidosis')) {
-                            if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                            context.conditions.diabetes.complications.push('ketoacidosis');
-                        }
-                        else if (lc.includes('ascites')) { // Handle ascites in complications
-                            if (!context.conditions.gastro) context.conditions.gastro = {};
-                            context.conditions.gastro.ascites = true;
-                        }
-                        else if (lc.includes('respiratory failure')) {
-                            if (!context.conditions.respiratory) context.conditions.respiratory = {};
-                            context.conditions.respiratory.failure = { type: 'acute' }; // Default to acute if in complications
-                        }
-                        else if (lc.includes('kidney failure') || lc.includes('aki')) {
-                            if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
-                            context.conditions.ckd.aki = true;
-                        }
-                        else if (lc.includes('heart failure')) {
-                            if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
-                            context.conditions.cardiovascular.heartFailure = { type: 'unspecified', acuity: 'unspecified' };
-                        }
-                    });
-                }
+                            else if (lc.includes('heart failure')) {
+                                if (!context.conditions.cardiovascular) context.conditions.cardiovascular = { hypertension: false };
+                                context.conditions.cardiovascular.heartFailure = { type: 'unspecified', acuity: 'unspecified' };
+                            }
+                        });
+                    }
+                } // Close 1509 if
                 break;
 
             // Demographics
@@ -1608,11 +1749,12 @@ export function parseInput(text: string): ParseResult {
                 break;
 
             case 'diabetes type':
-                if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                if (lowerValue === 'type 1') context.conditions.diabetes.type = 'type1';
-                else if (lowerValue === 'type 2') context.conditions.diabetes.type = 'type2';
-                else if (lowerValue.includes('drug')) context.conditions.diabetes.type = 'drug_induced';
-                else if (lowerValue.includes('secondary')) context.conditions.diabetes.type = 'secondary';
+                if (!context.conditions.endocrine) context.conditions.endocrine = {};
+                if (!context.conditions.endocrine.diabetes) context.conditions.endocrine.diabetes = { type: 'type2', complicationDetails: {} };
+                if (lowerValue === 'type 1') context.conditions.endocrine.diabetes.type = 'type1';
+                else if (lowerValue === 'type 2') context.conditions.endocrine.diabetes.type = 'type2';
+                else if (lowerValue.includes('drug')) context.conditions.endocrine.diabetes.type = 'drug_induced';
+                else if (lowerValue.includes('secondary')) context.conditions.endocrine.diabetes.type = 'secondary';
                 else errors.push(`Invalid diabetes type: ${value}`);
                 break;
 
@@ -1620,8 +1762,13 @@ export function parseInput(text: string): ParseResult {
             case 'diabetes complications':
                 const comps = lowerValue.split(',').map(c => c.trim());
                 comps.forEach(c => {
+                    if (!context.conditions.endocrine) context.conditions.endocrine = {};
+                    if (!context.conditions.endocrine.diabetes) context.conditions.endocrine.diabetes = { type: 'type2', complicationDetails: {} };
+                    const d = context.conditions.endocrine.diabetes;
+                    if (!d.complicationDetails) d.complicationDetails = {};
+
                     if (c.includes('neuropathy')) {
-                        context.conditions.diabetes!.complications.push('neuropathy');
+                        d.complicationDetails.neuropathy = true;
                         if (
                             c.includes('polyneuropathy') ||
                             lowerValue.includes('bilateral') ||
@@ -1632,67 +1779,71 @@ export function parseInput(text: string): ParseResult {
                             lowerValue.includes('monofilament') ||
                             lowerValue.includes('vibration')
                         ) {
-                            context.conditions.diabetes!.neuropathyType = 'polyneuropathy';
+                            d.complicationDetails.polyneuropathy = true;
                         }
                     }
                     else if (c.includes('nephropathy') || c.includes('ckd') || c.includes('chronic kidney disease')) {
                         // Distinguish: "Nephropathy" alone → nephropathy, "CKD" or "Chronic Kidney Disease" → ckd
                         if (c.includes('ckd') || c.includes('chronic kidney disease')) {
-                            context.conditions.diabetes!.complications.push('ckd');
+                            // CKD implies nephropathy generally
+                            d.complicationDetails.nephropathy = true;
                             if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
                         } else {
-                            context.conditions.diabetes!.complications.push('nephropathy');
+                            d.complicationDetails.nephropathy = true;
                         }
                     }
                     else if (c.includes('foot ulcer')) {
-                        context.conditions.diabetes!.complications.push('foot_ulcer');
-                        // Don't set wounds.present - handled in diabetes section
+                        d.complicationDetails.footUlcer = true;
                     }
                     else if (c.includes('retinopathy')) {
-                        context.conditions.diabetes!.complications.push('retinopathy');
+                        d.complicationDetails.retinopathy = true;
                         // Check for macular edema
                         if (lowerValue.includes('macular edema') || lowerValue.includes('macular oedema')) {
-                            if (context.conditions.diabetes) context.conditions.diabetes.macular_edema = true;
+                            if (!d.complicationDetails.retinopathyDetails) d.complicationDetails.retinopathyDetails = {};
+                            d.complicationDetails.retinopathyDetails.macularEdema = true;
                         }
                     }
-                    else if (c.includes('hypoglycemia')) context.conditions.diabetes!.complications.push('hypoglycemia');
-                    else if (c === 'ketoacidosis') context.conditions.diabetes!.complications.push('ketoacidosis');
-                    else if (c === 'gangrene') context.conditions.diabetes!.complications.push('gangrene');
-                    else if (c === 'amputation') context.conditions.diabetes!.complications.push('amputation');
-                    else if (c === 'unspecified') context.conditions.diabetes!.complications.push('unspecified');
+                    else if (c.includes('hypoglycemia')) d.complicationDetails.hypoglycemia = true;
+                    else if (c === 'ketoacidosis') d.complicationDetails.ketoacidosis = true;
+                    else if (c === 'gangrene') d.complicationDetails.gangrene = true;
+                    else if (c === 'amputation') { /* Amputation not in complicationDetails yet? Skip or Ignore */ }
+                    else if (c === 'unspecified') { /* generic */ }
                     else if (c) errors.push(`Unknown diabetes complication: ${c}`);
                 });
                 break;
             case 'insulin use':
-                if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
-                context.conditions.diabetes.insulinUse = parseBoolean(value);
+                if (!context.conditions.endocrine) context.conditions.endocrine = {};
+                context.conditions.endocrine.insulinUse = parseBoolean(value);
                 break;
             case 'ulcer site':
-                if (!context.conditions.diabetes) context.conditions.diabetes = { type: 'type2', complications: [] };
+                if (!context.conditions.endocrine) context.conditions.endocrine = {};
+                if (!context.conditions.endocrine.diabetes) context.conditions.endocrine.diabetes = { type: 'type2', complicationDetails: {} };
+                const dSite = context.conditions.endocrine.diabetes;
                 // Preserve the full site string for better mapping (e.g., "Left Heel" instead of just "left_foot")
                 if (lowerValue.includes('left') && (lowerValue.includes('foot') || lowerValue.includes('ankle') || lowerValue.includes('heel'))) {
-                    context.conditions.diabetes.ulcerSite = value as any; // Preserve original case and full string
+                    dSite.ulcerSite = value as any; // Preserve original case and full string
                 } else if (lowerValue.includes('right') && (lowerValue.includes('foot') || lowerValue.includes('ankle') || lowerValue.includes('heel'))) {
-                    context.conditions.diabetes.ulcerSite = value as any; // Preserve original case and full string
+                    dSite.ulcerSite = value as any; // Preserve original case and full string
                 } else {
-                    context.conditions.diabetes.ulcerSite = 'other';
+                    dSite.ulcerSite = 'other';
                 }
                 break;
             case 'ulcer severity':
             case 'ulcer depth':
             case 'ulcer severity / ulcer depth':
             case 'depth':
-                if (context.conditions.diabetes) {
+                if (context.conditions.endocrine?.diabetes) {
+                    const dSev = context.conditions.endocrine.diabetes;
                     if (lowerValue.includes('bone')) {
-                        context.conditions.diabetes.ulcerSeverity = 'bone';
+                        dSev.ulcerSeverity = 'bone';
                     } else if (lowerValue.includes('muscle')) {
-                        context.conditions.diabetes.ulcerSeverity = 'muscle';
+                        dSev.ulcerSeverity = 'muscle';
                     } else if (lowerValue.includes('fat') || lowerValue.includes('subcutaneous')) {
-                        context.conditions.diabetes.ulcerSeverity = 'fat';
+                        dSev.ulcerSeverity = 'fat';
                     } else if (lowerValue.includes('skin') || lowerValue.includes('epidermis') || lowerValue.includes('dermis')) {
-                        context.conditions.diabetes.ulcerSeverity = 'skin';
+                        dSev.ulcerSeverity = 'skin';
                     } else {
-                        context.conditions.diabetes.ulcerSeverity = 'unspecified';
+                        dSev.ulcerSeverity = 'unspecified';
                     }
                 }
                 break;
@@ -2073,8 +2224,9 @@ export function parseInput(text: string): ParseResult {
                     else if (lowerValue.includes('diabetic')) {
                         context.conditions.wounds.type = 'diabetic';
                         // Infer diabetes if not already present
-                        if (!context.conditions.diabetes) {
-                            context.conditions.diabetes = { type: 'type2', complications: [] };
+                        if (!context.conditions.endocrine) context.conditions.endocrine = {};
+                        if (!context.conditions.endocrine.diabetes) {
+                            context.conditions.endocrine.diabetes = { type: 'type2', complicationDetails: {} };
                         }
                     }
                     else if (lowerValue.includes('venous')) context.conditions.wounds.type = 'venous';
@@ -2496,66 +2648,169 @@ export function parseInput(text: string): ParseResult {
     }
 
     // POST-PROCESSING: Sync Diabetic Ulcer Data
-    if (context.conditions.wounds?.type === 'diabetic' && context.conditions.diabetes) {
+    if (context.conditions.wounds?.type === 'diabetic' && context.conditions.endocrine?.diabetes) {
+        const d = context.conditions.endocrine.diabetes;
         // Sync Location
         if (context.conditions.wounds.location) {
             const loc = context.conditions.wounds.location;
-            if (loc === 'foot_right') context.conditions.diabetes.ulcerSite = 'right_foot';
-            else if (loc === 'foot_left') context.conditions.diabetes.ulcerSite = 'left_foot';
-            else if (loc.includes('foot')) context.conditions.diabetes.ulcerSite = 'right_foot'; // Default/Approximation
-            else context.conditions.diabetes.ulcerSite = 'other';
+            if (loc === 'foot_right') d.ulcerSite = 'right_foot';
+            else if (loc === 'foot_left') d.ulcerSite = 'left_foot';
+            else if (loc.includes('foot')) d.ulcerSite = 'right_foot'; // Default/Approximation
+            else d.ulcerSite = 'other';
 
             // Refine heel mapping if laterality is known
-            if (loc === 'heel' && context.conditions.wounds.laterality === 'left') context.conditions.diabetes.ulcerSite = 'left_foot';
+            if (loc === 'heel' && context.conditions.wounds.laterality === 'left') d.ulcerSite = 'left_foot';
         }
 
         // Sync Depth/Severity
         if (context.conditions.wounds.depth) {
-            context.conditions.diabetes.ulcerSeverity = context.conditions.wounds.depth;
+            d.ulcerSeverity = context.conditions.wounds.depth;
         } else if (context.conditions.wounds.stage) {
             // Fallback: Map stage to severity for L97 codes
             const s = context.conditions.wounds.stage;
-            const currentSeverity = context.conditions.diabetes.ulcerSeverity;
+            const currentSeverity = d.ulcerSeverity;
             // Only update if not already set to a higher severity (bone/muscle/fat)
             const isHighSeverity = currentSeverity === 'bone' || currentSeverity === 'muscle' || currentSeverity === 'fat';
 
             if (s === 'stage1' && !isHighSeverity) {
-                context.conditions.diabetes.ulcerSeverity = 'skin'; // L97.x1
+                d.ulcerSeverity = 'skin'; // L97.x1
             }
             else if (s === 'stage2' && !isHighSeverity) {
                 // USER RULE: Fat layer -> .92
                 // Stage 2 usually involves dermis but can expose fat. Strict rule prefers Fat mapping if Stage 2 is used as proxy for depth.
-                context.conditions.diabetes.ulcerSeverity = 'fat'; // L97.x2
+                d.ulcerSeverity = 'fat'; // L97.x2
             }
             else if (s === 'stage3' && currentSeverity !== 'bone') {
-                context.conditions.diabetes.ulcerSeverity = 'muscle'; // L97.x3
+                d.ulcerSeverity = 'muscle'; // L97.x3
             }
             else if (s === 'stage4') {
                 // USER RULE: Bone -> .94
-                // Stage 4 typically involves bone/tendon/muscle.
-                // If not strictly bone exposed, might be valid to map to bone or muscle.
-                // However, audit failures suggest "Expected ...4" for some.
-                // Let's assume Stage 4 implies deep/bone for this strict rule set.
-                context.conditions.diabetes.ulcerSeverity = 'bone'; // L97.x4
+                d.ulcerSeverity = 'bone'; // L97.x4
             }
         }
 
-        // CRITICAL FIX: Ensure 'foot_ulcer' is in complications list so engine picks it up
-        if (!context.conditions.diabetes.complications.includes('foot_ulcer')) {
-            context.conditions.diabetes.complications.push('foot_ulcer');
-        }
+        // CRITICAL FIX: Ensure 'foot_ulcer' is in complicationDetails list so engine picks it up
+        if (!d.complicationDetails) d.complicationDetails = {};
+        d.complicationDetails.footUlcer = true;
     }
 
-    // POST-PROCESSING: Global Diabetes Detection
-    // Catch "diabetic patient", "diabetic female", etc. that might not be in key-value pairs
+    // POST-PROCESSING: Global Diabetes Detection (Smart Narrative Parsing)
+    // Catch "diabetic patient", "diabetic female", "Type 1 diabetes", etc. in narrative text
     const lowerText = text.toLowerCase();
-    if ((lowerText.includes('diabetic') || lowerText.includes('diabetes')) && !context.conditions.diabetes) {
-        context.conditions.diabetes = { type: 'type2', complications: [] };
+
+    // Broaden detection to include NPDR/PDR if diabetes implied
+    if (lowerText.includes('diabetic') || lowerText.includes('diabetes') || lowerText.includes('dm') ||
+        lowerText.includes('npdr') || lowerText.includes('pdr') || lowerText.includes('retinopathy')) {
+
+        // Debug Log
+        console.log(`[Parser] Diabetes Detected in: "${text.substring(0, 50)}..."`);
+        console.log(`[Parser] LowerText: ${lowerText}`);
+
+        // Check for Negation
+        // Reformulated regex to handle "ruled out FOR", "no history OF", etc.
+        const isNegated = /(rule out|r\/o|ruled out|negative|no history|no)\s+(for\s+|of\s+)?(diabetes|dm)/.test(lowerText);
+        console.log(`[Parser] isNegated: ${isNegated}`);
+
+        // Check for Pre-diabetes
+        if (lowerText.includes('pre-diabetes') || lowerText.includes('prediabetes')) {
+            if (!context.conditions.endocrine) context.conditions.endocrine = {};
+            context.conditions.endocrine.prediabetes = true;
+        }
+
+        if (!isNegated && !context.conditions.endocrine?.prediabetes) {
+            if (!context.conditions.endocrine) context.conditions.endocrine = {};
+
+            if (!context.conditions.endocrine.diabetes) {
+                // Smart Type Detection
+                let dType: any = 'type2'; // Default
+                let secCause: string | undefined = undefined;
+
+                if (lowerText.includes('type 1') || lowerText.includes('type i ') || lowerText.includes('juvenile')) dType = 'type1';
+                else if (lowerText.includes('secondary') || lowerText.includes('due to')) {
+                    dType = 'secondary';
+                    if (lowerText.includes('pancreatic') || lowerText.includes('pancreas') || lowerText.includes('cancer')) secCause = 'pancreatic';
+                    else if (lowerText.includes('post-pancreatectomy') || lowerText.includes('post pancreatectomy') || lowerText.includes('surgical')) secCause = 'post_procedural';
+                }
+                else if (lowerText.includes('drug induced') || lowerText.includes('drug-induced') ||
+                    lowerText.includes('steroid induced') || lowerText.includes('steroid-induced') || lowerText.includes('steroid dependent')) {
+                    dType = 'drug_induced';
+                    secCause = 'steroid';
+                }
+
+                context.conditions.endocrine.diabetes = { type: dType, complicationDetails: { secondaryCause: secCause } };
+            }
+
+            // Enhance Complications from Narrative
+            const d = context.conditions.endocrine.diabetes!;
+            if (!d.complicationDetails) d.complicationDetails = {};
+
+            if (lowerText.includes('neuropathy')) {
+                d.complicationDetails.neuropathy = true;
+                if (
+                    lowerText.includes('polyneuropathy') ||
+                    lowerText.includes('stocking') ||
+                    lowerText.includes('numbness') ||
+                    lowerText.includes('tingling')
+                ) {
+                    d.complicationDetails.polyneuropathy = true;
+                }
+            }
+            if (lowerText.includes('retinopathy') || lowerText.includes('npdr') || lowerText.includes('pdr')) {
+                d.complicationDetails.retinopathy = true;
+                if (!d.complicationDetails.retinopathyDetails) d.complicationDetails.retinopathyDetails = {};
+
+                // Retinopathy Staging
+                if (lowerText.includes('mild')) d.complicationDetails.retinopathyDetails.stage = 'mild_npdr';
+                else if (lowerText.includes('moderate')) d.complicationDetails.retinopathyDetails.stage = 'moderate_npdr';
+                else if (lowerText.includes('severe')) d.complicationDetails.retinopathyDetails.stage = 'severe_npdr';
+                else if (lowerText.includes('proliferative') || lowerText.includes('pdr')) d.complicationDetails.retinopathyDetails.stage = 'proliferative';
+                else if (lowerText.includes('npdr')) d.complicationDetails.retinopathyDetails.stage = 'unspecified'; // Default if NPDR mentioned but no stage
+
+                // Check for macular edema
+                if (lowerText.includes('macular edema') || lowerText.includes('macular oedema') || lowerText.includes('dme')) {
+                    d.complicationDetails.retinopathyDetails.macularEdema = true;
+                }
+                // Check for Traction Detachment
+                if (lowerText.includes('traction') || lowerText.includes('detachment')) {
+                    d.complicationDetails.retinopathyDetails.tractionDetachment = true;
+                }
+            }
+            if (lowerText.includes('ketoacidosis') || lowerText.includes('dka')) d.complicationDetails.ketoacidosis = true;
+            if (lowerText.includes('gangrene')) d.complicationDetails.gangrene = true;
+            if (lowerText.includes('hypoglycemia') || lowerText.includes('low blood sugar')) d.complicationDetails.hypoglycemia = true;
+
+            // Ulcer Linkage
+            if (lowerText.includes('foot ulcer') || (lowerText.includes('ulcer') && (lowerText.includes('toe') || lowerText.includes('heel') || lowerText.includes('foot') || lowerText.includes('ankle')))) {
+                d.complicationDetails.footUlcer = true;
+                // Refine site
+                if (!d.ulcerSite) {
+                    // Try to match specific enums first
+                    const isLeft = lowerText.includes('left');
+                    if (lowerText.includes('heel')) d.ulcerSite = isLeft ? 'left_heel' : 'right_heel' as any;
+                    else if (lowerText.includes('toe')) d.ulcerSite = isLeft ? 'left_toe' : 'right_toe' as any;
+                    else if (lowerText.includes('ankle')) d.ulcerSite = isLeft ? 'left_ankle' : 'right_ankle' as any;
+                    else if (lowerText.includes('calf')) d.ulcerSite = isLeft ? 'left_calf' : 'right_calf' as any;
+                    else if (lowerText.includes('thigh')) d.ulcerSite = isLeft ? 'left_thigh' : 'right_thigh' as any;
+                    else if (lowerText.includes('foot')) d.ulcerSite = isLeft ? 'left_foot' : 'right_foot';
+                }
+                // Refine severity
+                if (!d.ulcerSeverity) {
+                    if (lowerText.includes('bone') || lowerText.includes('grade 4')) d.ulcerSeverity = 'bone';
+                    else if (lowerText.includes('muscle') || lowerText.includes('grade 3')) d.ulcerSeverity = 'muscle';
+                    else if (lowerText.includes('fat') || lowerText.includes('grade 2')) d.ulcerSeverity = 'fat';
+                    else if (lowerText.includes('skin') || lowerText.includes('grade 1') || lowerText.includes('breakdown')) d.ulcerSeverity = 'skin';
+                }
+            }
+
+            // Skin Complications
+            if (lowerText.includes('skin complication') || lowerText.includes('dermatitis')) {
+                d.complicationDetails.skinComplication = true;
+            }
+        }
     }
 
     // POST-PROCESSING: Global Pneumonia Refinement (Case 25)
     // If pneumonia is present but type is unspecified (or undefined), and there are positive blood cultures mentioned anywhere,
-    // infer likely bacterial pneumonia (J15.9) over viral/unspecified (J18.9).
     const pType = context.conditions.respiratory?.pneumonia?.type;
     if (context.conditions.respiratory?.pneumonia && (!pType || pType === 'unspecified')) {
         const hasCultures = (lowerText.includes('blood culture') || lowerText.includes('cultures') || lowerText.includes('bacteremia')) &&
@@ -2565,6 +2820,71 @@ export function parseInput(text: string): ParseResult {
             context.conditions.respiratory.pneumonia.type = 'bacterial';
         }
     }
+
+    // POST-PROCESSING: Global Diabetes Refinement
+    const lt = text.toLowerCase();
+    if (context.conditions.endocrine?.diabetes) {
+        const d = context.conditions.endocrine.diabetes;
+        if (!d.complicationDetails) d.complicationDetails = {};
+        const cd = d.complicationDetails;
+
+        // Meds
+        if (lt.includes('insulin') && (lt.includes('on ') || lt.includes('uses ') || lt.includes('takes ') || lt.includes('long-term'))) context.conditions.endocrine.insulinUse = true;
+        if (lt.includes('metformin') || lt.includes('glipizide') || lt.includes('glyburide') || lt.includes('oral hypoglycemic')) context.conditions.endocrine.oralMeds = true;
+
+        // Complications
+        if (lt.includes('ketoacidosis') || lt.includes('dka')) cd.ketoacidosis = true;
+        if (lt.includes('hyperosmolar') || lt.includes('hhs')) cd.hyperosmolarity = true;
+        if (lt.includes('coma')) cd.coma = true;
+        if (lt.includes('hypoglycemia')) cd.hypoglycemia = true;
+        if (lt.includes('skin complication') || lt.includes('dermatitis')) cd.skinComplication = true;
+
+        // Neuro
+        if (lt.includes('neuropathy') || lt.includes('gastroparesis') || lt.includes('burning') || lt.includes('tingling') || lt.includes('autonomic')) {
+            if (lt.includes('polyneuropathy')) cd.polyneuropathy = true;
+            else if (lt.includes('autonomic')) cd.autonomic = true;
+            else if (lt.includes('gastroparesis')) cd.gastroparesis = true;
+            else cd.neuropathy = true;
+        }
+
+        // PVD
+        if (lt.includes('peripheral vascular') || lt.includes('pvd') || lt.includes('angiopathy')) cd.pvd = true;
+        if (lt.includes('gangrene')) cd.gangrene = true;
+
+        // Type Correction
+        if (d.type === 'type2') {
+            if (lt.includes('juvenile') || lt.includes('childhood') || lt.includes('type 1')) d.type = 'type1';
+            if (lt.includes('post-pancreatectomy') || lt.includes('post pancreatectomy')) {
+                d.type = 'secondary';
+                cd.secondaryCause = 'post_procedural';
+            }
+            if (lt.includes('drug induced') || lt.includes('steroid induced') || lt.includes('steroid-induced')) {
+                d.type = 'drug_induced';
+                cd.secondaryCause = 'steroid';
+            }
+            if (lt.includes('pancreatic cancer') || lt.includes('due to pancreatic')) {
+                d.type = 'secondary';
+                cd.secondaryCause = 'pancreatic';
+            }
+        }
+    }
+
+    // POST-PROCESSING: Global Renal Refinement (Case 34)
+    if (lt.includes('ckd') || lt.includes('chronic kidney') || lt.includes('esrd')) {
+        if (!context.conditions.renal) context.conditions.renal = {};
+        if (!context.conditions.renal.ckd) context.conditions.renal.ckd = { stage: 'unspecified' };
+
+        const ckd = context.conditions.renal.ckd!;
+        if (lt.includes('esrd')) {
+            ckd.stage = 'esrd';
+        } else if (lt.includes('stage 5') || lt.includes('ckd 5') || lt.includes('ckd stage 5')) {
+            ckd.stage = '5';
+        } else if (lt.includes('stage 4') || lt.includes('ckd 4')) {
+            ckd.stage = '4';
+        }
+    }
+
+
 
     return { context, errors };
 }

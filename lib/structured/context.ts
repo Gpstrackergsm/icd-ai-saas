@@ -10,14 +10,40 @@ export interface PatientContext {
         reasonForAdmission?: 'dialysis' | 'routine_followup' | 'mi' | 'other';
     };
     conditions: {
-        diabetes?: {
-            type: 'type1' | 'type2' | 'secondary' | 'drug_induced';
-            complications: ('retinopathy' | 'neuropathy' | 'nephropathy' | 'ckd' | 'foot_ulcer' | 'pad' | 'gangrene' | 'ketoacidosis' | 'hypoglycemia' | 'coma' | 'amputation' | 'unspecified')[];
-            macular_edema?: boolean; // For retinopathy with macular edema
-            ulcerSite?: 'right_foot' | 'left_foot' | 'right_toe' | 'left_toe' | 'heel' | 'other';
-            ulcerSeverity?: 'skin' | 'fat' | 'muscle' | 'bone' | 'unspecified';
+        endocrine?: {
+            diabetes?: {
+                type: 'type1' | 'type2' | 'secondary' | 'drug_induced' | 'unspecified';
+                complicationDetails?: {
+                    ketoacidosis?: boolean;
+                    hyperosmolarity?: boolean;
+                    hypoglycemia?: boolean;
+                    coma?: boolean;
+                    uncontrolled?: boolean;
+                    secondaryCause?: string;
+                    neuropathy?: boolean;
+                    polyneuropathy?: boolean;
+                    autonomic?: boolean;
+                    gastroparesis?: boolean;
+                    nephropathy?: boolean;
+                    pvd?: boolean;
+                    gangrene?: boolean;
+                    footUlcer?: boolean;
+                    skinComplication?: boolean;
+                    retinopathy?: boolean;
+                    retinopathyDetails?: {
+                        stage?: 'mild_npdr' | 'moderate_npdr' | 'severe_npdr' | 'proliferative' | 'unspecified';
+                        macularEdema?: boolean;
+                        tractionDetachment?: boolean;
+                    };
+                };
+                ulcerSite?: 'right_foot' | 'left_foot' | 'right_toe' | 'left_toe' | 'heel' | 'other';
+                ulcerSeverity?: 'skin' | 'fat' | 'muscle' | 'bone' | 'unspecified';
+                complications?: string[]; // Legacy/Auxiliary list
+            };
+            prediabetes?: boolean;
+            hyperglycemia?: { present: boolean; type?: string; };
             insulinUse?: boolean;
-            neuropathyType?: 'polyneuropathy' | 'peripheral' | 'autonomic' | 'unspecified';
+            oralMeds?: boolean;
         };
         ckd?: {
             stage: '1' | '2' | '3' | '4' | '5' | 'esrd' | 'unspecified';
@@ -204,6 +230,7 @@ export interface PatientContext {
                 cause?: 'chronic_blood_loss' | 'other';
             };
             coagulopathy?: boolean;
+            sickleCell?: { type: 'hgb_ss' | 'trait' | 'thalassemia' };
         };
         obstetric?: {
             pregnant?: boolean;
