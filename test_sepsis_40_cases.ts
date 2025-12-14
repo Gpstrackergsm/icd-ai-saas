@@ -51,9 +51,9 @@ const sepsisCases: TestCase[] = [
     },
     {
         num: 6,
-        text: "82-year-old nursing home resident admitted with aspiration pneumonia and severe sepsis without shock. Blood cultures pending.",
+        text: "82-year-old nursing home resident admitted with aspiration pneumonia and severe sepsis. Patient is confused and obtunded (metabolic encephalopathy). Blood cultures pending.",
         expectedPrimary: "A41.9",
-        expectedSecondary: ["R65.20", "J69.0"],
+        expectedSecondary: ["R65.20", "J69.0", "G93.41"],
         rationale: "Sepsis Unspecified Principal. Aspiration Pna Secondary. Severe Sepsis R65.20."
     },
 
@@ -90,9 +90,9 @@ const sepsisCases: TestCase[] = [
     },
     {
         num: 11,
-        text: "74-year-old male with perforated diverticulitis and severe sepsis without shock. Blood cultures positive.",
+        text: "74-year-old male with perforated diverticulitis and severe sepsis without shock. Acute kidney injury noted. Blood cultures positive.",
         expectedPrimary: "A41.9",
-        expectedSecondary: ["R65.20", "K57.20", "K65.0"],
+        expectedSecondary: ["R65.20", "K57.20", "K65.0", "N17.9"],
         rationale: "Sepsis Principal. Diverticulitis secondary."
     },
     {
@@ -264,9 +264,9 @@ const sepsisCases: TestCase[] = [
     },
     {
         num: 33,
-        text: "65-year-old male with C. difficile colitis complicated by sepsis and severe sepsis. Blood cultures show translocation of C. diff.",
+        text: "65-year-old male with C. difficile colitis complicated by sepsis and severe sepsis (with metabolic encephalopathy). Blood cultures show translocation of C. diff.",
         expectedPrimary: "A04.72",
-        expectedSecondary: ["R65.20", "A41.9"],
+        expectedSecondary: ["R65.20", "A41.9", "G93.41"],
         rationale: "C. Diff Colitis (A04.72) is a specific intestinal infection that takes precedence. Sequence A04.72 Principal, Sepsis Secondary."
     },
 

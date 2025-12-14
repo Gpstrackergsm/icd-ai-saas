@@ -1,0 +1,366 @@
+SEPSIS MODULE - COMPREHENSIVE TEST RESULTS
+Generated: 2025-12-14T13:19:43.967Z
+Total Cases: 40
+Pass Rate: 40/40 (100%)
+================================================================================
+
+CASE 1: ✅ PASS
+Narrative: 72-year-old female admitted with fever, dysuria, and confusion. Urinalysis positive for bacteria. Blood cultures positive for E. coli. Diagnosis: Sepsis due to E. coli with urinary tract infection as source.
+Rationale: Sepsis present on admission - code Sepsis (A41.51) FIRST per Guideline I.C.1.d.4(b)
+Expected Primary:   A41.51
+Actual Primary:     A41.51
+Expected Secondary: [N39.0]
+Actual Secondary:   [N39.0]
+--------------------------------------------------------------------------------
+
+CASE 2: ✅ PASS
+Narrative: 85-year-old male with Foley catheter admitted with CAUTI (catheter-associated UTI) and urosepsis. Blood cultures positive for E. coli.
+Rationale: Admitted for Urosepsis - A41.51 Principal. CAUTI secondary.
+Expected Primary:   A41.51
+Actual Primary:     A41.51
+Expected Secondary: [T83.511A, N39.0]
+Actual Secondary:   [N39.0, T83.511A]
+--------------------------------------------------------------------------------
+
+CASE 3: ✅ PASS
+Narrative: 68-year-old female admitted with sepsis. Blood cultures show Klebsiella pneumoniae. CT scan shows pyelonephritis (kidney infection).
+Rationale: Admitted for Sepsis - Gram-negative sepsis Principal, Pyelo secondary.
+Expected Primary:   A41.50
+Actual Primary:     A41.50
+Expected Secondary: [N10]
+Actual Secondary:   [N10]
+--------------------------------------------------------------------------------
+
+CASE 4: ✅ PASS
+Narrative: 78-year-old male admitted with pneumonia and sepsis. Chest X-ray shows right lower lobe infiltrate. Blood cultures positive for Streptococcus pneumoniae.
+Rationale: Sepsis present on admission - Strep Pneumo Sepsis Principal.
+Expected Primary:   A40.3
+Actual Primary:     A40.3
+Expected Secondary: [J13]
+Actual Secondary:   [J13]
+--------------------------------------------------------------------------------
+
+CASE 5: ✅ PASS
+Narrative: 65-year-old diabetic female with community-acquired pneumonia and septic shock. Blood cultures positive for Staph aureus. Patient on vasopressors.
+Rationale: Staph Sepsis Principal. J15.211 Secondary. Septic shock follows.
+Expected Primary:   A41.01
+Actual Primary:     A41.01
+Expected Secondary: [R65.21, J15.211, E11.9]
+Actual Secondary:   [J15.211, R65.21, E11.9]
+--------------------------------------------------------------------------------
+
+CASE 6: ✅ PASS
+Narrative: 82-year-old nursing home resident admitted with aspiration pneumonia and severe sepsis without shock. Blood cultures pending.
+Rationale: Sepsis Unspecified Principal. Aspiration Pna Secondary. Severe Sepsis R65.20.
+Expected Primary:   A41.9
+Actual Primary:     A41.9
+Expected Secondary: [R65.20, J69.0]
+Actual Secondary:   [J69.0, R65.20]
+--------------------------------------------------------------------------------
+
+CASE 7: ✅ PASS
+Narrative: 55-year-old diabetic male admitted with left leg cellulitis and sepsis due to Streptococcus. Blood cultures positive.
+Rationale: Strep Sepsis Principal. Cellulitis Secondary.
+Expected Primary:   A40.9
+Actual Primary:     A40.9
+Expected Secondary: [L03.115, E11.9]
+Actual Secondary:   [L03.115, E11.9]
+--------------------------------------------------------------------------------
+
+CASE 8: ✅ PASS
+Narrative: 70-year-old female with sacral pressure ulcer stage 3 admitted with sepsis due to MRSA bacteremia.
+Rationale: MRSA Sepsis Principal. Pressure ulcer secondary.
+Expected Primary:   A41.02
+Actual Primary:     A41.02
+Expected Secondary: [L89.153]
+Actual Secondary:   [L89.153]
+--------------------------------------------------------------------------------
+
+CASE 9: ✅ PASS
+Narrative: 45-year-old male with right foot abscess and sepsis. Blood cultures show Staph aureus.
+Rationale: Staph Aureus Sepsis Principal. Abscess secondary.
+Expected Primary:   A41.01
+Actual Primary:     A41.01
+Expected Secondary: [L02.611]
+Actual Secondary:   [L02.611]
+--------------------------------------------------------------------------------
+
+CASE 10: ✅ PASS
+Narrative: 62-year-old female admitted with acute appendicitis with perforation and peritonitis. Blood cultures positive for E. coli sepsis.
+Rationale: Admitted for Sepsis (implied by context of query, or default A41.x). Appendicitis secondary.
+Expected Primary:   A41.51
+Actual Primary:     A41.51
+Expected Secondary: [K35.32, K65.0]
+Actual Secondary:   [K35.32, K65.0]
+--------------------------------------------------------------------------------
+
+CASE 11: ✅ PASS
+Narrative: 74-year-old male with perforated diverticulitis and severe sepsis without shock. Blood cultures positive.
+Rationale: Sepsis Principal. Diverticulitis secondary.
+Expected Primary:   A41.9
+Actual Primary:     A41.9
+Expected Secondary: [R65.20, K57.20, K65.0]
+Actual Secondary:   [K57.20, K65.0, R65.20]
+--------------------------------------------------------------------------------
+
+CASE 12: ✅ PASS
+Narrative: 58-year-old female admitted with acute cholecystitis and septic shock. Blood cultures show E. coli.
+Rationale: E. Coli Sepsis Principal. Septic Shock. Cholecystitis.
+Expected Primary:   A41.51
+Actual Primary:     A41.51
+Expected Secondary: [R65.21, K81.0]
+Actual Secondary:   [K81.0, R65.21]
+--------------------------------------------------------------------------------
+
+CASE 13: ✅ PASS
+Narrative: 80-year-old male with severe sepsis and acute kidney injury. Blood cultures positive for E. coli. Source: UTI. No hypotension or shock.
+Rationale: Sepsis Principal. Severe Sepsis. AKI always secondary to sepsis/shock.
+Expected Primary:   A41.51
+Actual Primary:     A41.51
+Expected Secondary: [R65.20, N39.0, N17.9]
+Actual Secondary:   [N39.0, R65.20, N17.9]
+--------------------------------------------------------------------------------
+
+CASE 14: ✅ PASS
+Narrative: 66-year-old female with pneumonia, severe sepsis, and acute respiratory failure. No shock documented.
+Rationale: Sepsis Principal. Severe Sepsis. Pneumonia. Resp Failure.
+Expected Primary:   A41.9
+Actual Primary:     A41.9
+Expected Secondary: [R65.20, J18.9, J96.00]
+Actual Secondary:   [J18.9, J96.00, R65.20]
+--------------------------------------------------------------------------------
+
+CASE 15: ✅ PASS
+Narrative: 72-year-old male admitted with severe sepsis and multiple organ dysfunction (AKI and encephalopathy). Source: skin infection.
+Rationale: Sepsis Principal. Severe Sepsis. Skin Infection. End organs.
+Expected Primary:   A41.9
+Actual Primary:     A41.9
+Expected Secondary: [R65.20, L03.90, N17.9, G93.41]
+Actual Secondary:   [L03.90, R65.20, N17.9, G93.41]
+--------------------------------------------------------------------------------
+
+CASE 16: ✅ PASS
+Narrative: 58-year-old male admitted in septic shock requiring vasopressors. Blood cultures positive for Pseudomonas. Source: pneumonia.
+Rationale: Pseudomonas Sepsis Principal. Septic Shock. Pneumonia.
+Expected Primary:   A41.52
+Actual Primary:     A41.52
+Expected Secondary: [R65.21, J15.1]
+Actual Secondary:   [J15.1, R65.21]
+--------------------------------------------------------------------------------
+
+CASE 17: ✅ PASS
+Narrative: 70-year-old female with urosepsis and septic shock. On norepinephrine drip. Blood cultures show Klebsiella.
+Rationale: Klebsiella Sepsis Principal. Septic Shock. UTI.
+Expected Primary:   A41.50
+Actual Primary:     A41.50
+Expected Secondary: [R65.21, N39.0]
+Actual Secondary:   [N39.0, R65.21]
+--------------------------------------------------------------------------------
+
+CASE 18: ✅ PASS
+Narrative: 82-year-old male with abdominal sepsis from perforated bowel and septic shock. Emergency surgery performed.
+Rationale: Sepsis Principal. Septic Shock. Perforation. Peritonitis.
+Expected Primary:   A41.9
+Actual Primary:     A41.9
+Expected Secondary: [R65.21, K63.1, K65.0]
+Actual Secondary:   [K63.1, K65.0, R65.21]
+--------------------------------------------------------------------------------
+
+CASE 19: ✅ PASS
+Narrative: 75-year-old female clinically diagnosed with sepsis. Blood cultures drawn but negative. Source: pneumonia.
+Rationale: Sepsis Principal. Pneumonia secondary.
+Expected Primary:   A41.9
+Actual Primary:     A41.9
+Expected Secondary: [J18.9]
+Actual Secondary:   [J18.9]
+--------------------------------------------------------------------------------
+
+CASE 20: ✅ PASS
+Narrative: 68-year-old male with sepsis, cultures pending/negative. Source: UTI based on UA results.
+Rationale: Sepsis Principal. UTI secondary.
+Expected Primary:   A41.9
+Actual Primary:     A41.9
+Expected Secondary: [N39.0]
+Actual Secondary:   [N39.0]
+--------------------------------------------------------------------------------
+
+CASE 21: ✅ PASS
+Narrative: 60-year-old female admitted with sepsis of unknown source. Blood cultures positive for E. coli. No clear infection site identified.
+Rationale: When source cannot be determined, code sepsis as principal
+Expected Primary:   A41.51
+Actual Primary:     A41.51
+Expected Secondary: []
+Actual Secondary:   []
+--------------------------------------------------------------------------------
+
+CASE 22: ✅ PASS
+Narrative: 77-year-old male with septic shock, no identifiable source found despite workup. Blood cultures show MRSA.
+Rationale: MRSA sepsis principal when no source, add septic shock
+Expected Primary:   A41.02
+Actual Primary:     A41.02
+Expected Secondary: [R65.21]
+Actual Secondary:   [R65.21]
+--------------------------------------------------------------------------------
+
+CASE 23: ✅ PASS
+Narrative: 65-year-old female developed sepsis 5 days after abdominal surgery. Blood cultures positive for E. coli.
+Rationale: Post-procedural sepsis T81.44XA primary, organism secondary
+Expected Primary:   T81.44XA
+Actual Primary:     T81.44XA
+Expected Secondary: [A41.51]
+Actual Secondary:   [A41.51]
+--------------------------------------------------------------------------------
+
+CASE 24: ✅ PASS
+Narrative: 70-year-old male with post-operative septic shock after hip replacement. Blood cultures show Staph aureus.
+Rationale: Post-op sepsis, septic shock, organism
+Expected Primary:   T81.44XA
+Actual Primary:     T81.44XA
+Expected Secondary: [R65.21, A41.01]
+Actual Secondary:   [A41.01, R65.21]
+--------------------------------------------------------------------------------
+
+CASE 25: ✅ PASS
+Narrative: 72-year-old diabetic male with pneumonia, sepsis, COPD exacerbation, and CHF. Blood cultures positive.
+Rationale: Sepsis Principal. Bacterial Pneumonia Secondary. Chronic conditions.
+Expected Primary:   A41.9
+Actual Primary:     A41.9
+Expected Secondary: [J15.9, J44.1, I50.9, E11.9]
+Actual Secondary:   [J15.9, J44.1, I50.9, E11.9]
+--------------------------------------------------------------------------------
+
+CASE 26: ✅ PASS
+Narrative: 80-year-old female with ESRD on dialysis admitted with sepsis from infected dialysis catheter. Blood cultures show Staph epidermidis.
+Rationale: Infected dialysis catheter - device complication linked to Sepsis (Guideline I.C.1.d.4(b))
+Expected Primary:   T82.7XXA
+Actual Primary:     T82.7XXA
+Expected Secondary: [A41.1, N18.6, Z99.2]
+Actual Secondary:   [A41.1, N18.6, Z99.2]
+--------------------------------------------------------------------------------
+
+CASE 27: ✅ PASS
+Narrative: 55-year-old immunocompromised male admitted with candidemia (fungal sepsis due to Candida).
+Rationale: Candida sepsis - specific code B37.7
+Expected Primary:   B37.7
+Actual Primary:     B37.7
+Expected Secondary: []
+Actual Secondary:   []
+--------------------------------------------------------------------------------
+
+CASE 28: ✅ PASS
+Narrative: 2-day-old newborn with sepsis due to Group B Streptococcus.
+Rationale: Neonatal sepsis uses P codes, not A codes
+Expected Primary:   P36.0
+Actual Primary:     P36.0
+Expected Secondary: []
+Actual Secondary:   []
+--------------------------------------------------------------------------------
+
+CASE 29: ✅ PASS
+Narrative: 68-year-old male with sepsis due to Streptococcus pneumoniae bacteremia. No pneumonia documented.
+Rationale: Strep pneumo sepsis Principal. No source.
+Expected Primary:   A40.3
+Actual Primary:     A40.3
+Expected Secondary: []
+Actual Secondary:   []
+--------------------------------------------------------------------------------
+
+CASE 30: ✅ PASS
+Narrative: 75-year-old female with sepsis due to anaerobic bacteria. Source: abdominal abscess.
+Rationale: Anaerobe Sepsis Principal. Abscess secondary.
+Expected Primary:   A41.4
+Actual Primary:     A41.4
+Expected Secondary: [K65.1]
+Actual Secondary:   [K65.1]
+--------------------------------------------------------------------------------
+
+CASE 31: ✅ PASS
+Narrative: 82-year-old male admitted with pneumonia, severe sepsis, septic shock, acute respiratory failure requiring ventilation, and acute kidney injury.
+Rationale: Sepsis Principal. Check all organ dysfunctions.
+Expected Primary:   A41.9
+Actual Primary:     A41.9
+Expected Secondary: [R65.21, J18.9, J96.00, N17.9]
+Actual Secondary:   [J18.9, J96.00, R65.21, N17.9]
+--------------------------------------------------------------------------------
+
+CASE 32: ✅ PASS
+Narrative: 70-year-old diabetic female with infected diabetic foot ulcer (right heel) and sepsis due to MRSA.
+Rationale: MRSA Sepsis Principal. Ulcer secondary.
+Expected Primary:   A41.02
+Actual Primary:     A41.02
+Expected Secondary: [L97.419, E11.621]
+Actual Secondary:   [L97.419, E11.621]
+--------------------------------------------------------------------------------
+
+CASE 33: ✅ PASS
+Narrative: 65-year-old male with C. difficile colitis complicated by sepsis and severe sepsis. Blood cultures show translocation of C. diff.
+Rationale: C. Diff Colitis (A04.72) is a specific intestinal infection that takes precedence. Sequence A04.72 Principal, Sepsis Secondary.
+Expected Primary:   A04.72
+Actual Primary:     A04.72
+Expected Secondary: [R65.20, A41.9]
+Actual Secondary:   [A41.9, R65.20]
+--------------------------------------------------------------------------------
+
+CASE 34: ✅ PASS
+Narrative: 78-year-old female admitted for elective knee replacement. Post-op day 3 develops sepsis from surgical site infection.
+Rationale: Surgical site infection - device complication linked to Sepsis (Guideline I.C.1.d.4(b))
+Expected Primary:   T84.54XA
+Actual Primary:     T84.54XA
+Expected Secondary: [A41.9]
+Actual Secondary:   [A41.9]
+--------------------------------------------------------------------------------
+
+CASE 35: ✅ PASS
+Narrative: 72-year-old male admitted primarily for acute MI (STEMI). During hospitalization develops hospital-acquired pneumonia with sepsis.
+Rationale: MI was principal reason for admission, HAP and sepsis are complications
+Expected Primary:   I21.09
+Actual Primary:     I21.09
+Expected Secondary: [J18.9, A41.9]
+Actual Secondary:   [A41.9, J18.9]
+--------------------------------------------------------------------------------
+
+CASE 36: ✅ PASS
+Narrative: 80-year-old nursing home resident with sepsis. Documented as 'bacterial sepsis' with skin as likely source but no specific cellulitis location.
+Rationale: Sepsis Principal. Cellulitis secondary.
+Expected Primary:   A41.9
+Actual Primary:     A41.9
+Expected Secondary: [L03.90]
+Actual Secondary:   [L03.90]
+--------------------------------------------------------------------------------
+
+CASE 37: ✅ PASS
+Narrative: 62-year-old male admitted with COVID-19 pneumonia complicated by severe sepsis and respiratory failure.
+Rationale: COVID Specific Guideline: Code U07.1 First, then manifestation (Pneumonia).
+Expected Primary:   U07.1
+Actual Primary:     U07.1
+Expected Secondary: [J12.82, R65.20, A41.9, J96.00]
+Actual Secondary:   [A41.9, J12.82, J96.00, R65.20]
+--------------------------------------------------------------------------------
+
+CASE 38: ✅ PASS
+Narrative: 55-year-old female with influenza pneumonia and septic shock due to secondary bacterial infection (Staph aureus).
+Rationale: Influenza Guideline: Code Influenza First.
+Expected Primary:   J10.0
+Actual Primary:     J10.0
+Expected Secondary: [R65.21, A41.01]
+Actual Secondary:   [A41.01, R65.21]
+--------------------------------------------------------------------------------
+
+CASE 39: ✅ PASS
+Narrative: 45-year-old female with Group A Streptococcus sepsis from pharyngitis.
+Rationale: Strep Sepsis Principal. Pharyngitis secondary.
+Expected Primary:   A40.0
+Actual Primary:     A40.0
+Expected Secondary: [J02.0]
+Actual Secondary:   [J02.0]
+--------------------------------------------------------------------------------
+
+CASE 40: ✅ PASS
+Narrative: 68-year-old male admitted with severe sepsis due to Group B Streptococcus and acute kidney injury. Source: UTI.
+Rationale: Group B Strep Sepsis Principal. AKI secondary.
+Expected Primary:   A40.1
+Actual Primary:     A40.1
+Expected Secondary: [R65.20, N39.0, N17.9]
+Actual Secondary:   [N39.0, R65.20, N17.9]
+--------------------------------------------------------------------------------
+

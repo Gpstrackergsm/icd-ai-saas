@@ -1263,15 +1263,29 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 });
             }
             // RULE: Severe Sepsis → R65.20 (WITHOUT shock)
+            // RULE: Severe Sepsis → R65.20 (WITHOUT shock)
             else if (inf.sepsis?.severe) {
-                codes.push({
-                    code: 'R65.20',
-                    label: 'Severe sepsis without septic shock',
-                    rationale: 'Severe sepsis documented without shock',
-                    guideline: 'ICD-10-CM I.C.1.d.1.a',
-                    trigger: 'Severe Sepsis = Yes, Shock = No',
-                    rule: 'Severe sepsis code'
-                });
+                // STRICT GUIDELINE CHECK: Severe Sepsis REQUIRES Acute Organ Dysfunction
+                const hasOrganDysfunction =
+                    (ctx.conditions.renal?.aki || ctx.conditions.ckd?.aki) ||
+                    (ctx.conditions.respiratory?.failure?.type === 'acute' || ctx.conditions.respiratory?.failure?.type === 'acute_on_chronic') ||
+                    (ctx.conditions.neurology?.encephalopathy?.present) ||
+                    (ctx.conditions.gastro?.liverDisease && ctx.conditions.gastro?.ascites); // Proxy for liver failure/dysfunction (simplified)
+
+                if (hasOrganDysfunction) {
+                    codes.push({
+                        code: 'R65.20',
+                        label: 'Severe sepsis without septic shock',
+                        rationale: 'Severe sepsis documented with acute organ dysfunction',
+                        guideline: 'ICD-10-CM I.C.1.d.1.a',
+                        trigger: 'Severe Sepsis + Organ Dysfunction',
+                        rule: 'Severe sepsis code'
+                    });
+                } else {
+                    // Fail silently or warn?
+                    // "If no organ dysfunction is documented, DO NOT assign R65.2x"
+                    warnings.push('Severe sepsis documented but no acute organ dysfunction found. R65.20 suppressed per guidelines.');
+                }
             }
         }
 
