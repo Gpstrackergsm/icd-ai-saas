@@ -80,14 +80,15 @@
   </header>
 
   <!-- Main Content -->
-  <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full gap-8 grid grid-cols-1">
+  <main
+    class="flex-grow max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-4 w-full gap-6 grid grid-cols-1 lg:grid-cols-2 h-[calc(100vh-4rem)] overflow-hidden">
 
-    <!-- Bottom Section: Inputs -->
-    <div class="space-y-8 order-2">
+    <!-- Bottom Section: Inputs (Now LEFT) -->
+    <div class="h-full flex flex-col order-1 lg:order-1 min-h-0">
 
       <!-- Encoder Panel -->
-      <section class="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden">
-        <div class="p-6 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+      <section class="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden h-full flex flex-col">
+        <div class="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center shrink-0">
           <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
             <i class="fa-solid fa-keyboard text-medical-500"></i> Clinical Scenario
           </h2>
@@ -96,17 +97,17 @@
           </span>
         </div>
 
-        <div class="p-6" id="encodePanel">
+        <div class="p-4 flex-grow flex flex-col min-h-0" id="encodePanel">
           <!-- Dynamic Form Builder Container will be inserted here by JS -->
 
-          <div class="mt-6">
-            <label for="narrative" class="block text-sm font-semibold text-slate-700 mb-2">
+          <div class="flex-grow flex flex-col">
+            <label for="narrative" class="block text-sm font-semibold text-slate-700 mb-2 shrink-0">
               Generated Clinical Narrative
               <span class="text-xs font-normal text-slate-500 ml-1">(Editable)</span>
             </label>
-            <div class="relative">
+            <div class="relative flex-grow flex flex-col">
               <textarea id="narrative" name="narrative"
-                class="w-full h-40 px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-medical-500 focus:border-transparent outline-none transition-all resize-none font-mono text-sm leading-relaxed"
+                class="w-full flex-grow px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-medical-500 focus:border-transparent outline-none transition-all resize-none font-mono text-sm leading-relaxed"
                 placeholder="Describe the patient encounter or use the builder above..."></textarea>
               <div class="absolute bottom-3 right-3 text-xs text-slate-400 pointer-events-none">
                 AI Ready
@@ -130,12 +131,11 @@
 
     </div>
 
-    <!-- Top Section: Results -->
-    <div class="order-1">
-      <div>
-        <section
-          class="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden flex flex-col max-h-[calc(100vh-8rem)]">
-          <div class="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
+    <!-- Top Section: Results (Now RIGHT) -->
+    <div class="h-full flex flex-col order-2 lg:order-2 min-h-0">
+      <div class="h-full">
+        <section class="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden flex flex-col h-full">
+          <div class="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center shrink-0">
             <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
               <i class="fa-solid fa-list-check text-medical-500"></i> Results
             </h2>
