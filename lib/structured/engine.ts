@@ -935,7 +935,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 codes.push({
                     code: 'N39.0',
                     label: 'Urinary tract infection, site not specified',
-                    rationale: 'UTI is the source of sepsis - must be coded first per UHDDS',
+                    rationale: 'UTI is the source of sepsis - sequence secondary to Sepsis (Guideline I.C.1.d.4(b))',
                     guideline: 'ICD-10-CM I.C.1.d + UHDDS Section II',
                     trigger: 'Sepsis source: UTI',
                     rule: 'Source infection principal diagnosis'
@@ -956,7 +956,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 codes.push({
                     code: 'N10',
                     label: 'Acute pyelonephritis',
-                    rationale: 'Pyelonephritis is the source of sepsis - must be coded first per UHDDS',
+                    rationale: 'Pyelonephritis is the source of sepsis - sequence secondary to Sepsis (Guideline I.C.1.d.4(b))',
                     guideline: 'ICD-10-CM I.C.1.d + UHDDS Section II',
                     trigger: 'Sepsis source: Pyelonephritis',
                     rule: 'Source infection principal diagnosis'
@@ -986,7 +986,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 codes.push({
                     code: cellCode,
                     label: cellLabel,
-                    rationale: 'Cellulitis is the source of sepsis - must be coded first per UHDDS',
+                    rationale: 'Cellulitis is the source of sepsis - Sequence Secondary when Sepsis is Principal (Guideline I.C.1.d.4(b))',
                     guideline: 'ICD-10-CM I.C.1.d + UHDDS Section II',
                     trigger: 'Sepsis source: Cellulitis',
                     rule: 'Source infection principal diagnosis'
@@ -1018,7 +1018,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 codes.push({
                     code: 'K65.1',
                     label: 'Peritoneal abscess',
-                    rationale: 'Abdominal/peritoneal abscess is the source of sepsis',
+                    rationale: 'Abdominal/peritoneal abscess is the source of sepsis - sequence secondary to Sepsis (Guideline I.C.1.d.4(b))',
                     guideline: 'ICD-10-CM I.C.1.d + UHDDS Section II',
                     trigger: 'Sepsis source: Abdominal abscess',
                     rule: 'Source infection principal diagnosis'
@@ -1057,7 +1057,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     codes.push({
                         code: puCode,
                         label: puLabel,
-                        rationale: 'Pressure ulcer is the source of sepsis - must be coded first per UHDDS',
+                        rationale: 'Pressure ulcer is the source of sepsis - sequence secondary to Sepsis (Guideline I.C.1.d.4(b))',
                         guideline: 'ICD-10-CM I.C.1.d + UHDDS Section II',
                         trigger: 'Sepsis source: Pressure ulcer',
                         rule: 'Source infection principal diagnosis'
@@ -1069,7 +1069,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 codes.push({
                     code: 'K35.32',
                     label: 'Acute appendicitis with perforation and localized peritonitis, with abscess',
-                    rationale: 'Appendicitis with perforation is the source of sepsis',
+                    rationale: 'Appendicitis with perforation is the source of sepsis - sequence secondary to Sepsis (Guideline I.C.1.d.4(b))',
                     guideline: 'ICD-10-CM I.C.1.d + UHDDS Section II',
                     trigger: 'Sepsis source: Appendicitis',
                     rule: 'Source infection principal diagnosis'
@@ -1088,7 +1088,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 codes.push({
                     code: 'K57.20',
                     label: 'Diverticulitis of large intestine with perforation and abscess without bleeding',
-                    rationale: 'Diverticulitis with perforation is the source of sepsis',
+                    rationale: 'Diverticulitis with perforation is the source of sepsis - sequence secondary to Sepsis (Guideline I.C.1.d.4(b))',
                     guideline: 'ICD-10-CM I.C.1.d + UHDDS Section II',
                     trigger: 'Sepsis source: Diverticulitis',
                     rule: 'Source infection principal diagnosis'
@@ -1107,7 +1107,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 codes.push({
                     code: 'K81.0',
                     label: 'Acute cholecystitis',
-                    rationale: 'Acute cholecystitis is the source of sepsis',
+                    rationale: 'Acute cholecystitis is the source of sepsis - sequence secondary to Sepsis (Guideline I.C.1.d.4(b))',
                     guideline: 'ICD-10-CM I.C.1.d + UHDDS Section II',
                     trigger: 'Sepsis source: Cholecystitis',
                     rule: 'Source infection principal diagnosis'
@@ -1127,7 +1127,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 codes.push({
                     code: 'K63.1',
                     label: 'Perforation of intestine (nontraumatic)',
-                    rationale: 'Perforated bowel is the source of sepsis',
+                    rationale: 'Perforated bowel is the source of sepsis - sequence secondary to Sepsis (Guideline I.C.1.d.4(b))',
                     guideline: 'ICD-10-CM I.C.1.d + UHDDS Section II',
                     trigger: 'Sepsis source: Perforated bowel',
                     rule: 'Source infection principal diagnosis'
