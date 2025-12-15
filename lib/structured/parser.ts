@@ -1,6 +1,8 @@
 
 import { PatientContext } from './context';
 
+console.log("PARSER LOADED - AUDITOR DEBUG MODE");
+
 export interface ParseResult {
     context: PatientContext;
     errors: string[];
@@ -252,24 +254,13 @@ export function parseInput(text: string): ParseResult {
                 // ESRD detection
                 if (lowerValue.includes('esrd') || lowerValue.includes('end stage renal') ||
                     lowerValue.includes('end-stage renal') || lowerValue.includes('stage 5 ckd')) {
-                    if (!context.conditions.renal) context.conditions.renal = {};
-                    context.conditions.renal.ckd = { stage: 'esrd' };
-                    // Check if "on dialysis" is also present - set to chronic (Case 26)
-                    const fullText = text.toLowerCase();
-                    if (fullText.includes('on dialysis') || fullText.includes('on chronic dialysis') ||
-                        fullText.includes('hemodialysis') || fullText.includes('peritoneal dialysis')) {
-                        if (!context.conditions.ckd) context.conditions.ckd = {
-                            stage: 'esrd',
-                            onDialysis: true,
-                            dialysisType: 'chronic',
-                            aki: false,
-                            transplantStatus: false
-                        };
-                        context.conditions.ckd.stage = 'esrd';
-                        context.conditions.ckd.onDialysis = true;
-                        context.conditions.ckd.dialysisType = 'chronic';
+                    if (!isNegated(lowerValue, 'esrd') && !isNegated(lowerValue, 'end stage') && !isNegated(lowerValue, 'stage 5')) {
+                        if (!context.conditions.renal) context.conditions.renal = {};
+                        context.conditions.renal.ckd = { stage: 'esrd' };
                     }
                 }
+
+
 
                 // Dialysis encounter detection - for proper UHDDS principal diagnosis sequencing
                 // STRICT: Only trigger if "routine dialysis" or "admitted for dialysis" is explicitly stated
@@ -428,7 +419,7 @@ export function parseInput(text: string): ParseResult {
                 }
 
                 // Detect CKD - but check for negation first
-                const ckdNegation = /(no|without|denies|negative for)\s+(ckd|chronic kidney|kidney disease)/i.test(lowerValue);
+                const ckdNegation = isNegated(lowerValue, 'ckd') || isNegated(lowerValue, 'chronic kidney disease') || isNegated(lowerValue, 'kidney disease');
                 if (!ckdNegation && (lowerValue.includes('kidney disease') || lowerValue.includes('ckd stage') ||
                     (lowerValue.includes('ckd') && !lowerValue.includes('no ckd')))) {
                     if (!context.conditions.renal) context.conditions.renal = {};
@@ -737,7 +728,7 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.infection.sepsis.present = true;
 
                     // Severity detection - ORDER MATTERS (shock before severe)
-                    if (lowerValue.includes('septic shock')) {
+                    if (lowerValue.includes('septic shock') && !isNegated(lowerValue, 'septic shock')) {
                         context.conditions.infection.sepsis.shock = true;
                         context.conditions.infection.sepsis.severe = true; // Shock implies severe
                     } else if (lowerValue.includes('severe sepsis')) {
@@ -1053,7 +1044,7 @@ export function parseInput(text: string): ParseResult {
 
                     context.conditions.obstetric.perinealLaceration = { degree };
                 }
-                break;
+            // break; // allow fall-through to generic scanners logic
 
             case 'source':
                 // Infection source
@@ -1061,7 +1052,7 @@ export function parseInput(text: string): ParseResult {
                     if (!context.conditions.infection) context.conditions.infection = { present: true };
                     context.conditions.infection.source = value; // Store original value
                 }
-                break;
+            // break; // Allow fall-through for narrative/generic lines to reach generic scanners below!
 
             case 'complication':
             case 'complications':
@@ -1091,8 +1082,8 @@ export function parseInput(text: string): ParseResult {
                 if (lowerValue.includes('sepsis')) {
                     if (!context.conditions.infection) context.conditions.infection = { present: true };
                     if (!context.conditions.infection.sepsis) context.conditions.infection.sepsis = { present: true };
-                    if (lowerValue.includes('severe')) context.conditions.infection.sepsis.severe = true;
-                    if (lowerValue.includes('shock')) context.conditions.infection.sepsis.shock = true;
+                    if (lowerValue.includes('severe') && !isNegated(lowerValue, 'severe')) context.conditions.infection.sepsis.severe = true;
+                    if (lowerValue.includes('shock') && !isNegated(lowerValue, 'shock')) context.conditions.infection.sepsis.shock = true;
 
                     // Organism extraction
                     if (lowerValue.includes('e. coli') || lowerValue.includes('escherichia coli')) context.conditions.infection.organism = 'e_coli';
@@ -1107,7 +1098,7 @@ export function parseInput(text: string): ParseResult {
                     else if (lowerValue.includes('bacteroides')) context.conditions.infection.organism = 'bacteroides';
                     else if (lowerValue.includes('enterobacter')) context.conditions.infection.organism = 'enterobacter';
                 }
-                if (lowerValue.includes('septic shock')) {
+                if (lowerValue.includes('septic shock') && !isNegated(lowerValue, 'septic shock')) {
                     if (!context.conditions.infection) context.conditions.infection = { present: true };
                     if (!context.conditions.infection.sepsis) context.conditions.infection.sepsis = { present: true };
                     context.conditions.infection.sepsis.shock = true;
@@ -1157,15 +1148,19 @@ export function parseInput(text: string): ParseResult {
                 }
 
                 // Renal / CKD / AKI
+                console.log(`[Flow] Reached Renal block. Key: ${key}, Value: "${lowerValue.substring(0, 20)}..."`);
                 if (lowerValue.includes('kidney failure') || lowerValue.includes('renal failure') || lowerValue.includes('aki') || lowerValue.includes('acute kidney injury')) {
                     if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
                     if (lowerValue.includes('acute')) context.conditions.ckd.aki = true;
                 }
                 if (lowerValue.includes('ckd') || lowerValue.includes('chronic kidney disease')) {
-                    if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
-                    if (lowerValue.includes('stage 4')) context.conditions.ckd.stage = '4';
-                    if (lowerValue.includes('stage 5')) context.conditions.ckd.stage = '5';
-                    if (lowerValue.includes('esrd')) context.conditions.ckd.stage = 'esrd';
+                    // STRICT NEGATION CHECK
+                    if (!isNegated(lowerValue, 'ckd') && !isNegated(lowerValue, 'chronic kidney disease')) {
+                        if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
+                        if (lowerValue.includes('stage 4') && !isNegated(lowerValue, 'stage 4')) context.conditions.ckd.stage = '4';
+                        if (lowerValue.includes('stage 5') && !isNegated(lowerValue, 'stage 5')) context.conditions.ckd.stage = '5';
+                        if (lowerValue.includes('esrd') && !isNegated(lowerValue, 'esrd')) context.conditions.ckd.stage = 'esrd';
+                    }
                 }
                 if (lowerValue.includes('nephropathy')) {
                     if (!context.conditions.endocrine) context.conditions.endocrine = {};
@@ -1174,20 +1169,27 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.endocrine.diabetes.complicationDetails.nephropathy = true;
                 }
 
-                // Sepsis & Infection
+                // Sepsis / Severe Sepsis / Septic Shock
                 if (lowerValue.includes('sepsis') || lowerValue.includes('septic')) {
-                    if (!context.conditions.infection) context.conditions.infection = { present: true };
-                    if (!context.conditions.infection.sepsis) context.conditions.infection.sepsis = { present: true };
-                    context.conditions.infection.sepsis.present = true;
+                    // STRICT NEGATION CHECK
+                    if (isNegated(lowerValue, 'sepsis') || isNegated(lowerValue, 'septic')) {
+                        // Do nothing if negated
+                    } else {
+                        if (!context.conditions.infection) context.conditions.infection = { present: true };
+                        if (!context.conditions.infection.sepsis) context.conditions.infection.sepsis = { present: true };
+                        context.conditions.infection.sepsis.present = true;
 
-                    if (lowerValue.includes('shock')) context.conditions.infection.sepsis.shock = true;
+                        if (lowerValue.includes('shock') && !isNegated(lowerValue, 'shock')) {
+                            context.conditions.infection.sepsis.shock = true;
+                        }
 
-                    // Check for "secondary to" or "due to" for source
-                    if (lowerValue.includes('urinary') || lowerValue.includes('uti')) {
-                        context.conditions.infection.site = 'urinary';
-                    } else if (lowerValue.includes('pneumonia') || lowerValue.includes('lung')) {
-                        context.conditions.infection.site = 'lung';
-                        context.conditions.infection.source = 'pneumonia';
+                        // Check for "secondary to" or "due to" for source
+                        if (lowerValue.includes('urinary') || lowerValue.includes('uti')) {
+                            context.conditions.infection.site = 'urinary';
+                        } else if (lowerValue.includes('pneumonia') || lowerValue.includes('lung')) {
+                            context.conditions.infection.site = 'lung';
+                            context.conditions.infection.source = 'pneumonia';
+                        }
                     }
                 }
 
@@ -1667,7 +1669,7 @@ export function parseInput(text: string): ParseResult {
                             }
                             else if (lc.includes('nephropathy') || lc.includes('ckd') || lc.includes('chronic kidney disease')) {
                                 // Distinguish: "Nephropathy" alone → nephropathy, "CKD" or "Chronic Kidney Disease" → ckd
-                                if (lc.includes('ckd') || lc.includes('chronic kidney disease')) {
+                                if ((lc.includes('ckd') || lc.includes('chronic kidney disease')) && !isNegated(lc, 'ckd') && !isNegated(lc, 'chronic kidney disease')) {
                                     // We don't have separate CKD flag in complications, handled by Ckd module
                                     // But legacy might expect it. We use nephropathy for E11.21/22 selection.
                                     d.complicationDetails.nephropathy = true;
@@ -1784,7 +1786,7 @@ export function parseInput(text: string): ParseResult {
                     }
                     else if (c.includes('nephropathy') || c.includes('ckd') || c.includes('chronic kidney disease')) {
                         // Distinguish: "Nephropathy" alone → nephropathy, "CKD" or "Chronic Kidney Disease" → ckd
-                        if (c.includes('ckd') || c.includes('chronic kidney disease')) {
+                        if ((c.includes('ckd') || c.includes('chronic kidney disease')) && !isNegated(lowerValue, 'ckd') && !isNegated(lowerValue, 'chronic kidney disease')) {
                             // CKD implies nephropathy generally
                             d.complicationDetails.nephropathy = true;
                             if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
@@ -2882,7 +2884,7 @@ export function parseInput(text: string): ParseResult {
     }
 
     // POST-PROCESSING: Global Renal Refinement (Case 34)
-    if (lt.includes('ckd') || lt.includes('chronic kidney') || lt.includes('esrd')) {
+    if ((lt.includes('ckd') && !isNegated(lt, 'ckd')) || (lt.includes('chronic kidney') && !isNegated(lt, 'chronic kidney')) || (lt.includes('esrd') && !isNegated(lt, 'esrd'))) {
         if (!context.conditions.renal) context.conditions.renal = {};
         if (!context.conditions.renal.ckd) context.conditions.renal.ckd = { stage: 'unspecified' };
 
@@ -2965,4 +2967,43 @@ export function parseInput(text: string): ParseResult {
     }
 
     return { context, errors };
+}
+
+// Utility to check if a phrase is negated in a sentence
+function isNegated(text: string, term: string): boolean {
+    const lowerText = text.toLowerCase();
+    const termIndex = lowerText.indexOf(term.toLowerCase());
+    if (termIndex === -1) return false;
+
+    // Look at the window of text BEFORE the term
+    const windowStart = Math.max(0, termIndex - 60); // Increased window for 'no documentation of'
+    const preText = lowerText.substring(windowStart, termIndex);
+
+    // Common negation patterns - Enhanced for Auditor Strict Mode
+    // Allows up to 2 intervening words for "no documentation of [septic] shock"
+    const negationPatterns = [
+        /no\s+(?:\w+\s+){0,2}$/,
+        /not\s+(?:\w+\s+){0,2}$/,
+        /denies\s+(?:\w+\s+){0,2}$/,
+        /without\s+(?:\w+\s+){0,2}$/,
+        /ruled\s+out\s+(?:\w+\s+){0,2}$/,
+        /negative\s+for\s+(?:\w+\s+){0,2}$/,
+        /no\s+evidence\s+of\s+(?:\w+\s+){0,2}$/,
+        /no\s+history\s+of\s+(?:\w+\s+){0,2}$/,
+        /history\s+negative\s+for\s+(?:\w+\s+){0,2}$/,
+        /free\s+of\s+(?:\w+\s+){0,2}$/,
+        /no\s+documentation\s+of\s+(?:\w+\s+){0,3}$/, // Increased range for "no documentation of [acute] [septic] shock"
+        /no\s+mention\s+of\s+(?:\w+\s+){0,3}$/
+    ];
+
+    const isNegated = negationPatterns.some(pattern => pattern.test(preText));
+    console.log(`[DEBUG isNegated] Term: "${term}" Negated: ${isNegated}`);
+    if (term === 'shock' || term === 'ckd' || term === 'chronic kidney disease' || term === 'septic') {
+        console.log(`[DEBUG isNegated] Term: "${term}", PreText: "${preText}"`);
+        console.log(`[DEBUG isNegated] Result: ${isNegated}`);
+        if (!isNegated) {
+            // Log which patterns failed? No, just log that it failed.
+        }
+    }
+    return isNegated;
 }
