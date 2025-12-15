@@ -1,0 +1,363 @@
+================================================================================
+DETAILED DIABETES TEST RESULTS (GENERATED CODES)
+================================================================================
+[Parser] Diabetes Detected in: "55-year-old male with Type 2 Diabetes Mellitus on ..."
+[Parser] LowerText: 55-year-old male with type 2 diabetes mellitus on metformin. no complications.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {}
+
+Case 1:
+  Input:    "55-year-old male with Type 2 Diabetes Mellitus on metformin. No complications."
+  Expected: [E11.9, Z79.84]
+  Result:   [E11.9, Z79.84]
+[Parser] Diabetes Detected in: "62-year-old female with diabetes mellitus type 2, ..."
+[Parser] LowerText: 62-year-old female with diabetes mellitus type 2, uncontrolled hyperglycemia.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {}
+
+Case 2:
+  Input:    "62-year-old female with diabetes mellitus type 2, uncontrolled hyperglycemia."
+  Expected: [E11.65]
+  Result:   [E11.65]
+[Parser] Diabetes Detected in: "48-year-old male with DM2 admitted for hypoglycemi..."
+[Parser] LowerText: 48-year-old male with dm2 admitted for hypoglycemia.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"hypoglycemia":true}
+
+Case 3:
+  Input:    "48-year-old male with DM2 admitted for hypoglycemia."
+  Expected: [E11.649]
+  Result:   [E11.649]
+[Parser] Diabetes Detected in: "70-year-old female with long-standing Type 2 diabe..."
+[Parser] LowerText: 70-year-old female with long-standing type 2 diabetes on long-term insulin.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {}
+
+Case 4:
+  Input:    "70-year-old female with long-standing Type 2 diabetes on long-term insulin."
+  Expected: [E11.9, Z79.4]
+  Result:   [E11.9, Z79.4]
+[Parser] Diabetes Detected in: "65-year-old male with Type 2 Diabetes and CKD stag..."
+[Parser] LowerText: 65-year-old male with type 2 diabetes and ckd stage 3.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {}
+
+Case 5:
+  Input:    "65-year-old male with Type 2 Diabetes and CKD stage 3."
+  Expected: [E11.22, N18.3]
+  Result:   [E11.22, N18.3]
+[Parser] Diabetes Detected in: "72-year-old female with Hypertension, Type 2 Diabe..."
+[Parser] LowerText: 72-year-old female with hypertension, type 2 diabetes, and ckd stage 4.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {}
+
+Case 6:
+  Input:    "72-year-old female with Hypertension, Type 2 Diabetes, and CKD stage 4."
+  Expected: [E11.22, I12.9, N18.4]
+  Result:   [I12.9, E11.22, N18.4]
+[Parser] Diabetes Detected in: "58-year-old male with diabetes type 2 and ESRD on ..."
+[Parser] LowerText: 58-year-old male with diabetes type 2 and esrd on dialysis.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {}
+
+Case 7:
+  Input:    "58-year-old male with diabetes type 2 and ESRD on dialysis."
+  Expected: [E11.22, N18.6, Z99.2]
+  Result:   [E11.22, N18.6, Z99.2]
+[Parser] Diabetes Detected in: "80-year-old female with Type 1 Diabetes and chroni..."
+[Parser] LowerText: 80-year-old female with type 1 diabetes and chronic kidney disease stage 3.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {}
+
+Case 8:
+  Input:    "80-year-old female with Type 1 Diabetes and chronic kidney disease stage 3."
+  Expected: [E10.22, N18.3]
+  Result:   [E10.22, N18.3]
+[Parser] Diabetes Detected in: "60-year-old male with Type 2 Diabetes and mild non..."
+[Parser] LowerText: 60-year-old male with type 2 diabetes and mild non-proliferative retinopathy.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"retinopathy":true,"retinopathyDetails":{"stage":"mild_npdr"}}
+
+Case 9:
+  Input:    "60-year-old male with Type 2 Diabetes and mild non-proliferative retinopathy."
+  Expected: [E11.329]
+  Result:   [E11.329]
+[Parser] Diabetes Detected in: "55-year-old female with Type 2 Diabetes and modera..."
+[Parser] LowerText: 55-year-old female with type 2 diabetes and moderate npdr with macular edema.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"retinopathy":true,"retinopathyDetails":{"stage":"moderate_npdr","macularEdema":true}}
+
+Case 10:
+  Input:    "55-year-old female with Type 2 Diabetes and moderate NPDR with macular edema."
+  Expected: [E11.331]
+  Result:   [E11.331]
+[Parser] Diabetes Detected in: "67-year-old male with Type 2 Diabetes and prolifer..."
+[Parser] LowerText: 67-year-old male with type 2 diabetes and proliferative diabetic retinopathy with traction retinal detachment.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"retinopathy":true,"retinopathyDetails":{"stage":"proliferative","tractionDetachment":true}}
+
+Case 11:
+  Input:    "67-year-old male with Type 2 Diabetes and proliferative diabetic retinopathy with traction retinal detachment."
+  Expected: [E11.352]
+  Result:   [E11.352]
+[Parser] Diabetes Detected in: "45-year-old female with Type 1 Diabetes and unspec..."
+[Parser] LowerText: 45-year-old female with type 1 diabetes and unspecified diabetic retinopathy.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {"retinopathy":true,"retinopathyDetails":{}}
+
+Case 12:
+  Input:    "45-year-old female with Type 1 Diabetes and unspecified diabetic retinopathy."
+  Expected: [E10.319]
+  Result:   [E10.319]
+[Parser] Diabetes Detected in: "63-year-old male with Type 2 Diabetes and diabetic..."
+[Parser] LowerText: 63-year-old male with type 2 diabetes and diabetic neuropathy.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"neuropathy":true}
+
+Case 13:
+  Input:    "63-year-old male with Type 2 Diabetes and diabetic neuropathy."
+  Expected: [E11.40]
+  Result:   [E11.40]
+[Parser] Diabetes Detected in: "71-year-old female with Type 2 Diabetes and polyne..."
+[Parser] LowerText: 71-year-old female with type 2 diabetes and polyneuropathy.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"polyneuropathy":true,"neuropathy":true}
+
+Case 14:
+  Input:    "71-year-old female with Type 2 Diabetes and polyneuropathy."
+  Expected: [E11.42]
+  Result:   [E11.42]
+[Parser] Diabetes Detected in: "59-year-old male with Type 2 Diabetes and gastropa..."
+[Parser] LowerText: 59-year-old male with type 2 diabetes and gastroparesis.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"gastroparesis":true}
+
+Case 15:
+  Input:    "59-year-old male with Type 2 Diabetes and gastroparesis."
+  Expected: [E11.43]
+  Result:   [E11.43]
+[Parser] Diabetes Detected in: "50-year-old female with Type 1 Diabetes and autono..."
+[Parser] LowerText: 50-year-old female with type 1 diabetes and autonomic neuropathy.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {"autonomic":true,"neuropathy":true}
+
+Case 16:
+  Input:    "50-year-old female with Type 1 Diabetes and autonomic neuropathy."
+  Expected: [E10.43]
+  Result:   [E10.43]
+[Parser] Diabetes Detected in: "75-year-old male with Type 2 Diabetes and peripher..."
+[Parser] LowerText: 75-year-old male with type 2 diabetes and peripheral vascular disease.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"pvd":true}
+
+Case 17:
+  Input:    "75-year-old male with Type 2 Diabetes and peripheral vascular disease."
+  Expected: [E11.51]
+  Result:   [E11.51]
+[Parser] Diabetes Detected in: "68-year-old female with Type 2 Diabetes and gangre..."
+[Parser] LowerText: 68-year-old female with type 2 diabetes and gangrene of left toe.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"gangrene":true}
+
+Case 18:
+  Input:    "68-year-old female with Type 2 Diabetes and gangrene of left toe."
+  Expected: [E11.52]
+  Result:   [E11.52]
+[Parser] Diabetes Detected in: "82-year-old male with Type 2 Diabetes, PVD, and an..."
+[Parser] LowerText: 82-year-old male with type 2 diabetes, pvd, and angiopathy.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"pvd":true}
+
+Case 19:
+  Input:    "82-year-old male with Type 2 Diabetes, PVD, and angiopathy."
+  Expected: [E11.51]
+  Result:   [E11.51]
+[Parser] Diabetes Detected in: "66-year-old male with Type 2 Diabetes and foot ulc..."
+[Parser] LowerText: 66-year-old male with type 2 diabetes and foot ulcer on right heel, fat exposed.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"footUlcer":true}
+
+Case 20:
+  Input:    "66-year-old male with Type 2 Diabetes and foot ulcer on right heel, fat exposed."
+  Expected: [E11.621, L97.412]
+  Result:   [E11.621, L97.412]
+[Parser] Diabetes Detected in: "70-year-old female with Type 2 Diabetes and ulcer ..."
+[Parser] LowerText: 70-year-old female with type 2 diabetes and ulcer of left big toe, muscle necrosis.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"footUlcer":true}
+
+Case 21:
+  Input:    "70-year-old female with Type 2 Diabetes and ulcer of left big toe, muscle necrosis."
+  Expected: [E11.621, L97.523]
+  Result:   [E11.621, L97.523, L97.593]
+[Parser] Diabetes Detected in: "55-year-old male with Type 1 Diabetes and chronic ..."
+[Parser] LowerText: 55-year-old male with type 1 diabetes and chronic ulcer of right ankle, breakdown of skin.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {"footUlcer":true}
+
+Case 22:
+  Input:    "55-year-old male with Type 1 Diabetes and chronic ulcer of right ankle, breakdown of skin."
+  Expected: [E10.621, L97.311]
+  Result:   [E10.621, L97.311]
+[Parser] Diabetes Detected in: "61-year-old female with Type 2 Diabetes and diabet..."
+[Parser] LowerText: 61-year-old female with type 2 diabetes and diabetic foot ulcer, unspecified site.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"footUlcer":true}
+
+Case 23:
+  Input:    "61-year-old female with Type 2 Diabetes and diabetic foot ulcer, unspecified site."
+  Expected: [E11.621, L97.909]
+  Result:   [E11.621, L97.909]
+[Parser] Diabetes Detected in: "25-year-old male with Type 1 Diabetes admitted for..."
+[Parser] LowerText: 25-year-old male with type 1 diabetes admitted for dka (ketoacidosis).
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {"ketoacidosis":true}
+
+Case 24:
+  Input:    "25-year-old male with Type 1 Diabetes admitted for DKA (Ketoacidosis)."
+  Expected: [E10.10]
+  Result:   [E10.10]
+[Parser] Diabetes Detected in: "28-year-old female with Type 1 Diabetes and DKA wi..."
+[Parser] LowerText: 28-year-old female with type 1 diabetes and dka with coma.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {"ketoacidosis":true,"coma":true}
+
+Case 25:
+  Input:    "28-year-old female with Type 1 Diabetes and DKA with coma."
+  Expected: [E10.11]
+  Result:   [E10.11]
+[Parser] Diabetes Detected in: "75-year-old male with Type 2 Diabetes and Hyperosm..."
+[Parser] LowerText: 75-year-old male with type 2 diabetes and hyperosmolar hyperglycemic state (hhs).
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"hyperosmolarity":true}
+
+Case 26:
+  Input:    "75-year-old male with Type 2 Diabetes and Hyperosmolar Hyperglycemic State (HHS)."
+  Expected: [E11.00]
+  Result:   [E11.00]
+[Parser] Diabetes Detected in: "69-year-old female with Type 2 Diabetes, HHS with ..."
+[Parser] LowerText: 69-year-old female with type 2 diabetes, hhs with coma.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"hyperosmolarity":true,"coma":true}
+
+Case 27:
+  Input:    "69-year-old female with Type 2 Diabetes, HHS with coma."
+  Expected: [E11.01]
+  Result:   [E11.01]
+[Parser] Diabetes Detected in: "50-year-old male with diabetes due to underlying p..."
+[Parser] LowerText: 50-year-old male with diabetes due to underlying pancreatic cancer.
+[Parser] isNegated: false
+[Engine] Diabetes Type: secondary, Details: {"secondaryCause":"pancreatic"}
+
+Case 28:
+  Input:    "50-year-old male with diabetes due to underlying pancreatic cancer."
+  Expected: [E08.9, C25.9]
+  Result:   [E08.9, C25.9]
+[Parser] Diabetes Detected in: "45-year-old female with post-pancreatectomy diabet..."
+[Parser] LowerText: 45-year-old female with post-pancreatectomy diabetes (surgical).
+[Parser] isNegated: false
+[Engine] Diabetes Type: secondary, Details: {"secondaryCause":"post_procedural"}
+
+Case 29:
+  Input:    "45-year-old female with post-pancreatectomy diabetes (surgical)."
+  Expected: [E89.1, E13.9, Z90.410]
+  Result:   [E13.9, E89.1, Z90.410]
+[Parser] Diabetes Detected in: "60-year-old male with steroid-induced diabetes mel..."
+[Parser] LowerText: 60-year-old male with steroid-induced diabetes mellitus.
+[Parser] isNegated: false
+[Engine] Diabetes Type: drug_induced, Details: {"secondaryCause":"steroid"}
+
+Case 30:
+  Input:    "60-year-old male with steroid-induced diabetes mellitus."
+  Expected: [E09.9, T38.0x5A]
+  Result:   [E09.9, T38.0x5A]
+[Parser] Diabetes Detected in: "70-year-old male with Type 2 Diabetes, CKD stage 4..."
+[Parser] LowerText: 70-year-old male with type 2 diabetes, ckd stage 4, retinopathy, and neuropathy.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"neuropathy":true,"retinopathy":true,"retinopathyDetails":{}}
+
+Case 31:
+  Input:    "70-year-old male with Type 2 Diabetes, CKD stage 4, Retinopathy, and Neuropathy."
+  Expected: [E11.22, E11.319, E11.40, N18.4]
+  Result:   [E11.22, E11.319, E11.40, N18.4]
+[Parser] Diabetes Detected in: "65-year-old female with Type 2 DM, PVD with gangre..."
+[Parser] LowerText: 65-year-old female with type 2 dm, pvd with gangrene right foot.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"gangrene":true,"pvd":true}
+
+Case 32:
+  Input:    "65-year-old female with Type 2 DM, PVD with gangrene right foot."
+  Expected: [E11.52]
+  Result:   [E11.52]
+[Parser] Diabetes Detected in: "55-year-old male with Type 2 Diabetes on insulin p..."
+[Parser] LowerText: 55-year-old male with type 2 diabetes on insulin presented with hypoglycemia.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"hypoglycemia":true}
+
+Case 33:
+  Input:    "55-year-old male with Type 2 Diabetes on insulin presented with hypoglycemia."
+  Expected: [E11.649, Z79.4]
+  Result:   [E11.649, Z79.4]
+[Parser] Diabetes Detected in: "80-year-old female with Type 2 Diabetes, CKD 5 (ES..."
+[Parser] LowerText: 80-year-old female with type 2 diabetes, ckd 5 (esrd) on dialysis, hypertension, and heart failure.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {}
+
+Case 34:
+  Input:    "80-year-old female with Type 2 Diabetes, CKD 5 (ESRD) on dialysis, Hypertension, and Heart Failure."
+  Expected: [I13.2, E11.22, N18.6, I50.9, Z99.2]
+  Result:   [I13.2, I50.9, E11.22, N18.6, Z99.2]
+[Parser] Diabetes Detected in: "40-year-old female with elevated blood glucose, ru..."
+[Parser] LowerText: 40-year-old female with elevated blood glucose, ruled out for diabetes.
+[Parser] isNegated: true
+
+Case 35:
+  Input:    "40-year-old female with elevated blood glucose, ruled out for diabetes."
+  Expected: [R73.9]
+  Result:   [R73.9]
+[Parser] Diabetes Detected in: "62-year-old male with history of diabetes, strictl..."
+[Parser] LowerText: 62-year-old male with history of diabetes, strictly diet controlled.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {}
+
+Case 36:
+  Input:    "62-year-old male with history of diabetes, strictly diet controlled."
+  Expected: [E11.9]
+  Result:   [E11.9]
+[Parser] Diabetes Detected in: "58-year-old female with pre-diabetes...."
+[Parser] LowerText: 58-year-old female with pre-diabetes.
+[Parser] isNegated: false
+
+Case 37:
+  Input:    "58-year-old female with pre-diabetes."
+  Expected: [R73.03]
+  Result:   [R73.03]
+[Parser] Diabetes Detected in: "22-year-old male with diabetes, on insulin since c..."
+[Parser] LowerText: 22-year-old male with diabetes, on insulin since childhood.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {}
+
+Case 38:
+  Input:    "22-year-old male with diabetes, on insulin since childhood."
+  Expected: [E10.9, Z79.4]
+  Result:   [E10.9, Z79.4]
+[Parser] Diabetes Detected in: "30-year-old male with Juvenile Diabetes...."
+[Parser] LowerText: 30-year-old male with juvenile diabetes.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {}
+
+Case 39:
+  Input:    "30-year-old male with Juvenile Diabetes."
+  Expected: [E10.9]
+  Result:   [E10.9]
+[Parser] Diabetes Detected in: "60-year-old female with Type 2 Diabetes, skin comp..."
+[Parser] LowerText: 60-year-old female with type 2 diabetes, skin complications.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"skinComplication":true}
+
+Case 40:
+  Input:    "60-year-old female with Type 2 Diabetes, skin complications."
+  Expected: [E11.620]
+  Result:   [E11.620]
+
+================================================================================

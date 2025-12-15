@@ -1,0 +1,377 @@
+╔════════════════════════════════════════════════════════════════════════════════╗
+║                  SEPSIS MODULE - 40 TEST CASES CREATED                        ║
+╚════════════════════════════════════════════════════════════════════════════════╝
+
+TEST CASE DISTRIBUTION:
+
+  UTI Source:                    3 cases (1-3)
+  Pneumonia Source:              3 cases (4-6)
+  Skin/Soft Tissue Source:       3 cases (7-9)
+  Abdominal Source:              3 cases (10-12)
+  Severe Sepsis (no shock):      3 cases (13-15)
+  Septic Shock:                  3 cases (16-18)
+  Negative Cultures:             2 cases (19-20)
+  Unspecified Source:            2 cases (21-22)
+  Post-Procedure:                2 cases (23-24)
+  With Chronic Conditions:       2 cases (25-26)
+  Fungal/Neonatal:               2 cases (27-28)
+  Specific Organisms:            2 cases (29-30)
+  Complex Cases:                 3 cases (31-33)
+  Edge Cases/Sequencing:         2 cases (34-35)
+  Other Sources:                 1 case (36)
+  Viral-related:                 2 cases (37-38)
+  Strep Variants:                2 cases (39-40)
+
+KEY ICD-10-CM CODES COVERED:
+
+  ✓ A40.x (Streptococcal sepsis)
+  ✓ A41.x (Other bacterial sepsis - E. coli, Staph, MRSA, etc.)
+  ✓ R65.20 (Severe sepsis without shock)
+  ✓ R65.21 (Severe sepsis WITH septic shock)
+  ✓ Source infections (J15, N39.0, L03, K65, etc.)
+  ✓ Organ dysfunction (J96, N17, G93, etc.)
+  ✓ Post-procedural sepsis (T81.44XA)
+  ✓ Fungal sepsis (B37.7)
+  ✓ Neonatal sepsis (P36.x)
+
+CRITICAL SEQUENCING RULES TESTED:
+
+  ✓ Sepsis code FIRST when reason for admission (Guideline I.C.1.d.4(b))
+  ✓ R65.21 includes both severe sepsis AND septic shock
+  ✓ Organism code always required with sepsis
+  ✓ Organ dysfunction codes listed after sepsis
+  ✓ Post-procedure sepsis uses T81.44XA
+  ✓ Source infection SECONDARY when Sepsis is Principal
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+✅ READY FOR PARSER & ENGINE DEVELOPMENT
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+╔════════════════════════════════════════════════════════════════╗
+║         SEPSIS MODULE - RUNNING 40 TEST CASES               ║
+╚════════════════════════════════════════════════════════════════╝
+
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 1: PASS
+   📝 Input: "72-year-old female admitted with fever, dysuria, and confusion. Urinalysis positive for bacteria. Blood cultures positive for E. coli. Diagnosis: Sepsis due to E. coli with urinary tract infection as source."
+   🎯 Expected Primary:   A41.51
+   🤖 Actual Primary:     A41.51
+   🎯 Expected Secondary: [N39.0]
+   🤖 Actual Secondary:   [N39.0]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 2: PASS
+   📝 Input: "85-year-old male with Foley catheter admitted with CAUTI (catheter-associated UTI) and urosepsis. Blood cultures positive for E. coli."
+   🎯 Expected Primary:   A41.51
+   🤖 Actual Primary:     A41.51
+   🎯 Expected Secondary: [N39.0, T83.511A]
+   🤖 Actual Secondary:   [N39.0, T83.511A]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 3: PASS
+   📝 Input: "68-year-old female admitted with sepsis. Blood cultures show Klebsiella pneumoniae. CT scan shows pyelonephritis (kidney infection)."
+   🎯 Expected Primary:   A41.50
+   🤖 Actual Primary:     A41.50
+   🎯 Expected Secondary: [N10]
+   🤖 Actual Secondary:   [N10]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 4: PASS
+   📝 Input: "78-year-old male admitted with pneumonia and sepsis. Chest X-ray shows right lower lobe infiltrate. Blood cultures positive for Streptococcus pneumoniae."
+   🎯 Expected Primary:   A40.3
+   🤖 Actual Primary:     A40.3
+   🎯 Expected Secondary: [J13]
+   🤖 Actual Secondary:   [J13]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 5: PASS
+   📝 Input: "65-year-old diabetic female with community-acquired pneumonia and septic shock. Blood cultures positive for Staph aureus. Patient on vasopressors."
+   🎯 Expected Primary:   A41.01
+   🤖 Actual Primary:     A41.01
+   🎯 Expected Secondary: [R65.21, J15.211, E11.9]
+   🤖 Actual Secondary:   [R65.21, J15.211, E11.9]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 6: PASS
+   📝 Input: "82-year-old nursing home resident admitted with aspiration pneumonia and severe sepsis. Patient is confused and obtunded (metabolic encephalopathy). Blood cultures pending."
+   🎯 Expected Primary:   A41.9
+   🤖 Actual Primary:     A41.9
+   🎯 Expected Secondary: [R65.20, J69.0, G93.41]
+   🤖 Actual Secondary:   [R65.20, J69.0, G93.41]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 7: PASS
+   📝 Input: "55-year-old diabetic male admitted with left leg cellulitis and sepsis due to Streptococcus. Blood cultures positive."
+   🎯 Expected Primary:   A40.9
+   🤖 Actual Primary:     A40.9
+   🎯 Expected Secondary: [L03.115, E11.9]
+   🤖 Actual Secondary:   [L03.115, E11.9]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 8: PASS
+   📝 Input: "70-year-old female with sacral pressure ulcer stage 3 admitted with sepsis due to MRSA bacteremia."
+   🎯 Expected Primary:   A41.02
+   🤖 Actual Primary:     A41.02
+   🎯 Expected Secondary: [L89.153]
+   🤖 Actual Secondary:   [L89.153]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 9: PASS
+   📝 Input: "45-year-old male with right foot abscess and sepsis. Blood cultures show Staph aureus."
+   🎯 Expected Primary:   A41.01
+   🤖 Actual Primary:     A41.01
+   🎯 Expected Secondary: [L02.611]
+   🤖 Actual Secondary:   [L02.611]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 10: PASS
+   📝 Input: "62-year-old female admitted with acute appendicitis with perforation and peritonitis. Blood cultures positive for E. coli sepsis."
+   🎯 Expected Primary:   K35.32
+   🤖 Actual Primary:     K35.32
+   🎯 Expected Secondary: [K65.0, A41.51]
+   🤖 Actual Secondary:   [K65.0, A41.51]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 11: PASS
+   📝 Input: "74-year-old male with perforated diverticulitis and severe sepsis without shock. Acute kidney injury noted. Blood cultures positive."
+   🎯 Expected Primary:   K57.20
+   🤖 Actual Primary:     K57.20
+   🎯 Expected Secondary: [K65.0, A41.9, R65.20, N17.9]
+   🤖 Actual Secondary:   [K65.0, A41.9, R65.20, N17.9]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 12: PASS
+   📝 Input: "58-year-old female admitted with acute cholecystitis and septic shock. Blood cultures show E. coli."
+   🎯 Expected Primary:   K81.0
+   🤖 Actual Primary:     K81.0
+   🎯 Expected Secondary: [A41.51, R65.21]
+   🤖 Actual Secondary:   [A41.51, R65.21]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 13: PASS
+   📝 Input: "80-year-old male with severe sepsis and acute kidney injury. Blood cultures positive for E. coli. Source: UTI. No hypotension or shock."
+   🎯 Expected Primary:   A41.51
+   🤖 Actual Primary:     A41.51
+   🎯 Expected Secondary: [R65.20, N39.0, N17.9]
+   🤖 Actual Secondary:   [R65.20, N39.0, N17.9]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 14: PASS
+   📝 Input: "66-year-old female with pneumonia, severe sepsis, and acute respiratory failure. No shock documented."
+   🎯 Expected Primary:   A41.9
+   🤖 Actual Primary:     A41.9
+   🎯 Expected Secondary: [R65.20, J18.9, J96.00]
+   🤖 Actual Secondary:   [R65.20, J18.9, J96.00]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 15: PASS
+   📝 Input: "72-year-old male admitted with severe sepsis and multiple organ dysfunction (AKI and encephalopathy). Source: skin infection."
+   🎯 Expected Primary:   A41.9
+   🤖 Actual Primary:     A41.9
+   🎯 Expected Secondary: [R65.20, L03.90, N17.9, G93.41]
+   🤖 Actual Secondary:   [R65.20, L03.90, N17.9, G93.41]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 16: PASS
+   📝 Input: "58-year-old male admitted in septic shock requiring vasopressors. Blood cultures positive for Pseudomonas. Source: pneumonia."
+   🎯 Expected Primary:   A41.52
+   🤖 Actual Primary:     A41.52
+   🎯 Expected Secondary: [R65.21, J15.1]
+   🤖 Actual Secondary:   [R65.21, J15.1]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 17: PASS
+   📝 Input: "70-year-old female with urosepsis and septic shock. On norepinephrine drip. Blood cultures show Klebsiella."
+   🎯 Expected Primary:   A41.50
+   🤖 Actual Primary:     A41.50
+   🎯 Expected Secondary: [R65.21, N39.0]
+   🤖 Actual Secondary:   [R65.21, N39.0]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 18: PASS
+   📝 Input: "82-year-old male with abdominal sepsis from perforated bowel and septic shock. Emergency surgery performed."
+   🎯 Expected Primary:   K63.1
+   🤖 Actual Primary:     K63.1
+   🎯 Expected Secondary: [K65.0, A41.9, R65.21]
+   🤖 Actual Secondary:   [K65.0, A41.9, R65.21]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 19: PASS
+   📝 Input: "75-year-old female clinically diagnosed with sepsis. Blood cultures drawn but negative. Source: pneumonia."
+   🎯 Expected Primary:   A41.9
+   🤖 Actual Primary:     A41.9
+   🎯 Expected Secondary: [J18.9]
+   🤖 Actual Secondary:   [J18.9]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 20: PASS
+   📝 Input: "68-year-old male with sepsis, cultures pending/negative. Source: UTI based on UA results."
+   🎯 Expected Primary:   A41.9
+   🤖 Actual Primary:     A41.9
+   🎯 Expected Secondary: [N39.0]
+   🤖 Actual Secondary:   [N39.0]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 21: PASS
+   📝 Input: "60-year-old female admitted with sepsis of unknown source. Blood cultures positive for E. coli. No clear infection site identified."
+   🎯 Expected Primary:   A41.51
+   🤖 Actual Primary:     A41.51
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 22: PASS
+   📝 Input: "77-year-old male with septic shock, no identifiable source found despite workup. Blood cultures show MRSA."
+   🎯 Expected Primary:   A41.02
+   🤖 Actual Primary:     A41.02
+   🎯 Expected Secondary: [R65.21]
+   🤖 Actual Secondary:   [R65.21]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 23: PASS
+   📝 Input: "65-year-old female developed sepsis 5 days after abdominal surgery. Blood cultures positive for E. coli."
+   🎯 Expected Primary:   T81.44XA
+   🤖 Actual Primary:     T81.44XA
+   🎯 Expected Secondary: [A41.51]
+   🤖 Actual Secondary:   [A41.51]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 24: PASS
+   📝 Input: "70-year-old male with post-operative septic shock after hip replacement. Blood cultures show Staph aureus."
+   🎯 Expected Primary:   T81.44XA
+   🤖 Actual Primary:     T81.44XA
+   🎯 Expected Secondary: [A41.01, R65.21]
+   🤖 Actual Secondary:   [A41.01, R65.21]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 25: PASS
+   📝 Input: "72-year-old diabetic male with pneumonia, sepsis, COPD exacerbation, and CHF. Blood cultures positive."
+   🎯 Expected Primary:   A41.9
+   🤖 Actual Primary:     A41.9
+   🎯 Expected Secondary: [J15.9, J44.1, I50.9, E11.9]
+   🤖 Actual Secondary:   [J15.9, J44.1, I50.9, E11.9]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 26: PASS
+   📝 Input: "80-year-old female with ESRD on dialysis admitted with sepsis from infected dialysis catheter. Blood cultures show Staph epidermidis."
+   🎯 Expected Primary:   T82.7XXA
+   🤖 Actual Primary:     T82.7XXA
+   🎯 Expected Secondary: [A41.1, N18.6, Z99.2]
+   🤖 Actual Secondary:   [A41.1, N18.6, Z99.2]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 27: PASS
+   📝 Input: "55-year-old immunocompromised male admitted with candidemia (fungal sepsis due to Candida)."
+   🎯 Expected Primary:   B37.7
+   🤖 Actual Primary:     B37.7
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 28: PASS
+   📝 Input: "2-day-old newborn with sepsis due to Group B Streptococcus."
+   🎯 Expected Primary:   P36.0
+   🤖 Actual Primary:     P36.0
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 29: PASS
+   📝 Input: "68-year-old male with sepsis due to Streptococcus pneumoniae bacteremia. No pneumonia documented."
+   🎯 Expected Primary:   A40.3
+   🤖 Actual Primary:     A40.3
+   🎯 Expected Secondary: []
+   🤖 Actual Secondary:   []
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 30: PASS
+   📝 Input: "75-year-old female with sepsis due to anaerobic bacteria. Source: abdominal abscess."
+   🎯 Expected Primary:   A41.4
+   🤖 Actual Primary:     A41.4
+   🎯 Expected Secondary: [K65.1]
+   🤖 Actual Secondary:   [K65.1]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 31: PASS
+   📝 Input: "82-year-old male admitted with pneumonia, severe sepsis, septic shock, acute respiratory failure requiring ventilation, and acute kidney injury."
+   🎯 Expected Primary:   A41.9
+   🤖 Actual Primary:     A41.9
+   🎯 Expected Secondary: [R65.21, J18.9, J96.00, N17.9]
+   🤖 Actual Secondary:   [R65.21, J18.9, J96.00, N17.9]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 32: PASS
+   📝 Input: "70-year-old diabetic female with infected diabetic foot ulcer (right heel) and sepsis due to MRSA."
+   🎯 Expected Primary:   A41.02
+   🤖 Actual Primary:     A41.02
+   🎯 Expected Secondary: [L97.419, E11.621]
+   🤖 Actual Secondary:   [L97.419, E11.621]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 33: PASS
+   📝 Input: "65-year-old male with C. difficile colitis complicated by sepsis and severe sepsis (with metabolic encephalopathy). Blood cultures show translocation of C. diff."
+   🎯 Expected Primary:   A04.72
+   🤖 Actual Primary:     A04.72
+   🎯 Expected Secondary: [A41.9, R65.20, G93.41]
+   🤖 Actual Secondary:   [A41.9, R65.20, G93.41]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 34: PASS
+   📝 Input: "78-year-old female admitted for elective knee replacement. Post-op day 3 develops sepsis from surgical site infection."
+   🎯 Expected Primary:   T84.54XA
+   🤖 Actual Primary:     T84.54XA
+   🎯 Expected Secondary: [A41.9]
+   🤖 Actual Secondary:   [A41.9]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 35: PASS
+   📝 Input: "72-year-old male admitted primarily for acute MI (STEMI). During hospitalization develops hospital-acquired pneumonia with sepsis."
+   🎯 Expected Primary:   I21.09
+   🤖 Actual Primary:     I21.09
+   🎯 Expected Secondary: [J18.9, A41.9]
+   🤖 Actual Secondary:   [J18.9, A41.9]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 36: PASS
+   📝 Input: "80-year-old nursing home resident with sepsis. Documented as 'bacterial sepsis' with skin as likely source but no specific cellulitis location."
+   🎯 Expected Primary:   A41.9
+   🤖 Actual Primary:     A41.9
+   🎯 Expected Secondary: [L03.90]
+   🤖 Actual Secondary:   [L03.90]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 37: PASS
+   📝 Input: "62-year-old male admitted with COVID-19 pneumonia complicated by severe sepsis and respiratory failure."
+   🎯 Expected Primary:   U07.1
+   🤖 Actual Primary:     U07.1
+   🎯 Expected Secondary: [J12.82, J96.00, A41.9, R65.20]
+   🤖 Actual Secondary:   [J12.82, J96.00, A41.9, R65.20]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 38: PASS
+   📝 Input: "55-year-old female with influenza pneumonia and septic shock due to secondary bacterial infection (Staph aureus)."
+   🎯 Expected Primary:   J10.0
+   🤖 Actual Primary:     J10.0
+   🎯 Expected Secondary: [A41.01, R65.21]
+   🤖 Actual Secondary:   [A41.01, R65.21]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 39: PASS
+   📝 Input: "45-year-old female with Group A Streptococcus sepsis from pharyngitis."
+   🎯 Expected Primary:   A40.0
+   🤖 Actual Primary:     A40.0
+   🎯 Expected Secondary: [J02.0]
+   🤖 Actual Secondary:   [J02.0]
+
+────────────────────────────────────────────────────────────────────────────────
+✅ Case 40: PASS
+   📝 Input: "68-year-old male admitted with severe sepsis due to Group B Streptococcus and acute kidney injury. Source: UTI."
+   🎯 Expected Primary:   A40.1
+   🤖 Actual Primary:     A40.1
+   🎯 Expected Secondary: [R65.20, N39.0, N17.9]
+   🤖 Actual Secondary:   [R65.20, N39.0, N17.9]
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FINAL SCORE: 40/40 (100%)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

@@ -1,0 +1,208 @@
+================================================================================
+DIABETES & ENDOCRINE MODULE - 40 CASE COMPREHENSIVE TEST
+================================================================================
+[Parser] Diabetes Detected in: "55-year-old male with Type 2 Diabetes Mellitus on ..."
+[Parser] LowerText: 55-year-old male with type 2 diabetes mellitus on metformin. no complications.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {}
+✅ Case 1: PASS
+[Parser] Diabetes Detected in: "62-year-old female with diabetes mellitus type 2, ..."
+[Parser] LowerText: 62-year-old female with diabetes mellitus type 2, uncontrolled hyperglycemia.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {}
+✅ Case 2: PASS
+[Parser] Diabetes Detected in: "48-year-old male with DM2 admitted for hypoglycemi..."
+[Parser] LowerText: 48-year-old male with dm2 admitted for hypoglycemia.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"hypoglycemia":true}
+✅ Case 3: PASS
+[Parser] Diabetes Detected in: "70-year-old female with long-standing Type 2 diabe..."
+[Parser] LowerText: 70-year-old female with long-standing type 2 diabetes on long-term insulin.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {}
+✅ Case 4: PASS
+[Parser] Diabetes Detected in: "65-year-old male with Type 2 Diabetes and CKD stag..."
+[Parser] LowerText: 65-year-old male with type 2 diabetes and ckd stage 3.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {}
+✅ Case 5: PASS
+[Parser] Diabetes Detected in: "72-year-old female with Hypertension, Type 2 Diabe..."
+[Parser] LowerText: 72-year-old female with hypertension, type 2 diabetes, and ckd stage 4.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {}
+✅ Case 6: PASS
+[Parser] Diabetes Detected in: "58-year-old male with diabetes type 2 and ESRD on ..."
+[Parser] LowerText: 58-year-old male with diabetes type 2 and esrd on dialysis.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {}
+✅ Case 7: PASS
+[Parser] Diabetes Detected in: "80-year-old female with Type 1 Diabetes and chroni..."
+[Parser] LowerText: 80-year-old female with type 1 diabetes and chronic kidney disease stage 3.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {}
+✅ Case 8: PASS
+[Parser] Diabetes Detected in: "60-year-old male with Type 2 Diabetes and mild non..."
+[Parser] LowerText: 60-year-old male with type 2 diabetes and mild non-proliferative retinopathy.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"retinopathy":true,"retinopathyDetails":{"stage":"mild_npdr"}}
+✅ Case 9: PASS
+[Parser] Diabetes Detected in: "55-year-old female with Type 2 Diabetes and modera..."
+[Parser] LowerText: 55-year-old female with type 2 diabetes and moderate npdr with macular edema.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"retinopathy":true,"retinopathyDetails":{"stage":"moderate_npdr","macularEdema":true}}
+✅ Case 10: PASS
+[Parser] Diabetes Detected in: "67-year-old male with Type 2 Diabetes and prolifer..."
+[Parser] LowerText: 67-year-old male with type 2 diabetes and proliferative diabetic retinopathy with traction retinal detachment.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"retinopathy":true,"retinopathyDetails":{"stage":"proliferative","tractionDetachment":true}}
+✅ Case 11: PASS
+[Parser] Diabetes Detected in: "45-year-old female with Type 1 Diabetes and unspec..."
+[Parser] LowerText: 45-year-old female with type 1 diabetes and unspecified diabetic retinopathy.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {"retinopathy":true,"retinopathyDetails":{}}
+✅ Case 12: PASS
+[Parser] Diabetes Detected in: "63-year-old male with Type 2 Diabetes and diabetic..."
+[Parser] LowerText: 63-year-old male with type 2 diabetes and diabetic neuropathy.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"neuropathy":true}
+✅ Case 13: PASS
+[Parser] Diabetes Detected in: "71-year-old female with Type 2 Diabetes and polyne..."
+[Parser] LowerText: 71-year-old female with type 2 diabetes and polyneuropathy.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"polyneuropathy":true,"neuropathy":true}
+✅ Case 14: PASS
+[Parser] Diabetes Detected in: "59-year-old male with Type 2 Diabetes and gastropa..."
+[Parser] LowerText: 59-year-old male with type 2 diabetes and gastroparesis.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"gastroparesis":true}
+✅ Case 15: PASS
+[Parser] Diabetes Detected in: "50-year-old female with Type 1 Diabetes and autono..."
+[Parser] LowerText: 50-year-old female with type 1 diabetes and autonomic neuropathy.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {"autonomic":true,"neuropathy":true}
+✅ Case 16: PASS
+[Parser] Diabetes Detected in: "75-year-old male with Type 2 Diabetes and peripher..."
+[Parser] LowerText: 75-year-old male with type 2 diabetes and peripheral vascular disease.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"pvd":true}
+✅ Case 17: PASS
+[Parser] Diabetes Detected in: "68-year-old female with Type 2 Diabetes and gangre..."
+[Parser] LowerText: 68-year-old female with type 2 diabetes and gangrene of left toe.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"gangrene":true}
+✅ Case 18: PASS
+[Parser] Diabetes Detected in: "82-year-old male with Type 2 Diabetes, PVD, and an..."
+[Parser] LowerText: 82-year-old male with type 2 diabetes, pvd, and angiopathy.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"pvd":true}
+✅ Case 19: PASS
+[Parser] Diabetes Detected in: "66-year-old male with Type 2 Diabetes and foot ulc..."
+[Parser] LowerText: 66-year-old male with type 2 diabetes and foot ulcer on right heel, fat exposed.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"footUlcer":true}
+✅ Case 20: PASS
+[Parser] Diabetes Detected in: "70-year-old female with Type 2 Diabetes and ulcer ..."
+[Parser] LowerText: 70-year-old female with type 2 diabetes and ulcer of left big toe, muscle necrosis.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"footUlcer":true}
+✅ Case 21: PASS
+[Parser] Diabetes Detected in: "55-year-old male with Type 1 Diabetes and chronic ..."
+[Parser] LowerText: 55-year-old male with type 1 diabetes and chronic ulcer of right ankle, breakdown of skin.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {"footUlcer":true}
+✅ Case 22: PASS
+[Parser] Diabetes Detected in: "61-year-old female with Type 2 Diabetes and diabet..."
+[Parser] LowerText: 61-year-old female with type 2 diabetes and diabetic foot ulcer, unspecified site.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"footUlcer":true}
+✅ Case 23: PASS
+[Parser] Diabetes Detected in: "25-year-old male with Type 1 Diabetes admitted for..."
+[Parser] LowerText: 25-year-old male with type 1 diabetes admitted for dka (ketoacidosis).
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {"ketoacidosis":true}
+✅ Case 24: PASS
+[Parser] Diabetes Detected in: "28-year-old female with Type 1 Diabetes and DKA wi..."
+[Parser] LowerText: 28-year-old female with type 1 diabetes and dka with coma.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {"ketoacidosis":true,"coma":true}
+✅ Case 25: PASS
+[Parser] Diabetes Detected in: "75-year-old male with Type 2 Diabetes and Hyperosm..."
+[Parser] LowerText: 75-year-old male with type 2 diabetes and hyperosmolar hyperglycemic state (hhs).
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"hyperosmolarity":true}
+✅ Case 26: PASS
+[Parser] Diabetes Detected in: "69-year-old female with Type 2 Diabetes, HHS with ..."
+[Parser] LowerText: 69-year-old female with type 2 diabetes, hhs with coma.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"hyperosmolarity":true,"coma":true}
+✅ Case 27: PASS
+[Parser] Diabetes Detected in: "50-year-old male with diabetes due to underlying p..."
+[Parser] LowerText: 50-year-old male with diabetes due to underlying pancreatic cancer.
+[Parser] isNegated: false
+[Engine] Diabetes Type: secondary, Details: {"secondaryCause":"pancreatic"}
+✅ Case 28: PASS
+[Parser] Diabetes Detected in: "45-year-old female with post-pancreatectomy diabet..."
+[Parser] LowerText: 45-year-old female with post-pancreatectomy diabetes (surgical).
+[Parser] isNegated: false
+[Engine] Diabetes Type: secondary, Details: {"secondaryCause":"post_procedural"}
+✅ Case 29: PASS
+[Parser] Diabetes Detected in: "60-year-old male with steroid-induced diabetes mel..."
+[Parser] LowerText: 60-year-old male with steroid-induced diabetes mellitus.
+[Parser] isNegated: false
+[Engine] Diabetes Type: drug_induced, Details: {"secondaryCause":"steroid"}
+✅ Case 30: PASS
+[Parser] Diabetes Detected in: "70-year-old male with Type 2 Diabetes, CKD stage 4..."
+[Parser] LowerText: 70-year-old male with type 2 diabetes, ckd stage 4, retinopathy, and neuropathy.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"neuropathy":true,"retinopathy":true,"retinopathyDetails":{}}
+✅ Case 31: PASS
+[Parser] Diabetes Detected in: "65-year-old female with Type 2 DM, PVD with gangre..."
+[Parser] LowerText: 65-year-old female with type 2 dm, pvd with gangrene right foot.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"gangrene":true,"pvd":true}
+✅ Case 32: PASS
+[Parser] Diabetes Detected in: "55-year-old male with Type 2 Diabetes on insulin p..."
+[Parser] LowerText: 55-year-old male with type 2 diabetes on insulin presented with hypoglycemia.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"hypoglycemia":true}
+✅ Case 33: PASS
+[Parser] Diabetes Detected in: "80-year-old female with Type 2 Diabetes, CKD 5 (ES..."
+[Parser] LowerText: 80-year-old female with type 2 diabetes, ckd 5 (esrd) on dialysis, hypertension, and heart failure.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {}
+✅ Case 34: PASS
+[Parser] Diabetes Detected in: "40-year-old female with elevated blood glucose, ru..."
+[Parser] LowerText: 40-year-old female with elevated blood glucose, ruled out for diabetes.
+[Parser] isNegated: true
+✅ Case 35: PASS
+[Parser] Diabetes Detected in: "62-year-old male with history of diabetes, strictl..."
+[Parser] LowerText: 62-year-old male with history of diabetes, strictly diet controlled.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {}
+✅ Case 36: PASS
+[Parser] Diabetes Detected in: "58-year-old female with pre-diabetes...."
+[Parser] LowerText: 58-year-old female with pre-diabetes.
+[Parser] isNegated: false
+✅ Case 37: PASS
+[Parser] Diabetes Detected in: "22-year-old male with diabetes, on insulin since c..."
+[Parser] LowerText: 22-year-old male with diabetes, on insulin since childhood.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {}
+✅ Case 38: PASS
+[Parser] Diabetes Detected in: "30-year-old male with Juvenile Diabetes...."
+[Parser] LowerText: 30-year-old male with juvenile diabetes.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {}
+✅ Case 39: PASS
+[Parser] Diabetes Detected in: "60-year-old female with Type 2 Diabetes, skin comp..."
+[Parser] LowerText: 60-year-old female with type 2 diabetes, skin complications.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"skinComplication":true}
+✅ Case 40: PASS
+================================================================================
+Total: 40
+Passed: 40 (100.0%)
+Failed: 0
+================================================================================
+
+🎉 ALL DIABETES TESTS PASSED!
