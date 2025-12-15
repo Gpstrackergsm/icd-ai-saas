@@ -57,7 +57,7 @@ const complexCases = [
 
 console.log('=== ALL 50 COMPLEX CASES RESULTS ===\n');
 
-complexCases.forEach((text, index) => {
+complexCases.forEach(async (text, index) => {
     const caseNum = index + 1;
     const { context } = parseInput(text);
     const result = runStructuredRules(context);

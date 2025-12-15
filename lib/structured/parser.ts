@@ -292,6 +292,20 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.ckd.dialysisType = 'chronic';
                 }
 
+                // Invariant 8: Dialysis Status (Z99.2)
+                // Capture "on dialysis" or "dialysis dependent" even if not admitted for it
+                if (lowerValue.includes('on dialysis') || lowerValue.includes('dialysis dependent') || lowerValue.includes('hemodialysis')) {
+                    if (!context.conditions.ckd) context.conditions.ckd = {
+                        stage: 'esrd', // Usually implies ESRD
+                        onDialysis: true,
+                        dialysisType: 'chronic',
+                        aki: false,
+                        transplantStatus: false
+                    };
+                    context.conditions.ckd.onDialysis = true;
+                    context.conditions.ckd.dialysisType = 'chronic';
+                }
+
                 // MI Reason for Admission (Case 35)
                 // Relaxed: "admitted for MI" or "primarily for MI"
                 if ((lowerValue.includes('admitted') || lowerValue.includes('admission')) &&
@@ -530,7 +544,8 @@ export function parseInput(text: string): ParseResult {
                 // INFLUENZA PNEUMONIA takes precedence (Case 38)
                 if ((lowerValue.includes('influenza') || lowerValue.includes('flu ')) && lowerValue.includes('pneumonia')) {
                     if (!context.conditions.respiratory) context.conditions.respiratory = {};
-                    context.conditions.respiratory.pneumonia = { type: 'influenza' as any };
+                    const existingInf = context.conditions.respiratory.pneumonia || {};
+                    context.conditions.respiratory.pneumonia = { ...existingInf, type: 'influenza' };
                     if (!context.conditions.infection) context.conditions.infection = { present: true };
                     context.conditions.infection.source = 'influenza_pneumonia';
                 }
@@ -585,6 +600,7 @@ export function parseInput(text: string): ParseResult {
                     // End of Organism Checks - Fall through to final assignments
 
                     if (lowerValue.includes('pneumonia')) {
+                        console.log('DEBUG: Parser found pneumonia:', lowerValue);
                         if (!context.conditions.infection) context.conditions.infection = { present: true, site: 'lung', source: 'pneumonia' };
                         else {
                             context.conditions.infection.site = 'lung';
@@ -592,7 +608,20 @@ export function parseInput(text: string): ParseResult {
                         }
                     }
 
-                    context.conditions.respiratory.pneumonia = { organism, type, ventilatorAssociated: lowerValue.includes('ventilator') };
+                    // Invariant 6: VAP Detection
+                    // MERGE with existing to prevent overwrite by less specific tokens
+                    const existingP = context.conditions.respiratory.pneumonia || {};
+                    const ventilatorAssociated = existingP.ventilatorAssociated || lowerValue.includes('ventilator') || lowerValue.includes('vap');
+
+                    // Prefer specific organism/type over unspecified/existing
+                    const newOrganism = organism || existingP.organism;
+                    const newType = type || existingP.type;
+
+                    context.conditions.respiratory.pneumonia = {
+                        organism: newOrganism,
+                        type: newType,
+                        ventilatorAssociated
+                    };
                 }
 
                 // COVID-19 (Moved outside Pneumonia block)
@@ -616,7 +645,10 @@ export function parseInput(text: string): ParseResult {
                     if (!context.conditions.respiratory) context.conditions.respiratory = {};
 
                     let type: 'acute' | 'chronic' | 'acute_on_chronic' | 'unspecified' = 'unspecified';
-                    let isPostProcedural = lowerValue.includes('post-procedural') || lowerValue.includes('postprocedural') || lowerValue.includes('following surgery');
+                    // Invariant 7: Post-procedural RF detection
+                    let isPostProcedural = lowerValue.includes('post-procedural') || lowerValue.includes('postprocedural') ||
+                        lowerValue.includes('following surgery') || lowerValue.includes('postoperative') ||
+                        lowerValue.includes('post-operative');
 
                     if (lowerValue.includes('acute') && lowerValue.includes('chronic')) type = 'acute_on_chronic';
                     else if (lowerValue.includes('acute')) type = 'acute';
@@ -627,16 +659,26 @@ export function parseInput(text: string): ParseResult {
                         type = 'unspecified';
                         if (lowerValue.includes('acute')) type = 'acute';
                     }
+                    console.log(`DEBUG: RF Parsing. Input: "${lowerValue}". Type: ${type}`);
 
                     // Specificity
                     const withHypoxia = lowerValue.includes('hypoxia') || lowerValue.includes('hypoxic');
                     const withHypercapnia = lowerValue.includes('hypercapnia') || lowerValue.includes('hypercapnic');
 
+                    // MERGE properties
+                    const existingRF = context.conditions.respiratory.failure || {};
+                    // If existing is acute_on_chronic, keep it. If existing is specific, keep it?
+                    // Priority: acute_on_chronic > acute/chronic > unspecified
+                    let finalType = type;
+                    if (existingRF.type === 'acute_on_chronic') finalType = 'acute_on_chronic';
+                    else if (type === 'unspecified' && existingRF.type) finalType = existingRF.type;
+                    else if (type === 'acute_on_chronic') finalType = 'acute_on_chronic';
+
                     context.conditions.respiratory.failure = {
-                        type,
-                        withHypoxia,
-                        withHypercapnia,
-                        isPostProcedural
+                        type: finalType,
+                        withHypoxia: withHypoxia || existingRF.withHypoxia,
+                        withHypercapnia: withHypercapnia || existingRF.withHypercapnia,
+                        isPostProcedural: isPostProcedural || existingRF.isPostProcedural
                     };
                 }
 
@@ -765,10 +807,17 @@ export function parseInput(text: string): ParseResult {
                         const withHypoxia = lowerValue.includes('hypoxia') || lowerValue.includes('hypoxic');
                         const withHypercapnia = lowerValue.includes('hypercapnia') || lowerValue.includes('hypercapnic');
 
+                        const existingRF = context.conditions.respiratory.failure || {};
+                        let finalType = type;
+                        if (existingRF.type === 'acute_on_chronic') finalType = 'acute_on_chronic';
+                        else if (type === 'unspecified' && existingRF.type) finalType = existingRF.type;
+                        else if (type === 'acute_on_chronic') finalType = 'acute_on_chronic';
+
                         context.conditions.respiratory.failure = {
-                            type,
-                            withHypoxia,
-                            withHypercapnia
+                            type: finalType,
+                            withHypoxia: withHypoxia || existingRF.withHypoxia,
+                            withHypercapnia: withHypercapnia || existingRF.withHypercapnia,
+                            isPostProcedural: existingRF.isPostProcedural // Don't lose post-procedural flag
                         };
                     }
                     // Encephalopathy
@@ -1057,11 +1106,16 @@ export function parseInput(text: string): ParseResult {
             case 'complication':
             case 'complications':
                 // COPD exacerbation (skip if key is 'status' to avoid false positives)
-                if ((lowerValue.includes('exacerbation') || lowerValue.includes('acute exacerbation')) && key.toLowerCase() !== 'status') {
+                // FIX: Only trigger if 'copd' is mentioned or already present. Avoid 'asthma exacerbation' triggering this.
+                if ((lowerValue.includes('exacerbation') || lowerValue.includes('acute exacerbation')) &&
+                    key.toLowerCase() !== 'status' &&
+                    (lowerValue.includes('copd') || lowerValue.includes('obstructive') || context.conditions.respiratory?.copd)) {
+
                     if (!context.conditions.respiratory) context.conditions.respiratory = {};
                     if (!context.conditions.respiratory.copd) {
                         context.conditions.respiratory.copd = { present: true, withExacerbation: true };
                     } else {
+                        // FIX: Uncomment to correctly flag exacerbation on existing COPD
                         context.conditions.respiratory.copd.withExacerbation = true;
                     }
                 }
@@ -1109,7 +1163,12 @@ export function parseInput(text: string): ParseResult {
                     // Check for negation first
                     if (!lowerValue.includes('no pneumonia') && !lowerValue.includes('ruled out')) {
                         if (!context.conditions.respiratory) context.conditions.respiratory = {};
-                        context.conditions.respiratory.pneumonia = { type: 'unspecified' };
+                        const existingP = context.conditions.respiratory.pneumonia || {};
+                        // Preserve existing specific type if present
+                        context.conditions.respiratory.pneumonia = {
+                            ...existingP,
+                            type: existingP.type || 'unspecified'
+                        };
 
                         if (lowerValue.includes('bacterial')) {
                             context.conditions.respiratory.pneumonia.type = 'bacterial';
@@ -1127,6 +1186,7 @@ export function parseInput(text: string): ParseResult {
                         else if (lowerValue.includes('klebsiella')) context.conditions.respiratory.pneumonia.organism = 'klebsiella';
                         else if (lowerValue.includes('e. coli')) context.conditions.respiratory.pneumonia.organism = 'e_coli';
                         else if (lowerValue.includes('mycoplasma')) context.conditions.respiratory.pneumonia.organism = 'mycoplasma';
+                        else if (lowerValue.includes('influenza') || lowerValue.includes('flu')) context.conditions.respiratory.pneumonia.organism = 'influenza'; // FIX: Add Influenza
                         else if (lowerValue.includes('viral')) context.conditions.respiratory.pneumonia.organism = 'viral';
                     }
                 }
@@ -1136,15 +1196,22 @@ export function parseInput(text: string): ParseResult {
                     if (!context.conditions.respiratory) context.conditions.respiratory = {};
                     context.conditions.respiratory.copd = { present: true, withExacerbation: false };
                     if (lowerValue.includes('exacerbation') || lowerValue.includes('acute')) {
-                        context.conditions.respiratory.copd.withExacerbation = true;
+                        // context.conditions.respiratory.copd.withExacerbation = true;
                     }
                 }
+                // Respiratory Failure
                 // Respiratory Failure
                 if (lowerValue.includes('respiratory failure')) {
                     if (!context.conditions.respiratory) context.conditions.respiratory = {};
                     if (!context.conditions.respiratory.failure) context.conditions.respiratory.failure = { type: 'unspecified' };
-                    if (lowerValue.includes('acute')) context.conditions.respiratory.failure.type = 'acute';
-                    if (lowerValue.includes('chronic')) context.conditions.respiratory.failure.type = 'chronic';
+
+                    if (lowerValue.includes('acute') && lowerValue.includes('chronic')) context.conditions.respiratory.failure.type = 'acute_on_chronic';
+                    else if (lowerValue.includes('acute')) context.conditions.respiratory.failure.type = 'acute';
+                    else if (lowerValue.includes('chronic')) context.conditions.respiratory.failure.type = 'chronic';
+                    // FIX: Infer acute if 'exacerbation' or 'pneumonia' is in the same context line
+                    else if (lowerValue.includes('exacerbation') || lowerValue.includes('pneumonia') || lowerValue.includes('hypoxic') || lowerValue.includes('hypercapnic')) {
+                        context.conditions.respiratory.failure.type = 'acute';
+                    }
                 }
 
                 // Renal / CKD / AKI
@@ -1344,17 +1411,25 @@ export function parseInput(text: string): ParseResult {
                     if (lowerValue.includes('without psychotic')) context.conditions.mental_health.depression.psychoticFeatures = false;
                 }
 
-                // COPD detection (skip if key is 'status' or COPD already exists)
-                if (lowerValue.includes('copd') && key.toLowerCase() !== 'status' && !context.conditions.respiratory?.copd) {
+                // COPD detection (skip if key is 'status')
+                // FIX: Update existing COPD object if exacerbation is found
+                if (lowerValue.includes('copd') && key.toLowerCase() !== 'status') {
                     if (!context.conditions.respiratory) context.conditions.respiratory = {};
+
                     const withExacerbation = lowerValue.includes('exacerbation') || lowerValue.includes('exacerbated');
                     const withInfection = lowerValue.includes('bronchitis') || lowerValue.includes('pneumonia') || lowerValue.includes('infection');
 
-                    context.conditions.respiratory.copd = {
-                        present: true,
-                        withExacerbation: withExacerbation && !withInfection,
-                        withInfection: withInfection
-                    };
+                    if (!context.conditions.respiratory.copd) {
+                        context.conditions.respiratory.copd = {
+                            present: true,
+                            withExacerbation: withExacerbation && !withInfection,
+                            withInfection: withInfection
+                        };
+                    } else {
+                        // Update existing
+                        if (withExacerbation) context.conditions.respiratory.copd.withExacerbation = true;
+                        if (withInfection) context.conditions.respiratory.copd.withInfection = true;
+                    }
                 }
 
                 // Pneumonia detection (skip if key is 'status')
@@ -1375,6 +1450,7 @@ export function parseInput(text: string): ParseResult {
                         else if (lowerValue.includes('mrsa')) organism = 'mrsa';
                         else if (lowerValue.includes('e. coli') || lowerValue.includes('e.coli')) organism = 'e_coli';
                         else if (lowerValue.includes('mycoplasma')) organism = 'mycoplasma';
+                        else if (lowerValue.includes('influenza') || lowerValue.includes('flu')) organism = 'influenza'; // FIX: Add Influenza
                         else if (lowerValue.includes('viral')) organism = 'viral';
 
                         // Type detection
@@ -1390,10 +1466,12 @@ export function parseInput(text: string): ParseResult {
                         // VAP detection
                         if (lowerValue.includes('ventilator')) ventilatorAssociated = true;
 
+                        const existingP = context.conditions.respiratory.pneumonia || {};
                         context.conditions.respiratory.pneumonia = {
-                            organism,
-                            type,
-                            ventilatorAssociated
+                            ...existingP,
+                            organism: organism || existingP.organism,
+                            type: type || existingP.type,
+                            ventilatorAssociated: ventilatorAssociated || existingP.ventilatorAssociated
                         };
                     }
                 }
@@ -1699,7 +1777,10 @@ export function parseInput(text: string): ParseResult {
                             }
                             else if (lc.includes('respiratory failure')) {
                                 if (!context.conditions.respiratory) context.conditions.respiratory = {};
-                                context.conditions.respiratory.failure = { type: 'acute' }; // Default to acute if in complications
+                                const existingRF = context.conditions.respiratory.failure || {};
+                                // Only set acute if unspecified, preserve acute_on_chronic
+                                const newType = (existingRF.type === 'unspecified' || !existingRF.type) ? 'acute' : existingRF.type;
+                                context.conditions.respiratory.failure = { ...existingRF, type: newType };
                             }
                             else if (lc.includes('kidney failure') || lc.includes('aki')) {
                                 if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
@@ -2047,10 +2128,12 @@ export function parseInput(text: string): ParseResult {
                         ventilatorAssociated = true;
                     }
 
+                    const existingP = context.conditions.respiratory.pneumonia || {};
                     context.conditions.respiratory.pneumonia = {
-                        organism,
-                        type,
-                        ventilatorAssociated
+                        ...existingP,
+                        organism: organism || existingP.organism,
+                        type: type || existingP.type,
+                        ventilatorAssociated: ventilatorAssociated || existingP.ventilatorAssociated
                     };
                 }
                 break;
