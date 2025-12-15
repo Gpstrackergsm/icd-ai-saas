@@ -4,7 +4,11 @@ export function correctDiabetesCodes(codes: StructuredCode[]): StructuredCode[] 
     // DEEP COPY to match structure
     let corrected = [...codes];
 
-    // 0. DEDUPLICATION (Simple code match)
+    // 0. REMOVE ALL SPACES (Fix spacing issues like "E11 .22" → "E11.22")
+    // This MUST happen before deduplication to catch "E11.22" vs "E11 .22"
+    corrected = corrected.map(c => ({ ...c, code: c.code.replace(/\s+/g, '') }));
+
+    // 1. DEDUPLICATION (Simple code match)
     const uniqueMap = new Map<string, StructuredCode>();
     corrected.forEach(c => {
         if (!uniqueMap.has(c.code)) {

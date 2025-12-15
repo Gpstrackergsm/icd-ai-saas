@@ -125,7 +125,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         if (comps.footUlcer) {
             hasDiabetesCode = true;
             codes.push({
-                code: `${baseCode} .621`,
+                code: `${baseCode}.621`,
                 label: `${typeName} diabetes mellitus with foot ulcer`,
                 rationale: 'Diabetes with documented foot ulcer complication',
                 guideline: 'ICD-10-CM I.C.4.a',
@@ -153,7 +153,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         if (comps.nephropathy) {
             hasDiabetesCode = true;
             codes.push({
-                code: `${baseCode} .21`,
+                code: `${baseCode}.21`,
                 label: `${typeName} diabetes mellitus with diabetic nephropathy`,
                 rationale: 'Diabetes with documented nephropathy complication',
                 guideline: 'ICD-10-CM I.C.4.a',
@@ -165,7 +165,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         else if (ctx.conditions.ckd || ctx.conditions.renal?.ckd) {
             hasDiabetesCode = true;
             codes.push({
-                code: `${baseCode} .22`,
+                code: `${baseCode}.22`,
                 label: `${typeName} diabetes mellitus with diabetic chronic kidney disease`,
                 rationale: 'Diabetes with documented CKD complication',
                 guideline: 'ICD-10-CM I.C.4.a.6(b)',
@@ -177,16 +177,16 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         // RULE: Neuropathy
         if (comps.neuropathy || comps.polyneuropathy || comps.autonomic || comps.gastroparesis) {
             hasDiabetesCode = true;
-            let nCode = `${baseCode} .40`;
+            let nCode = `${baseCode}.40`;
             let nLabel = `${typeName} diabetes mellitus with diabetic neuropathy, unspecified`;
             let specificType = 'unspecified';
 
             if (comps.polyneuropathy) {
-                nCode = `${baseCode} .42`;
+                nCode = `${baseCode}.42`;
                 nLabel = `${typeName} diabetes mellitus with diabetic polyneuropathy`;
                 specificType = 'polyneuropathy';
             } else if (comps.autonomic || comps.gastroparesis) {
-                nCode = `${baseCode} .43`;
+                nCode = `${baseCode}.43`;
                 nLabel = `${typeName} diabetes mellitus with diabetic autonomic(poly)neuropathy`;
                 specificType = 'autonomic';
             }
@@ -205,7 +205,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         if (comps.retinopathy) {
             hasDiabetesCode = true;
             const withMacularEdema = comps.retinopathyDetails?.macularEdema === true;
-            const code = withMacularEdema ? `${baseCode} .311` : `${baseCode} .319`;
+            const code = withMacularEdema ? `${baseCode}.311` : `${baseCode}.319`;
             const label = withMacularEdema
                 ? `${typeName} diabetes mellitus with unspecified diabetic retinopathy with macular edema`
                 : `${typeName} diabetes mellitus with unspecified diabetic retinopathy without macular edema`;
@@ -226,7 +226,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         if (comps.ketoacidosis) {
             hasDiabetesCode = true;
             codes.push({
-                code: `${baseCode} .10`,
+                code: `${baseCode}.10`,
                 label: `${typeName} diabetes mellitus with ketoacidosis without coma`,
                 rationale: 'Diabetes with documented ketoacidosis complication',
                 guideline: 'ICD-10-CM I.C.4.a',
@@ -239,7 +239,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         if (comps.hypoglycemia) {
             hasDiabetesCode = true;
             codes.push({
-                code: `${baseCode} .649`,
+                code: `${baseCode}.649`,
                 label: `${typeName} diabetes mellitus with hypoglycemia without coma`,
                 rationale: 'Diabetes with documented hypoglycemia complication',
                 guideline: 'ICD-10-CM I.C.4.a',
@@ -253,7 +253,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         if (comps.uncontrolled || ctx.conditions.endocrine.hyperglycemia?.present) {
             hasDiabetesCode = true;
             codes.push({
-                code: `${baseCode} .65`,
+                code: `${baseCode}.65`,
                 label: `${typeName} diabetes mellitus with hyperglycemia`,
                 rationale: 'Diabetes with hyperglycemia/uncontrolled',
                 guideline: 'ICD-10-CM',
@@ -265,7 +265,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         // RULE: No complications → E10.9 / E11.9
         if (!hasDiabetesCode) {
             codes.push({
-                code: `${baseCode} .9`,
+                code: `${baseCode}.9`,
                 label: `${typeName} diabetes mellitus without complications`,
                 rationale: 'Diabetes without documented complications',
                 guideline: 'ICD-10-CM I.C.4.a',
@@ -2139,6 +2139,64 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         }
     }
 
+    // === NARRATIVE SEPSIS DETECTION ===
+    // Handle sepsis detected by parser from narrative text (when no sepsis code generated yet)
+    // Relaxed condition: Run if sepsis detected AND no sepsis code (A41/R65) exists yet.
+    // This handles cases where infection exists but didn't trigger sepsis logic (e.g. "Pneumonia causing sepsis")
+    const hasExistingSepsisCode = codes.some(c => c.code.startsWith('A41') || c.code.startsWith('R65'));
+
+    if (!hasExistingSepsisCode && ctx.conditions.sepsis) {
+        const sepsisData = ctx.conditions.sepsis;
+
+        // Severe sepsis → R65.20
+        if (sepsisData.severity === 'severe') {
+            codes.push({
+                code: 'R65.20',
+                label: 'Severe sepsis without septic shock',
+                rationale: 'Severe sepsis documented in narrative',
+                guideline: 'ICD-10-CM R65.20',
+                trigger: 'Severe Sepsis (narrative)',
+                rule: 'Severe sepsis code'
+            });
+        }
+        // Septic shock → R65.21
+        else if (sepsisData.severity === 'shock') {
+            codes.push({
+                code: 'R65.21',
+                label: 'Severe sepsis with septic shock',
+                rationale: 'Septic shock documented in narrative',
+                guideline: 'ICD-10-CM R65.21',
+                trigger: 'Septic Shock (narrative)',
+                rule: 'Septic shock code'
+            });
+        }
+        // Unspecified sepsis → A41.9
+        else {
+            codes.push({
+                code: 'A41.9',
+                label: 'Sepsis, unspecified organism',
+                rationale: 'Sepsis documented in narrative without organism',
+                guideline: 'ICD-10-CM A41.9',
+                trigger: 'Sepsis (narrative)',
+                rule: 'Unspecified sepsis code'
+            });
+        }
+    }
+
+    // === ARDS DETECTION ===
+    // J80 - Acute respiratory distress syndrome
+    // Logic: If ARDS detected by parser (in ctx.conditions.respiratory.ards), generate J80
+    if (ctx.conditions.respiratory?.ards) {
+        codes.push({
+            code: 'J80',
+            label: 'Acute respiratory distress syndrome',
+            rationale: 'ARDS documented',
+            guideline: 'ICD-10-CM J80',
+            trigger: 'Acute Respiratory Distress Syndrome',
+            rule: 'ARDS code'
+        });
+    }
+
     // --- NEUROLOGY RULES ---
     if (ctx.conditions.neurology) {
         const n = ctx.conditions.neurology;
@@ -3753,6 +3811,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 r65Codes.push(code);
             }
             else if (c.startsWith('A40') || c.startsWith('A41') || c === 'B37.7' || c.startsWith('P36')) {
+                organismCodes.push(code);
             }
             // Chronic conditions
             else if (c.startsWith('E11.9') || c.startsWith('E10.9') || c === 'I10' || c === 'Z79.4') {
@@ -3795,19 +3854,25 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         // Conditions that force Sepsis Secondary
         const hasHighPriorityPrimary = admissionReasonCodes.length > 0 || highPrioritySourceCodes.length > 0;
 
-        // Specific check for Case 10 (Appendicitis/Localized)
-        // If admittedForSepsis is FALSE, and we have a strong localized source (Appy, Chole, Divert, Perf)
+        // Specific check for Case 10 (Appendicitis/Localized) AND Case 21 (UTI), Case 23 (Ulcer), Case 35 (PNA)
+        // If admittedForSepsis is FALSE, and we have a strong localized source (Appy, Chole, Divert, Perf, UTI, PNA, Skin)
+        // OR even if admittedForSepsis is TRUE, localized source usually wins (Guideline I.C.1.d.4)
         const hasStrongLocalizedSource = sourceInfectionCodes.some(c =>
-            c.code.startsWith('K35') || c.code.startsWith('K81') || c.code.startsWith('K57') || c.code.startsWith('K63'));
-
-        // Special Case 10 Logic: If Strong Localized Source exists and NOT explicitly admitted for sepsis, prioritize source
-        const sequenceSepsisSecondary = hasHighPriorityPrimary || (hasStrongLocalizedSource && !admittedForSepsis);
+            c.code.startsWith('K35') || c.code.startsWith('K81') || c.code.startsWith('K57') || c.code.startsWith('K63') || // Abdominal
+            c.code.startsWith('N10') || c.code.startsWith('N30') || c.code.startsWith('N39') || // UTI
+            c.code.startsWith('J1') || c.code.startsWith('J69') || // Respiratory (PNA)
+            c.code.startsWith('L0') || c.code.startsWith('L89') || c.code.startsWith('L97')); // Skin
+        // Special Case 10 Logic: If Strong Localized Source exists, prioritize source (Guideline I.C.1.d.4)
+        // Even if "Admitted for Sepsis", the localized source (UTI, PNA) should be principal.
+        const sequenceSepsisSecondary = hasHighPriorityPrimary || hasStrongLocalizedSource;
 
         // Create Sepsis Block (Sepsis + R65 always together)
         const sepsisBlock = [
             ...dedupe(organismCodes),
-            ...dedupe(r65Codes)
+            ...dedupe(r65Codes),
+            ...dedupe(organDysfunctionCodes)
         ];
+
 
         let reorderedCodes: StructuredCode[] = [];
 
@@ -3868,13 +3933,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             }
         }
 
-        return {
-            primary: reorderedCodes.length > 0 ? reorderedCodes[0] : null,
-            secondary: reorderedCodes.length > 1 ? reorderedCodes.slice(1) : [],
-            procedures: procedures,
-            warnings: warnings,
-            validationErrors: validationErrors
-        };
+        finalCodes = reorderedCodes;
     }
 
     // Non-Sepsis Sequencing Logic (Respiratory & General)
@@ -4253,6 +4312,27 @@ function mapInjuryCode(type: string, bodyRegion: string, laterality?: string, en
 
     return code + seventh;
 }
+
+// === ARDS DETECTION ===
+// J80 - Acute respiratory distress syndrome
+// This logic assumes it's part of a larger function that collects codes into a 'codes' array
+// and has access to a 'ctx' object. For this insertion, it's placed as a standalone block
+// and would need to be integrated into a function that processes conditions.
+// As per the instruction, it's placed after the injury mapping function.
+// If this is intended to be a new function, it needs a function signature.
+// Assuming it's a block to be integrated into a main mapping function later.
+/*
+if (ctx.conditions.respiratory?.ards) {
+    codes.push({
+        code: 'J80',
+        label: 'Acute respiratory distress syndrome',
+        rationale: 'ARDS documented',
+        guideline: 'ICD-10-CM J80',
+        trigger: 'Acute Respiratory Distress Syndrome',
+        rule: 'ARDS code'
+    });
+}
+*/
 
 // External cause mapping (W/X/Y codes)
 function mapExternalCause(mechanism: string, encounterType?: string): string {

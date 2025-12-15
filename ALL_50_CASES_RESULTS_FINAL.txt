@@ -1,0 +1,222 @@
+=== ALL 50 COMPLEX CASES RESULTS ===
+
+CASE 1
+Input: "72-year-old admitted with pneumonia due to MRSA complicated by sepsis and acute hypoxic respiratory failure."
+Result: J15.212 (Pneumonia due to Methicillin resistant Staphylococcus aureus), J96.01 (Respiratory failure, Acute with hypoxia), A41.02 (Sepsis due to mrsa )
+--------------------------------------------------
+CASE 2
+Input: "80-year-old female with COVID-19 pneumonia, septic shock, and acute respiratory failure."
+Result: U07.1 (COVID-19), J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia), A41.9 (Sepsis, unspecified organism), R65.21 (Severe sepsis with septic shock), J12.82 (Pneumonia due to coronavirus disease 2019)
+--------------------------------------------------
+CASE 3
+Input: "65-year-old male with aspiration pneumonia leading to severe sepsis and acute renal failure."
+Result: J69.0 (Pneumonitis due to inhalation of food and vomit), A41.9 (Sepsis, unspecified organism), R65.20 (Severe sepsis without septic shock), N17.9 (Acute kidney failure, unspecified), N18.9 (Chronic kidney disease, stage unspecified )
+--------------------------------------------------
+CASE 4
+Input: "70-year-old admitted for E. coli pneumonia with septic shock and acute hypoxic respiratory failure."
+Result: J15.5 (Pneumonia due to Escherichia coli), J96.01 (Respiratory failure, Acute with hypoxia), A41.51 (Sepsis due to e coli ), R65.21 (Severe sepsis with septic shock)
+--------------------------------------------------
+CASE 5
+Input: "68-year-old male with COPD admitted with pneumonia causing sepsis."
+Result: J18.9 (Pneumonia, unspecified organism), J44.0 (Chronic obstructive pulmonary disease with (acute) lower respiratory infection), A41.9 (Sepsis, unspecified organism)
+--------------------------------------------------
+CASE 6
+Input: "75-year-old with COPD exacerbation and acute hypercapnic respiratory failure."
+Result: J44.1 (Chronic obstructive pulmonary disease with (acute) exacerbation), J96.02 (Respiratory failure, Acute with hypercapnia)
+--------------------------------------------------
+CASE 7
+Input: "70-year-old female with congestive heart failure and acute pulmonary edema causing respiratory failure."
+Result: J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia), I50.9 (Heart failure, unspecified, acute ), J81.0 (Acute pulmonary edema)
+--------------------------------------------------
+CASE 8
+Input: "60-year-old with COPD and CHF admitted with acute on chronic respiratory failure."
+Result: J44.9 (Chronic obstructive pulmonary disease, unspecified), J96.20 (Respiratory failure, Acute on chronic, unspecified whether with hypoxia or hypercapnia), I50.9 (Heart failure, unspecified, acute_on_chronic )
+--------------------------------------------------
+CASE 9
+Input: "55-year-old with severe asthma exacerbation and hypoxic respiratory failure."
+Result: J45.901 (Unspecified asthma, with exacerbation ), J96.91 (Respiratory failure, Unspecified with hypoxia)
+--------------------------------------------------
+CASE 10
+Input: "80-year-old on home oxygen admitted with chronic respiratory failure."
+Result: J96.10 (Respiratory failure, Chronic, unspecified whether with hypoxia or hypercapnia), Z99.81 (Dependence on supplemental oxygen)
+--------------------------------------------------
+CASE 11
+Input: "68-year-old male admitted with pneumonia complicated by acute respiratory failure."
+Result: J18.9 (Pneumonia, unspecified organism), J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+CASE 12
+Input: "72-year-old female with influenza A pneumonia and acute respiratory failure."
+Result: J10.0 (Influenza due to other identified influenza virus with pneumonia), J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+CASE 13
+Input: "65-year-old male with ventilator-associated pneumonia due to Pseudomonas."
+Result: J95.851 (Ventilator associated pneumonia), B96.5 (Dysfunction due to pseudomonas as the cause of diseases classified elsewhere)
+--------------------------------------------------
+CASE 14
+Input: "85-year-old nursing home resident admitted with aspiration pneumonia."
+Result: J69.0 (Pneumonitis due to inhalation of food and vomit)
+--------------------------------------------------
+CASE 15
+Input: "70-year-old admitted with acute respiratory failure of unspecified type."
+Result: J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+CASE 16
+Input: "68-year-old with COPD exacerbation leading to acute respiratory failure."
+Result: J44.1 (Chronic obstructive pulmonary disease with (acute) exacerbation), J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+CASE 17
+Input: "72-year-old admitted with pneumonia resulting in acute hypoxic respiratory failure."
+Result: J18.9 (Pneumonia, unspecified organism), J96.01 (Respiratory failure, Acute with hypoxia)
+--------------------------------------------------
+CASE 18
+Input: "50-year-old developed acute respiratory failure following surgery."
+Result: J95.821 (Acute post-procedural respiratory failure)
+--------------------------------------------------
+CASE 19
+Input: "55-year-old with severe asthma exacerbation and hypoxic respiratory failure."
+Result: J45.901 (Unspecified asthma, with exacerbation ), J96.91 (Respiratory failure, Unspecified with hypoxia)
+--------------------------------------------------
+CASE 20
+Input: "75-year-old admitted with acute pulmonary embolism causing acute cor pulmonale."
+Result: I26.02 (Saddle embolus of pulmonary artery with acute cor pulmonale)
+--------------------------------------------------
+[Parser] Diabetes Detected in: "68-year-old with type 2 diabetes and chronic kidne..."
+[Parser] LowerText: 68-year-old with type 2 diabetes and chronic kidney disease admitted for sepsis due to uti.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {} 
+CASE 21
+Input: "68-year-old with type 2 diabetes and chronic kidney disease admitted for sepsis due to UTI."
+Result: N39.0 (Urinary tract infection, site not specified), A41.9 (Sepsis, unspecified organism), N18.9 (Chronic kidney disease, stage unspecified ), E11.22 (Type 2 diabetes mellitus with diabetic chronic kidney disease)
+--------------------------------------------------
+[Parser] Diabetes Detected in: "55-year-old with type 1 diabetes admitted with dia..."
+[Parser] LowerText: 55-year-old with type 1 diabetes admitted with diabetic ketoacidosis.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {"ketoacidosis":true} 
+CASE 22
+Input: "55-year-old with type 1 diabetes admitted with diabetic ketoacidosis."
+Result: E10.10 (Type 1 diabetes mellitus with ketoacidosis without coma)
+--------------------------------------------------
+[Parser] Diabetes Detected in: "72-year-old type 2 diabetic with foot ulcer admitt..."
+[Parser] LowerText: 72-year-old type 2 diabetic with foot ulcer admitted for sepsis.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"footUlcer":true} 
+CASE 23
+Input: "72-year-old type 2 diabetic with foot ulcer admitted for sepsis."
+Result: L97.419 (Non-pressure chronic ulcer of right heel and midfoot with unspecified severity), A41.9 (Sepsis, unspecified organism), E11.621 (Type 2 diabetes mellitus with foot ulcer)
+--------------------------------------------------
+[Parser] Diabetes Detected in: "65-year-old diabetic admitted with pneumonia and a..."
+[Parser] LowerText: 65-year-old diabetic admitted with pneumonia and acute hypoxic respiratory failure.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {} 
+CASE 24
+Input: "65-year-old diabetic admitted with pneumonia and acute hypoxic respiratory failure."
+Result: J18.9 (Pneumonia, unspecified organism), J96.01 (Respiratory failure, Acute with hypoxia), E11.9 (Type 2 diabetes mellitus without complications)
+--------------------------------------------------
+[Parser] Diabetes Detected in: "70-year-old diabetic with ESRD on dialysis admitte..."
+[Parser] LowerText: 70-year-old diabetic with esrd on dialysis admitted with sepsis.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {} 
+CASE 25
+Input: "70-year-old diabetic with ESRD on dialysis admitted with sepsis."
+Result: A41.9 (Sepsis, unspecified organism), N18.6 (Chronic kidney disease, stage esrd ), E11.22 (Type 2 diabetes mellitus with diabetic chronic kidney disease), Z99.2 (Dependence on renal dialysis)
+--------------------------------------------------
+CASE 26
+Input: "60-year-old with COVID-19 pneumonia complicated by acute respiratory distress syndrome."
+Result: U07.1 (COVID-19), J12.82 (Pneumonia due to coronavirus disease 2019), J80 (Acute respiratory distress syndrome)
+--------------------------------------------------
+CASE 27
+Input: "75-year-old admitted with acute on chronic respiratory failure due to COPD."
+Result: J44.9 (Chronic obstructive pulmonary disease, unspecified), J96.20 (Respiratory failure, Acute on chronic, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+CASE 28
+Input: "68-year-old male with pneumonia and acute respiratory failure requiring oxygen."
+Result: J18.9 (Pneumonia, unspecified organism), J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+CASE 29
+Input: "80-year-old female admitted with COPD exacerbation and pneumonia."
+Result: J18.9 (Pneumonia, unspecified organism), J44.1 (Chronic obstructive pulmonary disease with (acute) exacerbation), J44.0 (Chronic obstructive pulmonary disease with (acute) lower respiratory infection), J20.9 (Acute bronchitis, unspecified)
+--------------------------------------------------
+CASE 30
+Input: "65-year-old admitted with acute hypoxic respiratory failure secondary to pulmonary edema."
+Result: J96.01 (Respiratory failure, Acute with hypoxia), J81.0 (Acute pulmonary edema)
+--------------------------------------------------
+CASE 31
+Input: "55-year-old male smoker admitted with COPD and acute respiratory failure."
+Result: J44.9 (Chronic obstructive pulmonary disease, unspecified), J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia), F17.210 (Nicotine dependence, cigarettes, uncomplicated)
+--------------------------------------------------
+CASE 32
+Input: "70-year-old female with CHF admitted with pleural effusion and shortness of breath."
+Result: I50.9 (Heart failure, unspecified, unspecified ), J91.8 (Pleural effusion in other conditions classified elsewhere)
+--------------------------------------------------
+CASE 33
+Input: "60-year-old admitted with viral pneumonia and respiratory failure."
+Result: J96.90 (Respiratory failure, Unspecified, unspecified whether with hypoxia or hypercapnia), J12.9 (Viral pneumonia, unspecified)
+--------------------------------------------------
+CASE 34
+Input: "75-year-old admitted with COVID-19, pneumonia, and septic shock."
+Result: U07.1 (COVID-19), A41.9 (Sepsis, unspecified organism), R65.21 (Severe sepsis with septic shock), J12.82 (Pneumonia due to coronavirus disease 2019)
+--------------------------------------------------
+CASE 35
+Input: "68-year-old admitted with severe sepsis secondary to pneumonia."
+Result: J18.9 (Pneumonia, unspecified organism), A41.9 (Sepsis, unspecified organism)
+--------------------------------------------------
+CASE 36
+Input: "72-year-old admitted with pneumonia complicated by acute renal failure."
+Result: J18.9 (Pneumonia, unspecified organism), N17.9 (Acute kidney failure, unspecified), N18.9 (Chronic kidney disease, stage unspecified )
+--------------------------------------------------
+CASE 37
+Input: "65-year-old admitted with aspiration pneumonia and acute respiratory failure."
+Result: J69.0 (Pneumonitis due to inhalation of food and vomit), J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+CASE 38
+Input: "80-year-old admitted with acute respiratory failure following intubation."
+Result: J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+CASE 39
+Input: "55-year-old admitted with spontaneous pneumothorax."
+Result: J93.11 (Primary spontaneous pneumothorax)
+--------------------------------------------------
+CASE 40
+Input: "70-year-old admitted with acute saddle pulmonary embolism."
+Result: I26.02 (Saddle embolus of pulmonary artery with acute cor pulmonale)
+--------------------------------------------------
+CASE 41
+Input: "60-year-old admitted with ARDS following sepsis."
+Result: A41.9 (Sepsis, unspecified organism), J80 (Acute respiratory distress syndrome)
+--------------------------------------------------
+CASE 42
+Input: "75-year-old admitted with COPD exacerbation and hypercapnic respiratory failure."
+Result: J44.1 (Chronic obstructive pulmonary disease with (acute) exacerbation), J96.92 (Respiratory failure, Unspecified with hypercapnia)
+--------------------------------------------------
+CASE 43
+Input: "68-year-old admitted with pneumonia and acute on chronic respiratory failure."
+Result: J18.9 (Pneumonia, unspecified organism), J96.20 (Respiratory failure, Acute on chronic, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+CASE 44
+Input: "72-year-old admitted with influenza pneumonia and hypoxic respiratory failure."
+Result: J10.0 (Influenza due to other identified influenza virus with pneumonia), J96.91 (Respiratory failure, Unspecified with hypoxia)
+--------------------------------------------------
+CASE 45
+Input: "65-year-old admitted with postoperative respiratory failure."
+Result: J96.90 (Respiratory failure, Unspecified, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+CASE 46
+Input: "70-year-old admitted with ventilator-associated pneumonia."
+Result: J95.851 (Ventilator associated pneumonia)
+--------------------------------------------------
+CASE 47
+Input: "55-year-old admitted with COVID-19 pneumonia and ARDS."
+Result: U07.1 (COVID-19), J12.82 (Pneumonia due to coronavirus disease 2019), J80 (Acute respiratory distress syndrome)
+--------------------------------------------------
+CASE 48
+Input: "80-year-old admitted with aspiration pneumonia leading to sepsis."
+Result: J69.0 (Pneumonitis due to inhalation of food and vomit), A41.9 (Sepsis, unspecified organism)
+--------------------------------------------------
+CASE 49
+Input: "60-year-old admitted with acute respiratory failure and metabolic encephalopathy."
+Result: J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia), G93.41 (Encephalopathy, metabolic )
+--------------------------------------------------
+CASE 50
+Input: "75-year-old admitted with septic shock complicated by ARDS and acute renal failure."
+Result: A41.9 (Sepsis, unspecified organism), R65.21 (Severe sepsis with septic shock), N17.9 (Acute kidney failure, unspecified), N18.9 (Chronic kidney disease, stage unspecified ), J80 (Acute respiratory distress syndrome)
+--------------------------------------------------

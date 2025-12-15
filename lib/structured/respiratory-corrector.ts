@@ -210,8 +210,30 @@ function getRespiratoryPriorityScore(code: string): number {
     // 21. Tobacco/Nicotine dependence
     if (code.startsWith('F17')) return 90;
 
-    // 22. Organism codes
+    // 22. Organism codes (B96)
     if (code.startsWith('B96')) return 85;
+
+    // === NON-RESPIRATORY SEQUENCING SUPPORT ===
+    // Ensure this corrector doesn't break Sepsis/Source sequencing (Case 21, 23, 35)
+
+    // 23. Localized Sources (UTI, Skin, Abdominal) - Should appear BEFORE Sepsis
+    if (code.startsWith('N39') || code.startsWith('N10') || code.startsWith('N30') || // UTI
+        code.startsWith('K35') || code.startsWith('K81') || code.startsWith('K57') || // Abdominal
+        code.startsWith('L0') || code.startsWith('L89') || code.startsWith('L97') || // Skin
+        code.startsWith('T8')) { // Post-procedural infection
+        return 52; // Higher priority than Sepsis
+    }
+
+    // 24. Sepsis (A40, A41)
+    if (code.startsWith('A40') || code.startsWith('A41') || code === 'B37.7') {
+        return 55; // Lower priority than Sources
+    }
+
+    // 25. Severe Sepsis (R65.2)
+    if (code.startsWith('R65.2')) return 56;
+
+    // 26. Renal Failure (N17/N18) - Often associated with Sepsis/Respiratory
+    if (code.startsWith('N17') || code.startsWith('N18')) return 58;
 
     // Default
     return 60;

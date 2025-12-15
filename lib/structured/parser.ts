@@ -2729,16 +2729,24 @@ export function parseInput(text: string): ParseResult {
                 let dType: any = 'type2'; // Default
                 let secCause: string | undefined = undefined;
 
-                if (lowerText.includes('type 1') || lowerText.includes('type i ') || lowerText.includes('juvenile')) dType = 'type1';
-                else if (lowerText.includes('secondary') || lowerText.includes('due to')) {
-                    dType = 'secondary';
-                    if (lowerText.includes('pancreatic') || lowerText.includes('pancreas') || lowerText.includes('cancer')) secCause = 'pancreatic';
-                    else if (lowerText.includes('post-pancreatectomy') || lowerText.includes('post pancreatectomy') || lowerText.includes('surgical')) secCause = 'post_procedural';
+                // PRIORITY 1: Check for Type 1 or Type 2 FIRST (most specific)
+                if (lowerText.includes('type 1') || lowerText.includes('type i ') || lowerText.includes('juvenile') || lowerText.includes('type1')) {
+                    dType = 'type1';
                 }
+                else if (lowerText.includes('type 2') || lowerText.includes('type ii ') || lowerText.includes('type2')) {
+                    dType = 'type2';
+                }
+                // PRIORITY 2: Drug-induced
                 else if (lowerText.includes('drug induced') || lowerText.includes('drug-induced') ||
                     lowerText.includes('steroid induced') || lowerText.includes('steroid-induced') || lowerText.includes('steroid dependent')) {
                     dType = 'drug_induced';
                     secCause = 'steroid';
+                }
+                // PRIORITY 3: Secondary (only if not type 1/2 or drug-induced)
+                else if (lowerText.includes('secondary diabetes') || lowerText.includes('diabetes due to')) {
+                    dType = 'secondary';
+                    if (lowerText.includes('pancreatic') || lowerText.includes('pancreas') || lowerText.includes('cancer')) secCause = 'pancreatic';
+                    else if (lowerText.includes('post-pancreatectomy') || lowerText.includes('post pancreatectomy') || lowerText.includes('surgical')) secCause = 'post_procedural';
                 }
 
                 context.conditions.endocrine.diabetes = { type: dType, complicationDetails: { secondaryCause: secCause } };
@@ -2912,10 +2920,48 @@ export function parseInput(text: string): ParseResult {
     }
 
     // POST-PROCESSING: Bronchiolitis Detection (Narrative)
-    // Detect "bronchiolitis" in narrative text
+    // Detect "bronchiolitis", "acute bronchiolitis"
     if (lowerText.includes('bronchiolitis')) {
         if (!context.conditions.respiratory) context.conditions.respiratory = {};
         context.conditions.respiratory.bronchiolitis = true;
+    }
+
+    // POST-PROCESSING: Sepsis Detection (Narrative)
+    // Detect sepsis mentioned in narrative: "complicated by sepsis", "causing sepsis", "leading to sepsis", "severe sepsis"
+    if (!context.conditions.sepsis) {
+        if (lowerText.includes('septic shock')) {
+            context.conditions.sepsis = { severity: 'shock', source: 'unspecified' };
+        } else if (lowerText.includes('severe sepsis')) {
+            context.conditions.sepsis = { severity: 'severe', source: 'unspecified' };
+        } else if (lowerText.includes('complicated by sepsis') || lowerText.includes('causing sepsis') ||
+            lowerText.includes('leading to sepsis') || lowerText.includes('secondary to sepsis') ||
+            (lowerText.includes('sepsis') && !lowerText.includes('no sepsis') && !lowerText.includes('without sepsis'))) {
+            context.conditions.sepsis = { severity: 'unspecified', source: 'unspecified' };
+        }
+    }
+
+    // POST-PROCESSING: ARDS Detection (Narrative)
+    // Detect "ARDS", "acute respiratory distress syndrome"
+    if (lowerText.includes('ards') || lowerText.includes('acute respiratory distress syndrome')) {
+        if (!context.conditions.respiratory) context.conditions.respiratory = {};
+        context.conditions.respiratory.ards = true;
+    }
+
+    // POST-PROCESSING: Acute Renal Failure Detection (Narrative)
+    // Detect "acute renal failure", "acute kidney injury", "AKI"
+    if (lowerText.includes('acute renal failure') || lowerText.includes('acute kidney injury') ||
+        (lowerText.includes('aki') && !lowerText.includes('making') && !lowerText.includes('taking'))) {
+        if (!context.conditions.ckd) {
+            context.conditions.ckd = { stage: 'unspecified', onDialysis: false, aki: false, transplantStatus: false };
+        }
+        context.conditions.ckd.aki = true;
+    }
+
+    // POST-PROCESSING: Metabolic Encephalopathy Detection (Narrative)
+    // Detect "metabolic encephalopathy"
+    if (lowerText.includes('metabolic encephalopathy')) {
+        if (!context.conditions.neurology) context.conditions.neurology = {};
+        context.conditions.neurology.encephalopathy = { present: true, type: 'metabolic' };
     }
 
     return { context, errors };

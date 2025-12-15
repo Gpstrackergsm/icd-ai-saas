@@ -51,6 +51,8 @@ export interface PatientContext {
             dialysisType?: 'none' | 'temporary' | 'chronic';
             aki: boolean;
             transplantStatus: boolean;
+            pneumothorax?: boolean;
+            ards?: boolean; // Acute respiratory distress syndrome (J80)
         };
         cardiovascular?: {
             hypertension: boolean;
@@ -85,9 +87,17 @@ export interface PatientContext {
                 stage: '1' | '2' | '3' | '4' | '5' | 'esrd' | 'unspecified';
             };
             aki?: boolean;
+            acuteFailure?: boolean; // N17.9 - Acute kidney injury
             cause?: string;
         };
         smoker?: boolean;
+        sepsis?: {
+            severity: 'unspecified' | 'severe' | 'shock';
+            source: string;
+        };
+        neuro?: {
+            metabolicEncephalopathy?: boolean; // G93.41
+        };
         respiratory?: {
             failure?: {
                 type: 'none' | 'acute' | 'chronic' | 'acute_on_chronic' | 'unspecified';
@@ -123,6 +133,7 @@ export interface PatientContext {
             pulmonaryEmbolism?: boolean;
             oxygenDependence?: boolean;
             oxygenTherapy?: boolean; // Z99.81
+            ards?: boolean; // J80 - Acute respiratory distress syndrome
         };
         infection?: {
             present: boolean;
