@@ -557,8 +557,8 @@ export function parseInput(text: string): ParseResult {
                     !(lowerValue.match(/\b(klebsiella|streptococcus|strep)\s+pneumoniae?\b/) && !lowerValue.match(/\bpneumonia\b(?!\s*e\b)/))) {
                     if (!context.conditions.respiratory) context.conditions.respiratory = {};
                     let organism: 'strep_pneumoniae' | 'h_influenzae' | 'klebsiella' | 'pseudomonas' |
-                        'mssa' | 'mrsa' | 'e_coli' | 'mycoplasma' | 'viral' | 'unspecified' | undefined;
-                    let type: 'aspiration' | 'bacterial' | 'viral' | 'unspecified' | undefined;
+                        'mssa' | 'mrsa' | 'e_coli' | 'mycoplasma' | 'viral' | 'influenza' | 'covid19' | 'unspecified' | undefined;
+                    let type: 'aspiration' | 'bacterial' | 'viral' | 'influenza' | 'unspecified' | undefined;
 
                     // Organism
                     if (lowerValue.includes('streptococcus') || lowerValue.includes('strep')) organism = 'strep_pneumoniae';
@@ -666,7 +666,7 @@ export function parseInput(text: string): ParseResult {
                     const withHypercapnia = lowerValue.includes('hypercapnia') || lowerValue.includes('hypercapnic');
 
                     // MERGE properties
-                    const existingRF = context.conditions.respiratory.failure || {};
+                    const existingRF = context.conditions.respiratory.failure || {} as any;
                     // If existing is acute_on_chronic, keep it. If existing is specific, keep it?
                     // Priority: acute_on_chronic > acute/chronic > unspecified
                     let finalType = type;
@@ -807,7 +807,7 @@ export function parseInput(text: string): ParseResult {
                         const withHypoxia = lowerValue.includes('hypoxia') || lowerValue.includes('hypoxic');
                         const withHypercapnia = lowerValue.includes('hypercapnia') || lowerValue.includes('hypercapnic');
 
-                        const existingRF = context.conditions.respiratory.failure || {};
+                        const existingRF = context.conditions.respiratory.failure || {} as any;
                         let finalType = type;
                         if (existingRF.type === 'acute_on_chronic') finalType = 'acute_on_chronic';
                         else if (type === 'unspecified' && existingRF.type) finalType = existingRF.type;
@@ -1437,8 +1437,8 @@ export function parseInput(text: string): ParseResult {
                     if (!context.conditions.respiratory) context.conditions.respiratory = {};
                     if (!context.conditions.respiratory.pneumonia) {
                         let organism: 'strep_pneumoniae' | 'h_influenzae' | 'klebsiella' | 'pseudomonas' |
-                            'mssa' | 'mrsa' | 'e_coli' | 'mycoplasma' | 'viral' | 'unspecified' | undefined;
-                        let type: 'aspiration' | 'bacterial' | 'viral' | 'unspecified' | undefined;
+                            'mssa' | 'mrsa' | 'e_coli' | 'mycoplasma' | 'viral' | 'influenza' | 'covid19' | 'unspecified' | undefined;
+                        let type: 'aspiration' | 'bacterial' | 'viral' | 'influenza' | 'unspecified' | undefined;
                         let ventilatorAssociated = false;
 
                         // Organism detection
@@ -1466,7 +1466,7 @@ export function parseInput(text: string): ParseResult {
                         // VAP detection
                         if (lowerValue.includes('ventilator')) ventilatorAssociated = true;
 
-                        const existingP = context.conditions.respiratory.pneumonia || {};
+                        const existingP = context.conditions.respiratory.pneumonia || {} as any;
                         context.conditions.respiratory.pneumonia = {
                             ...existingP,
                             organism: organism || existingP.organism,
@@ -1777,7 +1777,7 @@ export function parseInput(text: string): ParseResult {
                             }
                             else if (lc.includes('respiratory failure')) {
                                 if (!context.conditions.respiratory) context.conditions.respiratory = {};
-                                const existingRF = context.conditions.respiratory.failure || {};
+                                const existingRF = context.conditions.respiratory.failure || {} as any;
                                 // Only set acute if unspecified, preserve acute_on_chronic
                                 const newType = (existingRF.type === 'unspecified' || !existingRF.type) ? 'acute' : existingRF.type;
                                 context.conditions.respiratory.failure = { ...existingRF, type: newType };

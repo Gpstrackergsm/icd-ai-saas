@@ -116,8 +116,8 @@ export interface PatientContext {
             };
             pneumonia?: {
                 organism?: 'strep_pneumoniae' | 'h_influenzae' | 'klebsiella' | 'pseudomonas' |
-                'mssa' | 'mrsa' | 'e_coli' | 'mycoplasma' | 'viral' | 'unspecified';
-                type?: 'aspiration' | 'bacterial' | 'viral' | 'unspecified';
+                'mssa' | 'mrsa' | 'e_coli' | 'mycoplasma' | 'viral' | 'influenza' | 'covid19' | 'unspecified';
+                type?: 'aspiration' | 'bacterial' | 'viral' | 'influenza' | 'unspecified';
                 ventilatorAssociated?: boolean;
             };
             mechanicalVent?: {
