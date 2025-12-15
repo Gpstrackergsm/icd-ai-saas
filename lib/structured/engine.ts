@@ -5,6 +5,7 @@
 import { PatientContext } from './context';
 
 import { correctDiabetesCodes } from './diabetes-corrector';
+import { correctRespiratorySequencing } from './respiratory-corrector';
 
 export interface StructuredCode {
     code: string;
@@ -61,7 +62,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     // --- DIABETES RULES (DETERMINISTIC) ---
     if (ctx.conditions.endocrine?.diabetes) {
         const d = ctx.conditions.endocrine.diabetes;
-        console.log(`[Engine] Diabetes Type: ${d.type}, Details: ${JSON.stringify(d.complicationDetails)}`);
+        console.log(`[Engine] Diabetes Type: ${d.type}, Details: ${JSON.stringify(d.complicationDetails)} `);
         const comps = d.complicationDetails || {};
 
         // Determine Base Code Series
@@ -124,7 +125,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         if (comps.footUlcer) {
             hasDiabetesCode = true;
             codes.push({
-                code: `${baseCode}.621`,
+                code: `${baseCode} .621`,
                 label: `${typeName} diabetes mellitus with foot ulcer`,
                 rationale: 'Diabetes with documented foot ulcer complication',
                 guideline: 'ICD-10-CM I.C.4.a',
@@ -152,7 +153,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         if (comps.nephropathy) {
             hasDiabetesCode = true;
             codes.push({
-                code: `${baseCode}.21`,
+                code: `${baseCode} .21`,
                 label: `${typeName} diabetes mellitus with diabetic nephropathy`,
                 rationale: 'Diabetes with documented nephropathy complication',
                 guideline: 'ICD-10-CM I.C.4.a',
@@ -164,7 +165,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         else if (ctx.conditions.ckd || ctx.conditions.renal?.ckd) {
             hasDiabetesCode = true;
             codes.push({
-                code: `${baseCode}.22`,
+                code: `${baseCode} .22`,
                 label: `${typeName} diabetes mellitus with diabetic chronic kidney disease`,
                 rationale: 'Diabetes with documented CKD complication',
                 guideline: 'ICD-10-CM I.C.4.a.6(b)',
@@ -176,17 +177,17 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         // RULE: Neuropathy
         if (comps.neuropathy || comps.polyneuropathy || comps.autonomic || comps.gastroparesis) {
             hasDiabetesCode = true;
-            let nCode = `${baseCode}.40`;
+            let nCode = `${baseCode} .40`;
             let nLabel = `${typeName} diabetes mellitus with diabetic neuropathy, unspecified`;
             let specificType = 'unspecified';
 
             if (comps.polyneuropathy) {
-                nCode = `${baseCode}.42`;
+                nCode = `${baseCode} .42`;
                 nLabel = `${typeName} diabetes mellitus with diabetic polyneuropathy`;
                 specificType = 'polyneuropathy';
             } else if (comps.autonomic || comps.gastroparesis) {
-                nCode = `${baseCode}.43`;
-                nLabel = `${typeName} diabetes mellitus with diabetic autonomic (poly)neuropathy`;
+                nCode = `${baseCode} .43`;
+                nLabel = `${typeName} diabetes mellitus with diabetic autonomic(poly)neuropathy`;
                 specificType = 'autonomic';
             }
 
@@ -195,7 +196,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 label: nLabel,
                 rationale: `Diabetes with documented ${specificType} neuropathy complication`,
                 guideline: 'ICD-10-CM I.C.4.a',
-                trigger: `Diabetes Type + Neuropathy (${specificType})`,
+                trigger: `Diabetes Type + Neuropathy(${specificType})`,
                 rule: 'Diabetes complication mapping'
             });
         }
@@ -204,7 +205,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         if (comps.retinopathy) {
             hasDiabetesCode = true;
             const withMacularEdema = comps.retinopathyDetails?.macularEdema === true;
-            const code = withMacularEdema ? `${baseCode}.311` : `${baseCode}.319`;
+            const code = withMacularEdema ? `${baseCode} .311` : `${baseCode} .319`;
             const label = withMacularEdema
                 ? `${typeName} diabetes mellitus with unspecified diabetic retinopathy with macular edema`
                 : `${typeName} diabetes mellitus with unspecified diabetic retinopathy without macular edema`;
@@ -225,7 +226,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         if (comps.ketoacidosis) {
             hasDiabetesCode = true;
             codes.push({
-                code: `${baseCode}.10`,
+                code: `${baseCode} .10`,
                 label: `${typeName} diabetes mellitus with ketoacidosis without coma`,
                 rationale: 'Diabetes with documented ketoacidosis complication',
                 guideline: 'ICD-10-CM I.C.4.a',
@@ -238,7 +239,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         if (comps.hypoglycemia) {
             hasDiabetesCode = true;
             codes.push({
-                code: `${baseCode}.649`,
+                code: `${baseCode} .649`,
                 label: `${typeName} diabetes mellitus with hypoglycemia without coma`,
                 rationale: 'Diabetes with documented hypoglycemia complication',
                 guideline: 'ICD-10-CM I.C.4.a',
@@ -252,7 +253,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         if (comps.uncontrolled || ctx.conditions.endocrine.hyperglycemia?.present) {
             hasDiabetesCode = true;
             codes.push({
-                code: `${baseCode}.65`,
+                code: `${baseCode} .65`,
                 label: `${typeName} diabetes mellitus with hyperglycemia`,
                 rationale: 'Diabetes with hyperglycemia/uncontrolled',
                 guideline: 'ICD-10-CM',
@@ -264,7 +265,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         // RULE: No complications → E10.9 / E11.9
         if (!hasDiabetesCode) {
             codes.push({
-                code: `${baseCode}.9`,
+                code: `${baseCode} .9`,
                 label: `${typeName} diabetes mellitus without complications`,
                 rationale: 'Diabetes without documented complications',
                 guideline: 'ICD-10-CM I.C.4.a',
@@ -296,7 +297,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             codes.push({
                 code: code,
                 label: label,
-                rationale: `Secondary hypertension${c.hypertensionCause ? ' due to ' + c.hypertensionCause + ' disease' : ''}`,
+                rationale: `Secondary hypertension${c.hypertensionCause ? ' due to ' + c.hypertensionCause + ' disease' : ''} `,
                 guideline: 'ICD-10-CM I.C.9.a.6',
                 trigger: 'Secondary Hypertension',
                 rule: 'Secondary hypertension code'
@@ -312,7 +313,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                                 ckdStage === '5' ? 'N18.5' : 'N18.9';
                 codes.push({
                     code: ckdCode,
-                    label: `Chronic kidney disease, stage ${ckdStage}`,
+                    label: `Chronic kidney disease, stage ${ckdStage} `,
                     rationale: 'CKD documented with secondary hypertension',
                     guideline: 'ICD-10-CM I.C.14',
                     trigger: 'CKD Stage ' + ckdStage,
@@ -333,7 +334,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             // The combination code (I13.x) should be SECONDARY
             const isAcuteHF = c.heartFailure?.acuity === 'acute' || c.heartFailure?.acuity === 'acute_on_chronic';
             const hfCode = c.heartFailure ? mapHeartFailureCode(c.heartFailure.type, c.heartFailure.acuity) : 'I50.9';
-            const hfLabel = c.heartFailure ? `Heart failure, ${c.heartFailure.type} ${c.heartFailure.acuity}` : 'Heart failure, unspecified';
+            const hfLabel = c.heartFailure ? `Heart failure, ${c.heartFailure.type} ${c.heartFailure.acuity} ` : 'Heart failure, unspecified';
 
             if (isAcuteHF) {
                 // Add acute HF code FIRST (principal diagnosis)
@@ -342,7 +343,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     label: hfLabel,
                     rationale: 'Acute heart failure is principal diagnosis when reason for admission',
                     guideline: 'ICD-10-CM I.C.9.a.2 + UHDDS Section II',
-                    trigger: `Heart Failure: ${c.heartFailure?.type || 'unspecified'}, ${c.heartFailure?.acuity || 'unspecified'}`,
+                    trigger: `Heart Failure: ${c.heartFailure?.type || 'unspecified'}, ${c.heartFailure?.acuity || 'unspecified'} `,
                     rule: 'Acute HF principal diagnosis'
                 });
                 // Then add combination code as secondary
@@ -371,7 +372,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     label: hfLabel,
                     rationale: 'Specific heart failure code required with I13.x per ICD-10-CM guidelines',
                     guideline: 'ICD-10-CM I.C.9.a.2',
-                    trigger: `Heart Failure: ${c.heartFailure?.type || 'unspecified'}, ${c.heartFailure?.acuity || 'unspecified'}`,
+                    trigger: `Heart Failure: ${c.heartFailure?.type || 'unspecified'}, ${c.heartFailure?.acuity || 'unspecified'} `,
                     rule: 'Heart failure code with I13 combination'
                 });
             }
@@ -385,7 +386,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                                 ckdStage === 'esrd' ? 'N18.6' : 'N18.9';
             codes.push({
                 code: ckdCode,
-                label: `Chronic kidney disease, stage ${ckdStage}`,
+                label: `Chronic kidney disease, stage ${ckdStage} `,
                 rationale: 'CKD stage code required with I13.x',
                 guideline: 'ICD-10-CM I.C.9.a.2',
                 trigger: 'CKD Stage ' + ckdStage,
@@ -418,7 +419,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                             ckdStage === '5' ? 'N18.5' : 'N18.9';
             codes.push({
                 code: ckdCode,
-                label: `Chronic kidney disease, stage ${ckdStage}`,
+                label: `Chronic kidney disease, stage ${ckdStage} `,
                 rationale: 'CKD stage code required with I13.x',
                 guideline: 'ICD-10-CM I.C.9.a.2',
                 trigger: 'CKD Stage ' + ckdStage,
@@ -453,7 +454,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                             ckdStage === '5' ? 'N18.5' : 'N18.9';
             codes.push({
                 code: ckdCode,
-                label: `Chronic kidney disease, stage ${ckdStage}`,
+                label: `Chronic kidney disease, stage ${ckdStage} `,
                 rationale: 'CKD stage code required with I12.x',
                 guideline: 'ICD-10-CM I.C.9.a.2',
                 trigger: 'CKD Stage ' + ckdStage,
@@ -466,7 +467,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             // The combination code (I11.0) should be SECONDARY (same logic as HTN+HF+CKD)
             const isAcuteHF = c.heartFailure?.acuity === 'acute' || c.heartFailure?.acuity === 'acute_on_chronic';
             const hfCode = c.heartFailure ? mapHeartFailureCode(c.heartFailure.type, c.heartFailure.acuity) : 'I50.9';
-            const hfLabel = c.heartFailure ? `Heart failure, ${c.heartFailure.type} ${c.heartFailure.acuity}` : 'Heart failure, unspecified';
+            const hfLabel = c.heartFailure ? `Heart failure, ${c.heartFailure.type} ${c.heartFailure.acuity} ` : 'Heart failure, unspecified';
 
             if (isAcuteHF) {
                 // Add acute HF code FIRST (principal diagnosis)
@@ -475,7 +476,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     label: hfLabel,
                     rationale: 'Acute heart failure is principal diagnosis when reason for admission',
                     guideline: 'ICD-10-CM I.C.9.a.1 + UHDDS Section II',
-                    trigger: `Heart Failure: ${c.heartFailure?.type || 'unspecified'}, ${c.heartFailure?.acuity || 'unspecified'}`,
+                    trigger: `Heart Failure: ${c.heartFailure?.type || 'unspecified'}, ${c.heartFailure?.acuity || 'unspecified'} `,
                     rule: 'Acute HF principal diagnosis'
                 });
                 // Then add I11.0 as secondary
@@ -503,7 +504,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     label: hfLabel,
                     rationale: 'Specific heart failure code required with I11.0',
                     guideline: 'ICD-10-CM I.C.9.a.1',
-                    trigger: `Heart Failure: ${c.heartFailure?.type || 'unspecified'}, ${c.heartFailure?.acuity || 'unspecified'}`,
+                    trigger: `Heart Failure: ${c.heartFailure?.type || 'unspecified'}, ${c.heartFailure?.acuity || 'unspecified'} `,
                     rule: 'Heart failure code with I11.0 combination'
                 });
             }
@@ -554,10 +555,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             if (!alreadyAdded) {
                 codes.push({
                     code: hfCode,
-                    label: `Heart failure, ${c.heartFailure.type}, ${c.heartFailure.acuity}`,
+                    label: `Heart failure, ${c.heartFailure.type}, ${c.heartFailure.acuity} `,
                     rationale: 'Specific heart failure type and acuity',
                     guideline: 'ICD-10-CM I.C.9',
-                    trigger: `Heart Failure Type: ${c.heartFailure.type}, Acuity: ${c.heartFailure.acuity}`,
+                    trigger: `Heart Failure Type: ${c.heartFailure.type}, Acuity: ${c.heartFailure.acuity} `,
                     rule: 'Heart failure specificity mapping'
                 });
             }
@@ -611,7 +612,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     else if (c.mi.location === 'inferior') miCode = 'I21.19';
                     else if (c.mi.location === 'lateral') miCode = 'I21.29';
                     else miCode = 'I21.09'; // Default to Anterior (I21.09) per test expectation for unspecified STEMI
-                    miLabel = `ST elevation myocardial infarction${c.mi.location ? ' of ' + c.mi.location + ' wall' : ''}`;
+                    miLabel = `ST elevation myocardial infarction${c.mi.location ? ' of ' + c.mi.location + ' wall' : ''} `;
                 } else if (c.mi.type === 'nstemi') {
                     miCode = 'I21.4';
                     miLabel = 'Non-ST elevation myocardial infarction';
@@ -623,7 +624,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 label: miLabel,
                 rationale: `${c.mi.type?.toUpperCase() || 'Acute'} MI documented`,
                 guideline: 'ICD-10-CM I21-I22',
-                trigger: `MI Type: ${c.mi.type}, Timing: ${c.mi.timing}`,
+                trigger: `MI Type: ${c.mi.type}, Timing: ${c.mi.timing} `,
                 rule: 'Myocardial infarction code'
             });
         }
@@ -660,7 +661,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 label: anginaLabel,
                 rationale: `${c.angina.type} angina documented`,
                 guideline: 'ICD-10-CM I20',
-                trigger: `Angina Type: ${c.angina.type}`,
+                trigger: `Angina Type: ${c.angina.type} `,
                 rule: 'Angina code'
             });
 
@@ -698,7 +699,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 label: cmLabel,
                 rationale: `${c.cardiomyopathy.type} cardiomyopathy documented`,
                 guideline: 'ICD-10-CM I42',
-                trigger: `Cardiomyopathy Type: ${c.cardiomyopathy.type}`,
+                trigger: `Cardiomyopathy Type: ${c.cardiomyopathy.type} `,
                 rule: 'Cardiomyopathy code'
             });
         }
@@ -726,10 +727,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             const ckdCode = mapCKDStage(k.stage);
             codes.push({
                 code: ckdCode,
-                label: `Chronic kidney disease, stage ${k.stage}`,
+                label: `Chronic kidney disease, stage ${k.stage} `,
                 rationale: 'CKD stage explicitly documented',
                 guideline: 'ICD-10-CM I.C.14.a',
-                trigger: `CKD Stage: ${k.stage}`,
+                trigger: `CKD Stage: ${k.stage} `,
                 rule: 'CKD stage mapping'
             });
         }
@@ -759,10 +760,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             const ckdCode = mapCKDStage(ckd.stage);
             codes.push({
                 code: ckdCode,
-                label: `Chronic kidney disease, stage ${ckd.stage}`,
+                label: `Chronic kidney disease, stage ${ckd.stage} `,
                 rationale: 'CKD stage explicitly documented',
                 guideline: 'ICD-10-CM I.C.14.a',
-                trigger: `CKD Stage: ${ckd.stage}`,
+                trigger: `CKD Stage: ${ckd.stage} `,
                 rule: 'CKD stage mapping'
             });
         }
@@ -849,7 +850,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                             label: `Dysfunction due to ${p.organism} as the cause of diseases classified elsewhere`,
                             rationale: 'Organism causing VAP (Code B95-B97)',
                             guideline: 'ICD-10-CM B96',
-                            trigger: `VAP Organism: ${p.organism}`,
+                            trigger: `VAP Organism: ${p.organism} `,
                             rule: 'VAP Organism'
                         });
                     }
@@ -872,7 +873,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 codes.push({
                     code: pCode,
                     label: pLabel,
-                    rationale: `Pneumonia${organism ? ' due to ' + organism.replace(/_/g, ' ') : ', unspecified organism'}`,
+                    rationale: `Pneumonia${organism ? ' due to ' + organism.replace(/_/g, ' ') : ', unspecified organism'} `,
                     guideline: 'ICD-10-CM I.C.10.d',
                     trigger: 'Pneumonia + ' + (organism || 'unspecified organism'),
                     rule: 'Organism-specific pneumonia code'
@@ -941,7 +942,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 codes.push({
                     code: `${prefix}0`,
                     label: `Respiratory failure, ${rationaleDetail}, unspecified whether with hypoxia or hypercapnia`,
-                    rationale: `${rationaleDetail} respiratory failure (unspecified subtype)`,
+                    rationale: `${rationaleDetail} respiratory failure(unspecified subtype)`,
                     guideline: 'ICD-10-CM J96',
                     trigger: 'Respiratory Failure',
                     rule: 'Respiratory failure code'
@@ -986,10 +987,34 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         codes.push({
             code: 'J41.0',
             label: 'Simple chronic bronchitis',
-            rationale: 'Simple chronic bronchitis documented',
-            guideline: 'ICD-10-CM J41.0',
+            rationale: 'Chronic bronchitis documented',
+            guideline: 'ICD-10-CM J41',
             trigger: 'Chronic Bronchitis',
-            rule: 'Bronchitis Code'
+            rule: 'Chronic bronchitis code'
+        });
+    }
+
+    // RULE: Bronchiolitis (J21.9)
+    if (ctx.conditions.respiratory?.bronchiolitis) {
+        codes.push({
+            code: 'J21.9',
+            label: 'Acute bronchiolitis, unspecified',
+            rationale: 'Bronchiolitis documented',
+            guideline: 'ICD-10-CM J21',
+            trigger: 'Bronchiolitis',
+            rule: 'Bronchiolitis code'
+        });
+    }
+
+    // RULE: Long-term Oxygen Therapy (Z99.81)
+    if (ctx.conditions.respiratory?.oxygenTherapy) {
+        codes.push({
+            code: 'Z99.81',
+            label: 'Dependence on supplemental oxygen',
+            rationale: 'Patient on long-term oxygen therapy',
+            guideline: 'ICD-10-CM Z99.81',
+            trigger: 'Oxygen Therapy',
+            rule: 'Oxygen dependence code'
         });
     }
 
@@ -1150,7 +1175,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         if (ctx.conditions.renal?.ckd || ctx.conditions.ckd) { // Check both locations
             const stage = ctx.conditions.renal?.ckd?.stage || ctx.conditions.ckd?.stage; // Fallback
             codes.push({
-                code: `${prefix}.22`,
+                code: `${prefix} .22`,
                 label: `${typeLabel} with diabetic chronic kidney disease`,
                 rationale: 'Diabetes linked to CKD ("With" Guideline I.C.4.a)',
                 guideline: 'ICD-10-CM I.C.4.a',
@@ -1163,7 +1188,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         // Nephropathy (General)
         else if (complications.nephropathy) { // If parsed explicitly
             codes.push({
-                code: `${prefix}.21`,
+                code: `${prefix} .21`,
                 label: `${typeLabel} with diabetic nephropathy`,
                 rationale: 'Diabetes with nephropathy',
                 guideline: 'ICD-10-CM I.C.4.a',
@@ -1241,7 +1266,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
         if (complications.hypoglycemia) {
             codes.push({
-                code: `${prefix}.649`,
+                code: `${prefix} .649`,
                 label: `${typeLabel} with hypoglycemia without coma`,
                 rationale: 'Hypoglycemia documented',
                 guideline: 'ICD-10-CM',
@@ -1266,33 +1291,33 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
         // Let's write the logic:
         if ((complications as any).neuropathy) {
-            codes.push({ code: `${prefix}.40`, label: `${typeLabel} with diabetic neuropathy, unspecified`, rationale: 'Diabetes with neuropathy', guideline: 'ICD-10-CM', trigger: 'Neuropathy', rule: 'Diabetes Neuro' });
+            codes.push({ code: `${prefix} .40`, label: `${typeLabel} with diabetic neuropathy, unspecified`, rationale: 'Diabetes with neuropathy', guideline: 'ICD-10-CM', trigger: 'Neuropathy', rule: 'Diabetes Neuro' });
             codedComplications = true;
         } else if ((complications as any).polyneuropathy) {
-            codes.push({ code: `${prefix}.42`, label: `${typeLabel} with diabetic polyneuropathy`, rationale: 'Diabetes with polyneuropathy', guideline: 'ICD-10-CM', trigger: 'Polyneuropathy', rule: 'Diabetes Neuro' });
+            codes.push({ code: `${prefix} .42`, label: `${typeLabel} with diabetic polyneuropathy`, rationale: 'Diabetes with polyneuropathy', guideline: 'ICD-10-CM', trigger: 'Polyneuropathy', rule: 'Diabetes Neuro' });
             codedComplications = true;
         } else if ((complications as any).gastroparesis) {
-            codes.push({ code: `${prefix}.43`, label: `${typeLabel} with diabetic autonomic (poly)neuropathy (gastroparesis)`, rationale: 'Diabetes with gastroparesis', guideline: 'ICD-10-CM', trigger: 'Gastroparesis', rule: 'Diabetes Neuro' });
+            codes.push({ code: `${prefix} .43`, label: `${typeLabel} with diabetic autonomic(poly)neuropathy(gastroparesis)`, rationale: 'Diabetes with gastroparesis', guideline: 'ICD-10-CM', trigger: 'Gastroparesis', rule: 'Diabetes Neuro' });
             codedComplications = true;
             // Also code K31.84 if specific gastroparesis needed? Usually E11.43 covers "Diabetic gastroparesis".
             // Actually title is "Type 2 diabetes mellitus with diabetic autonomic (poly)neuropathy".
             // Gastroparesis is K31.84.
             // But usually coded as manifestation.
         } else if ((complications as any).autonomic) {
-            codes.push({ code: `${prefix}.43`, label: `${typeLabel} with diabetic autonomic (poly)neuropathy`, rationale: 'Diabetes with autonomic neuropathy', guideline: 'ICD-10-CM', trigger: 'Autonomic Neuropathy', rule: 'Diabetes Neuro' });
+            codes.push({ code: `${prefix} .43`, label: `${typeLabel} with diabetic autonomic(poly)neuropathy`, rationale: 'Diabetes with autonomic neuropathy', guideline: 'ICD-10-CM', trigger: 'Autonomic Neuropathy', rule: 'Diabetes Neuro' });
             codedComplications = true;
         }
 
         if ((complications as any).retinopathy) {
             const retDetails = (complications as any).retinopathyDetails || {};
-            let retCode = `${prefix}.319`; // Default: Unspecified retinopathy without macular edema
+            let retCode = `${prefix} .319`; // Default: Unspecified retinopathy without macular edema
 
             // Stage Detection
-            if (retDetails.stage === 'mild_npdr') retCode = `${prefix}.329`;
-            else if (retDetails.stage === 'moderate_npdr') retCode = `${prefix}.339`;
-            else if (retDetails.stage === 'severe_npdr') retCode = `${prefix}.349`;
-            else if (retDetails.stage === 'proliferative') retCode = `${prefix}.359`;
-            else retCode = `${prefix}.319`; // Unspecified
+            if (retDetails.stage === 'mild_npdr') retCode = `${prefix} .329`;
+            else if (retDetails.stage === 'moderate_npdr') retCode = `${prefix} .339`;
+            else if (retDetails.stage === 'severe_npdr') retCode = `${prefix} .349`;
+            else if (retDetails.stage === 'proliferative') retCode = `${prefix} .359`;
+            else retCode = `${prefix} .319`; // Unspecified
 
             // Macular Edema modifier (usually changes 9 to 1)
             // Note: ICD-10 structure usually .3x9 (no ME) vs .3x1 (with ME)
@@ -1305,7 +1330,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
             // Traction Detachment (Proliferative)
             if (retDetails.tractionDetachment) {
-                retCode = `${prefix}.352`; // Proliferative w/ TRD
+                retCode = `${prefix} .352`; // Proliferative w/ TRD
                 // This overrides stage if inconsistent, but usually implies proliferative
             }
 
@@ -1316,9 +1341,9 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         // PVD / Angiopathy
         // PVD / Angiopathy / Gangrene
         if ((complications as any).pvd || (complications as any).angiopathy || (complications as any).gangrene) {
-            let pvdCode = `${prefix}.51`; // Angiopathy/PVD
-            if ((complications as any).gangrene) pvdCode = `${prefix}.52`;
-            codes.push({ code: pvdCode, label: `${typeLabel} with diabetic peripheral angiopathy/gangrene`, rationale: 'PVD/Angiopathy/Gangrene linkage', guideline: 'ICD-10-CM', trigger: 'PVD/Angiopathy/Gangrene', rule: 'Diabetes Circ' });
+            let pvdCode = `${prefix} .51`; // Angiopathy/PVD
+            if ((complications as any).gangrene) pvdCode = `${prefix} .52`;
+            codes.push({ code: pvdCode, label: `${typeLabel} with diabetic peripheral angiopathy / gangrene`, rationale: 'PVD/Angiopathy/Gangrene linkage', guideline: 'ICD-10-CM', trigger: 'PVD/Angiopathy/Gangrene', rule: 'Diabetes Circ' });
             codedComplications = true;
 
             // Add I96 for Gangrene if not already added separately?
@@ -1339,7 +1364,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         // Check ctx.conditions.wounds?
         if ((complications as any).footUlcer || ctx.conditions.wounds?.type === 'diabetic') {
             codes.push({
-                code: `${prefix}.621`,
+                code: `${prefix} .621`,
                 label: `${typeLabel} with foot ulcer`,
                 rationale: 'Diabetes with foot ulcer ("With" Guideline)',
                 guideline: 'ICD-10-CM',
@@ -1378,7 +1403,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 else if (dm.ulcerSeverity === 'bone') sevChar = '4'; // Bone
                 else sevChar = '9'; // Unspecified
 
-                lCode = `L97.${siteChar}${lateralityChar}${sevChar}`;
+                lCode = `L97.${siteChar}${lateralityChar}${sevChar} `;
 
                 codes.push({
                     code: lCode,
@@ -1404,14 +1429,14 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         // Skin complications (Dermatitis etc) -> E1x.620
         // Skin complications (Dermatitis etc) -> E1x.620
         if ((complications as any).skinComplication || ctx.conditions.wounds?.type === 'diabetic') { // Wounds fallback
-            codes.push({ code: `${prefix}.620`, label: `${typeLabel} with diabetic dermatitis`, rationale: 'Diabetes with skin complication', guideline: 'ICD-10-CM', trigger: 'Skin complication', rule: 'Diabetes Skin' });
+            codes.push({ code: `${prefix} .620`, label: `${typeLabel} with diabetic dermatitis`, rationale: 'Diabetes with skin complication', guideline: 'ICD-10-CM', trigger: 'Skin complication', rule: 'Diabetes Skin' });
             codedComplications = true;
         }
 
         // 3. Fallback: Uncomplicated
         if (!codedComplications) {
             codes.push({
-                code: `${prefix}.9`,
+                code: `${prefix} .9`,
                 label: `${typeLabel} without complications`,
                 rationale: 'Diabetes documented without mentioned complications',
                 guideline: 'ICD-10-CM',
@@ -1516,8 +1541,8 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
         // Build code - unspecified asthma uses J45.90x format with special handling
         const code = asthma.severity === 'unspecified'
-            ? (asthma.status === 'uncomplicated' ? 'J45.909' : `J45.90${statusCode}`)
-            : `J45.${severityCode}${statusCode}`;
+            ? (asthma.status === 'uncomplicated' ? 'J45.909' : `J45.90${statusCode} `)
+            : `J45.${severityCode}${statusCode} `;
 
         // Build label
         const severityLabel = asthma.severity.replace(/_/g, ' ');
@@ -1526,13 +1551,13 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 'with status asthmaticus';
 
         const label = asthma.severity === 'unspecified'
-            ? `Unspecified asthma, ${statusLabel.replace('with (acute) exacerbation', 'with exacerbation')}`
-            : `${severityLabel.charAt(0).toUpperCase() + severityLabel.slice(1)} asthma, ${statusLabel}`;
+            ? `Unspecified asthma, ${statusLabel.replace('with (acute) exacerbation', 'with exacerbation')} `
+            : `${severityLabel.charAt(0).toUpperCase() + severityLabel.slice(1)} asthma, ${statusLabel} `;
 
         codes.push({
             code,
             label,
-            rationale: `Asthma severity: ${severityLabel}, status: ${asthma.status}`,
+            rationale: `Asthma severity: ${severityLabel}, status: ${asthma.status} `,
             guideline: 'ICD-10-CM I.C.10.a.2',
             trigger: 'Asthma',
             rule: 'Asthma code selection'
@@ -1676,7 +1701,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     }
                 } else if (pu?.location === 'hip') {
                     puCode = pu.stage === '3' ? 'L89.213' : 'L89.219';
-                    puLabel = `Pressure ulcer of right hip, ${pu.stage ? 'stage ' + pu.stage : 'unspecified stage'}`;
+                    puLabel = `Pressure ulcer of right hip, ${pu.stage ? 'stage ' + pu.stage : 'unspecified stage'} `;
                 }
                 // Only add if not already present
                 const hasL89 = codes.some(c => c.code.startsWith('L89'));
@@ -1973,10 +1998,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 const organismLabel = inf.organism.replace(/_/g, ' ');
                 codes.push({
                     code: sepsisCode,
-                    label: `Sepsis due to ${organismLabel}`,
-                    rationale: `Sepsis with organism: ${organismLabel}`,
+                    label: `Sepsis due to ${organismLabel} `,
+                    rationale: `Sepsis with organism: ${organismLabel} `,
                     guideline: 'ICD-10-CM I.C.1.d.1.b',
-                    trigger: `Organism: ${inf.organism}`,
+                    trigger: `Organism: ${inf.organism} `,
                     rule: 'Organism-specific sepsis code'
                 });
             }
@@ -2022,7 +2047,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     label: `${inf.organism} as the cause of diseases classified elsewhere`,
                     rationale: 'Organism identification code (for non-sepsis infections)',
                     guideline: 'ICD-10-CM I.C.1',
-                    trigger: `Organism: ${inf.organism}`,
+                    trigger: `Organism: ${inf.organism} `,
                     rule: 'Use additional code for organism'
                 });
             }
@@ -2062,10 +2087,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             const ulcerCode = mapPressureUlcer(w.location, w.stage);
             codes.push({
                 code: ulcerCode,
-                label: `Pressure ulcer of ${w.location}, ${w.stage}`,
+                label: `Pressure ulcer of ${w.location}, ${w.stage} `,
                 rationale: 'Pressure ulcer with documented location and stage',
                 guideline: 'ICD-10-CM I.C.12.a',
-                trigger: `Pressure Ulcer: ${w.location}, Stage: ${w.stage}`,
+                trigger: `Pressure Ulcer: ${w.location}, Stage: ${w.stage} `,
                 rule: 'Pressure ulcer site and stage mapping'
             });
         }
@@ -2092,10 +2117,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             const injuryCode = mapInjuryCode(inj.type, inj.bodyRegion, inj.laterality, inj.encounterType);
             codes.push({
                 code: injuryCode,
-                label: `${inj.type} of ${inj.bodyRegion}`,
-                rationale: `${inj.type} with encounter type: ${inj.encounterType}`,
+                label: `${inj.type} of ${inj.bodyRegion} `,
+                rationale: `${inj.type} with encounter type: ${inj.encounterType} `,
                 guideline: 'ICD-10-CM I.C.19',
-                trigger: `Injury Type: ${inj.type}, Region: ${inj.bodyRegion}, Encounter: ${inj.encounterType}`,
+                trigger: `Injury Type: ${inj.type}, Region: ${inj.bodyRegion}, Encounter: ${inj.encounterType} `,
                 rule: 'Injury code with 7th character for encounter type'
             });
         }
@@ -2105,10 +2130,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             const externalCode = mapExternalCause(inj.externalCause.mechanism, inj.encounterType);
             codes.push({
                 code: externalCode,
-                label: `External cause: ${inj.externalCause.mechanism}`,
+                label: `External cause: ${inj.externalCause.mechanism} `,
                 rationale: 'External cause of injury',
                 guideline: 'ICD-10-CM I.C.20',
-                trigger: `External Cause: ${inj.externalCause.mechanism}`,
+                trigger: `External Cause: ${inj.externalCause.mechanism} `,
                 rule: 'External cause code (use additional)'
             });
         }
@@ -2128,10 +2153,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
             codes.push({
                 code: code,
-                label: `Encephalopathy, ${n.encephalopathy.type || 'unspecified'}`,
+                label: `Encephalopathy, ${n.encephalopathy.type || 'unspecified'} `,
                 rationale: 'Encephalopathy documented',
                 guideline: 'ICD-10-CM G93',
-                trigger: `Encephalopathy Type: ${n.encephalopathy.type}`,
+                trigger: `Encephalopathy Type: ${n.encephalopathy.type} `,
                 rule: 'Encephalopathy mapping'
             });
         }
@@ -2236,7 +2261,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 label: `Hemiplegia and hemiparesis following cerebral infarction affecting ${n.hemiplegia.side} side`,
                 rationale: 'Hemiplegia documented as sequela of stroke',
                 guideline: 'ICD-10-CM I69.35',
-                trigger: `Hemiplegia Side: ${n.hemiplegia.side}`,
+                trigger: `Hemiplegia Side: ${n.hemiplegia.side} `,
                 rule: 'Hemiplegia sequela code'
             });
         }
@@ -2259,10 +2284,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
             if (gcsCode) {
                 codes.push({
                     code: gcsCode,
-                    label: `Glasgow coma scale score ${n.gcs}`,
+                    label: `Glasgow coma scale score ${n.gcs} `,
                     rationale: 'GCS score documented',
                     guideline: 'ICD-10-CM R40.2',
-                    trigger: `GCS: ${n.gcs}`,
+                    trigger: `GCS: ${n.gcs} `,
                     rule: 'GCS score code'
                 });
             }
@@ -2313,10 +2338,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
             codes.push({
                 code: code,
-                label: `Major depressive disorder, single episode, ${mh.depression.severity}${mh.depression.psychoticFeatures ? ' with psychotic features' : ''}`,
+                label: `Major depressive disorder, single episode, ${mh.depression.severity}${mh.depression.psychoticFeatures ? ' with psychotic features' : ''} `,
                 rationale: 'Major depressive disorder documented',
                 guideline: 'ICD-10-CM F32',
-                trigger: `Depression Severity: ${mh.depression.severity}`,
+                trigger: `Depression Severity: ${mh.depression.severity} `,
                 rule: 'Depression code'
             });
         }
@@ -2335,10 +2360,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
             codes.push({
                 code: code,
-                label: `Cirrhosis of liver, ${g.cirrhosis.type || 'unspecified'}`,
+                label: `Cirrhosis of liver, ${g.cirrhosis.type || 'unspecified'} `,
                 rationale: 'Cirrhosis documented',
                 guideline: 'ICD-10-CM K74/K70',
-                trigger: `Cirrhosis Type: ${g.cirrhosis.type}`,
+                trigger: `Cirrhosis Type: ${g.cirrhosis.type} `,
                 rule: 'Cirrhosis mapping'
             });
         } else if (g.liverDisease) {
@@ -2362,10 +2387,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
             codes.push({
                 code: code,
-                label: `Hepatitis, ${g.hepatitis.type || 'unspecified'}`,
+                label: `Hepatitis, ${g.hepatitis.type || 'unspecified'} `,
                 rationale: 'Hepatitis documented',
                 guideline: 'ICD-10-CM B15-B19/K70',
-                trigger: `Hepatitis Type: ${g.hepatitis.type}`,
+                trigger: `Hepatitis Type: ${g.hepatitis.type} `,
                 rule: 'Hepatitis mapping'
             });
         }
@@ -2380,7 +2405,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 label: 'Gastrointestinal hemorrhage, unspecified',
                 rationale: 'GI bleeding documented',
                 guideline: 'ICD-10-CM K92',
-                trigger: `GI Bleeding Site: ${g.bleeding.site}`,
+                trigger: `GI Bleeding Site: ${g.bleeding.site} `,
                 rule: 'GI bleeding code'
             });
         }
@@ -2393,10 +2418,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
             codes.push({
                 code: code,
-                label: `Pancreatitis, ${g.pancreatitis.type || 'unspecified'}`,
+                label: `Pancreatitis, ${g.pancreatitis.type || 'unspecified'} `,
                 rationale: 'Pancreatitis documented',
                 guideline: 'ICD-10-CM K85/K86',
-                trigger: `Pancreatitis Type: ${g.pancreatitis.type}`,
+                trigger: `Pancreatitis Type: ${g.pancreatitis.type} `,
                 rule: 'Pancreatitis mapping'
             });
         }
@@ -2429,7 +2454,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
             codes.push({
                 code: code,
-                label: `Personal history of malignant neoplasm of ${neo.site || 'unspecified site'}`,
+                label: `Personal history of malignant neoplasm of ${neo.site || 'unspecified site'} `,
                 rationale: 'History of cancer, no active disease',
                 guideline: 'ICD-10-CM Z85',
                 trigger: 'Active Disease = No',
@@ -2473,10 +2498,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
                     codes.push({
                         code: code,
-                        label: `Secondary malignant neoplasm of ${neo.metastaticSite || neo.site}`,
+                        label: `Secondary malignant neoplasm of ${neo.metastaticSite || neo.site} `,
                         rationale: 'Metastatic cancer documented',
                         guideline: 'ICD-10-CM C77-C79',
-                        trigger: `Type: Secondary, Site: ${neo.metastaticSite || neo.site}`,
+                        trigger: `Type: Secondary, Site: ${neo.metastaticSite || neo.site} `,
                         rule: 'Secondary neoplasm mapping'
                     });
                     specificSiteAdded = true;
@@ -2503,10 +2528,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
                 codes.push({
                     code: code,
-                    label: `Malignant neoplasm of ${neo.site}`,
+                    label: `Malignant neoplasm of ${neo.site} `,
                     rationale: 'Primary malignancy documented',
                     guideline: 'ICD-10-CM I.C.2',
-                    trigger: `Neoplasm Site: ${neo.site}`,
+                    trigger: `Neoplasm Site: ${neo.site} `,
                     rule: 'Primary neoplasm code'
                 });
             }
@@ -2544,10 +2569,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
             codes.push({
                 code: code,
-                label: `Anemia, ${h.anemia.type || 'unspecified'}`,
+                label: `Anemia, ${h.anemia.type || 'unspecified'} `,
                 rationale: 'Anemia documented',
                 guideline: 'ICD-10-CM D50-D64',
-                trigger: `Anemia Type: ${h.anemia.type}`,
+                trigger: `Anemia Type: ${h.anemia.type} `,
                 rule: 'Anemia mapping'
             });
         }
@@ -2591,10 +2616,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
             codes.push({
                 code: htnCode,
-                label: `Gestational [pregnancy-induced] hypertension without significant proteinuria, ${trimester ? trimester + (trimester === 1 ? 'st' : trimester === 2 ? 'nd' : 'rd') + ' trimester' : 'unspecified trimester'}`,
+                label: `Gestational[pregnancy - induced] hypertension without significant proteinuria, ${trimester ? trimester + (trimester === 1 ? 'st' : trimester === 2 ? 'nd' : 'rd') + ' trimester' : 'unspecified trimester'} `,
                 rationale: 'Hypertension in pregnancy (per ICD-10-CM I.C.15.b.1)',
                 guideline: 'ICD-10-CM I.C.15.b.1',
-                trigger: `Hypertension + Pregnancy, Trimester: ${trimester}`,
+                trigger: `Hypertension + Pregnancy, Trimester: ${trimester} `,
                 rule: 'Pregnancy hypertension code (O10-O16 range)'
             });
         }
@@ -2649,10 +2674,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
             codes.push({
                 code: code,
-                label: `Pre-eclampsia, ${labelSeverity}, ${trimester ? trimester + (trimester === 1 ? 'st' : trimester === 2 ? 'nd' : 'rd') + ' trimester' : 'unspecified trimester'}`,
+                label: `Pre - eclampsia, ${labelSeverity}, ${trimester ? trimester + (trimester === 1 ? 'st' : trimester === 2 ? 'nd' : 'rd') + ' trimester' : 'unspecified trimester'} `,
                 rationale: 'Preeclampsia documented',
                 guideline: 'ICD-10-CM O14',
-                trigger: `Preeclampsia = Yes, Severity: ${severity}`,
+                trigger: `Preeclampsia = Yes, Severity: ${severity} `,
                 rule: 'Preeclampsia code'
             });
         }
@@ -2820,10 +2845,10 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
             codes.push({
                 code: code,
-                label: `${typeLabel}, ${trimester ? 'third trimester' : 'unspecified trimester'}`, // Simplification for label
+                label: `${typeLabel}, ${trimester ? 'third trimester' : 'unspecified trimester'} `, // Simplification for label
                 rationale: 'Multiple gestation documented',
                 guideline: 'ICD-10-CM O30',
-                trigger: `Multiple Gestation: ${ob.multipleGestationDetail || 'Twins'}`,
+                trigger: `Multiple Gestation: ${ob.multipleGestationDetail || 'Twins'} `,
                 rule: 'Multiple gestation code'
             });
         }
@@ -2844,7 +2869,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         if (ob.gestationalAge) {
             let z3aCode = 'Z3A.00';
             if (ob.gestationalAge >= 8 && ob.gestationalAge <= 42) {
-                z3aCode = `Z3A.${ob.gestationalAge}`;
+                z3aCode = `Z3A.${ob.gestationalAge} `;
             } else if (ob.gestationalAge > 42) {
                 z3aCode = 'Z3A.49'; // Greater than 42 weeks
             } else if (ob.gestationalAge < 8) {
@@ -3129,7 +3154,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 newLabel = newLabel.replace(new RegExp(`${historyPrefix}planned cesarean`, 'gi'), 'Planned delivery');
 
                 // 4. "C-section performed" -> "Delivery performed"
-                newLabel = newLabel.replace(new RegExp(`${historyPrefix}c-section performed`, 'gi'), 'Delivery performed');
+                newLabel = newLabel.replace(new RegExp(`${historyPrefix} c - section performed`, 'gi'), 'Delivery performed');
 
                 // 5. "Cesarean occurring" -> "Delivery occurring"
                 newLabel = newLabel.replace(new RegExp(`${historyPrefix}cesarean occurring`, 'gi'), 'Delivery occurring');
@@ -3254,7 +3279,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 label: `Alcohol ${s.alcoholUse}, uncomplicated`,
                 rationale: 'Alcohol use status',
                 guideline: 'ICD-10-CM F10/Z72',
-                trigger: `Alcohol: ${s.alcoholUse}`,
+                trigger: `Alcohol: ${s.alcoholUse} `,
                 rule: 'Alcohol status code'
             });
         }
@@ -3279,7 +3304,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                     label: `Drug ${s.drugUse.status}, uncomplicated`,
                     rationale: `Drug ${s.drugUse.status} documented`,
                     guideline: 'ICD-10-CM F10-F19',
-                    trigger: `Drug Use: ${s.drugUse.status}, Type: ${s.drugUse.type}`,
+                    trigger: `Drug Use: ${s.drugUse.status}, Type: ${s.drugUse.type} `,
                     rule: 'Drug abuse/dependence code'
                 });
             } else {
@@ -3414,9 +3439,9 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 finalCodes[a419Index] = {
                     ...finalCodes[a419Index],
                     code: organismSepsisCode,
-                    label: `Sepsis due to ${organism}`,
-                    rationale: `Organism-specific sepsis code for ${organism}`,
-                    trigger: `Organism: ${organism}`
+                    label: `Sepsis due to ${organism} `,
+                    rationale: `Organism - specific sepsis code for ${organism}`,
+                    trigger: `Organism: ${organism} `
                 };
             }
         }
@@ -3911,6 +3936,9 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
 
     // === FINAL STRICT DIABETES CORRECTION (POST-SORTING OVERRIDE) ===
     finalCodes = correctDiabetesCodes(finalCodes);
+
+    // === RESPIRATORY CORRECTION (POST-SORTING OVERRIDE) ===
+    finalCodes = correctRespiratorySequencing(finalCodes);
 
     return {
         primary: finalCodes.length > 0 ? finalCodes[0] : null,

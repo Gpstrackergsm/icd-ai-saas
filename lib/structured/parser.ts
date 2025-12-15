@@ -2699,8 +2699,12 @@ export function parseInput(text: string): ParseResult {
     const lowerText = text.toLowerCase();
 
     // Broaden detection to include NPDR/PDR if diabetes implied
-    if (lowerText.includes('diabetic') || lowerText.includes('diabetes') || lowerText.includes('dm') ||
-        lowerText.includes('npdr') || lowerText.includes('pdr') || lowerText.includes('retinopathy')) {
+    // FIXED: Use word boundary for 'dm' to avoid matching 'COPD', 'admitted', etc.
+    const hasDiabetesKeyword = lowerText.includes('diabetic') || lowerText.includes('diabetes') ||
+        /\bdm\b/.test(lowerText) ||  // Word boundary to match ' dm ' or 'dm,' but not 'admitted' or 'COPD'
+        lowerText.includes('npdr') || lowerText.includes('pdr') || lowerText.includes('retinopathy');
+
+    if (hasDiabetesKeyword) {
 
         // Debug Log
         console.log(`[Parser] Diabetes Detected in: "${text.substring(0, 50)}..."`);
@@ -2884,7 +2888,35 @@ export function parseInput(text: string): ParseResult {
         }
     }
 
+    // POST-PROCESSING: Smoking/Tobacco Detection (Narrative)
+    // Detect "smoker", "tobacco use", "cigarettes" in narrative text
+    if (!context.social) context.social = {};
+    if (!context.social.smoking) {
+        if (lowerText.includes('current smoker') || lowerText.includes('active smoker') ||
+            (lowerText.includes('smoker') && !lowerText.includes('non-smoker') && !lowerText.includes('nonsmoker') && !lowerText.includes('former smoker'))) {
+            context.social.smoking = 'current';
+        } else if (lowerText.includes('former smoker') || lowerText.includes('ex-smoker') || lowerText.includes('quit smoking')) {
+            context.social.smoking = 'former';
+        } else if (lowerText.includes('non-smoker') || lowerText.includes('nonsmoker') || lowerText.includes('never smoked')) {
+            context.social.smoking = 'never';
+        }
+    }
 
+    // POST-PROCESSING: Oxygen Therapy Detection (Narrative)
+    // Detect "home oxygen", "oxygen therapy", "supplemental oxygen"
+    if (lowerText.includes('home oxygen') || lowerText.includes('oxygen therapy') ||
+        lowerText.includes('supplemental oxygen') || lowerText.includes('on oxygen') ||
+        lowerText.includes('oxygen dependent')) {
+        if (!context.conditions.respiratory) context.conditions.respiratory = {};
+        context.conditions.respiratory.oxygenTherapy = true;
+    }
+
+    // POST-PROCESSING: Bronchiolitis Detection (Narrative)
+    // Detect "bronchiolitis" in narrative text
+    if (lowerText.includes('bronchiolitis')) {
+        if (!context.conditions.respiratory) context.conditions.respiratory = {};
+        context.conditions.respiratory.bronchiolitis = true;
+    }
 
     return { context, errors };
 }

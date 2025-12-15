@@ -116,11 +116,13 @@ export interface PatientContext {
             };
             emphysema?: boolean; // J43.9
             chronicBronchitis?: boolean; // J41.0
+            bronchiolitis?: boolean; // J21.9
             pulmonaryEdema?: boolean;
             pleuralEffusion?: boolean;
             pneumothorax?: boolean;
             pulmonaryEmbolism?: boolean;
             oxygenDependence?: boolean;
+            oxygenTherapy?: boolean; // Z99.81
         };
         infection?: {
             present: boolean;
