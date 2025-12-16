@@ -1,4 +1,3 @@
-
 export interface PatientContext {
     demographics: {
         age?: number;
@@ -192,22 +191,43 @@ export interface PatientContext {
             };
         };
         neurology?: {
-            alteredMentalStatus?: boolean;
+            stroke?: {
+                present: boolean;
+                acute: boolean;
+                ischemic: boolean;
+                vessel?: string;
+                territory?: string;
+                laterality?: 'left' | 'right' | 'bilateral' | 'unspecified';
+            };
+            sequela?: {
+                present: boolean;
+                deficits: Array<{
+                    type: 'hemiplegia' | 'aphasia' | 'dysphagia' | 'cognitive' | 'visual' | 'gait';
+                    side?: 'left' | 'right' | 'dominant' | 'nondominant' | 'unspecified';
+                }>;
+            };
+            tia?: {
+                present: boolean;
+            };
+            epilepsy?: {
+                present: boolean;
+                type?: 'generalized' | 'focal' | 'unspecified';
+                intractable?: boolean;
+                statusEpilepticus?: boolean;
+            };
             encephalopathy?: {
                 present: boolean;
-                type?: 'metabolic' | 'toxic' | 'hepatic' | 'hypoxic';
+                type: 'metabolic' | 'toxic' | 'hepatic' | 'hypoxic' | 'unspecified';
             };
-            seizure?: boolean;
             dementia?: {
-                type: 'alzheimer' | 'vascular' | 'unspecified';
+                type: 'unspecified' | 'alzheimer' | 'vascular' | 'lewy_body';
             };
-            parkinsons?: boolean;
+            // Legacy / simple flags for validation (optional, can be inferred from above)
+            alteredMentalStatus?: boolean;
             coma?: boolean;
             gcs?: number;
-            stroke?: boolean;
-            hemiplegia?: {
-                side: 'left' | 'right' | 'unspecified';
-            };
+            seizure?: boolean; // Single seizure event vs Epilepsy
+            parkinsons?: boolean;
         };
         musculoskeletal?: {
             osteoporosis?: boolean;

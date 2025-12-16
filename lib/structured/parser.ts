@@ -8,13 +8,17 @@ export interface ParseResult {
     errors: string[];
 }
 
-export function parseInput(text: string): ParseResult {
-    const lines = text.split('\n').map(l => l.trim()).filter(l => l);
-    const context: PatientContext = {
+export function createFreshContext(): PatientContext {
+    return {
         demographics: {},
         encounter: { type: 'initial' },
         conditions: {}
     };
+}
+
+export function parseInput(text: string): ParseResult {
+    const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+    const context = createFreshContext();
     const errors: string[] = [];
 
     const parseBoolean = (val: string) => ['yes', 'true', 'present'].includes(val.toLowerCase());
@@ -37,7 +41,6 @@ export function parseInput(text: string): ParseResult {
         }
 
         const lowerValue = value.toLowerCase();
-        // console.log(`[TRACE] Line: "${line}", Key: "${key}"`);
 
         switch (key) {
             // Generic Diagnosis/History Parsing
@@ -66,6 +69,7 @@ export function parseInput(text: string): ParseResult {
             case 'hospital course':
             case 'current encounter':
                 // Intelligent routing based on content
+
 
                 // --- OBSTETRIC NARRATIVE SCANNING ---
                 // Scan for Gestational Age (e.g. "39 weeks", "39 weeks gestation", "39 wks")
@@ -197,7 +201,7 @@ export function parseInput(text: string): ParseResult {
                 }
 
                 // 5. Labor Complications Scanning (Prolonged/Arrest)
-                if (lowerValue.includes('prolonged') || lowerValue.includes('arrest') || lowerValue.includes('failure to progress') || lowerValue.includes('inertia')) {
+                if (lowerValue.includes('prolonged') || (lowerValue.includes('arrest') && !lowerValue.includes('cardiac') && !lowerValue.includes('respiratory')) || lowerValue.includes('failure to progress') || lowerValue.includes('inertia')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     if (!context.conditions.obstetric.labor) context.conditions.obstetric.labor = {};
                     const labor = context.conditions.obstetric.labor;
@@ -305,6 +309,10 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.ckd.onDialysis = true;
                     context.conditions.ckd.dialysisType = 'chronic';
                 }
+
+                // --- NEUROLOGY SCANNING (Moved to ensure execution) ---
+
+                // TIA (Duplicate removed)
 
                 // MI Reason for Admission (Case 35)
                 // Relaxed: "admitted for MI" or "primarily for MI"
@@ -1027,23 +1035,28 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.infection.source = 'pyelonephritis';
                 }
 
-                if (
-                    lowerValue.includes('bilateral') ||
-                    lowerValue.includes('stocking') ||
-                    lowerValue.includes('numbness') ||
-                    lowerValue.includes('tingling') ||
-                    lowerValue.includes('burning') ||
-                    lowerValue.includes('monofilament') ||
-                    lowerValue.includes('vibration') ||
-                    lowerValue.includes('polyneuropathy')
-                ) {
+                // FIX: Only infer diabetic neuropathy details if Diabetes is ALREADY detected
+                if (context.conditions.endocrine?.diabetes) {
+                    if (
+                        lowerValue.includes('bilateral') ||
+                        lowerValue.includes('stocking') ||
+                        lowerValue.includes('numbness') ||
+                        lowerValue.includes('tingling') ||
+                        lowerValue.includes('burning') ||
+                        lowerValue.includes('monofilament') ||
+                        lowerValue.includes('vibration') ||
+                        lowerValue.includes('polyneuropathy')
+                    ) {
+                        // Context exists, so safe to add details
+                        if (!context.conditions.endocrine.diabetes.complicationDetails) context.conditions.endocrine.diabetes.complicationDetails = {};
+                        context.conditions.endocrine.diabetes.complicationDetails.polyneuropathy = true;
+                    }
+                } else if (lowerValue.includes('diabetic polyneuropathy')) {
+                    // Exception: If explicit "diabetic polyneuropathy" phrase, create diabetes
                     if (!context.conditions.endocrine) context.conditions.endocrine = {};
-                    if (!context.conditions.endocrine.diabetes) context.conditions.endocrine.diabetes = { type: 'type2', complicationDetails: {} };
-                    if (!context.conditions.endocrine.diabetes.complicationDetails) context.conditions.endocrine.diabetes.complicationDetails = {};
-                    context.conditions.endocrine.diabetes.complicationDetails.polyneuropathy = true;
-                } else if (lowerValue.includes('autonomic')) {
-                    if (!context.conditions.endocrine) context.conditions.endocrine = {};
-                    if (!context.conditions.endocrine.diabetes) context.conditions.endocrine.diabetes = { type: 'type2', complicationDetails: {} };
+                    if (!context.conditions.endocrine.diabetes) context.conditions.endocrine.diabetes = { type: 'type2', complicationDetails: { polyneuropathy: true } };
+                } else if (lowerValue.includes('autonomic') && context.conditions.endocrine?.diabetes) {
+                    // Only if diabetes exists
                     if (!context.conditions.endocrine.diabetes.complicationDetails) context.conditions.endocrine.diabetes.complicationDetails = {};
                     context.conditions.endocrine.diabetes.complicationDetails.autonomic = true;
                 }
@@ -1057,7 +1070,7 @@ export function parseInput(text: string): ParseResult {
                     }
                     context.conditions.obstetric.pregnant = true;
                 }
-                if (lowerValue.includes('pregnant') || lowerValue.includes('pregnancy')) {
+                if (lowerValue.match(/\bpregnan(?:t|cy)\b/)) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     context.conditions.obstetric.pregnant = true;
                 }
@@ -1214,8 +1227,308 @@ export function parseInput(text: string): ParseResult {
                     }
                 }
 
-                // Renal / CKD / AKI
-                console.log(`[Flow] Reached Renal block. Key: ${key}, Value: "${lowerValue.substring(0, 20)}..."`);
+
+                // --- NEUROLOGY SCANNING (STRICT MODE v2) ---
+
+                // Helper to safely get neuro context
+                const getNeuro = () => {
+                    if (!context.conditions.neurology) context.conditions.neurology = {};
+                    return context.conditions.neurology;
+                };
+
+                // 1. STROKE / CVA / INFARCTION
+                // Strict Terms: stroke, cva, cerebral infarction, brainstem infarction, cerebellar infarction
+                // Excludes: "heat stroke" (if ever), etc.
+                if (lowerValue.match(/\b(stroke|strokes|cva|cvas|cerebrovascular accident|accidents)\b/) ||
+                    (lowerValue.includes('infarction') && (lowerValue.includes('cerebral') || lowerValue.includes('brain') || lowerValue.includes('cerebellar'))) ||
+                    lowerValue.match(/\b(thrombotic|embolic|ischemic|hemorrhagic)\s+stroke(s?)\b/)) {
+
+                    const n = getNeuro();
+
+                    // History Detection (Strict)
+                    // Fix: "year-old" should only disqualify the word "old", not the entire line if "history/prior" exists.
+
+                    const hasHistoryKeyword = lowerValue.match(/\b(history|prior|previous|past)\b/);
+
+                    // Check for "old" but ensure it's not part volume of "year-old"
+                    // Strategy: Replace "year-old" patterns with empty string properly before checking "old"?
+                    // Or precise regex.
+                    // simpler:
+                    const agePattern = /\d+\s*-?\s*year(s?)\s*-?\s*old/g;
+                    const textWithoutAge = lowerValue.replace(agePattern, 'AGE_REMOVED');
+                    const hasOldKeyword = textWithoutAge.match(/\b(old)\b/);
+
+                    const isHistoryLine = hasHistoryKeyword || hasOldKeyword;
+
+                    const isSequelaLine = lowerValue.match(/\b(sequela|sequelae|late effect(s?)|residual)\b/);
+
+                    if (isHistoryLine || isSequelaLine) {
+                        // SEQUELA CONTEXT
+                        if (!n.sequela) n.sequela = { present: true, deficits: [] };
+                        n.sequela.present = true;
+                    } else {
+                        // ACUTE CONTEXT
+                        // Only create if explicit "acute" or simple "stroke" without history terms
+                        // Verify it's not "history of..."
+                        if (!n.stroke) {
+                            n.stroke = {
+                                present: true,
+                                acute: true,
+                                ischemic: true, // Default to ischemic unless hemorrhage specified
+                                laterality: 'unspecified'
+                            };
+                        }
+
+                        // Refine Acute Details
+                        if (lowerValue.includes('hemorrhagic') || lowerValue.includes('bleed') || lowerValue.includes('hemorrhage')) {
+                            n.stroke.ischemic = false;
+                        }
+
+                        // Location
+                        if (lowerValue.includes('mca') || lowerValue.includes('middle cerebral')) n.stroke.vessel = 'mca';
+                        else if (lowerValue.includes('aca') || lowerValue.includes('anterior cerebral')) n.stroke.vessel = 'aca';
+                        else if (lowerValue.includes('pca') || lowerValue.includes('posterior cerebral')) n.stroke.vessel = 'pca';
+
+                        if (lowerValue.includes('brainstem')) n.stroke.territory = 'brainstem';
+                        else if (lowerValue.includes('cerebellum') || lowerValue.includes('berebellar')) n.stroke.territory = 'cerebellum'; // berebellar typo handled? no, strict.
+
+                        // Laterality (Strict Contextual)
+                        // Must match "right/left" close to "stroke/infarction/mca/aca/pca" to avoid grabbing contralateral "left hemiparesis" side.
+                        const latRegex = /\b(right|left|bilateral)\b.{0,25}\b(mca|aca|pca|cereb|stem|stroke|cva|infarct)/;
+                        const latRegexRev = /\b(mca|aca|pca|cereb|stem|stroke|cva|infarct)\b.{0,25}\b(right|left|bilateral)\b/;
+
+                        // Check specifically for vessel/location laterality first (High Confidence)
+                        const vesselLatMatch = lowerValue.match(/\b(right|left|bilateral)\b\s+(mca|aca|pca|middle|anterior|posterior|cerebel)/) ||
+                            lowerValue.match(/\b(mca|aca|pca|cerebel).{0,10}\b(right|left|bilateral)\b/);
+
+                        let latFound = '';
+                        if (vesselLatMatch) {
+                            // Extract the side word
+                            if (vesselLatMatch[0].includes('right')) latFound = 'right';
+                            else if (vesselLatMatch[0].includes('left')) latFound = 'left';
+                            else if (vesselLatMatch[0].includes('bilateral')) latFound = 'bilateral';
+                        } else {
+                            // Fallback to searching nearby stroke terms
+                            const forward = lowerValue.match(latRegex);
+                            const backward = lowerValue.match(latRegexRev);
+
+                            if (forward && forward[1]) latFound = forward[1];
+                            else if (backward && backward[2]) latFound = backward[2];
+                        }
+
+                        if (latFound) n.stroke.laterality = latFound as any;
+
+                        // Verify we didn't accidentally grab the side from "hemiparesis" if it was closer?
+                        // But regular expressions above anchor to stroke terms. "left hemiparesis" usually doesn't have "stroke" right next to it in that phrase 
+                        // unless "stroke with left hemiparticle". 
+                        // Wait, "stroke with left hemilepgia" -> matches `stroke... left`.
+                        // This is tricky.
+                        // "Right MCA stroke with Left Hemiparesis".
+                        // `vesselLatMatch` -> matches "Right MCA". latFound='right'.
+                        // Correct.
+
+                        // "Stroke with left hemiparesis" (Unspecified stroke side).
+                        // `latRegexRev` -> "Stroke ... left". Match!
+                        // latFound = 'left'. 
+                        // Result: "Left Stroke".
+                        // Is this correct? "Stroke with left hemiparesis" usually implies Right Stroke (clinically).
+                        // But ICD-10 coding: If we code I63.9 (Unspecified), we don't code side.
+                        // If we code I63.51x (MCA), we need side of ARTERY/INFARCT.
+                        // If text says "Stroke with left hemiparesis", and we infer "Left Stroke", we are wrong.
+                        // BUT: If text says "Left Stroke", we represent Left Stroke.
+                        // We must NOT infer Stroke Side from Hemiparesis Side.
+
+                        // Refinement: Exclude if the 'side' word is immediately followed by 'hemip'/weakness?
+                        // Regex lookahead? JS regex support? Yes.
+                        // Or just separate check.
+
+                        if (latFound) {
+                            // Safety Check: Is this 'side' word actually describing a deficit?
+                            // e.g. "stroke ... left hemiparesis" -> 'left' is detected.
+                            // We check if 'left' is followed by 'hemi'/'weak'/'paralysis'.
+                            const sideIndex = lowerValue.indexOf(latFound);
+                            const snippet = lowerValue.substring(sideIndex, sideIndex + 20); // Check next 20 chars
+                            if (snippet.match(/hemi|weak|paralysis|plegia|paresis/)) {
+                                // This 'side' belongs to the deficit! 
+                                // Unless it ALSO belongs to stroke? "Left stroke causing left hemiparesis" (impossible).
+                                // Ignore this match for Stroke Laterality.
+                                // BUT what if "Left stroke with hemiparesis"? "Left" is followed by "stroke"? No "Left" IS PRECEDING "stroke" or vice versa.
+                                // My snippets logic is simplistic.
+
+                                // Better: Only accept laterality if it is ADJACENT to stroke/vessel terms?
+                                // "Right MCA" -> Adjacent.
+                                // "Stroke of right hemisphere" -> Adjacent.
+                                // "Left stroke" -> Adjacent.
+                                // "Stroke... left hemiplegia" -> "Left" is adjacent to "Hemiplegia", NOT "Stroke".
+                                // So, enforce adjacency!
+                            }
+                            // Actually, let's rely on the strict Regexes I wrote `vesselLatMatch`.
+                            // `vesselLatMatch` requires `\b(right|left)\b\s+(mca...)`. This is safe.
+                            // What about generic "Right stroke"?
+                            // Regex: `\b(right|left)\b\s+(stroke|cva|infarct)`
+                            // Regex: `\b(stroke|cva|infarct)\b\s+(of\s+)?(the\s+)?(right|left)\b`
+
+                            // Regex: Match "Right/Left" + [Stroke Terms]
+                            // We explicitely EXCLUDE 'hemi', 'weakness', 'paralysis' etc to avoid matching deficit side.
+                            // We include 'hemisphere' fully if needed.
+
+                            const strictLatMatch = lowerValue.match(/\b(right|left|bilateral)\b\s+(middle|anterior|posterior|cerebel|brain|hemisphere|stroke|cva|infarct|mca|aca|pca)/) ||
+                                lowerValue.match(/\b(mca|aca|pca|cerebel|stroke|cva|infarct|hemisphere).{0,8}\b(right|left|bilateral)\b/); // tight window
+
+
+                            if (strictLatMatch) {
+                                if (strictLatMatch[0].includes('right')) n.stroke.laterality = 'right';
+                                else if (strictLatMatch[0].includes('left')) n.stroke.laterality = 'left';
+                                else if (strictLatMatch[0].includes('bilateral')) n.stroke.laterality = 'bilateral';
+                            } else {
+                                // If no strict match, leave as unspecified. 
+                                // DO NOT use the loose `.{0,25}` match as it crosses boundaries.
+                                // n.stroke.laterality = 'unspecified' (default)
+                            }
+                        }
+                    }
+                }
+
+                // 2. DEFICITS (Strict Mapping)
+                // These populate 'sequela.deficits' OR act as independent inputs for the Resolver to handle (e.g. if I69 or R code needed)
+                // For now, we put them in sequela if sequela exists, or create separate tracker?
+                // The Schema put 'deficits' INSIDE 'sequela'. This implies they are only sequelae?
+                // Codex said: "Deficits during acute stroke: Do NOT emit I69.x".
+                // So parsing them into 'sequela.deficits' is correct ONLY if context implies sequela.
+                // But what if the parser sees "Left hemiparesis" on one line and "History of stroke" on another?
+                // We need a persistent way to track deficits. 
+                // However, the Schema requires deficits to be IN sequela. 
+                // FIX: If we see a deficit, we add it to the sequela array. The RESOLVER will decide if it's coded (i.e. if history is also present).
+                // If history is NOT present, the resolver will ignore 'sequela.deficits' (because sequela.present is false) OR we need to be careful.
+                // Actually, let's allow populating 'sequela.deficits' even if 'sequela.present' isn't explicitly set by "history" keyword yet.
+                // The Resolver can check: if (stroke.acute) ignore deficits (integral). Else if (deficits.length > 0) -> imply sequelae or code symptoms?
+                // Codex Phase 2: "SEQUELAE (I69.x): Emit ONLY if history + residual deficit".
+                // So logic:
+                // Parser: Extract Deficits.
+                // Resolver: Logic.
+
+                const deficitTypes = [
+                    { key: ['hemiplegia', 'hemiparesis'], type: 'hemiplegia' },
+                    { key: ['aphasia', 'dysphasia'], type: 'aphasia' },
+                    { key: ['dysphagia'], type: 'dysphagia' },
+                    { key: ['cognitive deficit', 'cognitive impairment', 'memory deficit'], type: 'cognitive' },
+                    { key: ['visual deficit', 'visual field'], type: 'visual' },
+                    { key: ['gait abnormality', 'gait disturbance', 'ataxia'], type: 'gait' }
+                ];
+
+                deficitTypes.forEach(def => {
+                    const match = def.key.some(k => lowerValue.includes(k));
+                    if (match) {
+                        const n = getNeuro();
+                        if (!n.sequela) n.sequela = { present: false, deficits: [] }; // Present defaults to false until "history" found
+
+                        // Check side
+                        let side: 'left' | 'right' | 'unspecified' = 'unspecified';
+                        if (lowerValue.includes('left')) side = 'left';
+                        if (lowerValue.includes('right')) side = 'right';
+
+                        // STRICT LATERALITY CHECK FOR MOTOR DEFICITS
+                        if ((def.type === 'hemiplegia') && side === 'unspecified') {
+                            errors.push(`AMBIGUITY_BLOCK: ${def.type} documented without laterality (left/right). Please specify side.`);
+                        }
+
+                        // Check dominant
+                        let dom;
+                        if (lowerValue.includes('non-dominant')) dom = 'nondominant';
+                        else if (lowerValue.includes('dominant')) dom = 'dominant';
+
+                        n.sequela.deficits.push({
+                            type: def.type as any,
+                            side: side,
+                            // side field in schema includes dominant/nondominant strings? 
+                            // Schema: side?: 'left'|'right'|'dominant'|'nondominant'|'unspecified'
+                            // We might want separate distinct fields but schema combined them. I'll adhere to schema.
+                        });
+
+                        // Special handling: "Weakness"
+                        // Codex Rule: "hemiplegia != weakness".
+                        // Logic: IF "weakness" found, do we map to hemiplegia?
+                        // Codex Phase 3: "BLOCK if weakness vs hemiplegia unclear".
+                        // So we do NOT map "weakness" to hemiplegia here. We treat "weakness" as... ambiguity?
+                        // If documentation says "weakness", we strictly do NOT add 'hemiplegia'.
+                        // We will need a way to flag "weakness" for the gate.
+                        // I will add a separate check for "weakness" later or leverage the narrative for the gate.
+                    }
+                });
+
+                // Weakness Gate Trigger (Strict extraction)
+                if (lowerValue.includes('weakness') && !lowerValue.includes('hemiplegia') && !lowerValue.includes('hemiparesis')) {
+                    errors.push('AMBIGUITY_BLOCK: "Weakness" is nonspecific. Use "hemiplegia" or "hemiparesis" if clinical hemiplegia is intended.');
+                }
+
+                // Speech Impairment Gate (Strict extraction)
+                if ((lowerValue.includes('slurred speech') || lowerValue.includes('speech impairment') || lowerValue.includes('trouble speaking'))
+                    && !lowerValue.includes('aphasia') && !lowerValue.includes('dysphasia') && !lowerValue.includes('dysarthria')) {
+                    errors.push('AMBIGUITY_BLOCK: "Slurred speech" is nonspecific. Use "aphasia" or "dysarthria" if intended.');
+                }
+
+                // 3. TIA
+                if (lowerValue.match(/\btias?\b/) || lowerValue.includes('transient ischemic attack')) {
+                    const n = getNeuro();
+                    n.tia = { present: true };
+                }
+
+                // 4. EPILEPSY / SEIZURE GATE
+                if (lowerValue.match(/\b(epilepsy|seizure|seizures|convulsion)\b/)) {
+                    const n = getNeuro();
+
+                    const isEpilepsy = lowerValue.includes('epilepsy') || lowerValue.includes('recurrent seizures') || lowerValue.includes('seizure disorder');
+
+                    // IF just "seizure" without epilepsy/recurrent context -> BLOCK
+                    if (!isEpilepsy) {
+                        // Check for "post-traumatic seizures" or specific modifiers?
+                        // If singular "seizure" or "convulsion" and NO epilepsy terms:
+                        // We must BLOCK to force user to specify "Epilepsy" or "Single Seizure R56.9".
+                        // However, R56.9 is valid for "Seizure NOS". 
+                        // But Codex says "Prefer blocking with compliance gates".
+                        // So we block "Seizure NOS" to ensure they don't mean Epilepsy.
+
+                        // Exception: "Febrile seizure" -> R56.0
+                        if (lowerValue.includes('febrile')) {
+                            // Allow simple seizure if febrile? (Not implemented in schema yet, stick to block or allow R code in engine?)
+                            // Let's block generically for now to be safe.
+                        }
+
+                        errors.push('AMBIGUITY_BLOCK: "Seizure" documented. Clarify if "Epilepsy" (recurrent), "Seizure Disorder", or single event.');
+                    } else {
+                        // Is Epilepsy
+                        if (!n.epilepsy) n.epilepsy = { present: true, type: 'unspecified' };
+                        n.epilepsy.present = true;
+
+                        if (lowerValue.includes('generalized')) n.epilepsy.type = 'generalized';
+                        else if (lowerValue.includes('focal') || lowerValue.includes('partial')) n.epilepsy.type = 'focal';
+
+                        if (lowerValue.includes('intractable') || lowerValue.includes('refractory') || lowerValue.includes('not controlled')) n.epilepsy.intractable = true;
+                        if (lowerValue.includes('status epilepticus')) n.epilepsy.statusEpilepticus = true;
+                    }
+                }
+
+                // 5. ENCEPHALOPATHY
+                if (lowerValue.includes('encephalopathy')) {
+                    const n = getNeuro();
+                    if (!n.encephalopathy) n.encephalopathy = { present: true, type: 'unspecified' };
+
+                    if (lowerValue.includes('metabolic')) n.encephalopathy.type = 'metabolic';
+                    else if (lowerValue.includes('toxic')) n.encephalopathy.type = 'toxic';
+                    else if (lowerValue.includes('hepatic')) n.encephalopathy.type = 'hepatic';
+                    else if (lowerValue.includes('hypoxic') || lowerValue.includes('anoxic')) n.encephalopathy.type = 'hypoxic';
+                }
+
+                // 6. DEMENTIA
+                if (lowerValue.includes('dementia')) {
+                    const n = getNeuro();
+                    if (!n.dementia) n.dementia = { type: 'unspecified' };
+
+                    if (lowerValue.includes('vascular')) n.dementia.type = 'vascular';
+                    else if (lowerValue.includes('alzheimer')) n.dementia.type = 'alzheimer';
+                    else if (lowerValue.includes('lewy')) n.dementia.type = 'lewy_body';
+                }
+
                 if (lowerValue.includes('kidney failure') || lowerValue.includes('renal failure') || lowerValue.includes('aki') || lowerValue.includes('acute kidney injury')) {
                     if (!context.conditions.ckd) context.conditions.ckd = { stage: undefined as any, onDialysis: false, aki: false, transplantStatus: false };
                     if (lowerValue.includes('acute')) context.conditions.ckd.aki = true;
@@ -1329,7 +1642,7 @@ export function parseInput(text: string): ParseResult {
                 // LABOR-001: Prolonged Labor & Arrest Disorders
                 if (
                     lowerValue.includes('prolonged') ||
-                    lowerValue.includes('arrest') ||
+                    (lowerValue.includes('arrest') && !lowerValue.includes('cardiac') && !lowerValue.includes('respiratory')) ||
                     lowerValue.includes('failure to progress') ||
                     lowerValue.includes('ftp') ||
                     lowerValue.includes('slow progress') ||
@@ -1364,21 +1677,16 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.neoplasm.chemotherapy = true;
                 }
 
-                // Neurology
-                if (lowerValue.includes('alzheimer')) {
+                // Dementia
+                if (lowerValue.includes('dementia') || lowerValue.includes('alzheimer')) {
                     if (!context.conditions.neurology) context.conditions.neurology = {};
-                    context.conditions.neurology.dementia = { type: 'alzheimer' };
+                    if (!context.conditions.neurology.dementia) context.conditions.neurology.dementia = { type: 'unspecified' };
+
+                    if (lowerValue.includes('vascular')) context.conditions.neurology.dementia.type = 'vascular';
+                    else if (lowerValue.includes('alzheimer')) context.conditions.neurology.dementia.type = 'alzheimer';
+                    else if (lowerValue.includes('lewy body')) context.conditions.neurology.dementia.type = 'lewy_body';
                 }
-                if (lowerValue.includes('stroke')) {
-                    if (!context.conditions.neurology) context.conditions.neurology = {};
-                    context.conditions.neurology.stroke = true;
-                }
-                if (lowerValue.includes('hemiplegia')) {
-                    if (!context.conditions.neurology) context.conditions.neurology = {};
-                    context.conditions.neurology.hemiplegia = { side: 'unspecified' };
-                    if (lowerValue.includes('right')) context.conditions.neurology.hemiplegia.side = 'right';
-                    if (lowerValue.includes('left')) context.conditions.neurology.hemiplegia.side = 'left';
-                }
+
 
                 // Infection (HIV/TB)
                 if (lowerValue.includes('hiv')) {
@@ -1697,15 +2005,16 @@ export function parseInput(text: string): ParseResult {
                     }
 
                     if (
-                        lowerValue.includes('bilateral') ||
-                        lowerValue.includes('stocking') ||
-                        lowerValue.includes('numbness') ||
-                        lowerValue.includes('tingling') ||
-                        lowerValue.includes('burning') ||
-                        lowerValue.includes('monofilament') ||
-                        lowerValue.includes('vibration')
+                        context.conditions.endocrine?.diabetes && ( // FIX: Only infer polyneuropathy if diabetes is ALREADY suspected/confirmed
+                            lowerValue.includes('bilateral') ||
+                            lowerValue.includes('stocking') ||
+                            lowerValue.includes('numbness') ||
+                            lowerValue.includes('tingling') ||
+                            lowerValue.includes('burning') ||
+                            lowerValue.includes('monofilament') ||
+                            lowerValue.includes('vibration')
+                        )
                     ) {
-                        if (!context.conditions.endocrine.diabetes) context.conditions.endocrine.diabetes = { type: 'type2', complicationDetails: {} };
                         if (!context.conditions.endocrine.diabetes.complicationDetails) context.conditions.endocrine.diabetes.complicationDetails = {};
                         context.conditions.endocrine.diabetes.complicationDetails.polyneuropathy = true;
                     }

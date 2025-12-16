@@ -3,6 +3,7 @@
 
 
 import { PatientContext } from './context';
+import { resolveNeurology } from './neurologyResolver';
 
 import { correctDiabetesCodes } from './diabetes-corrector';
 import { correctRespiratorySequencing } from './respiratory-corrector';
@@ -703,6 +704,13 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
                 rule: 'Cardiomyopathy code'
             });
         }
+    }
+
+    // --- NEUROLOGY RULES (STRICT RESOLVER) ---
+    if (ctx.conditions.neurology) {
+        // console.log('[Flow] Reached Neurology block'); // Logged inside validate if needed or just silent
+        const neuroCodes = resolveNeurology(ctx);
+        codes.push(...neuroCodes);
     }
 
     // --- RENAL RULES (DETERMINISTIC) ---
@@ -2247,160 +2255,7 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         });
     }
 
-    // --- NEUROLOGY RULES ---
-    if (ctx.conditions.neurology) {
-        const n = ctx.conditions.neurology;
 
-        // RULE: Encephalopathy
-        if (n.encephalopathy?.present) {
-            let code = 'G93.40'; // Unspecified
-            if (n.encephalopathy.type === 'metabolic') code = 'G93.41';
-            else if (n.encephalopathy.type === 'toxic') code = 'G92.8';
-            else if (n.encephalopathy.type === 'hepatic') code = 'K72.90'; // Hepatic failure without coma (often used for hepatic encephalopathy)
-            else if (n.encephalopathy.type === 'hypoxic') code = 'G93.1';
-
-            codes.push({
-                code: code,
-                label: `Encephalopathy, ${n.encephalopathy.type || 'unspecified'} `,
-                rationale: 'Encephalopathy documented',
-                guideline: 'ICD-10-CM G93',
-                trigger: `Encephalopathy Type: ${n.encephalopathy.type} `,
-                rule: 'Encephalopathy mapping'
-            });
-        }
-
-        // RULE: Altered Mental Status (AMS)
-        // Suppress AMS (R41.82) if Encephalopathy (G93.4x) is present, as encephalopathy is the definitive diagnosis
-        if (n.alteredMentalStatus && !n.encephalopathy?.present) {
-            codes.push({
-                code: 'R41.82',
-                label: 'Altered mental status, unspecified',
-                rationale: 'Altered mental status documented',
-                guideline: 'ICD-10-CM R41.82',
-                trigger: 'Altered Mental Status: Yes',
-                rule: 'AMS mapping'
-            });
-        }
-
-        // RULE: Seizures
-        if (n.seizure) {
-            codes.push({
-                code: 'R56.9',
-                label: 'Unspecified convulsions',
-                rationale: 'Seizure documented',
-                guideline: 'ICD-10-CM R56.9',
-                trigger: 'Seizure = Yes',
-                rule: 'Symptom code'
-            });
-        }
-
-        // RULE: Dementia
-        if (n.dementia) {
-            if (n.dementia.type === 'alzheimer') {
-                codes.push({
-                    code: 'G30.9',
-                    label: 'Alzheimer\'s disease, unspecified',
-                    rationale: 'Alzheimer\'s disease documented',
-                    guideline: 'ICD-10-CM G30',
-                    trigger: 'Dementia Type: Alzheimer',
-                    rule: 'Etiology code'
-                });
-                codes.push({
-                    code: 'F02.80',
-                    label: 'Dementia in other diseases classified elsewhere without behavioral disturbance',
-                    rationale: 'Manifestation of dementia in Alzheimer\'s',
-                    guideline: 'ICD-10-CM F02',
-                    trigger: 'Dementia Type: Alzheimer',
-                    rule: 'Manifestation code'
-                });
-            } else if (n.dementia.type === 'vascular') {
-                codes.push({
-                    code: 'F01.50',
-                    label: 'Vascular dementia without behavioral disturbance',
-                    rationale: 'Vascular dementia documented',
-                    guideline: 'ICD-10-CM F01',
-                    trigger: 'Dementia Type: Vascular',
-                    rule: 'Vascular dementia code'
-                });
-            } else {
-                codes.push({
-                    code: 'F03.90',
-                    label: 'Unspecified dementia without behavioral disturbance',
-                    rationale: 'Dementia documented',
-                    guideline: 'ICD-10-CM F03',
-                    trigger: 'Dementia Type: Unspecified',
-                    rule: 'Unspecified dementia code'
-                });
-            }
-        }
-
-        // RULE: Parkinson's
-        if (n.parkinsons) {
-            codes.push({
-                code: 'G20',
-                label: 'Parkinson\'s disease',
-                rationale: 'Parkinson\'s disease documented',
-                guideline: 'ICD-10-CM G20',
-                trigger: 'Parkinsons = Yes',
-                rule: 'Parkinson\'s code'
-            });
-        }
-
-        // RULE: Stroke
-        if (n.stroke) {
-            codes.push({
-                code: 'I63.9',
-                label: 'Cerebral infarction, unspecified',
-                rationale: 'Ischemic stroke documented',
-                guideline: 'ICD-10-CM I63',
-                trigger: 'Stroke = Yes',
-                rule: 'Stroke code'
-            });
-        }
-
-        // RULE: Hemiplegia
-        if (n.hemiplegia) {
-            let code = 'I69.359'; // Unspecified side
-            if (n.hemiplegia.side === 'right') code = 'I69.351';
-            else if (n.hemiplegia.side === 'left') code = 'I69.352';
-
-            codes.push({
-                code: code,
-                label: `Hemiplegia and hemiparesis following cerebral infarction affecting ${n.hemiplegia.side} side`,
-                rationale: 'Hemiplegia documented as sequela of stroke',
-                guideline: 'ICD-10-CM I69.35',
-                trigger: `Hemiplegia Side: ${n.hemiplegia.side} `,
-                rule: 'Hemiplegia sequela code'
-            });
-        }
-
-        // RULE: Coma
-        if (n.coma) {
-            codes.push({
-                code: 'R40.20',
-                label: 'Unspecified coma',
-                rationale: 'Coma documented',
-                guideline: 'ICD-10-CM R40.2',
-                trigger: 'Coma = Yes',
-                rule: 'Coma symptom code'
-            });
-        }
-
-        // RULE: GCS
-        if (n.gcs !== undefined) {
-            const gcsCode = mapGCS(n.gcs);
-            if (gcsCode) {
-                codes.push({
-                    code: gcsCode,
-                    label: `Glasgow coma scale score ${n.gcs} `,
-                    rationale: 'GCS score documented',
-                    guideline: 'ICD-10-CM R40.2',
-                    trigger: `GCS: ${n.gcs} `,
-                    rule: 'GCS score code'
-                });
-            }
-        }
-    }
 
     // --- MUSCULOSKELETAL RULES ---
     if (ctx.conditions.musculoskeletal) {
@@ -4052,6 +3907,50 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
     // === RESPIRATORY CORRECTION (POST-SORTING OVERRIDE) ===
     // === RESPIRATORY CORRECTION (POST-SORTING OVERRIDE) ===
     finalCodes = correctRespiratorySequencing(finalCodes);
+
+
+    // --- FINAL DOMAIN SAFETY VALIDATION ---
+    // (Anti-Leak Guard: Ensures codes match context)
+    function validateDomainSafety(code: StructuredCode): string | null {
+        const c = code.code;
+
+        // OBSTETRICS (O00-O9A, Z33, Z34, Z37, Z39)
+        if (c.startsWith('O') || c.startsWith('Z33') || c.startsWith('Z34') || c.startsWith('Z37') || c.startsWith('Z39')) {
+            if (!ctx.conditions.obstetric?.pregnant && !ctx.conditions.obstetric?.postpartum) {
+                return `Domain Leak: Obstetrics code ${c} emitted without pregnancy/OB context.`;
+            }
+        }
+
+        // RENAL (N17-N19)
+        if (c.startsWith('N17') || c.startsWith('N18') || c.startsWith('N19') || c === 'Z49.31') {
+            // Check if renal context exists (either legacy 'renal' or 'ckd' object)
+            const hasRenal = ctx.conditions.renal || ctx.conditions.ckd;
+            if (!hasRenal) {
+                return `Domain Leak: Renal code ${c} emitted without renal context.`;
+            }
+        }
+
+        // SEPSIS (A40, A41, R65.2)
+        if (c.startsWith('A40') || c.startsWith('A41') || c.startsWith('R65.2')) {
+            if (!ctx.conditions.infection?.sepsis?.present && !ctx.conditions.sepsis) {
+                return `Domain Leak: Sepsis code ${c} emitted without sepsis context.`;
+            }
+        }
+
+        return null; // Safe
+    }
+
+    // Run Validation on ALL codes
+    finalCodes.forEach(c => {
+        const error = validateDomainSafety(c);
+        if (error) {
+            validationErrors.push(error);
+            // NOTE: We do NOT filter them out yet to allow debugging of leaks, 
+            // but strictly speaking a "Leak" is a Critical Failure.
+            // The user asked to "FAIL if codes emitted".
+            // We'll trust the validationErrors array to communicate this failure.
+        }
+    });
 
     return {
         primary: finalCodes.length > 0 ? finalCodes[0] : null,
