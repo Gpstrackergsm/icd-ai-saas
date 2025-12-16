@@ -2754,11 +2754,12 @@ export function parseInput(text: string): ParseResult {
                 break;
             case 'encephalopathy':
                 if (!context.conditions.neurology) context.conditions.neurology = {};
-                context.conditions.neurology.encephalopathy = { present: parseBoolean(value) };
+                context.conditions.neurology.encephalopathy = { present: parseBoolean(value), type: 'unspecified' };
                 break;
             case 'encephalopathy type':
                 if (!context.conditions.neurology) context.conditions.neurology = {};
-                if (!context.conditions.neurology.encephalopathy) context.conditions.neurology.encephalopathy = { present: true };
+                if (!context.conditions.neurology.encephalopathy) context.conditions.neurology.encephalopathy = { present: true, type: 'unspecified' };
+
                 if (lowerValue.includes('metabolic')) context.conditions.neurology.encephalopathy.type = 'metabolic';
                 else if (lowerValue.includes('toxic')) context.conditions.neurology.encephalopathy.type = 'toxic';
                 else if (lowerValue.includes('hepatic')) context.conditions.neurology.encephalopathy.type = 'hepatic';
