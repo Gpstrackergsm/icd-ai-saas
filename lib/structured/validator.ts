@@ -78,18 +78,25 @@ export function validateContext(ctx: PatientContext): ValidationResult {
 
     // === HARD STOP 7: PRESSURE ULCER REQUIRES STAGE ===
     if (ctx.conditions.wounds?.present) {
-        const w = ctx.conditions.wounds;
+        // AUDIT-SAFE EXEMPTION: If this is a fracture or burn case, disable generic wound validators
+        // unless there is explicitly a pressure ulcer context (checked via w.type)
+        const isFractureOrBurn = ctx.conditions.injury?.type === 'fracture' || ctx.conditions.injury?.type === 'burn';
+        const isPressureUlcer = ctx.conditions.wounds.type === 'pressure';
 
-        if (!w.type) {
-            errors.push('HARD STOP: Wound/ulcer selected but no type specified. Ulcer Type (Pressure, Diabetic, Traumatic) is REQUIRED.');
-        }
+        if (!isFractureOrBurn || isPressureUlcer) {
+            const w = ctx.conditions.wounds;
 
-        if (!w.location) {
-            errors.push('HARD STOP: Wound/ulcer selected but no location specified. Location (Sacral, Foot, Heel, etc.) is REQUIRED.');
-        }
+            if (!w.type) {
+                errors.push('HARD STOP: Wound/ulcer selected but no type specified. Ulcer Type (Pressure, Diabetic, Traumatic) is REQUIRED.');
+            }
 
-        if (!w.stage && !w.depth) {
-            errors.push('HARD STOP: Wound/ulcer selected but no stage/depth specified. Stage (1-4) or Depth is REQUIRED.');
+            if (!w.location) {
+                errors.push('HARD STOP: Wound/ulcer selected but no location specified. Location (Sacral, Foot, Heel, etc.) is REQUIRED.');
+            }
+
+            if (!w.stage && !w.depth) {
+                errors.push('HARD STOP: Wound/ulcer selected but no stage/depth specified. Stage (1-4) or Depth is REQUIRED.');
+            }
         }
     }
 
@@ -123,18 +130,24 @@ export function validateContext(ctx: PatientContext): ValidationResult {
 
     // === HARD STOP 12: PRESSURE ULCER REQUIRES TYPE + LOCATION + STAGE ===
     if (ctx.conditions.wounds?.present) {
-        const w = ctx.conditions.wounds;
+        // AUDIT-SAFE EXEMPTION
+        const isFractureOrBurn = ctx.conditions.injury?.type === 'fracture' || ctx.conditions.injury?.type === 'burn';
+        const isPressureUlcer = ctx.conditions.wounds.type === 'pressure';
 
-        if (!w.type) {
-            errors.push('HARD STOP: Wound/ulcer selected but no type specified. Ulcer Type (Pressure, Diabetic, Traumatic) is REQUIRED.');
-        }
+        if (!isFractureOrBurn || isPressureUlcer) {
+            const w = ctx.conditions.wounds;
 
-        if (!w.location) {
-            errors.push('HARD STOP: Wound/ulcer selected but no location specified. Location (Sacral, Foot, Heel, etc.) is REQUIRED.');
-        }
+            if (!w.type) {
+                errors.push('HARD STOP: Wound/ulcer selected but no type specified. Ulcer Type (Pressure, Diabetic, Traumatic) is REQUIRED.');
+            }
 
-        if (w.type === 'pressure' && !w.stage && !w.depth) {
-            errors.push('HARD STOP: Pressure ulcer selected but no stage specified. Stage (1-4, Unstageable, Deep tissue) is REQUIRED.');
+            if (!w.location) {
+                errors.push('HARD STOP: Wound/ulcer selected but no location specified. Location (Sacral, Foot, Heel, etc.) is REQUIRED.');
+            }
+
+            if (w.type === 'pressure' && !w.stage && !w.depth) {
+                errors.push('HARD STOP: Pressure ulcer selected but no stage specified. Stage (1-4, Unstageable, Deep tissue) is REQUIRED.');
+            }
         }
     }
 

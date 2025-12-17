@@ -3920,12 +3920,14 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         traumaRes = resolveTrauma(ctx.conditions.injury.rawText || '');
 
         if (traumaRes) {
-            codes.push({
+            const tCode = {
                 code: traumaRes.code,
                 label: traumaRes.label,
                 rationale: 'Trauma Resolver',
                 guideline: 'ICD-10-CM Chapter 19'
-            });
+            };
+            codes.push(tCode);
+            finalCodes.push(tCode);
 
             if (traumaRes.secondary_codes) {
                 traumaRes.secondary_codes.forEach(sc => {

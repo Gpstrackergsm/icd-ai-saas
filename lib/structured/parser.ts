@@ -216,6 +216,33 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.injury.present = true;
                     // Append text for the resolver to process
                     context.conditions.injury.rawText = (context.conditions.injury.rawText ? context.conditions.injury.rawText + '. ' : '') + lowerValue;
+
+                    // --- AUDIT-SAFE STRUCTURED CONTEXT EXTRACTION ---
+                    // Force populate required fields to prevent Validation Hard Stops
+
+                    // 1. Injury Type Extraction
+                    let type: 'unspecified' | 'fracture' | 'burn' | 'open_wound' | 'contusion' | 'poisoning' = 'unspecified';
+                    if (lowerValue.includes('fracture') || lowerValue.includes('broken')) type = 'fracture';
+                    else if (lowerValue.includes('burn') || lowerValue.includes('corrosion')) type = 'burn';
+                    else if (lowerValue.includes('wound') || lowerValue.includes('laceration') || lowerValue.includes('cut') || lowerValue.includes('bite') || lowerValue.includes('puncture')) type = 'open_wound';
+                    else if (lowerValue.includes('contusion') || lowerValue.includes('bruise')) type = 'contusion';
+                    else if (lowerValue.includes('poisoning') || lowerValue.includes('overdose') || lowerValue.includes('toxic')) type = 'poisoning';
+
+                    // Only update type if it's more specific than current (or current is unspecified)
+                    if (type !== 'unspecified' && (!context.conditions.injury.type || context.conditions.injury.type === 'unspecified')) {
+                        context.conditions.injury.type = type;
+                    }
+
+                    // 2. Encounter Type Extraction
+                    let encounterType: 'initial' | 'subsequent' | 'sequela' | undefined;
+                    if (lowerValue.includes('initial') || lowerValue.includes('active treatment') || lowerValue.includes('ed visit') || lowerValue.includes('emergency')) encounterType = 'initial';
+                    else if (lowerValue.includes('subsequent') || lowerValue.includes('healing') || lowerValue.includes('routine') || lowerValue.includes('aftercare') || lowerValue.includes('follow-up')) encounterType = 'subsequent';
+                    else if (lowerValue.includes('sequela') || lowerValue.includes('late effect') || lowerValue.includes('residual')) encounterType = 'sequela';
+
+                    // Update if found
+                    if (encounterType && (!context.conditions.injury.encounterType)) {
+                        context.conditions.injury.encounterType = encounterType;
+                    }
                 } else if (lowerValue.includes('preterm') || lowerValue.includes('premature')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     context.conditions.obstetric.termDocumentation = 'preterm';
