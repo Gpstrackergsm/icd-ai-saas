@@ -1,324 +1,51 @@
-PARSER LOADED - AUDITOR DEBUG MODE
 === 50 COMPLEX AUDIT CASES - FINAL RESULTS (GENERATED) ===
-
-DEBUG: Parser captured reason: 'pneumonia due to mrsa complicated by sepsis and acute hypoxic respiratory failure'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 72-year-old admitted with pneumonia due to mrsa complicated by sepsis and acute hypoxic respiratory failure.
-DEBUG: RF Parsing. Input: "72-year-old admitted with pneumonia due to mrsa complicated by sepsis and acute hypoxic respiratory failure.". Type: acute
-[DEBUG isNegated] Term: "sepsis" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG LOOP: Processing A41.02 Prio = 12 
-DEBUG TARGET: Reason = 'pneumonia due to mrsa complicated by sepsis and acute hypoxic respiratory failure' AdmittedForSepsis = true AdmittedForSource = true SeqSecondary = false 
-DEBUG TARGET: SourceCodes = [J15.212] SepsisBlock = [A41.02]
 CASE 1 | A41.02, J15.212, J96.01, R65.20
-DEBUG: Parser captured reason: 'covid-19 pneumonia, septic shock, and acute respiratory failure'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 80-year-old female with covid-19 pneumonia, septic shock, and acute respiratory failure.
-DEBUG: RF Parsing. Input: "80-year-old female with covid-19 pneumonia, septic shock, and acute respiratory failure.". Type: acute
-[DEBUG isNegated] Term: "septic shock" Negated: false
-[DEBUG isNegated] Term: "septic shock" Negated: false
-[DEBUG isNegated] Term: "septic" Negated: false
-[DEBUG isNegated] Term: "septic", PreText: "80-year-old female with covid-19 pneumonia, "
-[DEBUG isNegated] Result: false
-[DEBUG isNegated] Term: "shock" Negated: false
-[DEBUG isNegated] Term: "shock", PreText: "80-year-old female with covid-19 pneumonia, septic "
-[DEBUG isNegated] Result: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG LOOP: Processing A41.9 Prio = 12 
-DEBUG TARGET: Reason = 'covid-19 pneumonia, septic shock, and acute respiratory failure' AdmittedForSepsis = true AdmittedForSource = true SeqSecondary = true 
-DEBUG TARGET: SourceCodes = [J12.82] SepsisBlock = [A41.9,R65.21]
 CASE 2 | U07.1, J12.82, J96.00, A41.9, R65.21
-DEBUG: Parser captured reason: 'aspiration pneumonia leading to severe sepsis and acute renal failure'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 65-year-old male with aspiration pneumonia leading to severe sepsis and acute renal failure.
-[DEBUG isNegated] Term: "severe" Negated: false
-[DEBUG isNegated] Term: "sepsis" Negated: false
-[DEBUG isNegated] Term: "severe" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG LOOP: Processing A41.9 Prio = 12 
-DEBUG TARGET: Reason = 'aspiration pneumonia leading to severe sepsis and acute renal failure' AdmittedForSepsis = true AdmittedForSource = false SeqSecondary = false 
-DEBUG TARGET: SourceCodes = [J69.0] SepsisBlock = [A41.9,R65.20]
 CASE 3 | A41.9, R65.20, J69.0, N17.9
-DEBUG: Parser captured reason: 'e'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 70-year-old admitted for e. coli pneumonia with septic shock and acute hypoxic respiratory failure.
-DEBUG: RF Parsing. Input: "70-year-old admitted for e. coli pneumonia with septic shock and acute hypoxic respiratory failure.". Type: acute
-[DEBUG isNegated] Term: "septic shock" Negated: false
-[DEBUG isNegated] Term: "septic shock" Negated: false
-[DEBUG isNegated] Term: "septic" Negated: false
-[DEBUG isNegated] Term: "septic", PreText: "70-year-old admitted for e. coli pneumonia with "
-[DEBUG isNegated] Result: false
-[DEBUG isNegated] Term: "shock" Negated: false
-[DEBUG isNegated] Term: "shock", PreText: "70-year-old admitted for e. coli pneumonia with septic "
-[DEBUG isNegated] Result: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG LOOP: Processing A41.51 Prio = 12 
 CASE 4 | A41.51, R65.21, J15.5, J96.01
-DEBUG: Parser captured reason: 'copd admitted with pneumonia causing sepsis'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 68-year-old male with copd admitted with pneumonia causing sepsis.
-[DEBUG isNegated] Term: "sepsis" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG DIST LOOP: J44 matched Source check.
-DEBUG LOOP: Processing A41.9 Prio = 12 
-DEBUG TARGET: Reason = 'copd admitted with pneumonia causing sepsis' AdmittedForSepsis = true AdmittedForSource = true SeqSecondary = false 
-DEBUG TARGET: SourceCodes = [J18.9,J44.0] SepsisBlock = [A41.9]
 CASE 5 | A41.9, J18.9, J44.9
-DEBUG: RF Parsing. Input: "75-year-old with copd exacerbation and acute hypercapnic respiratory failure.". Type: acute
-DEBUG: Emitting J44.1 due to withExacerbation=true
 CASE 6 | J44.1, J96.02
-DEBUG: Parser captured reason: 'congestive heart failure and acute pulmonary edema causing respiratory failure'
-DEBUG: RF Parsing. Input: "70-year-old female with congestive heart failure and acute pulmonary edema causing respiratory failure.". Type: acute
 CASE 7 | J81.0, J96.00, I50.9
-DEBUG: Parser captured reason: 'acute on chronic respiratory failure'
-DEBUG: RF Parsing. Input: "60-year-old with copd and chf admitted with acute on chronic respiratory failure.". Type: acute_on_chronic
 CASE 8 | J96.20, J44.9, I50.9
-DEBUG: RF Parsing. Input: "55-year-old with severe asthma exacerbation and hypoxic respiratory failure.". Type: unspecified
 CASE 9 | J45.901, J96.01
-DEBUG: Parser captured reason: 'chronic respiratory failure'
-DEBUG: RF Parsing. Input: "80-year-old on home oxygen admitted with chronic respiratory failure.". Type: chronic
 CASE 10 | J96.10, Z99.81
-DEBUG: Parser captured reason: 'pneumonia complicated by acute respiratory failure'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 68-year-old male admitted with pneumonia complicated by acute respiratory failure.
-DEBUG: RF Parsing. Input: "68-year-old male admitted with pneumonia complicated by acute respiratory failure.". Type: acute
-[DEBUG isNegated] Term: "pneumonia" Negated: false
 CASE 11 | J18.9, J96.00
-DEBUG: Parser captured reason: 'influenza a pneumonia and acute respiratory failure'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 72-year-old female with influenza a pneumonia and acute respiratory failure.
-DEBUG: RF Parsing. Input: "72-year-old female with influenza a pneumonia and acute respiratory failure.". Type: acute
-[DEBUG isNegated] Term: "pneumonia" Negated: false
 CASE 12 | J10.0, J96.00
-DEBUG: Parser captured reason: 'ventilator-associated pneumonia due to pseudomonas'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 65-year-old male with ventilator-associated pneumonia due to pseudomonas.
-[DEBUG isNegated] Term: "pneumonia" Negated: false
 CASE 13 | J95.851, B96.5
-DEBUG: Parser captured reason: 'aspiration pneumonia'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 85-year-old nursing home resident admitted with aspiration pneumonia.
-[DEBUG isNegated] Term: "pneumonia" Negated: false
 CASE 14 | J69.0
-DEBUG: Parser captured reason: 'acute respiratory failure of unspecified type'
-DEBUG: RF Parsing. Input: "70-year-old admitted with acute respiratory failure of unspecified type.". Type: acute
 CASE 15 | J96.00
-DEBUG: RF Parsing. Input: "68-year-old with copd exacerbation leading to acute respiratory failure.". Type: acute
-DEBUG: Emitting J44.1 due to withExacerbation=true
 CASE 16 | J44.1, J96.00
-DEBUG: Parser captured reason: 'pneumonia resulting in acute hypoxic respiratory failure'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 72-year-old admitted with pneumonia resulting in acute hypoxic respiratory failure.
-DEBUG: RF Parsing. Input: "72-year-old admitted with pneumonia resulting in acute hypoxic respiratory failure.". Type: acute
-[DEBUG isNegated] Term: "pneumonia" Negated: false
 CASE 17 | J18.9, J96.01
-DEBUG: RF Parsing. Input: "50-year-old developed acute respiratory failure following surgery.". Type: acute
 CASE 18 | J95.821
-DEBUG: RF Parsing. Input: "55-year-old with severe asthma exacerbation and hypoxic respiratory failure.". Type: unspecified
 CASE 19 | J45.901, J96.01
-DEBUG: Parser captured reason: 'acute pulmonary embolism causing acute cor pulmonale'
 CASE 20 | I26.02
-DEBUG: Parser captured reason: 'sepsis due to uti'
-[DEBUG isNegated] Term: "chronic kidney disease" Negated: false
-[DEBUG isNegated] Term: "chronic kidney disease", PreText: "68-year-old with type 2 diabetes and "
-[DEBUG isNegated] Result: false
-[DEBUG isNegated] Term: "kidney disease" Negated: false
-[DEBUG isNegated] Term: "chronic kidney disease" Negated: false
-[DEBUG isNegated] Term: "chronic kidney disease", PreText: "68-year-old with type 2 diabetes and "
-[DEBUG isNegated] Result: false
-[DEBUG isNegated] Term: "sepsis" Negated: false
-[Parser] Diabetes Detected in: "68-year-old with type 2 diabetes and chronic kidne..."
-[Parser] LowerText: 68-year-old with type 2 diabetes and chronic kidney disease admitted for sepsis due to uti.
-[Parser] isNegated: false
-[DEBUG isNegated] Term: "chronic kidney" Negated: false
-[Engine] Diabetes Type: type2, Details: {} 
-DEBUG LOOP: Processing A41.9 Prio = 12 
 CASE 21 | A41.9, N39.0, N18.9, E11.22
-DEBUG: Parser captured reason: 'diabetic ketoacidosis'
-[Parser] Diabetes Detected in: "55-year-old with type 1 diabetes admitted with dia..."
-[Parser] LowerText: 55-year-old with type 1 diabetes admitted with diabetic ketoacidosis.
-[Parser] isNegated: false
-[Engine] Diabetes Type: type1, Details: {"ketoacidosis":true} 
 CASE 22 | E10.10
-DEBUG: Parser captured reason: 'sepsis'
-[DEBUG isNegated] Term: "sepsis" Negated: false
-[Parser] Diabetes Detected in: "72-year-old type 2 diabetic with foot ulcer admitt..."
-[Parser] LowerText: 72-year-old type 2 diabetic with foot ulcer admitted for sepsis.
-[Parser] isNegated: false
-[Engine] Diabetes Type: type2, Details: {"footUlcer":true} 
-DEBUG LOOP: Processing A41.9 Prio = 12 
 CASE 23 | A41.9, L97.419, E11.621
-DEBUG: Parser captured reason: 'pneumonia and acute hypoxic respiratory failure'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 65-year-old diabetic admitted with pneumonia and acute hypoxic respiratory failure.
-DEBUG: RF Parsing. Input: "65-year-old diabetic admitted with pneumonia and acute hypoxic respiratory failure.". Type: acute
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[Parser] Diabetes Detected in: "65-year-old diabetic admitted with pneumonia and a..."
-[Parser] LowerText: 65-year-old diabetic admitted with pneumonia and acute hypoxic respiratory failure.
-[Parser] isNegated: false
-[Engine] Diabetes Type: type2, Details: {} 
 CASE 24 | J18.9, J96.01, E11.9
-[DEBUG isNegated] Term: "esrd" Negated: false
-DEBUG: Parser captured reason: 'sepsis'
-[DEBUG isNegated] Term: "sepsis" Negated: false
-[Parser] Diabetes Detected in: "70-year-old diabetic with ESRD on dialysis admitte..."
-[Parser] LowerText: 70-year-old diabetic with esrd on dialysis admitted with sepsis.
-[Parser] isNegated: false
-[DEBUG isNegated] Term: "esrd" Negated: false
-[Engine] Diabetes Type: type2, Details: {} 
 CASE 25 | A41.9, N18.6, E11.22, Z99.2
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 60-year-old with covid-19 pneumonia complicated by acute respiratory distress syndrome.
-[DEBUG isNegated] Term: "pneumonia" Negated: false
 CASE 26 | U07.1, J12.82, J80
-DEBUG: Parser captured reason: 'acute on chronic respiratory failure due to copd'
-DEBUG: RF Parsing. Input: "75-year-old admitted with acute on chronic respiratory failure due to copd.". Type: acute_on_chronic
 CASE 27 | J96.20, J44.9
-DEBUG: Parser captured reason: 'pneumonia and acute respiratory failure requiring oxygen'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 68-year-old male with pneumonia and acute respiratory failure requiring oxygen.
-DEBUG: RF Parsing. Input: "68-year-old male with pneumonia and acute respiratory failure requiring oxygen.". Type: acute
-[DEBUG isNegated] Term: "pneumonia" Negated: false
 CASE 28 | J18.9, J96.00
-DEBUG: Parser captured reason: 'copd exacerbation and pneumonia'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 80-year-old female admitted with copd exacerbation and pneumonia.
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Emitting J44.1 due to withExacerbation=true
 CASE 29 | J44.1, J18.9
-DEBUG: Parser captured reason: 'acute hypoxic respiratory failure secondary to pulmonary edema'
-DEBUG: RF Parsing. Input: "65-year-old admitted with acute hypoxic respiratory failure secondary to pulmonary edema.". Type: acute
 CASE 30 | J81.0, J96.01
-DEBUG: Parser captured reason: 'copd and acute respiratory failure'
-DEBUG: RF Parsing. Input: "55-year-old male smoker admitted with copd and acute respiratory failure.". Type: acute
 CASE 31 | J96.00, J44.9, F17.210
-DEBUG: Parser captured reason: 'chf admitted with pleural effusion and shortness of breath'
 CASE 32 | I50.9, J91.8
-DEBUG: Parser captured reason: 'viral pneumonia and respiratory failure'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 60-year-old admitted with viral pneumonia and respiratory failure.
-DEBUG: RF Parsing. Input: "60-year-old admitted with viral pneumonia and respiratory failure.". Type: unspecified
-[DEBUG isNegated] Term: "pneumonia" Negated: false
 CASE 33 | J12.9, J96.00
-DEBUG: Parser captured reason: 'covid-19, pneumonia, and septic shock'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 75-year-old admitted with covid-19, pneumonia, and septic shock.
-[DEBUG isNegated] Term: "septic shock" Negated: false
-[DEBUG isNegated] Term: "septic shock" Negated: false
-[DEBUG isNegated] Term: "septic" Negated: false
-[DEBUG isNegated] Term: "septic", PreText: "75-year-old admitted with covid-19, pneumonia, and "
-[DEBUG isNegated] Result: false
-[DEBUG isNegated] Term: "shock" Negated: false
-[DEBUG isNegated] Term: "shock", PreText: "75-year-old admitted with covid-19, pneumonia, and septic "
-[DEBUG isNegated] Result: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG LOOP: Processing A41.9 Prio = 12 
-DEBUG TARGET: Reason = 'covid-19, pneumonia, and septic shock' AdmittedForSepsis = true AdmittedForSource = true SeqSecondary = true 
-DEBUG TARGET: SourceCodes = [J12.82] SepsisBlock = [A41.9,R65.21]
 CASE 34 | U07.1, J12.82, A41.9, R65.21
-DEBUG: Parser captured reason: 'severe sepsis secondary to pneumonia'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 68-year-old admitted with severe sepsis secondary to pneumonia.
-[DEBUG isNegated] Term: "severe" Negated: false
-[DEBUG isNegated] Term: "sepsis" Negated: false
-[DEBUG isNegated] Term: "severe" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG LOOP: Processing A41.9 Prio = 12 
-DEBUG TARGET: Reason = 'severe sepsis secondary to pneumonia' AdmittedForSepsis = true AdmittedForSource = true SeqSecondary = false 
-DEBUG TARGET: SourceCodes = [J18.9] SepsisBlock = [A41.9,R65.20]
 CASE 35 | A41.9, J18.9
-DEBUG: Parser captured reason: 'pneumonia complicated by acute renal failure'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 72-year-old admitted with pneumonia complicated by acute renal failure.
-[DEBUG isNegated] Term: "pneumonia" Negated: false
 CASE 36 | J18.9, N17.9
-DEBUG: Parser captured reason: 'aspiration pneumonia and acute respiratory failure'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 65-year-old admitted with aspiration pneumonia and acute respiratory failure.
-DEBUG: RF Parsing. Input: "65-year-old admitted with aspiration pneumonia and acute respiratory failure.". Type: acute
-[DEBUG isNegated] Term: "pneumonia" Negated: false
 CASE 37 | J69.0, J96.00
-DEBUG: Parser captured reason: 'acute respiratory failure following intubation'
-DEBUG: RF Parsing. Input: "80-year-old admitted with acute respiratory failure following intubation.". Type: acute
 CASE 38 | J96.00
-DEBUG: Parser captured reason: 'spontaneous pneumothorax'
 CASE 39 | J93.11
-DEBUG: Parser captured reason: 'acute saddle pulmonary embolism'
 CASE 40 | I26.02
-DEBUG: Parser captured reason: 'ards following sepsis'
-[DEBUG isNegated] Term: "sepsis" Negated: false
 CASE 41 | A41.9, J80, R65.20
-DEBUG: Parser captured reason: 'copd exacerbation and hypercapnic respiratory failure'
-DEBUG: RF Parsing. Input: "75-year-old admitted with copd exacerbation and hypercapnic respiratory failure.". Type: unspecified
-DEBUG: Emitting J44.1 due to withExacerbation=true
 CASE 42 | J44.1, J96.02
-DEBUG: Parser captured reason: 'pneumonia and acute on chronic respiratory failure'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 68-year-old admitted with pneumonia and acute on chronic respiratory failure.
-DEBUG: RF Parsing. Input: "68-year-old admitted with pneumonia and acute on chronic respiratory failure.". Type: acute_on_chronic
-[DEBUG isNegated] Term: "pneumonia" Negated: false
 CASE 43 | J18.9, J96.20
-DEBUG: Parser captured reason: 'influenza pneumonia and hypoxic respiratory failure'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 72-year-old admitted with influenza pneumonia and hypoxic respiratory failure.
-DEBUG: RF Parsing. Input: "72-year-old admitted with influenza pneumonia and hypoxic respiratory failure.". Type: unspecified
-[DEBUG isNegated] Term: "pneumonia" Negated: false
 CASE 44 | J10.0, J96.01
-DEBUG: Parser captured reason: 'postoperative respiratory failure'
-DEBUG: RF Parsing. Input: "65-year-old admitted with postoperative respiratory failure.". Type: acute
 CASE 45 | J95.821
-DEBUG: Parser captured reason: 'ventilator-associated pneumonia'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 70-year-old admitted with ventilator-associated pneumonia.
-[DEBUG isNegated] Term: "pneumonia" Negated: false
 CASE 46 | J95.851
-DEBUG: Parser captured reason: 'covid-19 pneumonia and ards'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 55-year-old admitted with covid-19 pneumonia and ards.
-[DEBUG isNegated] Term: "pneumonia" Negated: false
 CASE 47 | U07.1, J12.82, J80
-DEBUG: Parser captured reason: 'aspiration pneumonia leading to sepsis'
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG: Parser found pneumonia: 80-year-old admitted with aspiration pneumonia leading to sepsis.
-[DEBUG isNegated] Term: "sepsis" Negated: false
-[DEBUG isNegated] Term: "pneumonia" Negated: false
-DEBUG LOOP: Processing A41.9 Prio = 12 
-DEBUG TARGET: Reason = 'aspiration pneumonia leading to sepsis' AdmittedForSepsis = true AdmittedForSource = false SeqSecondary = false 
-DEBUG TARGET: SourceCodes = [J69.0] SepsisBlock = [A41.9]
 CASE 48 | A41.9, J69.0
-DEBUG: Parser captured reason: 'acute respiratory failure and metabolic encephalopathy'
-DEBUG: RF Parsing. Input: "60-year-old admitted with acute respiratory failure and metabolic encephalopathy.". Type: acute
-[Flow] Reached Neuro block. Triggers: encephalopathy
 CASE 49 | J96.00, G93.41
-DEBUG: Parser captured reason: 'septic shock complicated by ards and acute renal failure'
-[DEBUG isNegated] Term: "septic shock" Negated: false
-[DEBUG isNegated] Term: "septic shock" Negated: false
-[DEBUG isNegated] Term: "septic" Negated: false
-[DEBUG isNegated] Term: "septic", PreText: "75-year-old admitted with "
-[DEBUG isNegated] Result: false
-[DEBUG isNegated] Term: "shock" Negated: false
-[DEBUG isNegated] Term: "shock", PreText: "75-year-old admitted with septic "
-[DEBUG isNegated] Result: false
 CASE 50 | A41.9, R65.21, N17.9, J80
