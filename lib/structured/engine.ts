@@ -4033,6 +4033,12 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         return null; // Safe
     }
 
+    // === AUDIT CORRECTION LOGIC ===
+    // 1. COPD Exacerbation suppresses Asthma (Auditor Rule)
+    if (finalCodes.some(c => c.code === 'J44.1')) {
+        finalCodes = finalCodes.filter(c => !c.code.startsWith('J45.'));
+    }
+
     // Run Validation on ALL codes
     finalCodes.forEach(c => {
         const error = validateDomainSafety(c);

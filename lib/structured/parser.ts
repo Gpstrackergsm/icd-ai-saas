@@ -201,7 +201,7 @@ export function parseInput(text: string): ParseResult {
                 }
 
                 // Aggregating text for the Trauma Resolver
-                else if (/fracture|broken|burn|injury|wound|laceration|contusion|trauma|poisoning|overdose|toxic|adverse effect|bite|sprain|dislocation|amputation|crush|abrasion|foreign body|suicide|attempt|cut|cutting|heat|stroke|hypothermia|abuse|anaphylaxis|anaphylactic|corrosion|shock|concussion|brain injury/.test(lowerValue) &&
+                else if (/fracture|broken|burn|injury|wound|laceration|contusion|trauma|poisoning|overdose|toxic|adverse effect|bite|sprain|dislocation|amputation|crush|abrasion|foreign body|suicide|attempt|\bcut\b|cutting|heat|stroke|hypothermia|abuse|anaphylaxis|anaphylactic|corrosion|shock|concussion|brain injury/.test(lowerValue) &&
                     !lowerValue.includes('kidney injury') &&
                     !lowerValue.includes('aki')) {
                     if (!context.conditions.injury) {
