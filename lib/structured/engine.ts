@@ -3306,16 +3306,9 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         validationErrors.push('Invariant Violation: Encephalopathy code removed because Encephalopathy is not present');
     }
 
-    // RULE C1: Sepsis Severity & R65.x
-    // R65.2x allowed ONLY if Severe Sepsis = Yes OR Septic Shock = Yes
-    const hasR65 = finalCodes.some(c => c.code.startsWith('R65.2'));
-    const isSevere = !!ctx.conditions.infection?.sepsis?.severe;
-    const isShock = !!ctx.conditions.infection?.sepsis?.shock;
-
-    if (hasR65 && !isSevere && !isShock) {
-        finalCodes = finalCodes.filter(c => !c.code.startsWith('R65.2'));
-        validationErrors.push('Invariant Violation: R65.2x removed because neither Severe Sepsis nor Septic Shock is present');
-    }
+    // RULE C1: Sepsis Severity & R65.x - REMOVED (Handled by Sepsis Guardrails logic at end of file)
+    // The previous check forced removal if 'severe' flag was missing, which broke cases where
+    // severe sepsis is inferred from organ dysfunction. The new guardrails handle this authoritative check.
 
     // === CRITICAL VALIDATION FIXES (User-Requested) ===
 
