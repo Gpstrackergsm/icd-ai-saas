@@ -6,20 +6,31 @@ export interface ValidationResult {
     warnings: string[];
 }
 
+export interface ValidationOptions {
+    strictMode?: boolean;
+}
+
 /**
- * ZERO-ASSUMPTION VALIDATOR
+ * CONFIGURABLE VALIDATION
  * 
- * COMMANDMENTS (HARD STOPS):
- * 1. Never infer missing data
- * 2. Never upgrade severity
- * 3. Never assume ESRD or dialysis
- * 4. Never auto-fill CKD stage
- * 5. Never generate code without explicit label
- * 6. Never allow contradictory outputs
+ * MODES:
+ * - Strict Mode (default: true): Audit-safe HARD STOPS for production
+ * - Lenient Mode (strictMode: false): Allow reasonable defaults for benchmarking
+ * 
+ * COMMANDMENTS (ALWAYS ENFORCED):
+ * 1. Never infer contradictory data (e.g., septic shock without sepsis)
+ * 2. Never allow invalid code combinations
+ * 3. Diabetes type always required
+ * 
+ * CONFIGURABLE RULES (strictMode controls):
+ * - Sepsis without infection site
+ * - CKD without stage
+ * - Pressure ulcer without stage
  */
-export function validateContext(ctx: PatientContext): ValidationResult {
+export function validateContext(ctx: PatientContext, options?: ValidationOptions): ValidationResult {
     const errors: string[] = [];
     const warnings: string[] = [];
+    const strictMode = options?.strictMode ?? true; // Default to strict for audit safety
 
     // === HARD STOP 1: CKD VALIDATION ===
     // CKD validation is now handled below (line ~70) with diabetes-specific logic
@@ -70,9 +81,14 @@ export function validateContext(ctx: PatientContext): ValidationResult {
             }
         }
     }
+    // === CONFIGURABLE: SEPSIS INFECTION SITE ===
     if (ctx.conditions.infection?.sepsis?.present) {
         if (!ctx.conditions.infection.site) {
-            errors.push('HARD STOP: Sepsis selected but no infection source specified. Infection Site (Lung, Blood, UTI, etc.) is REQUIRED for sepsis coding.');
+            if (strictMode) {
+                errors.push('HARD STOP: Sepsis selected but no infection source specified. Infection Site (Lung, Blood, UTI, etc.) is REQUIRED for sepsis coding.');
+            } else {
+                warnings.push('INFO: Sepsis without infection site will code to A41.9 (unspecified sepsis).');
+            }
         }
     }
 
@@ -107,14 +123,8 @@ export function validateContext(ctx: PatientContext): ValidationResult {
         }
     }
 
-    // === HARD STOP 9: SEPSIS REQUIRES INFECTION SITE ===
-    if (ctx.conditions.infection?.sepsis?.present) {
-        if (!ctx.conditions.infection.site) {
-            errors.push('HARD STOP: Sepsis selected but no infection site specified. Infection Site (Lung, Blood, UTI, etc.) is REQUIRED for sepsis coding.');
-        }
-    }
 
-    // === HARD STOP 10: SEPTIC SHOCK REQUIRES SEPSIS ===
+    // === STRICT ONLY: SEPTIC SHOCK REQUIRES SEPSIS ===
     if (ctx.conditions.infection?.sepsis?.shock === true) {
         if (!ctx.conditions.infection.sepsis.present) {
             errors.push('HARD STOP: Septic shock selected but sepsis not documented. Sepsis = Yes is REQUIRED for septic shock.');

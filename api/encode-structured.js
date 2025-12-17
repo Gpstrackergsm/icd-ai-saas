@@ -38,8 +38,8 @@ module.exports = async function handler(req, res) {
             });
         }
 
-        // Validate the context
-        const validation = validateContext(context);
+        // Validate the context with STRICT MODE for audit-safe production coding
+        const validation = validateContext(context, { strictMode: true });
 
         if (!validation.valid) {
             return res.status(200).json({

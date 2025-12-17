@@ -2,6 +2,7 @@
 import * as fs from 'fs';
 import { parseInput } from './lib/structured/parser';
 import { runStructuredRules } from './lib/structured/engine';
+import { validateContext } from './lib/structured/validator';
 
 interface TestCase {
     id: number;
@@ -29,7 +30,7 @@ async function runValidation() {
     const errorsByModule: Record<string, number> = {};
     const totalByModule: Record<string, number> = {};
 
-    console.log(`Running validation on ${data.length} cases...`);
+    console.log(`Running validation on ${data.length} cases (LENIENT MODE)...`);
 
     for (const testCase of data) {
         // Initialize module stats
@@ -41,6 +42,15 @@ async function runValidation() {
         let generatedCodes: string[] = [];
         try {
             const { context } = parseInput(testCase.text);
+
+            // Use LENIENT MODE for benchmark validation (matches offline accuracy)
+            const validation = validateContext(context, { strictMode: false });
+
+            // Don't block on validation errors in lenient mode - proceed with code generation
+            if (!validation.valid && validation.errors.length > 0) {
+                console.log(`[LENIENT] Case ${testCase.id}: ${validation.errors.join(', ')}`);
+            }
+
             const engineResult = runStructuredRules(context);
             generatedCodes = [engineResult.primary, ...engineResult.secondary]
                 .filter((x): x is NonNullable<typeof x> => !!x)
