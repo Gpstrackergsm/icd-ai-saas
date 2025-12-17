@@ -1,17 +1,17 @@
-=== 50 COMPLEX AUDIT CASES - FINAL RESULTS (ROUND 2) ===
+=== 50 COMPLEX AUDIT CASES - FINAL RESULTS (ROUND 3) ===
 
 CASE 1 | A41.02, J15.212, J96.01, R65.20 | PNA MRSA + Sepsis + Acute RF (Severe Sepsis auto-added)
 CASE 2 | U07.1, J12.82, J96.00, A41.9, R65.21 | COVID + Septic Shock
 CASE 3 | A41.9, R65.20, J69.0, N17.9 | Aspiration PNA + Severe Sepsis + AKI
 CASE 4 | A41.51, R65.21, J15.5, J96.01 | E.Coli PNA + Septic Shock
-CASE 5 | A41.9, J18.9, J44.0 | COPD + PNA + Sepsis
+CASE 5 | A41.9, J18.9, J44.9 | COPD + PNA + Sepsis (J44.0 downgraded to J44.9)
 CASE 6 | J44.1, J96.02 | COPD Exacerbation + Hypercapnic RF
 CASE 7 | J81.0, J96.00, I50.9 | CHF + Pulmonary Edema
 CASE 8 | J96.20, J44.9, I50.9 | COPD + CHF + Acute/Chronic RF
 CASE 9 | J45.901, J96.01 | Asthma + Acute RF
 CASE 10 | J96.10, Z99.81 | Chronic RF + Home O2
 CASE 11 | J18.9, J96.00 | PNA + Acute RF
-CASE 12 | J10.0, J96.00 | Flu PNA + RF
+CASE 12 | J10.0, J96.01 | Flu PNA + RF
 CASE 13 | J95.851, B96.5 | VAP Pseudomonas
 CASE 14 | J69.0 | Aspiration PNA
 CASE 15 | J96.00 | Acute RF Unspecified

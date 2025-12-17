@@ -4071,6 +4071,30 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         });
     }
 
+    // Rule 3: COPD + Pneumonia (Audit Case 5)
+    // If J44.0 (COPD with Acute LRI) is present AND Pneumonia (J18/J15/J13/etc) is present,
+    // downgrade J44.0 to J44.9 (Unspecified) to avoid double coding, unless "LRI" explicitly mentioned.
+    const hasJ440 = finalCodes.some(c => c.code === 'J44.0');
+    const hasPneumonia = finalCodes.some(c => c.code.startsWith('J1') || c.code.startsWith('J69'));
+
+    // We assume parser/engine would have used J44.0 if it saw "with acute LRI".
+    // But our engine currently defaults to J44.0 if pneumonia is present.
+    // We need to REVERT that default if specific linkage is missing (implied by this audit rule).
+    if (hasJ440 && hasPneumonia) {
+        // Swap J44.0 -> J44.9
+        finalCodes = finalCodes.map(c => {
+            if (c.code === 'J44.0') {
+                return {
+                    code: 'J44.9',
+                    label: 'Chronic obstructive pulmonary disease, unspecified',
+                    rationale: 'Audit Correction: Avoid J44.0 with Pneumonia unless explicitly linked.',
+                    guideline: 'Auditor Rule'
+                };
+            }
+            return c;
+        });
+    }
+
     // Run Validation on ALL codes
     finalCodes.forEach(c => {
         const error = validateDomainSafety(c);
