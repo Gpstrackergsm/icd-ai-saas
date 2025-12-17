@@ -8,7 +8,7 @@ Case 1 (25-year-old male with closed fracture of right clavicle (shaft) from foo
 DEBUG: Parser captured reason: 'simple closed fracture of left distal radius (colles fracture)'
 Case 2 (40-year-old female with simple closed fracture of left distal radius (Colles fracture). Initial encounter.), Output: S52.532A
 DEBUG: Parser captured reason: 'displaced transcervical fracture of right femur (hip)'
-Case 3 (60-year-old male with displaced transcervical fracture of right femur (hip). Fall from standing. Initial encounter.), Output: S72.031A
+Case 3 (60-year-old male with displaced transcervical fracture of right femur (hip). Fall from standing. Initial encounter.), Output: S72.031A, W19.XXXA
 DEBUG: Parser captured reason: 'open fracture of shaft of left tibia, gustilo type ii'
 Case 4 (18-year-old male with open fracture of shaft of left tibia, Gustilo type II. Initial encounter.), Output: S82.202B
 DEBUG: Parser captured reason: 'fracture of 3 right ribs'
@@ -17,14 +17,22 @@ DEBUG: Parser captured reason: 'comminuted fracture of right humeral shaft'
 Case 6 (50-year-old male with comminuted fracture of right humeral shaft. Subsequent encounter for fracture healing.), Output: S42.301D
 Case 7 (12-year-old boy with greenstick fracture of shaft of left ulna. Initial.), Output: S52.212A
 DEBUG: Parser captured reason: 'compression fracture of l2 vertebra due to fall'
-Case 8 (70-year-old female with compression fracture of L2 vertebra due to fall. Initial.), Output: S32.029A
+
+--------------------------------------------------------------------------------
+CASE 8: 70-year-old female with compression fracture of L2 vertebra due to fall. Initial.
+❌ FAIL: Expected S32.029A, Got S32.020A
+   Rationale: Fracture L2 vertebra. S32.02-.
 DEBUG: Parser captured reason: 'boxer's fracture (5th metacarpal), right hand'
 Case 9 (22-year-old male with Boxer's fracture (5th metacarpal), right hand. Initial.), Output: S62.610A
 DEBUG: Parser captured reason: 'le fort i fracture of skull (maxilla)'
 Case 10 (35-year-old female with Le Fort I fracture of skull (maxilla). Initial.), Output: S02.412A
 DEBUG: Parser captured reason: 'closed nondisplaced fracture of surgical neck of left humerus'
 Case 11 (45-year-old male with closed nondisplaced fracture of surgical neck of left humerus. Initial.), Output: S42.212A
-Case 12 (Sequela of fracture of right ankle (lateral malleolus). Delayed healing.), Output: S82.61XS
+
+--------------------------------------------------------------------------------
+CASE 12: Sequela of fracture of right ankle (lateral malleolus). Delayed healing.
+❌ FAIL: Expected S82.61XG, Got S82.61XS
+   Rationale: Delayed healing takes precedence over sequela terminology.
 Case 13 (80-year-old with periprosthetic fracture of right femur shaft around hip replacement.), Output: M97.01XA
 Case 14 (33-year-old with traumatic fracture of C5 vertebra, displaced. Initial.), Output: S12.400A
 Case 15 (55-year-old with stress fracture of right metatarsal.), Output: M84.374A
@@ -41,15 +49,15 @@ Case 20 (50-year-old male with traumatic subarachnoid hemorrhage with LOC 1 hour
 Case 21 (Diffuse axonal injury (DAI) with prolonged coma (>24 hrs). Initial.), Output: S06.2X5A
 Case 22 (Minor head injury, GCS 15, no LOC.), Output: S09.90XA
 Case 23 (Penetrating injury of head with foreign body. Initial.), Output: S01.84XA
-Case 24 (Second degree burn of right forearm, 5% TBSA.), Output: T22.211A
-Case 25 (Third degree burn of chest wall (anterior), 8% TBSA.), Output: T21.31XA
+Case 24 (Second degree burn of right forearm, 5% TBSA.), Output: T22.211A, T31.0
+Case 25 (Third degree burn of chest wall (anterior), 8% TBSA.), Output: T21.31XA, T31.0
 Case 26 (First degree burn of face (sunburn excluded). Initial.), Output: T20.10XA
 Case 27 (Burns involving 25% of body surface, with 15% third degree.), Output: T31.21
 Case 28 (Corrosion of left hand, second degree. Initial.), Output: T23.602A
 Case 29 (Scald burn (2nd degree) of right thigh. Initial.), Output: T24.211A
 Case 30 (Third degree burn of left foot and ankle.), Output: T25.322A
 Case 31 (Inhalation injury (burn of larynx/trachea) from fire.), Output: T27.0XXA
-Case 32 (Second degree burn of multiple sites (arm and leg). TBSA 9%.), Output: T29.20XA
+Case 32 (Second degree burn of multiple sites (arm and leg). TBSA 9%.), Output: T29.20XA, T31.0
 Case 33 (Friction burn (abrasion) of right knee. Initial.), Output: S80.211A
 Case 34 (Laceration of right index finger without nail damage. Initial.), Output: S61.210A
 Case 35 (Puncture wound of left foot with foreign body. Initial.), Output: S91.342A
@@ -70,5 +78,5 @@ Case 49 (Dislocation of right shoulder (glenohumeral). Initial.), Output: S43.00
 Case 50 (Suicide attempt by cutting left wrist. Initial.), Output: S61.512A
 
 ================================================================================
-FINAL RESULTS: 50/50 PASSED (100%)
+FINAL RESULTS: 48/50 PASSED (96%)
 ================================================================================

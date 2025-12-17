@@ -1,0 +1,324 @@
+PARSER LOADED - AUDITOR DEBUG MODE
+=== COMPREHENSIVE 50-CASE BENCHMARK ===
+
+CASE 1:
+Input: "Patient admitted with acute ischemic stroke of the left MCA with dense right hemiplegia."
+[Flow] Reached Renal block. Key: narrative, Value: "patient admitted wit..."
+Codes: G81.91 (Hemiplegia, unspecified affecting right side), I63.512 (Cerebral infarction due to unspecified occlusion or stenosis of left middle cerebral artery)
+--------------------------------------------------
+CASE 2:
+Input: "History of CVA with residual left sided hemiparesis affecting dominant side."
+[Flow] Reached Renal block. Key: narrative, Value: "history of cva with ..."
+Codes: I69.352 (Hemiplegia and hemiparesis following cerebral infarction affecting left side)
+--------------------------------------------------
+CASE 3:
+Input: "Transient Ischemic Attack (TIA) lasting 30 minutes, symptoms resolved."
+[Flow] Reached Renal block. Key: narrative, Value: "transient ischemic a..."
+Codes: G45.9 (Transient cerebral ischemic attack, unspecified)
+--------------------------------------------------
+CASE 4:
+Input: "Intractible epilepsy with status epilepticus."
+[Flow] Reached Renal block. Key: narrative, Value: "intractible epilepsy..."
+Codes: G40.911 (Epilepsy, unspecified, intractable, with status epilepticus)
+--------------------------------------------------
+CASE 5:
+Input: "Toxic metabolic encephalopathy secondary to sepsis."
+[Flow] Reached Renal block. Key: narrative, Value: "toxic metabolic ence..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+Codes: A41.9 (Sepsis, unspecified organism), G93.41 (Metabolic encephalopathy)
+--------------------------------------------------
+CASE 6:
+Input: "Patient with history of stroke presenting with new onset seizures."
+[Flow] Reached Renal block. Key: narrative, Value: "patient with history..."
+Codes: G40.909 (Epilepsy, unspecified, not intractable, without status epilepticus)
+--------------------------------------------------
+CASE 7:
+Input: "Acute hemorrhagic stroke of the right cerebellum."
+[Flow] Reached Renal block. Key: narrative, Value: "acute hemorrhagic st..."
+Codes: I61.9 (Nontraumatic intracerebral hemorrhage, unspecified)
+--------------------------------------------------
+CASE 8:
+Input: "Patient with vascular dementia and history of CVA."
+[Flow] Reached Renal block. Key: narrative, Value: "patient with vascula..."
+Codes: G45.9 (Transient cerebral ischemic attack, unspecified)
+--------------------------------------------------
+CASE 9:
+Input: "Acute ST elevation myocardial infarction of anterior wall."
+[Flow] Reached Renal block. Key: narrative, Value: "acute st elevation m..."
+Codes: I21.9 (Acute myocardial infarction, unspecified)
+--------------------------------------------------
+CASE 10:
+Input: "NSTEMI with acute combined systolic and diastolic heart failure."
+[Flow] Reached Renal block. Key: narrative, Value: "nstemi with acute co..."
+Codes: I21.4 (Non-ST elevation myocardial infarction), I50.41 (Heart failure, combined, acute )
+--------------------------------------------------
+CASE 11:
+Input: "Chronic diastolic heart failure with acute exacerbation."
+[Flow] Reached Renal block. Key: narrative, Value: "chronic diastolic he..."
+Codes: I50.31 (Heart failure, diastolic, acute )
+--------------------------------------------------
+CASE 12:
+Input: "Patient with history of MI and current unstable angina."
+[Flow] Reached Renal block. Key: narrative, Value: "patient with history..."
+Codes: I20.0 (Unstable angina), I25.2 (Old myocardial infarction)
+--------------------------------------------------
+CASE 13:
+Input: "Atrial fibrillation with rapid ventricular response (RVR)."
+[Flow] Reached Renal block. Key: narrative, Value: "atrial fibrillation ..."
+Codes: I48.91 (Unspecified atrial fibrillation)
+--------------------------------------------------
+CASE 14:
+Input: "Admitted for heart failure reduced ejection fraction (HFrEF)."
+[Flow] Reached Renal block. Key: narrative, Value: "admitted for heart f..."
+Codes: I50.20 (Heart failure, systolic, unspecified )
+--------------------------------------------------
+CASE 15:
+Input: "Hypertensive heart and chronic kidney disease stage 5 on dialysis."
+[DEBUG isNegated] Term: "chronic kidney disease" Negated: false
+[DEBUG isNegated] Term: "chronic kidney disease", PreText: "hypertensive heart and "
+[DEBUG isNegated] Result: false
+[DEBUG isNegated] Term: "kidney disease" Negated: false
+[Flow] Reached Renal block. Key: narrative, Value: "hypertensive heart a..."
+[DEBUG isNegated] Term: "chronic kidney disease" Negated: false
+[DEBUG isNegated] Term: "chronic kidney disease", PreText: "hypertensive heart and "
+[DEBUG isNegated] Result: false
+[DEBUG isNegated] Term: "stage 5" Negated: false
+[DEBUG isNegated] Term: "chronic kidney" Negated: false
+Codes: N18.5 (Chronic kidney disease, stage 5 ), I13.11 (Hypertensive heart and chronic kidney disease without heart failure, with stage 5 chronic kidney disease, or end stage renal disease), Z99.2 (Dependence on renal dialysis)
+--------------------------------------------------
+CASE 16:
+Input: "Acute pulmonary edema due to left ventricular failure."
+[Flow] Reached Renal block. Key: narrative, Value: "acute pulmonary edem..."
+Codes: J81.0 (Acute pulmonary edema)
+--------------------------------------------------
+CASE 17:
+Input: "Coronary artery disease (CAD) with ischemic cardiomyopathy."
+[Flow] Reached Renal block. Key: narrative, Value: "coronary artery dise..."
+Codes: I25.10 (Atherosclerotic heart disease of native coronary artery without angina pectoris), I42.9 (Cardiomyopathy, unspecified)
+--------------------------------------------------
+CASE 18:
+Input: "Patient with palpitations found to have supraventricular tachycardia."
+[Flow] Reached Renal block. Key: narrative, Value: "patient with palpita..."
+Codes: NONE
+--------------------------------------------------
+CASE 19:
+Input: "Admitted with pneumonia due to MRSA and acute respiratory failure."
+DEBUG: Parser found pneumonia: admitted with pneumonia due to mrsa and acute respiratory failure.
+DEBUG: RF Parsing. Input: "admitted with pneumonia due to mrsa and acute respiratory failure.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "admitted with pneumo..."
+Codes: J15.212 (Pneumonia due to Methicillin resistant Staphylococcus aureus), J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+CASE 20:
+Input: "COPD exacerbation with acute infectious pneumonia."
+DEBUG: Parser found pneumonia: copd exacerbation with acute infectious pneumonia.
+[Flow] Reached Renal block. Key: narrative, Value: "copd exacerbation wi..."
+DEBUG: Emitting J44.1 due to withExacerbation=true
+Codes: J18.9 (Pneumonia, unspecified organism), J44.1 (Chronic obstructive pulmonary disease with (acute) exacerbation), J44.0 (Chronic obstructive pulmonary disease with (acute) lower respiratory infection), J20.9 (Acute bronchitis, unspecified)
+--------------------------------------------------
+CASE 21:
+Input: "Acute asthma exacerbation with status asthmaticus."
+[Flow] Reached Renal block. Key: narrative, Value: "acute asthma exacerb..."
+Codes: J45.901 (Unspecified asthma, with exacerbation )
+--------------------------------------------------
+CASE 22:
+Input: "COVID-19 pneumonia with acute respiratory distress syndrome (ARDS)."
+DEBUG: Parser found pneumonia: covid-19 pneumonia with acute respiratory distress syndrome (ards).
+[Flow] Reached Renal block. Key: narrative, Value: "covid-19 pneumonia w..."
+Codes: U07.1 (COVID-19), J12.82 (Pneumonia due to coronavirus disease 2019), J80 (Acute respiratory distress syndrome)
+--------------------------------------------------
+CASE 23:
+Input: "Patient with history of lung cancer presenting with shortness of breath."
+[Flow] Reached Renal block. Key: narrative, Value: "patient with history..."
+Codes: Z85.118 (Personal history of malignant neoplasm of lung )
+--------------------------------------------------
+CASE 24:
+Input: "Aspiration pneumonia leading to acute hypoxia."
+DEBUG: Parser found pneumonia: aspiration pneumonia leading to acute hypoxia.
+[Flow] Reached Renal block. Key: narrative, Value: "aspiration pneumonia..."
+Codes: J69.0 (Pneumonitis due to inhalation of food and vomit)
+--------------------------------------------------
+CASE 25:
+Input: "Influenza A pneumonia with severe sepsis."
+[DEBUG isNegated] Term: "severe" Negated: false
+[Flow] Reached Renal block. Key: narrative, Value: "influenza a pneumoni..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+Codes: J10.0 (Pneumonia), A41.9 (Sepsis due to viral ), R65.20 (Severe sepsis without septic shock)
+--------------------------------------------------
+CASE 26:
+Input: "Chronic obstructive pulmonary disease with acute lower respiratory infection."
+[Flow] Reached Renal block. Key: narrative, Value: "chronic obstructive ..."
+Codes: J44.0 (Chronic obstructive pulmonary disease with (acute) lower respiratory infection)
+--------------------------------------------------
+CASE 27:
+Input: "Simple pneumonia, likely bacterial."
+DEBUG: Parser found pneumonia: simple pneumonia, likely bacterial.
+[Flow] Reached Renal block. Key: narrative, Value: "simple pneumonia, li..."
+Codes: J15.9 (Unspecified bacterial pneumonia)
+--------------------------------------------------
+CASE 28:
+Input: "Patient with pleural effusion requiring thoracentesis."
+[Flow] Reached Renal block. Key: narrative, Value: "patient with pleural..."
+Codes: J91.8 (Pleural effusion in other conditions classified elsewhere)
+--------------------------------------------------
+CASE 29:
+Input: "Severe sepsis due to E. coli UTI with acute organ dysfunction."
+[DEBUG isNegated] Term: "severe" Negated: false
+[Flow] Reached Renal block. Key: narrative, Value: "severe sepsis due to..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+Codes: N39.0 (Urinary tract infection, site not specified), A41.51 (Sepsis due to e coli ), R65.20 (Severe sepsis without septic shock)
+--------------------------------------------------
+CASE 30:
+Input: "Septic shock due to Pseudomonas pneumonia."
+DEBUG: Parser found pneumonia: septic shock due to pseudomonas pneumonia.
+[DEBUG isNegated] Term: "septic shock" Negated: false
+[DEBUG isNegated] Term: "septic shock" Negated: false
+[Flow] Reached Renal block. Key: narrative, Value: "septic shock due to ..."
+[DEBUG isNegated] Term: "septic" Negated: false
+[DEBUG isNegated] Term: "septic", PreText: ""
+[DEBUG isNegated] Result: false
+[DEBUG isNegated] Term: "shock" Negated: false
+[DEBUG isNegated] Term: "shock", PreText: "septic "
+[DEBUG isNegated] Result: false
+Codes: J15.1 (Pneumonia due to Pseudomonas), R65.21 (Severe sepsis with septic shock)
+--------------------------------------------------
+CASE 31:
+Input: "Sepsis secondary to cellulitis of the left leg."
+[Flow] Reached Renal block. Key: narrative, Value: "sepsis secondary to ..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+Codes: L03.115 (Cellulitis of left lower limb), A41.9 (Sepsis, unspecified organism)
+--------------------------------------------------
+CASE 32:
+Input: "Patient with urosepsis and acute kidney injury."
+[Flow] Reached Renal block. Key: narrative, Value: "patient with uroseps..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+Codes: N39.0 (Urinary tract infection, site not specified), A41.9 (Sepsis, unspecified organism), N17.9 (Acute kidney failure, unspecified)
+--------------------------------------------------
+CASE 33:
+Input: "Postoperative sepsis following abdominal surgery."
+[Flow] Reached Renal block. Key: narrative, Value: "postoperative sepsis..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+Codes: A41.9 (Sepsis, unspecified organism)
+--------------------------------------------------
+CASE 34:
+Input: "Viral sepsis with acute renal failure."
+[Flow] Reached Renal block. Key: narrative, Value: "viral sepsis with ac..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+Codes: A41.9 (Sepsis, unspecified organism), N17.9 (Acute kidney failure, unspecified)
+--------------------------------------------------
+CASE 35:
+Input: "Bacteremia due to Staph aureus."
+[Flow] Reached Renal block. Key: narrative, Value: "bacteremia due to st..."
+Codes: NONE
+--------------------------------------------------
+CASE 36:
+Input: "Patient with fever and hypotension, diagnosed with septic shock."
+[DEBUG isNegated] Term: "septic shock" Negated: false
+[DEBUG isNegated] Term: "septic shock" Negated: false
+[Flow] Reached Renal block. Key: narrative, Value: "patient with fever a..."
+[DEBUG isNegated] Term: "septic" Negated: false
+[DEBUG isNegated] Term: "septic", PreText: "patient with fever and hypotension, diagnosed with "
+[DEBUG isNegated] Result: false
+[DEBUG isNegated] Term: "shock" Negated: false
+[DEBUG isNegated] Term: "shock", PreText: "patient with fever and hypotension, diagnosed with septic "
+[DEBUG isNegated] Result: false
+Codes: A41.9 (Sepsis, unspecified organism), R65.21 (Severe sepsis with septic shock)
+--------------------------------------------------
+CASE 37:
+Input: "Sepsis 3 criteria met with lactate of 4.0."
+[Flow] Reached Renal block. Key: narrative, Value: "sepsis 3 criteria me..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+Codes: A41.9 (Sepsis, unspecified organism)
+--------------------------------------------------
+CASE 38:
+Input: "Type 2 diabetes with diabetic ketoacidosis (DKA)."
+[Flow] Reached Renal block. Key: narrative, Value: "type 2 diabetes with..."
+[Parser] Diabetes Detected in: "Type 2 diabetes with diabetic ketoacidosis (DKA)...."
+[Parser] LowerText: type 2 diabetes with diabetic ketoacidosis (dka).
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"ketoacidosis":true} 
+Codes: E11.10 (Type 2 diabetes mellitus with ketoacidosis without coma)
+--------------------------------------------------
+CASE 39:
+Input: "Type 1 diabetes with foot ulcer and osteomyelitis."
+[Flow] Reached Renal block. Key: narrative, Value: "type 1 diabetes with..."
+[Parser] Diabetes Detected in: "Type 1 diabetes with foot ulcer and osteomyelitis...."
+[Parser] LowerText: type 1 diabetes with foot ulcer and osteomyelitis.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {"footUlcer":true} 
+Codes: L97.909 (Non-pressure chronic ulcer of unspecified part of unspecified lower leg with unspecified severity), E10.621 (Type 1 diabetes mellitus with foot ulcer)
+--------------------------------------------------
+CASE 40:
+Input: "Uncontrolled diabetes type 2 with hyperglycemia."
+[Flow] Reached Renal block. Key: narrative, Value: "uncontrolled diabete..."
+[Parser] Diabetes Detected in: "Uncontrolled diabetes type 2 with hyperglycemia...."
+[Parser] LowerText: uncontrolled diabetes type 2 with hyperglycemia.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {} 
+Codes: E11.65 (Type 2 diabetes mellitus with hyperglycemia), E11.9 (Type 2 diabetes mellitus without complications)
+--------------------------------------------------
+CASE 41:
+Input: "End stage renal disease (ESRD) on chronic hemodialysis."
+[DEBUG isNegated] Term: "esrd" Negated: false
+[DEBUG isNegated] Term: "end stage" Negated: false
+[Flow] Reached Renal block. Key: narrative, Value: "end stage renal dise..."
+[DEBUG isNegated] Term: "esrd" Negated: false
+Codes: N18.6 (Chronic kidney disease, stage esrd ), Z99.2 (Dependence on renal dialysis)
+--------------------------------------------------
+CASE 42:
+Input: "Acute kidney injury (AKI) superimposed on CKD stage 3."
+[DEBUG isNegated] Term: "ckd" Negated: false
+[DEBUG isNegated] Term: "ckd", PreText: "acute kidney injury (aki) superimposed on "
+[DEBUG isNegated] Result: false
+[Flow] Reached Renal block. Key: narrative, Value: "acute kidney injury ..."
+[DEBUG isNegated] Term: "ckd" Negated: false
+[DEBUG isNegated] Term: "ckd", PreText: "acute kidney injury (aki) superimposed on "
+[DEBUG isNegated] Result: false
+[DEBUG isNegated] Term: "ckd" Negated: false
+[DEBUG isNegated] Term: "ckd", PreText: "acute kidney injury (aki) superimposed on "
+[DEBUG isNegated] Result: false
+Codes: N17.9 (Acute kidney failure, unspecified), N18.3 (Chronic kidney disease, stage 3)
+--------------------------------------------------
+CASE 43:
+Input: "Diabetes mellitus type 2 with diabetic nephropathy."
+[Flow] Reached Renal block. Key: narrative, Value: "diabetes mellitus ty..."
+[Parser] Diabetes Detected in: "Diabetes mellitus type 2 with diabetic nephropathy..."
+[Parser] LowerText: diabetes mellitus type 2 with diabetic nephropathy.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"nephropathy":true} 
+Codes: E11.21 (Type 2 diabetes mellitus with diabetic nephropathy)
+--------------------------------------------------
+CASE 44:
+Input: "Patient with hyponatremia and dehydration."
+[Flow] Reached Renal block. Key: narrative, Value: "patient with hyponat..."
+Codes: NONE
+--------------------------------------------------
+CASE 45:
+Input: "Hyperkalemia requiring urgent dialysis."
+[Flow] Reached Renal block. Key: narrative, Value: "hyperkalemia requiri..."
+Codes: NONE
+--------------------------------------------------
+CASE 46:
+Input: "39 weeks gestation admitted for repeat cesarean section."
+[Flow] Reached Renal block. Key: narrative, Value: "39 weeks gestation a..."
+Codes: O80 (Encounter for full-term uncomplicated delivery), Z3A.39 (39 weeks gestation of pregnancy)
+--------------------------------------------------
+CASE 47:
+Input: "Pre-eclampsia with severe features at 34 weeks gestation."
+[Flow] Reached Renal block. Key: narrative, Value: "pre-eclampsia with s..."
+Codes: O14.13 (Pre - eclampsia, severe, 3rd trimester ), Z3A.34 (34 weeks gestation of pregnancy)
+--------------------------------------------------
+CASE 48:
+Input: "Twin gestation, dichorionic diamniotic, delivery via C-section."
+[Flow] Reached Renal block. Key: narrative, Value: "twin gestation, dich..."
+Codes: O30.049 (Twin pregnancy, dichorionic/diamniotic, unspecified trimester ), O82 (Encounter for cesarean delivery without indication)
+--------------------------------------------------
+CASE 49:
+Input: "Postpartum hemorrhage following vaginal delivery."
+[Flow] Reached Renal block. Key: narrative, Value: "postpartum hemorrhag..."
+Codes: O72.1 (Other immediate postpartum hemorrhage)
+--------------------------------------------------
+CASE 50:
+Input: "Patient admitted for induction of labor at 41 weeks."
+[Flow] Reached Renal block. Key: narrative, Value: "patient admitted for..."
+Codes: Z33.1 (Pregnant state, incidental), Z3A.41 (41 weeks gestation of pregnancy)
+--------------------------------------------------

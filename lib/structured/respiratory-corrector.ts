@@ -43,6 +43,9 @@ export function correctRespiratorySequencing(codes: StructuredCode[]): Structure
     // Rule: When COPD exacerbation triggered by bronchitis, add J20.9
     corrected = addAcuteBronchitisCode(corrected);
 
+    // 4.1 Filter COPD Codes (Exacerbation supersedes Infection)
+    corrected = fixCOPDExacerbationInfection(corrected);
+
     // 5. FINAL DETERMINISTIC SORTING
     corrected.sort((a, b) => {
         const sA = getRespiratoryPriorityScore(a.code);
@@ -90,7 +93,8 @@ function fixCOPDAsthmaExacerbation(codes: StructuredCode[]): StructuredCode[] {
     if (hasCOPDExacerbation && hasAsthmaExacerbation) {
         // Ensure COPD exacerbation is first
         // Also downgrade any J44.9 to ensure we don't have both J44.1 and J44.9
-        return codes.filter(c => c.code !== 'J44.9');
+        // And remove J44.0 (Infection) if Exacerbation is main driver
+        return codes.filter(c => c.code !== 'J44.9' && c.code !== 'J44.0');
     }
 
     return codes;
@@ -122,8 +126,17 @@ function addAcuteBronchitisCode(codes: StructuredCode[]): StructuredCode[] {
     const hasJ440 = codes.some(c => c.code === 'J44.0');
     const hasJ209 = codes.some(c => c.code === 'J20.9');
 
+    // EXCLUDE if Pneumonia is present (J12-J18) - Excludes1 Note
+    const hasPneumonia = codes.some(c =>
+        c.code.startsWith('J12') || c.code.startsWith('J13') ||
+        c.code.startsWith('J14') || c.code.startsWith('J15') ||
+        c.code.startsWith('J16') || c.code.startsWith('J17') ||
+        c.code.startsWith('J18')
+    );
+
     // If we have both J44.1 (exacerbation) and J44.0 (with infection), add J20.9
-    if (hasJ441 && hasJ440 && !hasJ209) {
+    // BUT ONLY if no pneumonia is present
+    if (hasJ441 && hasJ440 && !hasJ209 && !hasPneumonia) {
         codes.push({
             code: 'J20.9',
             label: 'Acute bronchitis, unspecified',
@@ -237,4 +250,16 @@ function getRespiratoryPriorityScore(code: string): number {
 
     // Default
     return 60;
+}
+
+/**
+ * Fix COPD Infection vs Exacerbation
+ * If J44.1 (Exacerbation) and J44.0 (Infection) present, remove J44.0
+ */
+function fixCOPDExacerbationInfection(codes: StructuredCode[]): StructuredCode[] {
+    const hasExacerbation = codes.some(c => c.code === 'J44.1');
+    if (hasExacerbation) {
+        return codes.filter(c => c.code !== 'J44.0');
+    }
+    return codes;
 }

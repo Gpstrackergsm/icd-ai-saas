@@ -159,9 +159,14 @@ module.exports = async function handler(req, res) {
                 added: validated.added
             },
             _debug: {
-                apiVersion: 'v3.6-CARDIO-OVERRIDE-REMOVED',
-                buildTime: '2025-12-13T14:35:00Z',
-                gitCommit: 'PENDING'
+                apiVersion: 'v3.7-TRAUMA-DEBUG',
+                buildTime: new Date().toISOString(),
+                trauma: {
+                    parsed: context.conditions.injury || 'not-parsed',
+                    engineResult: result._debugTrauma || 'no-debug-info-from-engine',
+                    hasPrimary: !!result.primary,
+                    primaryCode: result.primary?.code
+                }
             }
         };
 

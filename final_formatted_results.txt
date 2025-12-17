@@ -31,14 +31,14 @@ Case 15 (55-year-old with stress fracture of right metatarsal.), Output: M84.374
 DEBUG: Parser captured reason: 'concussion with loss of consciousness of 30 minutes'
 Case 16 (20-year-old male with concussion with loss of consciousness of 30 minutes. Initial.), Output: S06.0X1A
 DEBUG: Parser captured reason: 'traumatic subdural hemorrhage with loss of consciousness > 24 hours'
-Case 17 (45-year-old female with traumatic subdural hemorrhage with loss of consciousness > 24 hours. Initial.), Output: S06.5X5A
+Case 17 (45-year-old female with traumatic subdural hemorrhage with loss of consciousness > 24 hours. Initial.), Output: S06.5X4A
 DEBUG: Parser captured reason: 'traumatic epidural hemorrhage, no loss of consciousness'
 Case 18 (30-year-old male with traumatic epidural hemorrhage, no loss of consciousness. Initial.), Output: S06.4X0A
 DEBUG: Parser captured reason: 'cerebral contusion, left temporal lobe'
 Case 19 (19-year-old female with cerebral contusion, left temporal lobe. LOC unspecified.), Output: S06.329A
 DEBUG: Parser captured reason: 'traumatic subarachnoid hemorrhage with loc 1 hour'
-Case 20 (50-year-old male with traumatic subarachnoid hemorrhage with LOC 1 hour.), Output: S06.6X3A
-Case 21 (Diffuse axonal injury (DAI) with prolonged coma (>24 hrs). Initial.), Output: S06.2X5A
+Case 20 (50-year-old male with traumatic subarachnoid hemorrhage with LOC 1 hour.), Output: S06.6X2A
+Case 21 (Diffuse axonal injury (DAI) with prolonged coma (>24 hrs). Initial.), Output: S06.2X4A
 Case 22 (Minor head injury, GCS 15, no LOC.), Output: S09.90XA
 Case 23 (Penetrating injury of head with foreign body. Initial.), Output: S01.84XA
 Case 24 (Second degree burn of right forearm, 5% TBSA.), Output: T22.211A

@@ -1,0 +1,77 @@
+PARSER LOADED - AUDITOR DEBUG MODE
+=== NEUROLOGY GAP ANALYSIS ===
+
+Input: "Patient admitted with acute ischemic stroke of the left MCA with dense right hemiplegia."
+[DEBUG PRE-SWITCH] Key: "narrative" Line: "Patient admitted with acute ischemic stroke of the left MCA with dense right hemiplegia."
+[DEBUG TRACE START] Key matched: narrative
+[DEBUG Parser Reachability] Line 308. lowerValue: "patient admitted with acute ischemic stroke of the left mca with dense right hemiplegia."
+[DEBUG Parser 1253] Value: "patient admitted with acute ischemic stroke of the left mca with dense right hemiplegia.". isHistory: false
+[Flow] Reached Renal block. Key: narrative, Value: "patient admitted wit..."
+[DEBUG Engine] Neurology Context: {
+  "stroke": {
+    "present": true,
+    "acute": true,
+    "type": "ischemic",
+    "location": "mca",
+    "laterality": "left"
+  },
+  "hemiplegia": {
+    "side": "right"
+  }
+}
+Result: G81.91, I63.512
+
+Input: "History of CVA with residual left sided hemiparesis affecting dominant side."
+[DEBUG PRE-SWITCH] Key: "narrative" Line: "History of CVA with residual left sided hemiparesis affecting dominant side."
+[DEBUG TRACE START] Key matched: narrative
+[DEBUG Parser Reachability] Line 308. lowerValue: "history of cva with residual left sided hemiparesis affecting dominant side."
+[DEBUG Parser 1253] Value: "history of cva with residual left sided hemiparesis affecting dominant side.". isHistory: true
+[Flow] Reached Renal block. Key: narrative, Value: "history of cva with ..."
+[DEBUG Engine] Neurology Context: {
+  "hemiplegia": {
+    "side": "left",
+    "dominant": true
+  }
+}
+Result: I69.352
+
+Input: "Toxic metabolic encephalopathy secondary to sepsis."
+[DEBUG PRE-SWITCH] Key: "narrative" Line: "Toxic metabolic encephalopathy secondary to sepsis."
+[DEBUG TRACE START] Key matched: narrative
+[DEBUG Parser Reachability] Line 308. lowerValue: "toxic metabolic encephalopathy secondary to sepsis."
+[Flow] Reached Renal block. Key: narrative, Value: "toxic metabolic ence..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+[DEBUG Engine] Neurology Context: {
+  "encephalopathy": {
+    "present": true,
+    "type": "metabolic"
+  }
+}
+Result: A41.9, G93.41
+
+Input: "Intractible epilepsy with status epilepticus."
+[DEBUG PRE-SWITCH] Key: "narrative" Line: "Intractible epilepsy with status epilepticus."
+[DEBUG TRACE START] Key matched: narrative
+[DEBUG Parser Reachability] Line 308. lowerValue: "intractible epilepsy with status epilepticus."
+[Flow] Reached Renal block. Key: narrative, Value: "intractible epilepsy..."
+[DEBUG Engine] Neurology Context: {
+  "epilepsy": {
+    "present": true,
+    "type": "unspecified",
+    "intractable": true,
+    "statusEpilepticus": true
+  }
+}
+Result: G40.911
+
+Input: "Transient Ischemic Attack (TIA) lasting 30 minutes."
+[DEBUG PRE-SWITCH] Key: "narrative" Line: "Transient Ischemic Attack (TIA) lasting 30 minutes."
+[DEBUG TRACE START] Key matched: narrative
+[DEBUG Parser Reachability] Line 308. lowerValue: "transient ischemic attack (tia) lasting 30 minutes."
+[Flow] Reached Renal block. Key: narrative, Value: "transient ischemic a..."
+[DEBUG Engine] Neurology Context: {
+  "tia": {
+    "present": true
+  }
+}
+Result: G45.9

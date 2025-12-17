@@ -41,6 +41,12 @@ export function parseInput(text: string): ParseResult {
         }
 
         const lowerValue = value.toLowerCase();
+        // Clean text for pneumonia detection (remove organism names to avoid false positives)
+        const cleanPnText = lowerValue.replace(/streptococcus pneumoniae|strep pneumoniae|klebsiella pneumoniae/g, '___');
+
+        let organism: 'strep_pneumoniae' | 'h_influenzae' | 'klebsiella' | 'pseudomonas' |
+            'mssa' | 'mrsa' | 'e_coli' | 'mycoplasma' | 'viral' | 'influenza' | 'covid19' | 'unspecified' | undefined;
+        let type: 'aspiration' | 'bacterial' | 'viral' | 'influenza' | 'unspecified' | undefined;
 
         switch (key) {
             // Generic Diagnosis/History Parsing
@@ -192,6 +198,24 @@ export function parseInput(text: string): ParseResult {
                 if (lowerValue.includes('full term') || lowerValue.includes('term pregnancy')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     context.conditions.obstetric.termDocumentation = 'term';
+                }
+
+                // Aggregating text for the Trauma Resolver
+                else if (/fracture|broken|burn|injury|wound|laceration|contusion|trauma|poisoning|overdose|toxic|adverse effect|bite|sprain|dislocation|amputation|crush|abrasion|foreign body|suicide|attempt|cut|cutting|heat|stroke|hypothermia|abuse|anaphylaxis|anaphylactic|corrosion|shock|concussion|brain injury/.test(lowerValue) &&
+                    !lowerValue.includes('kidney injury') &&
+                    !lowerValue.includes('aki')) {
+                    if (!context.conditions.injury) {
+                        context.conditions.injury = {
+                            present: true,
+                            rawText: '',
+                            general: [],
+                            fractures: [],
+                            burns: []
+                        };
+                    }
+                    context.conditions.injury.present = true;
+                    // Append text for the resolver to process
+                    context.conditions.injury.rawText = (context.conditions.injury.rawText ? context.conditions.injury.rawText + '. ' : '') + lowerValue;
                 } else if (lowerValue.includes('preterm') || lowerValue.includes('premature')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     context.conditions.obstetric.termDocumentation = 'preterm';
@@ -201,7 +225,7 @@ export function parseInput(text: string): ParseResult {
                 }
 
                 // 5. Labor Complications Scanning (Prolonged/Arrest)
-                if (lowerValue.includes('prolonged') || (lowerValue.includes('arrest') && !lowerValue.includes('cardiac') && !lowerValue.includes('respiratory')) || lowerValue.includes('failure to progress') || lowerValue.includes('inertia')) {
+                if ((lowerValue.includes('prolonged') && (lowerValue.includes('labor') || lowerValue.includes('stage') || lowerValue.includes('pregnancy') || lowerValue.includes('delivery'))) || (lowerValue.includes('arrest') && !lowerValue.includes('cardiac') && !lowerValue.includes('respiratory')) || lowerValue.includes('failure to progress') || lowerValue.includes('inertia')) {
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     if (!context.conditions.obstetric.labor) context.conditions.obstetric.labor = {};
                     const labor = context.conditions.obstetric.labor;
@@ -266,10 +290,36 @@ export function parseInput(text: string): ParseResult {
 
 
 
+                // Reason for Admission Extraction
+                // needed for strict sequencing (e.g., Sepsis vs Localized Infection)
+                const fullText = text.toLowerCase();
+
+                // Neonatal Detection
+                if (fullText.includes('newborn') || fullText.includes('neonatal') || fullText.includes('neonate') || fullText.includes('transient tachypnea of newborn')) {
+                    if (!context.demographics) context.demographics = {};
+                    context.demographics.isNeonatal = true;
+                    // Auto-set age to < 28 days equivalent if needed, but flag is enough for resolvers
+                }
+
+                // Regex to capture "admitted for/with X" OR "female/male/patient with X" (Start of narrative)
+                // Captured group stops at period or semicolon (allowing commas for lists)
+                // e.g. "admitted with pneumonia, severe sepsis, and acute respiratory failure."
+                const admissionMatch = fullText.match(/(?:admitted\s+(?:primarily\s+)?(?:for|with)|presents\s+(?:primarily\s+)?(?:for|with)|came\s+in\s+(?:for|with)|(?:male|female|patient)\s+with)\s+([^.;]+)/i);
+                if (admissionMatch) {
+                    if (!context.encounter) context.encounter = { type: 'inpatient' }; // Re-added for safety
+                    // If we found a match, and we don't have a structured reason yet
+                    if (!context.encounter.reasonForAdmission) {
+                        const r = admissionMatch[1].trim();
+                        context.encounter.reasonForAdmission = r as any;
+                        console.log(`DEBUG: Parser captured reason: '${r}'`);
+                    }
+                }
+
+
                 // Dialysis encounter detection - for proper UHDDS principal diagnosis sequencing
                 // STRICT: Only trigger if "routine dialysis" or "admitted for dialysis" is explicitly stated
                 // Do NOT trigger if admitted for other acute conditions (HF, pulmonary edema, etc.)
-                const fullText = text.toLowerCase();
+                // const fullText = text.toLowerCase(); // Already defined above
                 const isRoutineDialysis = fullText.includes('routine dialysis');
                 const isAdmittedForDialysisOnly = (fullText.includes('admitted for dialysis') ||
                     fullText.includes('admission for dialysis')) &&
@@ -560,77 +610,86 @@ export function parseInput(text: string): ParseResult {
                 // Regular pneumonia detection - BUT NOT for organism names only
                 // Skip if "pneumonia" only appears as organism name (Klebsiella pneumoniae, Streptococcus pneumoniae)
                 // AND Skip if explicitly negated
-                else if ((lowerValue.includes('pneumonia') || lowerValue.includes('pneumonitis')) &&
-                    !lowerValue.includes('no pneumonia') &&
-                    !(lowerValue.match(/\b(klebsiella|streptococcus|strep)\s+pneumoniae?\b/) && !lowerValue.match(/\bpneumonia\b(?!\s*e\b)/))) {
+                // FIX: Robust check using cleanPnText
+                else if ((cleanPnText.includes('pneumonia') || cleanPnText.includes('pneumonitis')) &&
+                    !isNegated(cleanPnText, 'pneumonia') && !isNegated(cleanPnText, 'pneumonitis')) {
                     if (!context.conditions.respiratory) context.conditions.respiratory = {};
-                    let organism: 'strep_pneumoniae' | 'h_influenzae' | 'klebsiella' | 'pseudomonas' |
-                        'mssa' | 'mrsa' | 'e_coli' | 'mycoplasma' | 'viral' | 'influenza' | 'covid19' | 'unspecified' | undefined;
-                    let type: 'aspiration' | 'bacterial' | 'viral' | 'influenza' | 'unspecified' | undefined;
 
-                    // Organism
+
+
+                    // Organism detection inside pneumonia line
                     if (lowerValue.includes('streptococcus') || lowerValue.includes('strep')) organism = 'strep_pneumoniae';
-                    else if (lowerValue.includes('bacterial')) {
-                        type = 'bacterial';
-                        organism = 'unspecified';
-                    }
-                    else if (lowerValue.includes('viral')) {
-                        type = 'viral';
-                        organism = 'viral';
-                    }
-                    else if (lowerValue.includes('pseudomonas')) {
-                        type = 'bacterial';
-                        organism = 'pseudomonas';
-                    }
-                    else if (lowerValue.includes('mssa') || lowerValue.includes('methicillin-susceptible') || lowerValue.includes('methicillin susceptible')) {
-                        type = 'bacterial';
-                        organism = 'mssa';
-                    }
-                    else if (lowerValue.includes('mrsa') || lowerValue.includes('methicillin-resistant') || lowerValue.includes('methicillin resistant')) {
-                        type = 'bacterial';
-                        organism = 'mrsa';
-                    }
-                    else if (lowerValue.includes('mycoplasma') || lowerValue.includes('walking pneumonia')) {
-                        type = 'bacterial';
-                        organism = 'mycoplasma';
-                    }
-                    else if (lowerValue.includes('klebsiella')) {
-                        type = 'bacterial';
-                        organism = 'klebsiella';
-                    }
-                    else if (lowerValue.includes('e. coli') || lowerValue.includes('e.coli')) {
-                        type = 'bacterial';
-                        organism = 'e_coli';
-                    }
-                    else if (lowerValue.includes('aspiration')) type = 'aspiration';
+                    else if (lowerValue.includes('klebsiella')) organism = 'klebsiella';
+                    else if (lowerValue.includes('pseudomonas')) organism = 'pseudomonas';
+                    else if (lowerValue.includes('mssa')) organism = 'mssa';
+                    else if (lowerValue.includes('mrsa')) organism = 'mrsa';
+                    else if (lowerValue.includes('e. coli')) organism = 'e_coli';
+                    else if (lowerValue.includes('viral')) { type = 'viral'; organism = 'viral'; }
+                    else { type = 'unspecified'; organism = 'unspecified'; }
+
+                    // Set detection
+                    if (!context.conditions.respiratory.pneumonia) context.conditions.respiratory.pneumonia = { type: type || 'bacterial', organism };
+                }
+
+                else if (lowerValue.includes('pseudomonas')) {
+                    type = 'bacterial';
+                    organism = 'pseudomonas';
+                }
+                else if (lowerValue.includes('mssa') || lowerValue.includes('methicillin-susceptible') || lowerValue.includes('methicillin susceptible')) {
+                    type = 'bacterial';
+                    organism = 'mssa';
+                }
+                else if (lowerValue.includes('mrsa') || lowerValue.includes('methicillin-resistant') || lowerValue.includes('methicillin resistant')) {
+                    type = 'bacterial';
+                    organism = 'mrsa';
+                }
+                else if (lowerValue.includes('mycoplasma') || lowerValue.includes('walking pneumonia')) {
+                    type = 'bacterial';
+                    organism = 'mycoplasma';
+                }
+                else if (lowerValue.includes('klebsiella')) {
+                    type = 'bacterial';
+                    organism = 'klebsiella';
+                }
+                else if (lowerValue.includes('e. coli') || lowerValue.includes('e.coli')) {
+                    type = 'bacterial';
+                    organism = 'e_coli';
+                }
+                else if (lowerValue.includes('aspiration')) type = 'aspiration';
 
 
-                    // End of Organism Checks - Fall through to final assignments
+                // End of Organism Checks - Fall through to final assignments
 
-                    if (lowerValue.includes('pneumonia')) {
-                        console.log('DEBUG: Parser found pneumonia:', lowerValue);
-                        if (!context.conditions.infection) context.conditions.infection = { present: true, site: 'lung', source: 'pneumonia' };
-                        else {
-                            context.conditions.infection.site = 'lung';
-                            context.conditions.infection.source = 'pneumonia';
-                        }
+                if ((cleanPnText.includes('pneumonia') || cleanPnText.includes('pneumonitis')) && !isNegated(cleanPnText, 'pneumonia')) {
+                    console.log('DEBUG: Parser found pneumonia:', lowerValue);
+                    if (!context.conditions.infection) context.conditions.infection = { present: true, site: 'lung', source: 'pneumonia' };
+                    else {
+                        context.conditions.infection.site = 'lung';
+                        context.conditions.infection.source = 'pneumonia';
                     }
+                }
 
-                    // Invariant 6: VAP Detection
-                    // MERGE with existing to prevent overwrite by less specific tokens
-                    const existingP = context.conditions.respiratory.pneumonia || {};
-                    const ventilatorAssociated = existingP.ventilatorAssociated || lowerValue.includes('ventilator') || lowerValue.includes('vap');
+                // Invariant 6: VAP Detection
+                // MERGE with existing to prevent overwrite by less specific tokens
+                if (!context.conditions.respiratory) context.conditions.respiratory = {};
+                const existingP = context.conditions.respiratory.pneumonia || {};
+                const ventilatorAssociated = existingP.ventilatorAssociated || lowerValue.includes('ventilator') || lowerValue.includes('vap');
 
-                    // Prefer specific organism/type over unspecified/existing
-                    const newOrganism = organism || existingP.organism;
-                    const newType = type || existingP.type;
+                // Prefer specific organism/type over unspecified/existing
+                const newOrganism = organism || existingP.organism;
+                const newType = type || existingP.type;
 
+                // Only update/create pneumonia if we explicitly found 'pneumonia' keyword above (creating the object),
+                // OR if we detected VAP (which implies pneumonia).
+                // Do NOT create pneumonia just because we found an organism like 'E. coli' (Case 1 false positive).
+                if (context.conditions.respiratory.pneumonia || ventilatorAssociated) {
                     context.conditions.respiratory.pneumonia = {
                         organism: newOrganism,
                         type: newType,
                         ventilatorAssociated
                     };
                 }
+
 
                 // COVID-19 (Moved outside Pneumonia block)
                 if (lowerValue.includes('covid')) {
@@ -848,7 +907,7 @@ export function parseInput(text: string): ParseResult {
                         context.conditions.infection.source = 'pyelonephritis';
                     }
                     // Pneumonia - but not if influenza source already set
-                    else if ((lowerValue.includes('pneumonia') || lowerValue.includes('lung')) && !lowerValue.includes('no pneumonia')) {
+                    else if ((cleanPnText.includes('pneumonia') || cleanPnText.includes('pneumonitis') || lowerValue.includes('lung')) && !lowerValue.includes('no pneumonia')) {
                         context.conditions.infection.site = 'lung';
                         // Don't override influenza_pneumonia source if already set
                         if (context.conditions.infection.source !== 'influenza_pneumonia') {
@@ -1063,6 +1122,7 @@ export function parseInput(text: string): ParseResult {
 
                 // OB/GYN (Moved here to be reachable)
                 if (lowerValue.includes('preeclampsia')) {
+                    console.log('DEBUG: Pregnancy Trigger 3 (Preeclampsia) on: ' + lowerValue);
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     // Only initialize if not already present or if currently unspecified and we might find better info (though this block doesn't parse severity)
                     if (!context.conditions.obstetric.preeclampsia) {
@@ -1071,6 +1131,7 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.obstetric.pregnant = true;
                 }
                 if (lowerValue.match(/\bpregnan(?:t|cy)\b/)) {
+                    console.log('DEBUG: Pregnancy Trigger 1 (Regex) on: ' + lowerValue);
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     context.conditions.obstetric.pregnant = true;
                 }
@@ -1091,6 +1152,8 @@ export function parseInput(text: string): ParseResult {
                     } else if (lowerValue.includes('vaginal') || lowerValue.includes('svd')) {
                         context.conditions.obstetric.delivery.type = 'vaginal';
                     }
+
+
                 }
 
                 // Perineal Laceration
@@ -1131,8 +1194,9 @@ export function parseInput(text: string): ParseResult {
                         // FIX: Uncomment to correctly flag exacerbation on existing COPD
                         context.conditions.respiratory.copd.withExacerbation = true;
                     }
-                }
 
+
+                }
             // Sepsis/Infection complications':
             case 'diabetes complications':
             case 'current admission':
@@ -1158,6 +1222,7 @@ export function parseInput(text: string): ParseResult {
                     else if (lowerValue.includes('mssa')) context.conditions.infection.organism = 'mssa';
                     else if (lowerValue.includes('pseudomonas')) context.conditions.infection.organism = 'pseudomonas';
                     else if (lowerValue.includes('klebsiella')) context.conditions.infection.organism = 'klebsiella';
+                    else if (lowerValue.includes('streptococcus pneumoniae') || lowerValue.includes('strep pneumoniae')) context.conditions.infection.organism = 'strep_pneumoniae';
                     else if (lowerValue.includes('streptococcus') || lowerValue.includes('strep')) context.conditions.infection.organism = 'strep';
                     else if (lowerValue.includes('proteus')) context.conditions.infection.organism = 'proteus';
                     else if (lowerValue.includes('enterococcus')) context.conditions.infection.organism = 'enterococcus';
@@ -1172,7 +1237,7 @@ export function parseInput(text: string): ParseResult {
                 }
 
                 // Pneumonia
-                if (lowerValue.includes('pneumonia') || lowerValue.includes('lung infection')) {
+                if (cleanPnText.includes('pneumonia') || cleanPnText.includes('pneumonitis') || lowerValue.includes('lung infection')) {
                     // Check for negation first
                     if (!lowerValue.includes('no pneumonia') && !lowerValue.includes('ruled out')) {
                         if (!context.conditions.respiratory) context.conditions.respiratory = {};
@@ -1239,9 +1304,10 @@ export function parseInput(text: string): ParseResult {
                 // 1. STROKE / CVA / INFARCTION
                 // Strict Terms: stroke, cva, cerebral infarction, brainstem infarction, cerebellar infarction
                 // Excludes: "heat stroke" (if ever), etc.
-                if (lowerValue.match(/\b(stroke|strokes|cva|cvas|cerebrovascular accident|accidents)\b/) ||
+                if ((lowerValue.match(/\b(stroke|strokes|cva|cvas|cerebrovascular accident|accidents)\b/) ||
                     (lowerValue.includes('infarction') && (lowerValue.includes('cerebral') || lowerValue.includes('brain') || lowerValue.includes('cerebellar'))) ||
-                    lowerValue.match(/\b(thrombotic|embolic|ischemic|hemorrhagic)\s+stroke(s?)\b/)) {
+                    lowerValue.match(/\b(thrombotic|embolic|ischemic|hemorrhagic)\s+stroke(s?)\b/)) &&
+                    !lowerValue.includes('heat stroke') && !lowerValue.includes('sunstroke')) {
 
                     const n = getNeuro();
 
@@ -1559,14 +1625,43 @@ export function parseInput(text: string): ParseResult {
                         if (!context.conditions.infection.sepsis) context.conditions.infection.sepsis = { present: true };
                         context.conditions.infection.sepsis.present = true;
 
+                        if (lowerValue.includes('severe') && !isNegated(lowerValue, 'severe')) {
+                            context.conditions.infection.sepsis.severe = true;
+                        }
+
                         if (lowerValue.includes('shock') && !isNegated(lowerValue, 'shock')) {
                             context.conditions.infection.sepsis.shock = true;
+                        }
+
+                        // Organism Detection
+                        let org: any = undefined;
+                        if ((lowerValue.includes('group a') || lowerValue.includes('gbs a')) && (lowerValue.includes('strep'))) org = 'strep_group_a';
+                        else if ((lowerValue.includes('group b') || lowerValue.includes('gbs b') || lowerValue.includes('gbs')) && (lowerValue.includes('strep'))) org = 'strep_group_b'; // "GBS" usually Group B Strep
+                        else if (lowerValue.includes('strep') || lowerValue.includes('streptococcus')) {
+                            if (lowerValue.includes('pneumoniae')) org = 'strep_pneumoniae';
+                            else org = 'strep';
+                        }
+                        else if (lowerValue.includes('mrsa')) org = 'mrsa';
+                        else if (lowerValue.includes('mssa')) org = 'mssa';
+                        else if (lowerValue.includes('staph') || lowerValue.includes('staphylococcus')) {
+                            if (lowerValue.includes('aureus')) org = lowerValue.includes('mrsa') ? 'mrsa' : 'mssa';
+                            else if (lowerValue.includes('epidermidis')) org = 'staph_epidermidis';
+                            else org = 'staph';
+                        }
+                        else if (lowerValue.includes('e. coli') || lowerValue.includes('escherichia')) org = 'e_coli';
+
+                        else if (lowerValue.includes('pseudomonas')) org = 'pseudomonas';
+                        else if (lowerValue.includes('klebsiella')) org = 'klebsiella';
+                        else if (lowerValue.includes('candida')) org = 'candida';
+
+                        if (org) {
+                            context.conditions.infection.organism = org;
                         }
 
                         // Check for "secondary to" or "due to" for source
                         if (lowerValue.includes('urinary') || lowerValue.includes('uti')) {
                             context.conditions.infection.site = 'urinary';
-                        } else if (lowerValue.includes('pneumonia') || lowerValue.includes('lung')) {
+                        } else if ((cleanPnText.includes('pneumonia') || cleanPnText.includes('pneumonitis') || lowerValue.includes('lung')) && !lowerValue.includes('no pneumonia')) {
                             context.conditions.infection.site = 'lung';
                             context.conditions.infection.source = 'pneumonia';
                         }
@@ -1593,6 +1688,7 @@ export function parseInput(text: string): ParseResult {
 
                 // OB/GYN
                 if (lowerValue.includes('preeclampsia')) {
+                    console.log('DEBUG: Pregnancy Trigger 4 (Preeclampsia) on: ' + lowerValue);
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     if (!context.conditions.obstetric.preeclampsia) {
                         context.conditions.obstetric.preeclampsia = { present: true, severity: 'unspecified' };
@@ -1603,6 +1699,7 @@ export function parseInput(text: string): ParseResult {
                     context.conditions.obstetric.pregnant = true;
                 }
                 if (lowerValue.includes('pregnant') || lowerValue.includes('pregnancy')) {
+                    console.log('DEBUG: Pregnancy Trigger 2 (Include) on: ' + lowerValue);
                     if (!context.conditions.obstetric) context.conditions.obstetric = { pregnant: true };
                     context.conditions.obstetric.pregnant = true;
                 }
@@ -1641,7 +1738,7 @@ export function parseInput(text: string): ParseResult {
 
                 // LABOR-001: Prolonged Labor & Arrest Disorders
                 if (
-                    lowerValue.includes('prolonged') ||
+                    (lowerValue.includes('prolonged') && (lowerValue.includes('labor') || lowerValue.includes('stage') || lowerValue.includes('pregnancy') || lowerValue.includes('delivery'))) ||
                     (lowerValue.includes('arrest') && !lowerValue.includes('cardiac') && !lowerValue.includes('respiratory')) ||
                     lowerValue.includes('failure to progress') ||
                     lowerValue.includes('ftp') ||
@@ -1740,13 +1837,32 @@ export function parseInput(text: string): ParseResult {
                     }
                 }
 
+                // Pyelonephritis detection (Add here to ensure coverage in main loop)
+                if ((lowerValue.includes('pyelonephritis') || lowerValue.includes('kidney infection')) && key.toLowerCase() !== 'status') {
+                    if (!context.conditions.infection) context.conditions.infection = { present: true };
+                    context.conditions.infection.source = 'pyelonephritis';
+
+                    // Parse Organism for Pyelonephritis
+                    if (lowerValue.includes('klebsiella')) context.conditions.infection.organism = 'klebsiella';
+                    else if (lowerValue.includes('e. coli') || lowerValue.includes('escherichia coli')) context.conditions.infection.organism = 'e_coli';
+                    else if (lowerValue.includes('proteus')) context.conditions.infection.organism = 'proteus';
+                    else if (lowerValue.includes('enterococcus')) context.conditions.infection.organism = 'enterococcus';
+                    else if (lowerValue.includes('pseudomonas')) context.conditions.infection.organism = 'pseudomonas';
+                }
+
                 // Pneumonia detection (skip if key is 'status')
-                if ((lowerValue.includes('pneumonia') || lowerValue.includes('pneumonitis')) && key.toLowerCase() !== 'status') {
+                // FIX: Advanced False Positive Check
+                // cleanPnText already defined at top of loop
+
+                // FIX: Allow entry if specific organisms are present, even if "pneumonia" was stripped by cleanPnText
+                if ((cleanPnText.includes('pneumonia') || cleanPnText.includes('pneumonitis')) &&
+                    key.toLowerCase() !== 'status' &&
+                    !isNegated(cleanPnText, 'pneumonia') &&
+                    !isNegated(cleanPnText, 'pneumonitis')) {
+
                     if (!context.conditions.respiratory) context.conditions.respiratory = {};
                     if (!context.conditions.respiratory.pneumonia) {
-                        let organism: 'strep_pneumoniae' | 'h_influenzae' | 'klebsiella' | 'pseudomonas' |
-                            'mssa' | 'mrsa' | 'e_coli' | 'mycoplasma' | 'viral' | 'influenza' | 'covid19' | 'unspecified' | undefined;
-                        let type: 'aspiration' | 'bacterial' | 'viral' | 'influenza' | 'unspecified' | undefined;
+                        // organism and type are defined in outer scope
                         let ventilatorAssociated = false;
 
                         // Organism detection
@@ -2101,7 +2217,8 @@ export function parseInput(text: string): ParseResult {
                             }
                         });
                     }
-                } // Close 1509 if
+                }
+
                 break;
 
             // Demographics
@@ -2542,7 +2659,7 @@ export function parseInput(text: string): ParseResult {
                 if (context.conditions.infection?.present || key === 'infection site') {
                     // Infection site
                     if (!context.conditions.infection) context.conditions.infection = { present: true };
-                    if (lowerValue.includes('lung') || lowerValue.includes('pneumonia')) context.conditions.infection.site = 'lung';
+                    if (lowerValue.includes('lung') || cleanPnText.includes('pneumonia') || cleanPnText.includes('pneumonitis')) context.conditions.infection.site = 'lung';
                     else if (lowerValue.includes('urinary') || lowerValue.includes('uti')) context.conditions.infection.site = 'urinary';
                     else if (lowerValue.includes('blood')) context.conditions.infection.site = 'blood';
                     else if (lowerValue.includes('skin')) context.conditions.infection.site = 'skin';
@@ -2578,7 +2695,19 @@ export function parseInput(text: string): ParseResult {
             case 'sepsis':
                 if (!context.conditions.infection) context.conditions.infection = { present: true };
                 if (!context.conditions.infection.sepsis) context.conditions.infection.sepsis = { present: false };
-                context.conditions.infection.sepsis.present = parseBoolean(value);
+
+                const isBool = parseBoolean(value);
+                if (isBool || ['yes', 'true', 'present'].includes(lowerValue)) {
+                    context.conditions.infection.sepsis.present = true;
+                } else if (lowerValue.length > 3 && !['no', 'none', 'false'].includes(lowerValue)) {
+                    // Assume value is descriptive (organism)
+                    context.conditions.infection.sepsis.present = true;
+                    // Attempt to parse organism
+                    if ((lowerValue.includes('group a') || lowerValue.includes('gbs a')) && (lowerValue.includes('strep'))) context.conditions.infection.organism = 'strep_group_a';
+                    else if ((lowerValue.includes('group b') || lowerValue.includes('gbs b')) && (lowerValue.includes('strep'))) context.conditions.infection.organism = 'strep_group_b';
+                    else if (lowerValue.includes('e. coli')) context.conditions.infection.organism = 'e_coli';
+                    // Add more if needed
+                }
                 break;
             case 'severe sepsis':
                 if (!context.conditions.infection) context.conditions.infection = { present: true };

@@ -1,0 +1,491 @@
+PARSER LOADED - AUDITOR DEBUG MODE
+=== ALL 50 COMPLEX CASES RESULTS ===
+
+DEBUG: Parser found pneumonia: 72-year-old admitted with pneumonia due to mrsa complicated by sepsis and acute hypoxic respiratory failure.
+DEBUG: RF Parsing. Input: "72-year-old admitted with pneumonia due to mrsa complicated by sepsis and acute hypoxic respiratory failure.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "72-year-old admitted..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+DEBUG CASE 1 Context: {
+  "demographics": {},
+  "encounter": {
+    "type": "initial"
+  },
+  "conditions": {
+    "respiratory": {
+      "pneumonia": {
+        "organism": "mrsa",
+        "type": "bacterial",
+        "ventilatorAssociated": false
+      },
+      "failure": {
+        "type": "acute",
+        "withHypoxia": true
+      }
+    },
+    "infection": {
+      "present": true,
+      "site": "lung",
+      "source": "pneumonia",
+      "sepsis": {
+        "present": true
+      },
+      "organism": "mrsa"
+    },
+    "sepsis": {
+      "severity": "unspecified",
+      "source": "unspecified"
+    }
+  },
+  "social": {}
+}
+DEBUG: Entering Pneumonia Block 811. P: {"organism":"mrsa","type":"bacterial","ventilatorAssociated":false}
+CASE 1
+Input: "72-year-old admitted with pneumonia due to MRSA complicated by sepsis and acute hypoxic respiratory failure."
+Result: J96.01 (Respiratory failure, Acute with hypoxia), A41.02 (Sepsis due to mrsa )
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 80-year-old female with covid-19 pneumonia, septic shock, and acute respiratory failure.
+DEBUG: RF Parsing. Input: "80-year-old female with covid-19 pneumonia, septic shock, and acute respiratory failure.". Type: acute
+[DEBUG isNegated] Term: "septic shock" Negated: false
+[DEBUG isNegated] Term: "septic shock" Negated: false
+[Flow] Reached Renal block. Key: narrative, Value: "80-year-old female w..."
+[DEBUG isNegated] Term: "septic" Negated: false
+[DEBUG isNegated] Term: "septic", PreText: "80-year-old female with covid-19 pneumonia, "
+[DEBUG isNegated] Result: false
+[DEBUG isNegated] Term: "shock" Negated: false
+[DEBUG isNegated] Term: "shock", PreText: "80-year-old female with covid-19 pneumonia, septic "
+[DEBUG isNegated] Result: false
+CASE 2
+Input: "80-year-old female with COVID-19 pneumonia, septic shock, and acute respiratory failure."
+Result: U07.1 (COVID-19), J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia), A41.9 (Sepsis, unspecified organism), R65.21 (Severe sepsis with septic shock), J12.82 (Pneumonia due to coronavirus disease 2019)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 65-year-old male with aspiration pneumonia leading to severe sepsis and acute renal failure.
+[DEBUG isNegated] Term: "severe" Negated: false
+[Flow] Reached Renal block. Key: narrative, Value: "65-year-old male wit..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+DEBUG: Entering Pneumonia Block 811. P: {"type":"aspiration","ventilatorAssociated":false}
+CASE 3
+Input: "65-year-old male with aspiration pneumonia leading to severe sepsis and acute renal failure."
+Result: J69.0 (Pneumonitis due to inhalation of food and vomit), A41.9 (Sepsis, unspecified organism), R65.20 (Severe sepsis without septic shock), N17.9 (Acute kidney failure, unspecified)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 70-year-old admitted for e. coli pneumonia with septic shock and acute hypoxic respiratory failure.
+DEBUG: RF Parsing. Input: "70-year-old admitted for e. coli pneumonia with septic shock and acute hypoxic respiratory failure.". Type: acute
+[DEBUG isNegated] Term: "septic shock" Negated: false
+[DEBUG isNegated] Term: "septic shock" Negated: false
+[Flow] Reached Renal block. Key: narrative, Value: "70-year-old admitted..."
+[DEBUG isNegated] Term: "septic" Negated: false
+[DEBUG isNegated] Term: "septic", PreText: "70-year-old admitted for e. coli pneumonia with "
+[DEBUG isNegated] Result: false
+[DEBUG isNegated] Term: "shock" Negated: false
+[DEBUG isNegated] Term: "shock", PreText: "70-year-old admitted for e. coli pneumonia with septic "
+[DEBUG isNegated] Result: false
+DEBUG: Entering Pneumonia Block 811. P: {"organism":"e_coli","type":"bacterial","ventilatorAssociated":false}
+CASE 4
+Input: "70-year-old admitted for E. coli pneumonia with septic shock and acute hypoxic respiratory failure."
+Result: J96.01 (Respiratory failure, Acute with hypoxia), A41.51 (Sepsis due to e coli ), R65.21 (Severe sepsis with septic shock)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 68-year-old male with copd admitted with pneumonia causing sepsis.
+[Flow] Reached Renal block. Key: narrative, Value: "68-year-old male wit..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+DEBUG: Entering Pneumonia Block 811. P: {"type":"unspecified","ventilatorAssociated":false}
+CASE 5
+Input: "68-year-old male with COPD admitted with pneumonia causing sepsis."
+Result: J44.0 (Chronic obstructive pulmonary disease with (acute) lower respiratory infection), A41.9 (Sepsis, unspecified organism)
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "75-year-old with copd exacerbation and acute hypercapnic respiratory failure.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "75-year-old with cop..."
+DEBUG: Emitting J44.1 due to withExacerbation=true
+CASE 6
+Input: "75-year-old with COPD exacerbation and acute hypercapnic respiratory failure."
+Result: J44.1 (Chronic obstructive pulmonary disease with (acute) exacerbation), J96.02 (Respiratory failure, Acute with hypercapnia)
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "70-year-old female with congestive heart failure and acute pulmonary edema causing respiratory failure.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "70-year-old female w..."
+CASE 7
+Input: "70-year-old female with congestive heart failure and acute pulmonary edema causing respiratory failure."
+Result: J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia), I50.9 (Heart failure, unspecified, acute ), J81.0 (Acute pulmonary edema)
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "60-year-old with copd and chf admitted with acute on chronic respiratory failure.". Type: acute_on_chronic
+[Flow] Reached Renal block. Key: narrative, Value: "60-year-old with cop..."
+DEBUG CASE 8 Context: {
+  "demographics": {},
+  "encounter": {
+    "type": "initial"
+  },
+  "conditions": {
+    "cardiovascular": {
+      "hypertension": false,
+      "heartFailure": {
+        "type": "unspecified",
+        "acuity": "acute_on_chronic"
+      }
+    },
+    "respiratory": {
+      "copd": {
+        "present": true,
+        "withExacerbation": true
+      },
+      "failure": {
+        "type": "acute_on_chronic"
+      }
+    }
+  },
+  "social": {}
+}
+DEBUG: Emitting J44.1 due to withExacerbation=true
+CASE 8
+Input: "60-year-old with COPD and CHF admitted with acute on chronic respiratory failure."
+Result: J44.1 (Chronic obstructive pulmonary disease with (acute) exacerbation), J96.20 (Respiratory failure, Acute on chronic, unspecified whether with hypoxia or hypercapnia), I50.9 (Heart failure, unspecified, acute_on_chronic )
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "55-year-old with severe asthma exacerbation and hypoxic respiratory failure.". Type: unspecified
+[Flow] Reached Renal block. Key: narrative, Value: "55-year-old with sev..."
+DEBUG: Emitting J44.1 due to withExacerbation=true
+CASE 9
+Input: "55-year-old with severe asthma exacerbation and hypoxic respiratory failure."
+Result: J44.1 (Chronic obstructive pulmonary disease with (acute) exacerbation), J45.901 (Unspecified asthma, with exacerbation ), J96.91 (Respiratory failure, Unspecified with hypoxia)
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "80-year-old on home oxygen admitted with chronic respiratory failure.". Type: chronic
+[Flow] Reached Renal block. Key: narrative, Value: "80-year-old on home ..."
+CASE 10
+Input: "80-year-old on home oxygen admitted with chronic respiratory failure."
+Result: J96.10 (Respiratory failure, Chronic, unspecified whether with hypoxia or hypercapnia), Z99.81 (Dependence on supplemental oxygen)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 68-year-old male admitted with pneumonia complicated by acute respiratory failure.
+DEBUG: RF Parsing. Input: "68-year-old male admitted with pneumonia complicated by acute respiratory failure.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "68-year-old male adm..."
+DEBUG: Entering Pneumonia Block 811. P: {"type":"unspecified","ventilatorAssociated":false}
+CASE 11
+Input: "68-year-old male admitted with pneumonia complicated by acute respiratory failure."
+Result: J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "72-year-old female with influenza a pneumonia and acute respiratory failure.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "72-year-old female w..."
+DEBUG: Entering Pneumonia Block 811. P: {"type":"influenza"}
+CASE 12
+Input: "72-year-old female with influenza A pneumonia and acute respiratory failure."
+Result: J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 65-year-old male with ventilator-associated pneumonia due to pseudomonas.
+[Flow] Reached Renal block. Key: narrative, Value: "65-year-old male wit..."
+DEBUG: Entering Pneumonia Block 811. P: {"organism":"pseudomonas","type":"bacterial","ventilatorAssociated":true}
+CASE 13
+Input: "65-year-old male with ventilator-associated pneumonia due to Pseudomonas."
+Result: J95.851 (Ventilator associated pneumonia), B96.5 (Dysfunction due to pseudomonas as the cause of diseases classified elsewhere)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 85-year-old nursing home resident admitted with aspiration pneumonia.
+[Flow] Reached Renal block. Key: narrative, Value: "85-year-old nursing ..."
+DEBUG: Entering Pneumonia Block 811. P: {"type":"aspiration","ventilatorAssociated":false}
+CASE 14
+Input: "85-year-old nursing home resident admitted with aspiration pneumonia."
+Result: J69.0 (Pneumonitis due to inhalation of food and vomit)
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "70-year-old admitted with acute respiratory failure of unspecified type.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "70-year-old admitted..."
+CASE 15
+Input: "70-year-old admitted with acute respiratory failure of unspecified type."
+Result: J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "68-year-old with copd exacerbation leading to acute respiratory failure.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "68-year-old with cop..."
+DEBUG: Emitting J44.1 due to withExacerbation=true
+CASE 16
+Input: "68-year-old with COPD exacerbation leading to acute respiratory failure."
+Result: J44.1 (Chronic obstructive pulmonary disease with (acute) exacerbation), J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 72-year-old admitted with pneumonia resulting in acute hypoxic respiratory failure.
+DEBUG: RF Parsing. Input: "72-year-old admitted with pneumonia resulting in acute hypoxic respiratory failure.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "72-year-old admitted..."
+DEBUG: Entering Pneumonia Block 811. P: {"type":"unspecified","ventilatorAssociated":false}
+CASE 17
+Input: "72-year-old admitted with pneumonia resulting in acute hypoxic respiratory failure."
+Result: J96.01 (Respiratory failure, Acute with hypoxia)
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "50-year-old developed acute respiratory failure following surgery.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "50-year-old develope..."
+CASE 18
+Input: "50-year-old developed acute respiratory failure following surgery."
+Result: J95.821 (Acute post-procedural respiratory failure)
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "55-year-old with severe asthma exacerbation and hypoxic respiratory failure.". Type: unspecified
+[Flow] Reached Renal block. Key: narrative, Value: "55-year-old with sev..."
+DEBUG: Emitting J44.1 due to withExacerbation=true
+CASE 19
+Input: "55-year-old with severe asthma exacerbation and hypoxic respiratory failure."
+Result: J44.1 (Chronic obstructive pulmonary disease with (acute) exacerbation), J45.901 (Unspecified asthma, with exacerbation ), J96.91 (Respiratory failure, Unspecified with hypoxia)
+--------------------------------------------------
+[Flow] Reached Renal block. Key: narrative, Value: "75-year-old admitted..."
+CASE 20
+Input: "75-year-old admitted with acute pulmonary embolism causing acute cor pulmonale."
+Result: I26.02 (Saddle embolus of pulmonary artery with acute cor pulmonale)
+--------------------------------------------------
+[DEBUG isNegated] Term: "chronic kidney disease" Negated: false
+[DEBUG isNegated] Term: "chronic kidney disease", PreText: "68-year-old with type 2 diabetes and "
+[DEBUG isNegated] Result: false
+[DEBUG isNegated] Term: "kidney disease" Negated: false
+[Flow] Reached Renal block. Key: narrative, Value: "68-year-old with typ..."
+[DEBUG isNegated] Term: "chronic kidney disease" Negated: false
+[DEBUG isNegated] Term: "chronic kidney disease", PreText: "68-year-old with type 2 diabetes and "
+[DEBUG isNegated] Result: false
+[DEBUG isNegated] Term: "sepsis" Negated: false
+[Parser] Diabetes Detected in: "68-year-old with type 2 diabetes and chronic kidne..."
+[Parser] LowerText: 68-year-old with type 2 diabetes and chronic kidney disease admitted for sepsis due to uti.
+[Parser] isNegated: false
+[DEBUG isNegated] Term: "chronic kidney" Negated: false
+[Engine] Diabetes Type: type2, Details: {} 
+CASE 21
+Input: "68-year-old with type 2 diabetes and chronic kidney disease admitted for sepsis due to UTI."
+Result: N39.0 (Urinary tract infection, site not specified), A41.9 (Sepsis, unspecified organism), N18.9 (Chronic kidney disease, stage unspecified ), E11.22 (Type 2 diabetes mellitus with diabetic chronic kidney disease)
+--------------------------------------------------
+[Flow] Reached Renal block. Key: narrative, Value: "55-year-old with typ..."
+[Parser] Diabetes Detected in: "55-year-old with type 1 diabetes admitted with dia..."
+[Parser] LowerText: 55-year-old with type 1 diabetes admitted with diabetic ketoacidosis.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type1, Details: {"ketoacidosis":true} 
+CASE 22
+Input: "55-year-old with type 1 diabetes admitted with diabetic ketoacidosis."
+Result: E10.10 (Type 1 diabetes mellitus with ketoacidosis without coma)
+--------------------------------------------------
+[Flow] Reached Renal block. Key: narrative, Value: "72-year-old type 2 d..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+[Parser] Diabetes Detected in: "72-year-old type 2 diabetic with foot ulcer admitt..."
+[Parser] LowerText: 72-year-old type 2 diabetic with foot ulcer admitted for sepsis.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {"footUlcer":true} 
+CASE 23
+Input: "72-year-old type 2 diabetic with foot ulcer admitted for sepsis."
+Result: L97.419 (Non-pressure chronic ulcer of right heel and midfoot with unspecified severity), A41.9 (Sepsis, unspecified organism), E11.621 (Type 2 diabetes mellitus with foot ulcer)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 65-year-old diabetic admitted with pneumonia and acute hypoxic respiratory failure.
+DEBUG: RF Parsing. Input: "65-year-old diabetic admitted with pneumonia and acute hypoxic respiratory failure.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "65-year-old diabetic..."
+[Parser] Diabetes Detected in: "65-year-old diabetic admitted with pneumonia and a..."
+[Parser] LowerText: 65-year-old diabetic admitted with pneumonia and acute hypoxic respiratory failure.
+[Parser] isNegated: false
+[Engine] Diabetes Type: type2, Details: {} 
+DEBUG: Entering Pneumonia Block 811. P: {"type":"unspecified","ventilatorAssociated":false}
+CASE 24
+Input: "65-year-old diabetic admitted with pneumonia and acute hypoxic respiratory failure."
+Result: J96.01 (Respiratory failure, Acute with hypoxia), E11.9 (Type 2 diabetes mellitus without complications)
+--------------------------------------------------
+[DEBUG isNegated] Term: "esrd" Negated: false
+[Flow] Reached Renal block. Key: narrative, Value: "70-year-old diabetic..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+[Parser] Diabetes Detected in: "70-year-old diabetic with ESRD on dialysis admitte..."
+[Parser] LowerText: 70-year-old diabetic with esrd on dialysis admitted with sepsis.
+[Parser] isNegated: false
+[DEBUG isNegated] Term: "esrd" Negated: false
+[Engine] Diabetes Type: type2, Details: {} 
+CASE 25
+Input: "70-year-old diabetic with ESRD on dialysis admitted with sepsis."
+Result: A41.9 (Sepsis, unspecified organism), N18.6 (Chronic kidney disease, stage esrd ), E11.22 (Type 2 diabetes mellitus with diabetic chronic kidney disease), Z99.2 (Dependence on renal dialysis)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 60-year-old with covid-19 pneumonia complicated by acute respiratory distress syndrome.
+[Flow] Reached Renal block. Key: narrative, Value: "60-year-old with cov..."
+CASE 26
+Input: "60-year-old with COVID-19 pneumonia complicated by acute respiratory distress syndrome."
+Result: U07.1 (COVID-19), J12.82 (Pneumonia due to coronavirus disease 2019), J80 (Acute respiratory distress syndrome)
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "75-year-old admitted with acute on chronic respiratory failure due to copd.". Type: acute_on_chronic
+[Flow] Reached Renal block. Key: narrative, Value: "75-year-old admitted..."
+DEBUG: Emitting J44.1 due to withExacerbation=true
+CASE 27
+Input: "75-year-old admitted with acute on chronic respiratory failure due to COPD."
+Result: J44.1 (Chronic obstructive pulmonary disease with (acute) exacerbation), J96.20 (Respiratory failure, Acute on chronic, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 68-year-old male with pneumonia and acute respiratory failure requiring oxygen.
+DEBUG: RF Parsing. Input: "68-year-old male with pneumonia and acute respiratory failure requiring oxygen.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "68-year-old male wit..."
+DEBUG: Entering Pneumonia Block 811. P: {"type":"unspecified","ventilatorAssociated":false}
+CASE 28
+Input: "68-year-old male with pneumonia and acute respiratory failure requiring oxygen."
+Result: J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 80-year-old female admitted with copd exacerbation and pneumonia.
+[Flow] Reached Renal block. Key: narrative, Value: "80-year-old female a..."
+DEBUG: Entering Pneumonia Block 811. P: {"type":"unspecified","ventilatorAssociated":false}
+DEBUG: Emitting J44.1 due to withExacerbation=true
+CASE 29
+Input: "80-year-old female admitted with COPD exacerbation and pneumonia."
+Result: J44.1 (Chronic obstructive pulmonary disease with (acute) exacerbation), J44.0 (Chronic obstructive pulmonary disease with (acute) lower respiratory infection), J20.9 (Acute bronchitis, unspecified)
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "65-year-old admitted with acute hypoxic respiratory failure secondary to pulmonary edema.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "65-year-old admitted..."
+CASE 30
+Input: "65-year-old admitted with acute hypoxic respiratory failure secondary to pulmonary edema."
+Result: J96.01 (Respiratory failure, Acute with hypoxia), J81.0 (Acute pulmonary edema)
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "55-year-old male smoker admitted with copd and acute respiratory failure.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "55-year-old male smo..."
+DEBUG: Emitting J44.1 due to withExacerbation=true
+CASE 31
+Input: "55-year-old male smoker admitted with COPD and acute respiratory failure."
+Result: J44.1 (Chronic obstructive pulmonary disease with (acute) exacerbation), J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia), F17.210 (Nicotine dependence, cigarettes, uncomplicated)
+--------------------------------------------------
+[Flow] Reached Renal block. Key: narrative, Value: "70-year-old female w..."
+CASE 32
+Input: "70-year-old female with CHF admitted with pleural effusion and shortness of breath."
+Result: I50.9 (Heart failure, unspecified, unspecified ), J91.8 (Pleural effusion in other conditions classified elsewhere)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 60-year-old admitted with viral pneumonia and respiratory failure.
+DEBUG: RF Parsing. Input: "60-year-old admitted with viral pneumonia and respiratory failure.". Type: unspecified
+[Flow] Reached Renal block. Key: narrative, Value: "60-year-old admitted..."
+DEBUG: Entering Pneumonia Block 811. P: {"organism":"viral","type":"viral","ventilatorAssociated":false}
+CASE 33
+Input: "60-year-old admitted with viral pneumonia and respiratory failure."
+Result: J96.90 (Respiratory failure, Unspecified, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 75-year-old admitted with covid-19, pneumonia, and septic shock.
+[DEBUG isNegated] Term: "septic shock" Negated: false
+[DEBUG isNegated] Term: "septic shock" Negated: false
+[Flow] Reached Renal block. Key: narrative, Value: "75-year-old admitted..."
+[DEBUG isNegated] Term: "septic" Negated: false
+[DEBUG isNegated] Term: "septic", PreText: "75-year-old admitted with covid-19, pneumonia, and "
+[DEBUG isNegated] Result: false
+[DEBUG isNegated] Term: "shock" Negated: false
+[DEBUG isNegated] Term: "shock", PreText: "75-year-old admitted with covid-19, pneumonia, and septic "
+[DEBUG isNegated] Result: false
+CASE 34
+Input: "75-year-old admitted with COVID-19, pneumonia, and septic shock."
+Result: U07.1 (COVID-19), A41.9 (Sepsis, unspecified organism), R65.21 (Severe sepsis with septic shock), J12.82 (Pneumonia due to coronavirus disease 2019)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 68-year-old admitted with severe sepsis secondary to pneumonia.
+[DEBUG isNegated] Term: "severe" Negated: false
+[Flow] Reached Renal block. Key: narrative, Value: "68-year-old admitted..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+DEBUG CASE 35 Context: {
+  "demographics": {},
+  "encounter": {
+    "type": "initial"
+  },
+  "conditions": {
+    "respiratory": {
+      "pneumonia": {
+        "type": "unspecified",
+        "ventilatorAssociated": false
+      }
+    },
+    "infection": {
+      "present": true,
+      "site": "lung",
+      "source": "pneumonia",
+      "sepsis": {
+        "present": true,
+        "severe": true
+      }
+    },
+    "sepsis": {
+      "severity": "severe",
+      "source": "unspecified"
+    }
+  },
+  "social": {}
+}
+DEBUG: Entering Pneumonia Block 811. P: {"type":"unspecified","ventilatorAssociated":false}
+CASE 35
+Input: "68-year-old admitted with severe sepsis secondary to pneumonia."
+Result: A41.9 (Sepsis, unspecified organism)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 72-year-old admitted with pneumonia complicated by acute renal failure.
+[Flow] Reached Renal block. Key: narrative, Value: "72-year-old admitted..."
+DEBUG: Entering Pneumonia Block 811. P: {"type":"unspecified","ventilatorAssociated":false}
+CASE 36
+Input: "72-year-old admitted with pneumonia complicated by acute renal failure."
+Result: N17.9 (Acute kidney failure, unspecified)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 65-year-old admitted with aspiration pneumonia and acute respiratory failure.
+DEBUG: RF Parsing. Input: "65-year-old admitted with aspiration pneumonia and acute respiratory failure.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "65-year-old admitted..."
+DEBUG: Entering Pneumonia Block 811. P: {"type":"aspiration","ventilatorAssociated":false}
+CASE 37
+Input: "65-year-old admitted with aspiration pneumonia and acute respiratory failure."
+Result: J69.0 (Pneumonitis due to inhalation of food and vomit), J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "80-year-old admitted with acute respiratory failure following intubation.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "80-year-old admitted..."
+CASE 38
+Input: "80-year-old admitted with acute respiratory failure following intubation."
+Result: J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+[Flow] Reached Renal block. Key: narrative, Value: "55-year-old admitted..."
+CASE 39
+Input: "55-year-old admitted with spontaneous pneumothorax."
+Result: J93.11 (Primary spontaneous pneumothorax)
+--------------------------------------------------
+[Flow] Reached Renal block. Key: narrative, Value: "70-year-old admitted..."
+CASE 40
+Input: "70-year-old admitted with acute saddle pulmonary embolism."
+Result: I26.02 (Saddle embolus of pulmonary artery with acute cor pulmonale)
+--------------------------------------------------
+[Flow] Reached Renal block. Key: narrative, Value: "60-year-old admitted..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+CASE 41
+Input: "60-year-old admitted with ARDS following sepsis."
+Result: A41.9 (Sepsis, unspecified organism), J80 (Acute respiratory distress syndrome)
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "75-year-old admitted with copd exacerbation and hypercapnic respiratory failure.". Type: unspecified
+[Flow] Reached Renal block. Key: narrative, Value: "75-year-old admitted..."
+DEBUG: Emitting J44.1 due to withExacerbation=true
+CASE 42
+Input: "75-year-old admitted with COPD exacerbation and hypercapnic respiratory failure."
+Result: J44.1 (Chronic obstructive pulmonary disease with (acute) exacerbation), J96.92 (Respiratory failure, Unspecified with hypercapnia)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 68-year-old admitted with pneumonia and acute on chronic respiratory failure.
+DEBUG: RF Parsing. Input: "68-year-old admitted with pneumonia and acute on chronic respiratory failure.". Type: acute_on_chronic
+[Flow] Reached Renal block. Key: narrative, Value: "68-year-old admitted..."
+DEBUG: Entering Pneumonia Block 811. P: {"type":"unspecified","ventilatorAssociated":false}
+CASE 43
+Input: "68-year-old admitted with pneumonia and acute on chronic respiratory failure."
+Result: J96.20 (Respiratory failure, Acute on chronic, unspecified whether with hypoxia or hypercapnia)
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "72-year-old admitted with influenza pneumonia and hypoxic respiratory failure.". Type: unspecified
+[Flow] Reached Renal block. Key: narrative, Value: "72-year-old admitted..."
+DEBUG: Entering Pneumonia Block 811. P: {"type":"influenza"}
+CASE 44
+Input: "72-year-old admitted with influenza pneumonia and hypoxic respiratory failure."
+Result: J96.91 (Respiratory failure, Unspecified with hypoxia)
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "65-year-old admitted with postoperative respiratory failure.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "65-year-old admitted..."
+CASE 45
+Input: "65-year-old admitted with postoperative respiratory failure."
+Result: J95.821 (Acute post-procedural respiratory failure)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 70-year-old admitted with ventilator-associated pneumonia.
+[Flow] Reached Renal block. Key: narrative, Value: "70-year-old admitted..."
+DEBUG: Entering Pneumonia Block 811. P: {"type":"unspecified","ventilatorAssociated":true}
+CASE 46
+Input: "70-year-old admitted with ventilator-associated pneumonia."
+Result: J95.851 (Ventilator associated pneumonia)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 55-year-old admitted with covid-19 pneumonia and ards.
+[Flow] Reached Renal block. Key: narrative, Value: "55-year-old admitted..."
+CASE 47
+Input: "55-year-old admitted with COVID-19 pneumonia and ARDS."
+Result: U07.1 (COVID-19), J12.82 (Pneumonia due to coronavirus disease 2019), J80 (Acute respiratory distress syndrome)
+--------------------------------------------------
+DEBUG: Parser found pneumonia: 80-year-old admitted with aspiration pneumonia leading to sepsis.
+[Flow] Reached Renal block. Key: narrative, Value: "80-year-old admitted..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+DEBUG: Entering Pneumonia Block 811. P: {"type":"aspiration","ventilatorAssociated":false}
+CASE 48
+Input: "80-year-old admitted with aspiration pneumonia leading to sepsis."
+Result: J69.0 (Pneumonitis due to inhalation of food and vomit), A41.9 (Sepsis, unspecified organism)
+--------------------------------------------------
+DEBUG: RF Parsing. Input: "60-year-old admitted with acute respiratory failure and metabolic encephalopathy.". Type: acute
+[Flow] Reached Renal block. Key: narrative, Value: "60-year-old admitted..."
+CASE 49
+Input: "60-year-old admitted with acute respiratory failure and metabolic encephalopathy."
+Result: J96.00 (Respiratory failure, Acute, unspecified whether with hypoxia or hypercapnia), G93.41 (Encephalopathy, metabolic )
+--------------------------------------------------
+[DEBUG isNegated] Term: "septic shock" Negated: false
+[DEBUG isNegated] Term: "septic shock" Negated: false
+[Flow] Reached Renal block. Key: narrative, Value: "75-year-old admitted..."
+[DEBUG isNegated] Term: "septic" Negated: false
+[DEBUG isNegated] Term: "septic", PreText: "75-year-old admitted with "
+[DEBUG isNegated] Result: false
+[DEBUG isNegated] Term: "shock" Negated: false
+[DEBUG isNegated] Term: "shock", PreText: "75-year-old admitted with septic "
+[DEBUG isNegated] Result: false
+CASE 50
+Input: "75-year-old admitted with septic shock complicated by ARDS and acute renal failure."
+Result: A41.9 (Sepsis, unspecified organism), R65.21 (Severe sepsis with septic shock), N17.9 (Acute kidney failure, unspecified), J80 (Acute respiratory distress syndrome)
+--------------------------------------------------

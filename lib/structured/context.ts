@@ -181,14 +181,39 @@ export interface PatientContext {
         };
         injury?: {
             present: boolean;
-            type?: 'fracture' | 'open_wound' | 'burn' | 'contusion' | 'laceration';
+            // Legacy / Simple Resolver Fields (Required for current Parser/Engine)
+            type?: 'unspecified' | 'fracture' | 'burn' | 'open_wound' | 'contusion' | 'poisoning';
             bodyRegion?: string;
-            laterality?: 'left' | 'right' | 'bilateral';
+            laterality?: 'left' | 'right' | 'bilateral' | 'unspecified';
             encounterType?: 'initial' | 'subsequent' | 'sequela';
-            externalCause?: {
+
+            general?: {
+                type: 'unspecified' | 'fracture' | 'burn' | 'wound' | 'poisoning';
+            }[]; // Array to handle multiple injuries
+            fractures?: Array<{
+                site: string; // e.g. "femur", "rib"
+                laterality?: 'left' | 'right' | 'bilateral' | 'unspecified';
+                type?: 'open' | 'closed';
+                displaced?: boolean;
+                encounter?: 'initial' | 'subsequent' | 'sequela';
+            }>;
+            burns?: Array<{
+                site: string;
+                degree: '1' | '2' | '3';
+                tbsa?: number;
+            }>;
+            tbi?: {
                 present: boolean;
-                mechanism?: 'fall' | 'mvc' | 'assault' | 'sports' | 'other';
+                lossOfConsciousness?: string; // e.g. "30 min", ">24h"
+                type?: 'concussion' | 'contusion' | 'subdural' | 'epidural' | 'diffuse';
             };
+            externalCause?: {
+                mechanism?: string; // MVC, Fall, etc.
+                place?: string;
+                present?: boolean; // Added for consistency
+            };
+            // Generic for simple resolver
+            rawText?: string;
         };
         neurology?: {
             stroke?: {

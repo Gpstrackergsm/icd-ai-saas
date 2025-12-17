@@ -1,0 +1,256 @@
+PARSER LOADED - AUDITOR DEBUG MODE
+=== COMPREHENSIVE NEUROLOGY VERIFICATION (50 CASES) ===
+
+CASE 1:
+Input: "68-year-old male admitted with acute ischemic stroke involving the left middle cerebral artery, presenting with right-sided hemiplegia."
+[Flow] Reached Renal block. Key: narrative, Value: "68-year-old male adm..."
+  [PASS] Codes: I63.512
+--------------------------------------------------
+CASE 2:
+Input: "74-year-old female with acute thrombotic stroke of the right cerebral hemisphere causing expressive aphasia."
+[Flow] Reached Renal block. Key: narrative, Value: "74-year-old female w..."
+  [PASS] Codes: I63.9
+--------------------------------------------------
+CASE 3:
+Input: "59-year-old male with embolic stroke of right MCA due to atrial fibrillation, acute onset left hemiparesis."
+[Flow] Reached Renal block. Key: narrative, Value: "59-year-old male wit..."
+  [PASS] Codes: I48.91, I63.512
+--------------------------------------------------
+CASE 4:
+Input: "82-year-old female with acute ischemic stroke involving the brainstem with dysphagia and diplopia."
+[Flow] Reached Renal block. Key: narrative, Value: "82-year-old female w..."
+  [PASS] Codes: I63.59
+--------------------------------------------------
+CASE 5:
+Input: "66-year-old male admitted with acute ischemic stroke, imaging confirms infarction of right cerebellum."
+[Flow] Reached Renal block. Key: narrative, Value: "66-year-old male adm..."
+  [PASS] Codes: I63.541
+--------------------------------------------------
+CASE 6:
+Input: "71-year-old female with history of CVA now presenting with chronic right hemiparesis."
+[Flow] Reached Renal block. Key: narrative, Value: "71-year-old female w..."
+  [PASS] Codes: I69.351
+--------------------------------------------------
+CASE 7:
+Input: "63-year-old male with history of ischemic stroke and residual expressive aphasia."
+[Flow] Reached Renal block. Key: narrative, Value: "63-year-old male wit..."
+  [PASS] Codes: I69.320
+--------------------------------------------------
+CASE 8:
+Input: "79-year-old female with history of stroke complicated by vascular dementia."
+[Flow] Reached Renal block. Key: narrative, Value: "79-year-old female w..."
+  [PASS] Codes: F01.50, Z86.73
+--------------------------------------------------
+CASE 9:
+Input: "58-year-old male with late effects of CVA including left-sided hemiplegia."
+[Flow] Reached Renal block. Key: narrative, Value: "58-year-old male wit..."
+  [PASS] Codes: I69.354
+--------------------------------------------------
+CASE 10:
+Input: "70-year-old female with sequela of stroke presenting as chronic dysphagia."
+[Flow] Reached Renal block. Key: narrative, Value: "70-year-old female w..."
+  [PASS] Codes: I69.391
+--------------------------------------------------
+CASE 11:
+Input: "61-year-old male with history of stroke and residual gait abnormality."
+[Flow] Reached Renal block. Key: narrative, Value: "61-year-old male wit..."
+  [PASS] Codes: I69.393
+--------------------------------------------------
+CASE 12:
+Input: "76-year-old female with prior CVA and persistent visual field deficit."
+[Flow] Reached Renal block. Key: narrative, Value: "76-year-old female w..."
+  [PASS] Codes: I69.398
+--------------------------------------------------
+CASE 13:
+Input: "55-year-old male with history of stroke and residual cognitive deficits."
+[Flow] Reached Renal block. Key: narrative, Value: "55-year-old male wit..."
+  [PASS] Codes: I69.31
+--------------------------------------------------
+CASE 14:
+Input: "83-year-old female with sequelae of cerebrovascular accident causing right spastic hemiplegia."
+[Flow] Reached Renal block. Key: narrative, Value: "83-year-old female w..."
+  [PASS] Codes: I69.351
+--------------------------------------------------
+CASE 15:
+Input: "69-year-old male with history of stroke and residual dysphasia."
+[Flow] Reached Renal block. Key: narrative, Value: "69-year-old male wit..."
+  [PASS] Codes: I69.320
+--------------------------------------------------
+CASE 16:
+Input: "64-year-old female admitted for transient ischemic attack with right arm numbness lasting 30 minutes."
+[Flow] Reached Renal block. Key: narrative, Value: "64-year-old female a..."
+  [PASS] Codes: G45.9
+--------------------------------------------------
+CASE 17:
+Input: "72-year-old male with TIA presenting as transient slurred speech and facial droop, resolved."
+[Flow] Reached Renal block. Key: narrative, Value: "72-year-old male wit..."
+  [FAIL] Parser Errors: AMBIGUITY_BLOCK: "Slurred speech" is nonspecific. Use "aphasia" or "dysarthria" if intended.
+--------------------------------------------------
+CASE 18:
+Input: "60-year-old female with recurrent transient ischemic attacks with visual disturbance."
+[Flow] Reached Renal block. Key: narrative, Value: "60-year-old female w..."
+  [PASS] Codes: G45.9
+--------------------------------------------------
+CASE 19:
+Input: "81-year-old male with TIA manifested by temporary left-sided hemiparesis."
+[Flow] Reached Renal block. Key: narrative, Value: "81-year-old male wit..."
+  [PASS] Codes: G45.9
+--------------------------------------------------
+CASE 20:
+Input: "57-year-old female with TIA due to carotid artery stenosis."
+[Flow] Reached Renal block. Key: narrative, Value: "57-year-old female w..."
+  [PASS] Codes: G45.9
+--------------------------------------------------
+CASE 21:
+Input: "45-year-old male with history of epilepsy and recurrent generalized tonic-clonic seizures."
+[Flow] Reached Renal block. Key: narrative, Value: "45-year-old male wit..."
+  [PASS] Codes: G40.309
+--------------------------------------------------
+CASE 22:
+Input: "38-year-old female with focal epilepsy causing partial seizures with impaired awareness."
+[Flow] Reached Renal block. Key: narrative, Value: "38-year-old female w..."
+  [PASS] Codes: G40.209
+--------------------------------------------------
+CASE 23:
+Input: "52-year-old male admitted for breakthrough seizure in patient with epilepsy."
+[Flow] Reached Renal block. Key: narrative, Value: "52-year-old male adm..."
+  [PASS] Codes: G40.909
+--------------------------------------------------
+CASE 24:
+Input: "29-year-old female with juvenile epilepsy on chronic antiepileptic therapy."
+[Flow] Reached Renal block. Key: narrative, Value: "29-year-old female w..."
+  [PASS] Codes: G40.909
+--------------------------------------------------
+CASE 25:
+Input: "67-year-old male with epilepsy secondary to history of stroke."
+[Flow] Reached Renal block. Key: narrative, Value: "67-year-old male wit..."
+  [PASS] Codes: G40.909, Z86.73
+--------------------------------------------------
+CASE 26:
+Input: "41-year-old female with intractable epilepsy despite medication."
+[Flow] Reached Renal block. Key: narrative, Value: "41-year-old female w..."
+  [PASS] Codes: G40.919
+--------------------------------------------------
+CASE 27:
+Input: "50-year-old male with post-traumatic epilepsy."
+[Flow] Reached Renal block. Key: narrative, Value: "50-year-old male wit..."
+  [PASS] Codes: G40.909
+--------------------------------------------------
+CASE 28:
+Input: "33-year-old female with new-onset seizure disorder, EEG consistent with epilepsy."
+[Flow] Reached Renal block. Key: narrative, Value: "33-year-old female w..."
+  [PASS] Codes: G40.909
+--------------------------------------------------
+CASE 29:
+Input: "76-year-old male with epilepsy and status epilepticus."
+[Flow] Reached Renal block. Key: narrative, Value: "76-year-old male wit..."
+  [PASS] Codes: G40.901
+--------------------------------------------------
+CASE 30:
+Input: "58-year-old female with controlled epilepsy on long-term anticonvulsants."
+[Flow] Reached Renal block. Key: narrative, Value: "58-year-old female w..."
+  [PASS] Codes: G40.909
+--------------------------------------------------
+CASE 31:
+Input: "72-year-old male admitted with acute metabolic encephalopathy due to sepsis."
+[Flow] Reached Renal block. Key: narrative, Value: "72-year-old male adm..."
+[DEBUG isNegated] Term: "sepsis" Negated: false
+  [PASS] Codes: A41.9, G93.41
+--------------------------------------------------
+CASE 32:
+Input: "65-year-old female with toxic encephalopathy secondary to medication overdose."
+[Flow] Reached Renal block. Key: narrative, Value: "65-year-old female w..."
+  [PASS] Codes: G92.8
+--------------------------------------------------
+CASE 33:
+Input: "80-year-old male with hepatic encephalopathy and altered mental status."
+[Flow] Reached Renal block. Key: narrative, Value: "80-year-old male wit..."
+  [PASS] Codes: K72.90
+--------------------------------------------------
+CASE 34:
+Input: "59-year-old female with hypoxic encephalopathy following cardiac arrest."
+[Flow] Reached Renal block. Key: narrative, Value: "59-year-old female w..."
+  [PASS] Codes: G93.1, Z33.1
+--------------------------------------------------
+CASE 35:
+Input: "68-year-old male with unspecified encephalopathy presenting with confusion."
+[Flow] Reached Renal block. Key: narrative, Value: "68-year-old male wit..."
+  [PASS] Codes: G93.40
+--------------------------------------------------
+CASE 36:
+Input: "77-year-old female with history of stroke now presenting with acute encephalopathy."
+[Flow] Reached Renal block. Key: narrative, Value: "77-year-old female w..."
+  [PASS] Codes: G93.40, Z86.73
+--------------------------------------------------
+CASE 37:
+Input: "62-year-old male with acute ischemic stroke of left MCA complicated by recurrent seizures."
+[Flow] Reached Renal block. Key: narrative, Value: "62-year-old male wit..."
+  [PASS] Codes: G40.909, I63.512
+--------------------------------------------------
+CASE 38:
+Input: "71-year-old female with TIA and history of prior stroke."
+[Flow] Reached Renal block. Key: narrative, Value: "71-year-old female w..."
+  [PASS] Codes: G45.9, Z86.73
+--------------------------------------------------
+CASE 39:
+Input: "56-year-old male with epilepsy and cognitive impairment."
+[Flow] Reached Renal block. Key: narrative, Value: "56-year-old male wit..."
+  [PASS] Codes: G40.909
+--------------------------------------------------
+CASE 40:
+Input: "84-year-old female with late effects of stroke and epilepsy (seizure disorder)."
+[Flow] Reached Renal block. Key: narrative, Value: "84-year-old female w..."
+  [PASS] Codes: G40.909, Z86.73
+--------------------------------------------------
+CASE 41:
+Input: "69-year-old male with multiple prior CVAs and residual left hemiplegia."
+[Flow] Reached Renal block. Key: narrative, Value: "69-year-old male wit..."
+  [PASS] Codes: I69.354
+--------------------------------------------------
+CASE 42:
+Input: "74-year-old female with embolic stroke history and residual left-sided hemiparesis."
+[Flow] Reached Renal block. Key: narrative, Value: "74-year-old female w..."
+  [PASS] Codes: I69.354
+--------------------------------------------------
+CASE 43:
+Input: "63-year-old male with TIA progressing to acute ischemic stroke of right MCA."
+[Flow] Reached Renal block. Key: narrative, Value: "63-year-old male wit..."
+  [PASS] Codes: G45.9, I63.511
+--------------------------------------------------
+CASE 44:
+Input: "47-year-old female with epilepsy secondary to brain tumor resection."
+[Flow] Reached Renal block. Key: narrative, Value: "47-year-old female w..."
+  [PASS] Codes: G40.909
+--------------------------------------------------
+CASE 45:
+Input: "58-year-old male with history of stroke and chronic encephalopathy."
+[Flow] Reached Renal block. Key: narrative, Value: "58-year-old male wit..."
+  [PASS] Codes: G93.40, Z86.73
+--------------------------------------------------
+CASE 46:
+Input: "66-year-old female with recurrent TIAs and carotid atherosclerosis."
+[Flow] Reached Renal block. Key: narrative, Value: "66-year-old female w..."
+  [PASS] Codes: G45.9
+--------------------------------------------------
+CASE 47:
+Input: "35-year-old male with epilepsy and frequent absence seizures."
+[Flow] Reached Renal block. Key: narrative, Value: "35-year-old male wit..."
+  [PASS] Codes: G40.909
+--------------------------------------------------
+CASE 48:
+Input: "79-year-old female with sequelae of CVA causing right hemiparesis and aphasia."
+[Flow] Reached Renal block. Key: narrative, Value: "79-year-old female w..."
+  [PASS] Codes: I69.320, I69.351
+--------------------------------------------------
+CASE 49:
+Input: "60-year-old male with history of ischemic stroke and post-stroke epilepsy."
+[Flow] Reached Renal block. Key: narrative, Value: "60-year-old male wit..."
+  [PASS] Codes: G40.909, Z86.73
+--------------------------------------------------
+CASE 50:
+Input: "82-year-old female with history of stroke, residual deficits, and acute encephalopathy."
+[Flow] Reached Renal block. Key: narrative, Value: "82-year-old female w..."
+  [PASS] Codes: G93.40, Z86.73
+--------------------------------------------------
+
+SUMMARY: 49/50 PASSED

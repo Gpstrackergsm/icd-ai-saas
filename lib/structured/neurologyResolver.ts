@@ -1,6 +1,6 @@
 
 import { PatientContext } from './context';
-import { StructuredCode } from './engine';
+import { StructuredCode } from './types';
 
 export function resolveNeurology(ctx: PatientContext): StructuredCode[] {
     const codes: StructuredCode[] = [];

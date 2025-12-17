@@ -134,7 +134,9 @@ export function correctDiabetesCodes(codes: StructuredCode[]): StructuredCode[] 
         const sB = getStrictSortScore(b.code);
 
         if (sA !== sB) return sA - sB;
-        return a.code.localeCompare(b.code);
+        // PRESERVE original order for ties (Stability)
+        // Do NOT use localeCompare as it overrides engine's context-aware sequencing
+        return 0;
     });
 
     return corrected;
@@ -154,13 +156,30 @@ function getStrictSortScore(code: string): number {
 
     if (code.startsWith('A40') || code.startsWith('A41')) return 2; // Sepsis
 
+    // 2.5 Severe Sepsis (R65) - Should follow A41
+    if (code.startsWith('R65')) return 2.5;
+
+    // 2.8 Acute Infection Sources (Pneumonia, Cellulitis, UTI, etc.) - BEFORE Diabetes
+    // This ensures Sepsis -> Source -> Diabetes -> Complications sequencing
+    if (code.startsWith('J1') || code.startsWith('J0') || code.startsWith('J2') || // Pneumonia/Resp Inf
+        code.startsWith('L0') || // Cellulitis
+        code.startsWith('N10') || code.startsWith('N12') || code.startsWith('N30') || code.startsWith('N39') || // UTI/Pyelo
+        code.startsWith('K65') || // Peritonitis
+        code.startsWith('L97') || // Ulcer (if infected/source)
+        code.startsWith('T81')    // Post-procedure infection
+    ) return 2.8;
+
+
+
     // 3. Diabetes Combination Codes (E10, E11)
     // Acute DKA/HHS E10.1 / E11.0 -> High priority
     if (code.startsWith('E10.1') || code.startsWith('E11.0') || code.startsWith('E08.1') || code.startsWith('E09.1')) return 3;
 
     // E11.22 (CKD combo) needs to be before N18 and I50.
-    // General Diabetes E codes
-    if (code.startsWith('E08') || code.startsWith('E09') || code.startsWith('E10') || code.startsWith('E11') || code.startsWith('E13')) return 4;
+    if (code.includes('.2')) return 4;
+
+    // General Diabetes E codes - Lower priority than I50 (6)
+    if (code.startsWith('E08') || code.startsWith('E09') || code.startsWith('E10') || code.startsWith('E11') || code.startsWith('E13')) return 7;
 
     // N18 (CKD) - Should be after E11 (4)
     if (code.startsWith('N18')) return 5;
