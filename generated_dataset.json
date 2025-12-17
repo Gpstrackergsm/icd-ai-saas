@@ -1,0 +1,8424 @@
+[
+  {
+    "id": 1,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory distress syndrome in 70-year-old Female",
+    "expectedCodes": [
+      "J80"
+    ]
+  },
+  {
+    "id": 2,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure in 83-year-old Female",
+    "expectedCodes": [
+      "J96.01"
+    ]
+  },
+  {
+    "id": 3,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes and sepsis in 85-year-old Female",
+    "expectedCodes": [
+      "E11.9",
+      "A41.9"
+    ]
+  },
+  {
+    "id": 4,
+    "module": "NEUROLOGY",
+    "text": "Vascular dementia in 62-year-old Female",
+    "expectedCodes": [
+      "F01.50"
+    ]
+  },
+  {
+    "id": 5,
+    "module": "SEPSIS",
+    "text": "Septic shock in 91-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 6,
+    "module": "RESPIRATORY",
+    "text": "Pleural effusion and severe sepsis with acute kidney failure in 75-year-old Male",
+    "expectedCodes": [
+      "J90",
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 7,
+    "module": "RESPIRATORY",
+    "text": "Pleural effusion in 63-year-old Male",
+    "expectedCodes": [
+      "J90"
+    ]
+  },
+  {
+    "id": 8,
+    "module": "NEUROLOGY",
+    "text": "Metabolic encephalopathy in 75-year-old Male",
+    "expectedCodes": [
+      "G93.41"
+    ]
+  },
+  {
+    "id": 9,
+    "module": "NEUROLOGY",
+    "text": "Status epilepticus and sepsis due to mrsa in 35-year-old Male",
+    "expectedCodes": [
+      "G40.901",
+      "A41.02"
+    ]
+  },
+  {
+    "id": 10,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 5 in 63-year-old Male",
+    "expectedCodes": [
+      "N18.5"
+    ]
+  },
+  {
+    "id": 11,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli in 67-year-old Male",
+    "expectedCodes": [
+      "A41.51"
+    ]
+  },
+  {
+    "id": 12,
+    "module": "ENDOCRINE",
+    "text": "Hypothyroidism and acute systolic heart failure in 77-year-old Male",
+    "expectedCodes": [
+      "E03.9",
+      "I50.21"
+    ]
+  },
+  {
+    "id": 13,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes in 48-year-old Male",
+    "expectedCodes": [
+      "E10.9"
+    ]
+  },
+  {
+    "id": 14,
+    "module": "RESPIRATORY",
+    "text": "Ventilator associated pneumonia in 64-year-old Male",
+    "expectedCodes": [
+      "J95.851"
+    ]
+  },
+  {
+    "id": 15,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness and pneumonia in 39-year-old Male",
+    "expectedCodes": [
+      "S06.0X0A",
+      "J18.9"
+    ]
+  },
+  {
+    "id": 16,
+    "module": "NEUROLOGY",
+    "text": "Status epilepticus in 45-year-old Female",
+    "expectedCodes": [
+      "G40.901"
+    ]
+  },
+  {
+    "id": 17,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3a in 81-year-old Female",
+    "expectedCodes": [
+      "N18.31"
+    ]
+  },
+  {
+    "id": 18,
+    "module": "TRAUMA",
+    "text": "Fall from bed and severe sepsis with acute kidney failure in 45-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA",
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 19,
+    "module": "ENDOCRINE",
+    "text": "Dehydration in 42-year-old Female",
+    "expectedCodes": [
+      "E86.0"
+    ]
+  },
+  {
+    "id": 20,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 21-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 21,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy and acute systolic heart failure in 45-year-old Male",
+    "expectedCodes": [
+      "G40.909",
+      "I50.21"
+    ]
+  },
+  {
+    "id": 22,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness in 83-year-old Male",
+    "expectedCodes": [
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 23,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 46-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 24,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure and type 2 diabetes in 72-year-old Male",
+    "expectedCodes": [
+      "J96.01",
+      "E11.9"
+    ]
+  },
+  {
+    "id": 25,
+    "module": "OBGYN",
+    "text": "Twin pregnancy in 60-year-old Male",
+    "expectedCodes": [
+      "O30.009"
+    ]
+  },
+  {
+    "id": 26,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas in 90-year-old Female",
+    "expectedCodes": [
+      "A41.52"
+    ]
+  },
+  {
+    "id": 27,
+    "module": "NEUROLOGY",
+    "text": "Vascular dementia and fall from bed in 22-year-old Female",
+    "expectedCodes": [
+      "F01.50",
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 28,
+    "module": "CARDIOLOGY",
+    "text": "Chronic diastolic heart failure in 39-year-old Male",
+    "expectedCodes": [
+      "I50.32"
+    ]
+  },
+  {
+    "id": 29,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 5 in 57-year-old Male",
+    "expectedCodes": [
+      "N18.5"
+    ]
+  },
+  {
+    "id": 30,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis and twin pregnancy in 27-year-old Male",
+    "expectedCodes": [
+      "E10.10",
+      "O30.009"
+    ]
+  },
+  {
+    "id": 31,
+    "module": "SEPSIS",
+    "text": "Sepsis in 43-year-old Female",
+    "expectedCodes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 32,
+    "module": "RESPIRATORY",
+    "text": "Ventilator associated pneumonia in 37-year-old Female",
+    "expectedCodes": [
+      "J95.851"
+    ]
+  },
+  {
+    "id": 33,
+    "module": "NEUROLOGY",
+    "text": "Alzheimer's dementia and chronic kidney disease stage 4 in 35-year-old Female",
+    "expectedCodes": [
+      "G30.9",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 34,
+    "module": "CARDIOLOGY",
+    "text": "Non-ST elevation myocardial infarction in 47-year-old Female",
+    "expectedCodes": [
+      "I21.4"
+    ]
+  },
+  {
+    "id": 35,
+    "module": "KIDNEY",
+    "text": "End stage renal disease in 93-year-old Female",
+    "expectedCodes": [
+      "N18.6"
+    ]
+  },
+  {
+    "id": 36,
+    "module": "SEPSIS",
+    "text": "Septic shock and parkinson's disease in 33-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21",
+      "G20"
+    ]
+  },
+  {
+    "id": 37,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation in 84-year-old Male",
+    "expectedCodes": [
+      "J45.901"
+    ]
+  },
+  {
+    "id": 38,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure in 28-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 39,
+    "module": "RESPIRATORY",
+    "text": "Pneumonia and sepsis due to mrsa in 82-year-old Female",
+    "expectedCodes": [
+      "J18.9",
+      "A41.02"
+    ]
+  },
+  {
+    "id": 40,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy in 70-year-old Male",
+    "expectedCodes": [
+      "G40.909"
+    ]
+  },
+  {
+    "id": 41,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis in 47-year-old Male",
+    "expectedCodes": [
+      "E10.10"
+    ]
+  },
+  {
+    "id": 42,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia and type 1 diabetes in 43-year-old Female",
+    "expectedCodes": [
+      "E87.1",
+      "E10.9"
+    ]
+  },
+  {
+    "id": 43,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia in 78-year-old Male",
+    "expectedCodes": [
+      "E87.1"
+    ]
+  },
+  {
+    "id": 44,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy in 69-year-old Female",
+    "expectedCodes": [
+      "G40.909"
+    ]
+  },
+  {
+    "id": 45,
+    "module": "TRAUMA",
+    "text": "Fall from bed and community acquired pneumonia in 46-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA",
+      "J18.9"
+    ]
+  },
+  {
+    "id": 46,
+    "module": "OBGYN",
+    "text": "Twin pregnancy in 24-year-old Male",
+    "expectedCodes": [
+      "O30.009"
+    ]
+  },
+  {
+    "id": 47,
+    "module": "KIDNEY",
+    "text": "End stage renal disease in 35-year-old Female",
+    "expectedCodes": [
+      "N18.6"
+    ]
+  },
+  {
+    "id": 48,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes and septic shock in 21-year-old Female",
+    "expectedCodes": [
+      "E10.9",
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 49,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism without acute cor pulmonale in 84-year-old Female",
+    "expectedCodes": [
+      "I26.92"
+    ]
+  },
+  {
+    "id": 50,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 in 66-year-old Female",
+    "expectedCodes": [
+      "N18.2"
+    ]
+  },
+  {
+    "id": 51,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery and severe preeclampsia in 61-year-old Female",
+    "expectedCodes": [
+      "I63.9",
+      "O14.10"
+    ]
+  },
+  {
+    "id": 52,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism with acute cor pulmonale in 57-year-old Male",
+    "expectedCodes": [
+      "I26.02"
+    ]
+  },
+  {
+    "id": 53,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 91-year-old Female",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 54,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure and hospital acquired pneumonia in 59-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9",
+      "J18.9"
+    ]
+  },
+  {
+    "id": 55,
+    "module": "NEUROLOGY",
+    "text": "Alzheimer's dementia in 40-year-old Female",
+    "expectedCodes": [
+      "G30.9"
+    ]
+  },
+  {
+    "id": 56,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 in 71-year-old Female",
+    "expectedCodes": [
+      "N18.4"
+    ]
+  },
+  {
+    "id": 57,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure and chronic systolic heart failure in 40-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9",
+      "I50.22"
+    ]
+  },
+  {
+    "id": 58,
+    "module": "NEUROLOGY",
+    "text": "Alzheimer's dementia in 26-year-old Male",
+    "expectedCodes": [
+      "G30.9"
+    ]
+  },
+  {
+    "id": 59,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 23-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 60,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation with rapid ventricular response and twin pregnancy in 38-year-old Female",
+    "expectedCodes": [
+      "I48.91",
+      "O30.009"
+    ]
+  },
+  {
+    "id": 61,
+    "module": "NEUROLOGY",
+    "text": "Alzheimer's dementia in 73-year-old Female",
+    "expectedCodes": [
+      "G30.9"
+    ]
+  },
+  {
+    "id": 62,
+    "module": "NEUROLOGY",
+    "text": "Alzheimer's dementia in 39-year-old Male",
+    "expectedCodes": [
+      "G30.9"
+    ]
+  },
+  {
+    "id": 63,
+    "module": "TRAUMA",
+    "text": "Fall from bed and acute respiratory distress syndrome in 93-year-old Female",
+    "expectedCodes": [
+      "W06.XXXA",
+      "J80"
+    ]
+  },
+  {
+    "id": 64,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes in 95-year-old Male",
+    "expectedCodes": [
+      "E10.9"
+    ]
+  },
+  {
+    "id": 65,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 in 87-year-old Female",
+    "expectedCodes": [
+      "N18.4"
+    ]
+  },
+  {
+    "id": 66,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory distress syndrome and pneumonia in 31-year-old Male",
+    "expectedCodes": [
+      "J80",
+      "J18.9"
+    ]
+  },
+  {
+    "id": 67,
+    "module": "SEPSIS",
+    "text": "Sepsis in 22-year-old Male",
+    "expectedCodes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 68,
+    "module": "OBGYN",
+    "text": "Twin pregnancy in 74-year-old Male",
+    "expectedCodes": [
+      "O30.009"
+    ]
+  },
+  {
+    "id": 69,
+    "module": "NEUROLOGY",
+    "text": "Parkinson's disease and traumatic subdural hematoma without loss of consciousness in 47-year-old Male",
+    "expectedCodes": [
+      "G20",
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 70,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery in 49-year-old Female",
+    "expectedCodes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 71,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 88-year-old Female",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 72,
+    "module": "RESPIRATORY",
+    "text": "COPD exacerbation and acute ischemic stroke of unspecified artery in 60-year-old Female",
+    "expectedCodes": [
+      "J44.1",
+      "I63.9"
+    ]
+  },
+  {
+    "id": 73,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 39-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 74,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes with ketoacidosis in 57-year-old Male",
+    "expectedCodes": [
+      "E11.10"
+    ]
+  },
+  {
+    "id": 75,
+    "module": "ENDOCRINE",
+    "text": "Dehydration and chronic kidney disease stage 3a in 75-year-old Female",
+    "expectedCodes": [
+      "E86.0",
+      "N18.31"
+    ]
+  },
+  {
+    "id": 76,
+    "module": "OBGYN",
+    "text": "Twin pregnancy in 68-year-old Female",
+    "expectedCodes": [
+      "O30.009"
+    ]
+  },
+  {
+    "id": 77,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation in 23-year-old Male",
+    "expectedCodes": [
+      "I48.91"
+    ]
+  },
+  {
+    "id": 78,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 5 and sepsis due to pseudomonas in 94-year-old Female",
+    "expectedCodes": [
+      "N18.5",
+      "A41.52"
+    ]
+  },
+  {
+    "id": 79,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli in 78-year-old Female",
+    "expectedCodes": [
+      "A41.51"
+    ]
+  },
+  {
+    "id": 80,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 5 in 30-year-old Female",
+    "expectedCodes": [
+      "N18.5"
+    ]
+  },
+  {
+    "id": 81,
+    "module": "NEUROLOGY",
+    "text": "Vascular dementia and chronic systolic heart failure in 53-year-old Male",
+    "expectedCodes": [
+      "F01.50",
+      "I50.22"
+    ]
+  },
+  {
+    "id": 82,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 34-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 83,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 in 35-year-old Male",
+    "expectedCodes": [
+      "N18.4"
+    ]
+  },
+  {
+    "id": 84,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 5 and atrial fibrillation with rapid ventricular response in 80-year-old Female",
+    "expectedCodes": [
+      "N18.5",
+      "I48.91"
+    ]
+  },
+  {
+    "id": 85,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis in 58-year-old Male",
+    "expectedCodes": [
+      "E10.10"
+    ]
+  },
+  {
+    "id": 86,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 in 35-year-old Male",
+    "expectedCodes": [
+      "N18.2"
+    ]
+  },
+  {
+    "id": 87,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3b and acute systolic heart failure in 26-year-old Male",
+    "expectedCodes": [
+      "N18.32",
+      "I50.21"
+    ]
+  },
+  {
+    "id": 88,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 63-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 89,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 77-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 90,
+    "module": "CARDIOLOGY",
+    "text": "Acute on chronic diastolic heart failure and concussion without loss of consciousness in 35-year-old Male",
+    "expectedCodes": [
+      "I50.33",
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 91,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 28-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 92,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 in 58-year-old Female",
+    "expectedCodes": [
+      "N18.1"
+    ]
+  },
+  {
+    "id": 93,
+    "module": "OBGYN",
+    "text": "Twin pregnancy and type 1 diabetes with ketoacidosis in 52-year-old Female",
+    "expectedCodes": [
+      "O30.009",
+      "E10.10"
+    ]
+  },
+  {
+    "id": 94,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas in 51-year-old Male",
+    "expectedCodes": [
+      "A41.52"
+    ]
+  },
+  {
+    "id": 95,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 in 48-year-old Male",
+    "expectedCodes": [
+      "N18.4"
+    ]
+  },
+  {
+    "id": 96,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas and type 2 diabetes with ketoacidosis in 49-year-old Female",
+    "expectedCodes": [
+      "A41.52",
+      "E11.10"
+    ]
+  },
+  {
+    "id": 97,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 21-year-old Female",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 98,
+    "module": "CARDIOLOGY",
+    "text": "Hypertensive heart disease with heart failure in 86-year-old Male",
+    "expectedCodes": [
+      "I11.0",
+      "I50.9"
+    ]
+  },
+  {
+    "id": 99,
+    "module": "TRAUMA",
+    "text": "Fall from bed and type 1 diabetes with ketoacidosis in 40-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA",
+      "E10.10"
+    ]
+  },
+  {
+    "id": 100,
+    "module": "NEUROLOGY",
+    "text": "Status epilepticus in 90-year-old Female",
+    "expectedCodes": [
+      "G40.901"
+    ]
+  },
+  {
+    "id": 101,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3a in 86-year-old Male",
+    "expectedCodes": [
+      "N18.31"
+    ]
+  },
+  {
+    "id": 102,
+    "module": "CARDIOLOGY",
+    "text": "Acute systolic heart failure and sepsis due to pseudomonas in 75-year-old Female",
+    "expectedCodes": [
+      "I50.21",
+      "A41.52"
+    ]
+  },
+  {
+    "id": 103,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3a in 56-year-old Female",
+    "expectedCodes": [
+      "N18.31"
+    ]
+  },
+  {
+    "id": 104,
+    "module": "RESPIRATORY",
+    "text": "Hospital acquired pneumonia in 75-year-old Male",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 105,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure and chronic systolic heart failure in 93-year-old Male",
+    "expectedCodes": [
+      "J96.01",
+      "I50.22"
+    ]
+  },
+  {
+    "id": 106,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 in 31-year-old Female",
+    "expectedCodes": [
+      "N18.1"
+    ]
+  },
+  {
+    "id": 107,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 75-year-old Female",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 108,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia and end stage renal disease in 73-year-old Female",
+    "expectedCodes": [
+      "O14.00",
+      "N18.6"
+    ]
+  },
+  {
+    "id": 109,
+    "module": "SEPSIS",
+    "text": "Sepsis in 25-year-old Female",
+    "expectedCodes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 110,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery in 37-year-old Male",
+    "expectedCodes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 111,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 and traumatic subdural hematoma without loss of consciousness in 27-year-old Female",
+    "expectedCodes": [
+      "N18.4",
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 112,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 63-year-old Male",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 113,
+    "module": "OBGYN",
+    "text": "Twin pregnancy in 92-year-old Female",
+    "expectedCodes": [
+      "O30.009"
+    ]
+  },
+  {
+    "id": 114,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA and hospital acquired pneumonia in 51-year-old Female",
+    "expectedCodes": [
+      "A41.02",
+      "J18.9"
+    ]
+  },
+  {
+    "id": 115,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 40-year-old Female",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 116,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 59-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 117,
+    "module": "RESPIRATORY",
+    "text": "Ventilator associated pneumonia and acute hypercapnic respiratory failure in 34-year-old Male",
+    "expectedCodes": [
+      "J95.851",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 118,
+    "module": "RESPIRATORY",
+    "text": "Ventilator associated pneumonia in 43-year-old Female",
+    "expectedCodes": [
+      "J95.851"
+    ]
+  },
+  {
+    "id": 119,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 64-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 120,
+    "module": "CARDIOLOGY",
+    "text": "Chronic systolic heart failure and aspiration pneumonia in 24-year-old Male",
+    "expectedCodes": [
+      "I50.22",
+      "J69.0"
+    ]
+  },
+  {
+    "id": 121,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3a in 93-year-old Male",
+    "expectedCodes": [
+      "N18.31"
+    ]
+  },
+  {
+    "id": 122,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory distress syndrome in 55-year-old Male",
+    "expectedCodes": [
+      "J80"
+    ]
+  },
+  {
+    "id": 123,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery and atrial fibrillation in 48-year-old Female",
+    "expectedCodes": [
+      "I63.9",
+      "I48.91"
+    ]
+  },
+  {
+    "id": 124,
+    "module": "CARDIOLOGY",
+    "text": "Chronic systolic heart failure in 58-year-old Male",
+    "expectedCodes": [
+      "I50.22"
+    ]
+  },
+  {
+    "id": 125,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation in 62-year-old Female",
+    "expectedCodes": [
+      "I48.91"
+    ]
+  },
+  {
+    "id": 126,
+    "module": "RESPIRATORY",
+    "text": "Community acquired pneumonia and traumatic subdural hematoma without loss of consciousness in 75-year-old Female",
+    "expectedCodes": [
+      "J18.9",
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 127,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory distress syndrome in 59-year-old Female",
+    "expectedCodes": [
+      "J80"
+    ]
+  },
+  {
+    "id": 128,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis in 18-year-old Male",
+    "expectedCodes": [
+      "E10.10"
+    ]
+  },
+  {
+    "id": 129,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3b and traumatic subdural hematoma without loss of consciousness in 55-year-old Male",
+    "expectedCodes": [
+      "N18.32",
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 130,
+    "module": "RESPIRATORY",
+    "text": "Hospital acquired pneumonia in 19-year-old Male",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 131,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes with ketoacidosis in 45-year-old Female",
+    "expectedCodes": [
+      "E11.10"
+    ]
+  },
+  {
+    "id": 132,
+    "module": "ENDOCRINE",
+    "text": "Dehydration and sepsis due to pseudomonas in 93-year-old Female",
+    "expectedCodes": [
+      "E86.0",
+      "A41.52"
+    ]
+  },
+  {
+    "id": 133,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation with rapid ventricular response in 95-year-old Male",
+    "expectedCodes": [
+      "I48.91"
+    ]
+  },
+  {
+    "id": 134,
+    "module": "SEPSIS",
+    "text": "Sepsis in 22-year-old Female",
+    "expectedCodes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 135,
+    "module": "NEUROLOGY",
+    "text": "Parkinson's disease and fall from bed in 61-year-old Male",
+    "expectedCodes": [
+      "G20",
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 136,
+    "module": "CARDIOLOGY",
+    "text": "Acute diastolic heart failure in 73-year-old Male",
+    "expectedCodes": [
+      "I50.31"
+    ]
+  },
+  {
+    "id": 137,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 40-year-old Male",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 138,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation and atrial fibrillation with rapid ventricular response in 61-year-old Male",
+    "expectedCodes": [
+      "J45.901",
+      "I48.91"
+    ]
+  },
+  {
+    "id": 139,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 5 in 86-year-old Male",
+    "expectedCodes": [
+      "N18.5"
+    ]
+  },
+  {
+    "id": 140,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 84-year-old Female",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 141,
+    "module": "CARDIOLOGY",
+    "text": "Acute systolic heart failure and transient ischemic attack in 39-year-old Female",
+    "expectedCodes": [
+      "I50.21",
+      "G45.9"
+    ]
+  },
+  {
+    "id": 142,
+    "module": "SEPSIS",
+    "text": "Septic shock in 85-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 143,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli in 89-year-old Female",
+    "expectedCodes": [
+      "A41.51"
+    ]
+  },
+  {
+    "id": 144,
+    "module": "TRAUMA",
+    "text": "Fall from bed and twin pregnancy in 64-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA",
+      "O30.009"
+    ]
+  },
+  {
+    "id": 145,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia in 77-year-old Female",
+    "expectedCodes": [
+      "E87.1"
+    ]
+  },
+  {
+    "id": 146,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 77-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 147,
+    "module": "CARDIOLOGY",
+    "text": "Hypertensive heart disease with heart failure and acute respiratory failure in 54-year-old Male",
+    "expectedCodes": [
+      "I11.0",
+      "I50.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 148,
+    "module": "OBGYN",
+    "text": "Twin pregnancy in 29-year-old Male",
+    "expectedCodes": [
+      "O30.009"
+    ]
+  },
+  {
+    "id": 149,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 in 75-year-old Female",
+    "expectedCodes": [
+      "N18.2"
+    ]
+  },
+  {
+    "id": 150,
+    "module": "RESPIRATORY",
+    "text": "COPD exacerbation and status epilepticus in 49-year-old Female",
+    "expectedCodes": [
+      "J44.1",
+      "G40.901"
+    ]
+  },
+  {
+    "id": 151,
+    "module": "RESPIRATORY",
+    "text": "Pleural effusion in 70-year-old Male",
+    "expectedCodes": [
+      "J90"
+    ]
+  },
+  {
+    "id": 152,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness in 64-year-old Female",
+    "expectedCodes": [
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 153,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness and type 1 diabetes in 65-year-old Male",
+    "expectedCodes": [
+      "S06.0X0A",
+      "E10.9"
+    ]
+  },
+  {
+    "id": 154,
+    "module": "RESPIRATORY",
+    "text": "Hospital acquired pneumonia in 29-year-old Female",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 155,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 23-year-old Female",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 156,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack and chronic diastolic heart failure in 75-year-old Female",
+    "expectedCodes": [
+      "G45.9",
+      "I50.32"
+    ]
+  },
+  {
+    "id": 157,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy in 62-year-old Male",
+    "expectedCodes": [
+      "G40.909"
+    ]
+  },
+  {
+    "id": 158,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 68-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 159,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness and pulmonary embolism without acute cor pulmonale in 61-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A",
+      "I26.92"
+    ]
+  },
+  {
+    "id": 160,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3b in 30-year-old Female",
+    "expectedCodes": [
+      "N18.32"
+    ]
+  },
+  {
+    "id": 161,
+    "module": "SEPSIS",
+    "text": "Sepsis in 40-year-old Male",
+    "expectedCodes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 162,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes and end stage renal disease in 41-year-old Male",
+    "expectedCodes": [
+      "E11.9",
+      "N18.6"
+    ]
+  },
+  {
+    "id": 163,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure in 88-year-old Female",
+    "expectedCodes": [
+      "J96.01"
+    ]
+  },
+  {
+    "id": 164,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation in 80-year-old Female",
+    "expectedCodes": [
+      "I48.91"
+    ]
+  },
+  {
+    "id": 165,
+    "module": "RESPIRATORY",
+    "text": "Acute hypercapnic respiratory failure and mild preeclampsia in 91-year-old Male",
+    "expectedCodes": [
+      "J96.02",
+      "O14.00"
+    ]
+  },
+  {
+    "id": 166,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia in 62-year-old Female",
+    "expectedCodes": [
+      "E87.1"
+    ]
+  },
+  {
+    "id": 167,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes with ketoacidosis in 45-year-old Female",
+    "expectedCodes": [
+      "E11.10"
+    ]
+  },
+  {
+    "id": 168,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure and chronic kidney disease stage 4 in 23-year-old Male",
+    "expectedCodes": [
+      "J96.01",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 169,
+    "module": "CARDIOLOGY",
+    "text": "Non-ST elevation myocardial infarction in 65-year-old Male",
+    "expectedCodes": [
+      "I21.4"
+    ]
+  },
+  {
+    "id": 170,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3b in 91-year-old Male",
+    "expectedCodes": [
+      "N18.32"
+    ]
+  },
+  {
+    "id": 171,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur and dehydration in 36-year-old Male",
+    "expectedCodes": [
+      "S72.001A",
+      "E86.0"
+    ]
+  },
+  {
+    "id": 172,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 34-year-old Male",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 173,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation in 88-year-old Male",
+    "expectedCodes": [
+      "J45.901"
+    ]
+  },
+  {
+    "id": 174,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation with rapid ventricular response and chronic systolic heart failure in 92-year-old Female",
+    "expectedCodes": [
+      "I48.91",
+      "I50.22"
+    ]
+  },
+  {
+    "id": 175,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism without acute cor pulmonale in 20-year-old Male",
+    "expectedCodes": [
+      "I26.92"
+    ]
+  },
+  {
+    "id": 176,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 42-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 177,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy and transient ischemic attack in 37-year-old Female",
+    "expectedCodes": [
+      "G40.909",
+      "G45.9"
+    ]
+  },
+  {
+    "id": 178,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 30-year-old Female",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 179,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 58-year-old Female",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 180,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy and acute ischemic stroke of unspecified artery in 82-year-old Male",
+    "expectedCodes": [
+      "G40.909",
+      "I63.9"
+    ]
+  },
+  {
+    "id": 181,
+    "module": "NEUROLOGY",
+    "text": "Vascular dementia in 77-year-old Female",
+    "expectedCodes": [
+      "F01.50"
+    ]
+  },
+  {
+    "id": 182,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 72-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 183,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia and vascular dementia in 66-year-old Male",
+    "expectedCodes": [
+      "E87.1",
+      "F01.50"
+    ]
+  },
+  {
+    "id": 184,
+    "module": "NEUROLOGY",
+    "text": "Parkinson's disease in 21-year-old Male",
+    "expectedCodes": [
+      "G20"
+    ]
+  },
+  {
+    "id": 185,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 85-year-old Female",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 186,
+    "module": "OBGYN",
+    "text": "Twin pregnancy and mild preeclampsia in 77-year-old Male",
+    "expectedCodes": [
+      "O30.009",
+      "O14.00"
+    ]
+  },
+  {
+    "id": 187,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 70-year-old Male",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 188,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack in 88-year-old Male",
+    "expectedCodes": [
+      "G45.9"
+    ]
+  },
+  {
+    "id": 189,
+    "module": "SEPSIS",
+    "text": "Sepsis and acute diastolic heart failure in 74-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "I50.31"
+    ]
+  },
+  {
+    "id": 190,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia in 19-year-old Female",
+    "expectedCodes": [
+      "E87.1"
+    ]
+  },
+  {
+    "id": 191,
+    "module": "RESPIRATORY",
+    "text": "Pleural effusion in 53-year-old Female",
+    "expectedCodes": [
+      "J90"
+    ]
+  },
+  {
+    "id": 192,
+    "module": "RESPIRATORY",
+    "text": "Hospital acquired pneumonia and traumatic subdural hematoma without loss of consciousness in 80-year-old Male",
+    "expectedCodes": [
+      "J18.9",
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 193,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack in 36-year-old Male",
+    "expectedCodes": [
+      "G45.9"
+    ]
+  },
+  {
+    "id": 194,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 30-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 195,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack and sepsis in 35-year-old Male",
+    "expectedCodes": [
+      "G45.9",
+      "A41.9"
+    ]
+  },
+  {
+    "id": 196,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism without acute cor pulmonale in 48-year-old Female",
+    "expectedCodes": [
+      "I26.92"
+    ]
+  },
+  {
+    "id": 197,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 65-year-old Female",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 198,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3b and sepsis due to pseudomonas in 46-year-old Female",
+    "expectedCodes": [
+      "N18.32",
+      "A41.52"
+    ]
+  },
+  {
+    "id": 199,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery in 23-year-old Female",
+    "expectedCodes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 200,
+    "module": "SEPSIS",
+    "text": "Sepsis in 40-year-old Male",
+    "expectedCodes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 201,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness and atrial fibrillation with rapid ventricular response in 22-year-old Female",
+    "expectedCodes": [
+      "S06.0X0A",
+      "I48.91"
+    ]
+  },
+  {
+    "id": 202,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory failure in 94-year-old Female",
+    "expectedCodes": [
+      "J96.00"
+    ]
+  },
+  {
+    "id": 203,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis in 48-year-old Male",
+    "expectedCodes": [
+      "E10.10"
+    ]
+  },
+  {
+    "id": 204,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness and chronic kidney disease stage 5 in 26-year-old Male",
+    "expectedCodes": [
+      "S06.0X0A",
+      "N18.5"
+    ]
+  },
+  {
+    "id": 205,
+    "module": "NEUROLOGY",
+    "text": "Alzheimer's dementia in 93-year-old Male",
+    "expectedCodes": [
+      "G30.9"
+    ]
+  },
+  {
+    "id": 206,
+    "module": "SEPSIS",
+    "text": "Septic shock in 65-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 207,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation and severe preeclampsia in 59-year-old Female",
+    "expectedCodes": [
+      "J45.901",
+      "O14.10"
+    ]
+  },
+  {
+    "id": 208,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 5 in 40-year-old Male",
+    "expectedCodes": [
+      "N18.5"
+    ]
+  },
+  {
+    "id": 209,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3b in 73-year-old Male",
+    "expectedCodes": [
+      "N18.32"
+    ]
+  },
+  {
+    "id": 210,
+    "module": "TRAUMA",
+    "text": "Fall from bed and severe preeclampsia in 74-year-old Female",
+    "expectedCodes": [
+      "W06.XXXA",
+      "O14.10"
+    ]
+  },
+  {
+    "id": 211,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 5 in 91-year-old Male",
+    "expectedCodes": [
+      "N18.5"
+    ]
+  },
+  {
+    "id": 212,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery in 94-year-old Female",
+    "expectedCodes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 213,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia and parkinson's disease in 62-year-old Male",
+    "expectedCodes": [
+      "O14.00",
+      "G20"
+    ]
+  },
+  {
+    "id": 214,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure in 44-year-old Female",
+    "expectedCodes": [
+      "J96.01"
+    ]
+  },
+  {
+    "id": 215,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes in 77-year-old Male",
+    "expectedCodes": [
+      "E11.9"
+    ]
+  },
+  {
+    "id": 216,
+    "module": "OBGYN",
+    "text": "Twin pregnancy and severe sepsis with acute kidney failure in 91-year-old Male",
+    "expectedCodes": [
+      "O30.009",
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 217,
+    "module": "OBGYN",
+    "text": "Twin pregnancy in 23-year-old Male",
+    "expectedCodes": [
+      "O30.009"
+    ]
+  },
+  {
+    "id": 218,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 20-year-old Male",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 219,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy and type 2 diabetes in 89-year-old Female",
+    "expectedCodes": [
+      "G40.909",
+      "E11.9"
+    ]
+  },
+  {
+    "id": 220,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 51-year-old Female",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 221,
+    "module": "NEUROLOGY",
+    "text": "Vascular dementia in 94-year-old Male",
+    "expectedCodes": [
+      "F01.50"
+    ]
+  },
+  {
+    "id": 222,
+    "module": "TRAUMA",
+    "text": "Fall from bed and acute systolic heart failure in 37-year-old Female",
+    "expectedCodes": [
+      "W06.XXXA",
+      "I50.21"
+    ]
+  },
+  {
+    "id": 223,
+    "module": "NEUROLOGY",
+    "text": "Metabolic encephalopathy in 94-year-old Male",
+    "expectedCodes": [
+      "G93.41"
+    ]
+  },
+  {
+    "id": 224,
+    "module": "CARDIOLOGY",
+    "text": "Chronic systolic heart failure in 66-year-old Male",
+    "expectedCodes": [
+      "I50.22"
+    ]
+  },
+  {
+    "id": 225,
+    "module": "SEPSIS",
+    "text": "Septic shock and epilepsy in 75-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21",
+      "G40.909"
+    ]
+  },
+  {
+    "id": 226,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy in 90-year-old Female",
+    "expectedCodes": [
+      "G40.909"
+    ]
+  },
+  {
+    "id": 227,
+    "module": "RESPIRATORY",
+    "text": "Aspiration pneumonia in 26-year-old Female",
+    "expectedCodes": [
+      "J69.0"
+    ]
+  },
+  {
+    "id": 228,
+    "module": "NEUROLOGY",
+    "text": "Status epilepticus and fall from bed in 63-year-old Female",
+    "expectedCodes": [
+      "G40.901",
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 229,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 in 52-year-old Male",
+    "expectedCodes": [
+      "N18.4"
+    ]
+  },
+  {
+    "id": 230,
+    "module": "CARDIOLOGY",
+    "text": "Acute diastolic heart failure in 90-year-old Female",
+    "expectedCodes": [
+      "I50.31"
+    ]
+  },
+  {
+    "id": 231,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery and status epilepticus in 74-year-old Female",
+    "expectedCodes": [
+      "I63.9",
+      "G40.901"
+    ]
+  },
+  {
+    "id": 232,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack in 86-year-old Female",
+    "expectedCodes": [
+      "G45.9"
+    ]
+  },
+  {
+    "id": 233,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory failure in 21-year-old Female",
+    "expectedCodes": [
+      "J96.00"
+    ]
+  },
+  {
+    "id": 234,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA and mild preeclampsia in 22-year-old Male",
+    "expectedCodes": [
+      "A41.02",
+      "O14.00"
+    ]
+  },
+  {
+    "id": 235,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 49-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 236,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness in 94-year-old Female",
+    "expectedCodes": [
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 237,
+    "module": "RESPIRATORY",
+    "text": "Pleural effusion and mild preeclampsia in 80-year-old Male",
+    "expectedCodes": [
+      "J90",
+      "O14.00"
+    ]
+  },
+  {
+    "id": 238,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 75-year-old Male",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 239,
+    "module": "SEPSIS",
+    "text": "Septic shock in 92-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 240,
+    "module": "OBGYN",
+    "text": "Twin pregnancy and copd exacerbation in 30-year-old Female",
+    "expectedCodes": [
+      "O30.009",
+      "J44.1"
+    ]
+  },
+  {
+    "id": 241,
+    "module": "CARDIOLOGY",
+    "text": "Acute systolic heart failure in 45-year-old Female",
+    "expectedCodes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 242,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 in 84-year-old Female",
+    "expectedCodes": [
+      "N18.2"
+    ]
+  },
+  {
+    "id": 243,
+    "module": "NEUROLOGY",
+    "text": "Status epilepticus and dehydration in 83-year-old Female",
+    "expectedCodes": [
+      "G40.901",
+      "E86.0"
+    ]
+  },
+  {
+    "id": 244,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 in 46-year-old Male",
+    "expectedCodes": [
+      "N18.2"
+    ]
+  },
+  {
+    "id": 245,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory distress syndrome in 76-year-old Male",
+    "expectedCodes": [
+      "J80"
+    ]
+  },
+  {
+    "id": 246,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation with rapid ventricular response and acute myocardial infarction in 94-year-old Female",
+    "expectedCodes": [
+      "I48.91",
+      "I21.9"
+    ]
+  },
+  {
+    "id": 247,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism without acute cor pulmonale in 48-year-old Female",
+    "expectedCodes": [
+      "I26.92"
+    ]
+  },
+  {
+    "id": 248,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack in 85-year-old Female",
+    "expectedCodes": [
+      "G45.9"
+    ]
+  },
+  {
+    "id": 249,
+    "module": "SEPSIS",
+    "text": "Sepsis and concussion without loss of consciousness in 48-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 250,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 in 83-year-old Female",
+    "expectedCodes": [
+      "N18.1"
+    ]
+  },
+  {
+    "id": 251,
+    "module": "NEUROLOGY",
+    "text": "Vascular dementia in 77-year-old Female",
+    "expectedCodes": [
+      "F01.50"
+    ]
+  },
+  {
+    "id": 252,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas and acute hypoxic respiratory failure in 76-year-old Male",
+    "expectedCodes": [
+      "A41.52",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 253,
+    "module": "OBGYN",
+    "text": "Twin pregnancy in 70-year-old Male",
+    "expectedCodes": [
+      "O30.009"
+    ]
+  },
+  {
+    "id": 254,
+    "module": "RESPIRATORY",
+    "text": "COPD exacerbation in 24-year-old Female",
+    "expectedCodes": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 255,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas and acute ischemic stroke of unspecified artery in 58-year-old Female",
+    "expectedCodes": [
+      "A41.52",
+      "I63.9"
+    ]
+  },
+  {
+    "id": 256,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery in 55-year-old Male",
+    "expectedCodes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 257,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 42-year-old Male",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 258,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia and hyponatremia in 85-year-old Male",
+    "expectedCodes": [
+      "O14.10",
+      "E87.1"
+    ]
+  },
+  {
+    "id": 259,
+    "module": "ENDOCRINE",
+    "text": "Dehydration in 55-year-old Female",
+    "expectedCodes": [
+      "E86.0"
+    ]
+  },
+  {
+    "id": 260,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 63-year-old Female",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 261,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness and concussion without loss of consciousness in 85-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A",
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 262,
+    "module": "CARDIOLOGY",
+    "text": "Acute diastolic heart failure in 19-year-old Female",
+    "expectedCodes": [
+      "I50.31"
+    ]
+  },
+  {
+    "id": 263,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 37-year-old Female",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 264,
+    "module": "OBGYN",
+    "text": "Twin pregnancy and sepsis in 67-year-old Female",
+    "expectedCodes": [
+      "O30.009",
+      "A41.9"
+    ]
+  },
+  {
+    "id": 265,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery in 65-year-old Female",
+    "expectedCodes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 266,
+    "module": "NEUROLOGY",
+    "text": "Parkinson's disease in 70-year-old Male",
+    "expectedCodes": [
+      "G20"
+    ]
+  },
+  {
+    "id": 267,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness and severe preeclampsia in 81-year-old Female",
+    "expectedCodes": [
+      "S06.0X0A",
+      "O14.10"
+    ]
+  },
+  {
+    "id": 268,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation in 91-year-old Female",
+    "expectedCodes": [
+      "J45.901"
+    ]
+  },
+  {
+    "id": 269,
+    "module": "CARDIOLOGY",
+    "text": "Acute on chronic systolic heart failure in 27-year-old Male",
+    "expectedCodes": [
+      "I50.23"
+    ]
+  },
+  {
+    "id": 270,
+    "module": "CARDIOLOGY",
+    "text": "Acute myocardial infarction and alzheimer's dementia in 48-year-old Male",
+    "expectedCodes": [
+      "I21.9",
+      "G30.9"
+    ]
+  },
+  {
+    "id": 271,
+    "module": "CARDIOLOGY",
+    "text": "Hypertensive heart disease with heart failure in 42-year-old Male",
+    "expectedCodes": [
+      "I11.0",
+      "I50.9"
+    ]
+  },
+  {
+    "id": 272,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 83-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 273,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia and aspiration pneumonia in 42-year-old Male",
+    "expectedCodes": [
+      "O14.10",
+      "J69.0"
+    ]
+  },
+  {
+    "id": 274,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure in 81-year-old Male",
+    "expectedCodes": [
+      "J96.01"
+    ]
+  },
+  {
+    "id": 275,
+    "module": "NEUROLOGY",
+    "text": "Metabolic encephalopathy in 57-year-old Female",
+    "expectedCodes": [
+      "G93.41"
+    ]
+  },
+  {
+    "id": 276,
+    "module": "RESPIRATORY",
+    "text": "Pneumonia and chronic kidney disease stage 3b in 43-year-old Male",
+    "expectedCodes": [
+      "J18.9",
+      "N18.32"
+    ]
+  },
+  {
+    "id": 277,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3a in 62-year-old Male",
+    "expectedCodes": [
+      "N18.31"
+    ]
+  },
+  {
+    "id": 278,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness in 44-year-old Female",
+    "expectedCodes": [
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 279,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli and hospital acquired pneumonia in 25-year-old Female",
+    "expectedCodes": [
+      "A41.51",
+      "J18.9"
+    ]
+  },
+  {
+    "id": 280,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis in 83-year-old Female",
+    "expectedCodes": [
+      "E10.10"
+    ]
+  },
+  {
+    "id": 281,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 85-year-old Female",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 282,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur and mild preeclampsia in 95-year-old Male",
+    "expectedCodes": [
+      "S72.001A",
+      "O14.00"
+    ]
+  },
+  {
+    "id": 283,
+    "module": "CARDIOLOGY",
+    "text": "Acute on chronic systolic heart failure in 88-year-old Male",
+    "expectedCodes": [
+      "I50.23"
+    ]
+  },
+  {
+    "id": 284,
+    "module": "RESPIRATORY",
+    "text": "Pleural effusion in 74-year-old Female",
+    "expectedCodes": [
+      "J90"
+    ]
+  },
+  {
+    "id": 285,
+    "module": "NEUROLOGY",
+    "text": "Vascular dementia and hypertensive heart disease with heart failure in 39-year-old Female",
+    "expectedCodes": [
+      "F01.50",
+      "I11.0",
+      "I50.9"
+    ]
+  },
+  {
+    "id": 286,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation with rapid ventricular response in 64-year-old Male",
+    "expectedCodes": [
+      "I48.91"
+    ]
+  },
+  {
+    "id": 287,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation in 77-year-old Male",
+    "expectedCodes": [
+      "I48.91"
+    ]
+  },
+  {
+    "id": 288,
+    "module": "RESPIRATORY",
+    "text": "Hospital acquired pneumonia and transient ischemic attack in 90-year-old Female",
+    "expectedCodes": [
+      "J18.9",
+      "G45.9"
+    ]
+  },
+  {
+    "id": 289,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 in 59-year-old Male",
+    "expectedCodes": [
+      "N18.2"
+    ]
+  },
+  {
+    "id": 290,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 in 70-year-old Male",
+    "expectedCodes": [
+      "N18.1"
+    ]
+  },
+  {
+    "id": 291,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia and vascular dementia in 67-year-old Male",
+    "expectedCodes": [
+      "O14.00",
+      "F01.50"
+    ]
+  },
+  {
+    "id": 292,
+    "module": "CARDIOLOGY",
+    "text": "Acute on chronic diastolic heart failure in 43-year-old Male",
+    "expectedCodes": [
+      "I50.33"
+    ]
+  },
+  {
+    "id": 293,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory failure in 55-year-old Male",
+    "expectedCodes": [
+      "J96.00"
+    ]
+  },
+  {
+    "id": 294,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness and twin pregnancy in 89-year-old Female",
+    "expectedCodes": [
+      "S06.0X0A",
+      "O30.009"
+    ]
+  },
+  {
+    "id": 295,
+    "module": "NEUROLOGY",
+    "text": "Metabolic encephalopathy in 55-year-old Male",
+    "expectedCodes": [
+      "G93.41"
+    ]
+  },
+  {
+    "id": 296,
+    "module": "RESPIRATORY",
+    "text": "Aspiration pneumonia in 73-year-old Female",
+    "expectedCodes": [
+      "J69.0"
+    ]
+  },
+  {
+    "id": 297,
+    "module": "RESPIRATORY",
+    "text": "Pleural effusion and vascular dementia in 36-year-old Male",
+    "expectedCodes": [
+      "J90",
+      "F01.50"
+    ]
+  },
+  {
+    "id": 298,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli in 72-year-old Female",
+    "expectedCodes": [
+      "A41.51"
+    ]
+  },
+  {
+    "id": 299,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes with ketoacidosis in 56-year-old Female",
+    "expectedCodes": [
+      "E11.10"
+    ]
+  },
+  {
+    "id": 300,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 and aspiration pneumonia in 59-year-old Male",
+    "expectedCodes": [
+      "N18.4",
+      "J69.0"
+    ]
+  },
+  {
+    "id": 301,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 90-year-old Female",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 302,
+    "module": "CARDIOLOGY",
+    "text": "Non-ST elevation myocardial infarction in 33-year-old Male",
+    "expectedCodes": [
+      "I21.4"
+    ]
+  },
+  {
+    "id": 303,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure and type 2 diabetes with ketoacidosis in 19-year-old Female",
+    "expectedCodes": [
+      "J96.01",
+      "E11.10"
+    ]
+  },
+  {
+    "id": 304,
+    "module": "SEPSIS",
+    "text": "Sepsis in 95-year-old Female",
+    "expectedCodes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 305,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 61-year-old Male",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 306,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery and chronic kidney disease stage 5 in 45-year-old Male",
+    "expectedCodes": [
+      "I63.9",
+      "N18.5"
+    ]
+  },
+  {
+    "id": 307,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 35-year-old Male",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 308,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 in 92-year-old Male",
+    "expectedCodes": [
+      "N18.1"
+    ]
+  },
+  {
+    "id": 309,
+    "module": "ENDOCRINE",
+    "text": "Dehydration and hyponatremia in 57-year-old Female",
+    "expectedCodes": [
+      "E86.0",
+      "E87.1"
+    ]
+  },
+  {
+    "id": 310,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes with ketoacidosis in 33-year-old Male",
+    "expectedCodes": [
+      "E11.10"
+    ]
+  },
+  {
+    "id": 311,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 in 46-year-old Male",
+    "expectedCodes": [
+      "N18.4"
+    ]
+  },
+  {
+    "id": 312,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness and sepsis due to e. coli in 40-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A",
+      "A41.51"
+    ]
+  },
+  {
+    "id": 313,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 72-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 314,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism without acute cor pulmonale in 79-year-old Male",
+    "expectedCodes": [
+      "I26.92"
+    ]
+  },
+  {
+    "id": 315,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia and type 1 diabetes in 23-year-old Female",
+    "expectedCodes": [
+      "O14.10",
+      "E10.9"
+    ]
+  },
+  {
+    "id": 316,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure in 68-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 317,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness in 64-year-old Female",
+    "expectedCodes": [
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 318,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness and type 2 diabetes with ketoacidosis in 54-year-old Female",
+    "expectedCodes": [
+      "S06.0X0A",
+      "E11.10"
+    ]
+  },
+  {
+    "id": 319,
+    "module": "ENDOCRINE",
+    "text": "Hypothyroidism in 21-year-old Male",
+    "expectedCodes": [
+      "E03.9"
+    ]
+  },
+  {
+    "id": 320,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas in 30-year-old Male",
+    "expectedCodes": [
+      "A41.52"
+    ]
+  },
+  {
+    "id": 321,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas and type 2 diabetes in 29-year-old Male",
+    "expectedCodes": [
+      "A41.52",
+      "E11.9"
+    ]
+  },
+  {
+    "id": 322,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 80-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 323,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 46-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 324,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism without acute cor pulmonale and fall from bed in 39-year-old Male",
+    "expectedCodes": [
+      "I26.92",
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 325,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia in 64-year-old Female",
+    "expectedCodes": [
+      "E87.1"
+    ]
+  },
+  {
+    "id": 326,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation in 95-year-old Female",
+    "expectedCodes": [
+      "I48.91"
+    ]
+  },
+  {
+    "id": 327,
+    "module": "SEPSIS",
+    "text": "Sepsis in 57-year-old Male",
+    "expectedCodes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 328,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis in 86-year-old Male",
+    "expectedCodes": [
+      "E10.10"
+    ]
+  },
+  {
+    "id": 329,
+    "module": "NEUROLOGY",
+    "text": "Alzheimer's dementia in 68-year-old Female",
+    "expectedCodes": [
+      "G30.9"
+    ]
+  },
+  {
+    "id": 330,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia and pulmonary embolism without acute cor pulmonale in 83-year-old Male",
+    "expectedCodes": [
+      "O14.00",
+      "I26.92"
+    ]
+  },
+  {
+    "id": 331,
+    "module": "KIDNEY",
+    "text": "Acute kidney failure in 19-year-old Female",
+    "expectedCodes": [
+      "N17.9"
+    ]
+  },
+  {
+    "id": 332,
+    "module": "SEPSIS",
+    "text": "Septic shock in 63-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 333,
+    "module": "SEPSIS",
+    "text": "Sepsis and end stage renal disease in 45-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "N18.6"
+    ]
+  },
+  {
+    "id": 334,
+    "module": "OBGYN",
+    "text": "Twin pregnancy in 94-year-old Female",
+    "expectedCodes": [
+      "O30.009"
+    ]
+  },
+  {
+    "id": 335,
+    "module": "CARDIOLOGY",
+    "text": "Non-ST elevation myocardial infarction in 44-year-old Female",
+    "expectedCodes": [
+      "I21.4"
+    ]
+  },
+  {
+    "id": 336,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia and chronic kidney disease stage 5 in 73-year-old Male",
+    "expectedCodes": [
+      "O14.10",
+      "N18.5"
+    ]
+  },
+  {
+    "id": 337,
+    "module": "RESPIRATORY",
+    "text": "Aspiration pneumonia in 76-year-old Female",
+    "expectedCodes": [
+      "J69.0"
+    ]
+  },
+  {
+    "id": 338,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 76-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 339,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3b and acute ischemic stroke of unspecified artery in 18-year-old Female",
+    "expectedCodes": [
+      "N18.32",
+      "I63.9"
+    ]
+  },
+  {
+    "id": 340,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis in 84-year-old Female",
+    "expectedCodes": [
+      "E10.10"
+    ]
+  },
+  {
+    "id": 341,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes with ketoacidosis in 23-year-old Female",
+    "expectedCodes": [
+      "E11.10"
+    ]
+  },
+  {
+    "id": 342,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes with ketoacidosis and sepsis due to pseudomonas in 95-year-old Female",
+    "expectedCodes": [
+      "E11.10",
+      "A41.52"
+    ]
+  },
+  {
+    "id": 343,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 58-year-old Female",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 344,
+    "module": "KIDNEY",
+    "text": "End stage renal disease in 88-year-old Male",
+    "expectedCodes": [
+      "N18.6"
+    ]
+  },
+  {
+    "id": 345,
+    "module": "SEPSIS",
+    "text": "Septic shock and fall from bed in 48-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21",
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 346,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure in 75-year-old Male",
+    "expectedCodes": [
+      "J96.01"
+    ]
+  },
+  {
+    "id": 347,
+    "module": "OBGYN",
+    "text": "Twin pregnancy in 82-year-old Male",
+    "expectedCodes": [
+      "O30.009"
+    ]
+  },
+  {
+    "id": 348,
+    "module": "CARDIOLOGY",
+    "text": "Acute myocardial infarction and end stage renal disease in 52-year-old Female",
+    "expectedCodes": [
+      "I21.9",
+      "N18.6"
+    ]
+  },
+  {
+    "id": 349,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 40-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 350,
+    "module": "CARDIOLOGY",
+    "text": "Acute on chronic systolic heart failure in 30-year-old Female",
+    "expectedCodes": [
+      "I50.23"
+    ]
+  },
+  {
+    "id": 351,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia and chronic kidney disease stage 5 in 49-year-old Male",
+    "expectedCodes": [
+      "O14.10",
+      "N18.5"
+    ]
+  },
+  {
+    "id": 352,
+    "module": "OBGYN",
+    "text": "Twin pregnancy in 80-year-old Male",
+    "expectedCodes": [
+      "O30.009"
+    ]
+  },
+  {
+    "id": 353,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 29-year-old Male",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 354,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia and metabolic encephalopathy in 89-year-old Female",
+    "expectedCodes": [
+      "E87.1",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 355,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 41-year-old Male",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 356,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 22-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 357,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes and chronic systolic heart failure in 68-year-old Male",
+    "expectedCodes": [
+      "E11.9",
+      "I50.22"
+    ]
+  },
+  {
+    "id": 358,
+    "module": "RESPIRATORY",
+    "text": "Pneumonia in 63-year-old Female",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 359,
+    "module": "OBGYN",
+    "text": "Twin pregnancy in 44-year-old Female",
+    "expectedCodes": [
+      "O30.009"
+    ]
+  },
+  {
+    "id": 360,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia and hypothyroidism in 83-year-old Female",
+    "expectedCodes": [
+      "E87.1",
+      "E03.9"
+    ]
+  },
+  {
+    "id": 361,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 75-year-old Female",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 362,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 19-year-old Female",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 363,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure and chronic systolic heart failure in 61-year-old Female",
+    "expectedCodes": [
+      "J96.01",
+      "I50.22"
+    ]
+  },
+  {
+    "id": 364,
+    "module": "KIDNEY",
+    "text": "End stage renal disease in 49-year-old Female",
+    "expectedCodes": [
+      "N18.6"
+    ]
+  },
+  {
+    "id": 365,
+    "module": "CARDIOLOGY",
+    "text": "Acute systolic heart failure in 76-year-old Female",
+    "expectedCodes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 366,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness and chronic kidney disease stage 1 in 18-year-old Male",
+    "expectedCodes": [
+      "S06.0X0A",
+      "N18.1"
+    ]
+  },
+  {
+    "id": 367,
+    "module": "CARDIOLOGY",
+    "text": "Acute on chronic diastolic heart failure in 34-year-old Female",
+    "expectedCodes": [
+      "I50.33"
+    ]
+  },
+  {
+    "id": 368,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 24-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 369,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism without acute cor pulmonale and sepsis in 23-year-old Male",
+    "expectedCodes": [
+      "I26.92",
+      "A41.9"
+    ]
+  },
+  {
+    "id": 370,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis in 58-year-old Female",
+    "expectedCodes": [
+      "E10.10"
+    ]
+  },
+  {
+    "id": 371,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness in 46-year-old Male",
+    "expectedCodes": [
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 372,
+    "module": "NEUROLOGY",
+    "text": "Vascular dementia and severe sepsis with acute kidney failure in 18-year-old Male",
+    "expectedCodes": [
+      "F01.50",
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 373,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 37-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 374,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 77-year-old Male",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 375,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 and status epilepticus in 34-year-old Female",
+    "expectedCodes": [
+      "N18.2",
+      "G40.901"
+    ]
+  },
+  {
+    "id": 376,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery in 78-year-old Female",
+    "expectedCodes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 377,
+    "module": "CARDIOLOGY",
+    "text": "Acute on chronic systolic heart failure in 28-year-old Male",
+    "expectedCodes": [
+      "I50.23"
+    ]
+  },
+  {
+    "id": 378,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes with ketoacidosis and fracture of neck of right femur in 20-year-old Female",
+    "expectedCodes": [
+      "E11.10",
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 379,
+    "module": "RESPIRATORY",
+    "text": "Ventilator associated pneumonia in 33-year-old Male",
+    "expectedCodes": [
+      "J95.851"
+    ]
+  },
+  {
+    "id": 380,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 5 in 23-year-old Male",
+    "expectedCodes": [
+      "N18.5"
+    ]
+  },
+  {
+    "id": 381,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 and mild preeclampsia in 53-year-old Female",
+    "expectedCodes": [
+      "N18.1",
+      "O14.00"
+    ]
+  },
+  {
+    "id": 382,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack in 36-year-old Male",
+    "expectedCodes": [
+      "G45.9"
+    ]
+  },
+  {
+    "id": 383,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis in 94-year-old Male",
+    "expectedCodes": [
+      "E10.10"
+    ]
+  },
+  {
+    "id": 384,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia and septic shock in 34-year-old Female",
+    "expectedCodes": [
+      "E87.1",
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 385,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli in 49-year-old Male",
+    "expectedCodes": [
+      "A41.51"
+    ]
+  },
+  {
+    "id": 386,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 28-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 387,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes and parkinson's disease in 69-year-old Female",
+    "expectedCodes": [
+      "E11.9",
+      "G20"
+    ]
+  },
+  {
+    "id": 388,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 44-year-old Female",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 389,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 27-year-old Female",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 390,
+    "module": "TRAUMA",
+    "text": "Fall from bed and severe preeclampsia in 59-year-old Female",
+    "expectedCodes": [
+      "W06.XXXA",
+      "O14.10"
+    ]
+  },
+  {
+    "id": 391,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation in 34-year-old Female",
+    "expectedCodes": [
+      "J45.901"
+    ]
+  },
+  {
+    "id": 392,
+    "module": "KIDNEY",
+    "text": "End stage renal disease in 25-year-old Male",
+    "expectedCodes": [
+      "N18.6"
+    ]
+  },
+  {
+    "id": 393,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness and septic shock in 74-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A",
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 394,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli in 34-year-old Female",
+    "expectedCodes": [
+      "A41.51"
+    ]
+  },
+  {
+    "id": 395,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism without acute cor pulmonale in 56-year-old Female",
+    "expectedCodes": [
+      "I26.92"
+    ]
+  },
+  {
+    "id": 396,
+    "module": "ENDOCRINE",
+    "text": "Hypothyroidism and fall from bed in 77-year-old Male",
+    "expectedCodes": [
+      "E03.9",
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 397,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 65-year-old Female",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 398,
+    "module": "RESPIRATORY",
+    "text": "Hospital acquired pneumonia in 61-year-old Male",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 399,
+    "module": "RESPIRATORY",
+    "text": "Ventilator associated pneumonia and mild preeclampsia in 26-year-old Male",
+    "expectedCodes": [
+      "J95.851",
+      "O14.00"
+    ]
+  },
+  {
+    "id": 400,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 in 23-year-old Female",
+    "expectedCodes": [
+      "N18.4"
+    ]
+  },
+  {
+    "id": 401,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure in 31-year-old Female",
+    "expectedCodes": [
+      "J96.01"
+    ]
+  },
+  {
+    "id": 402,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness and chronic systolic heart failure in 23-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A",
+      "I50.22"
+    ]
+  },
+  {
+    "id": 403,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 79-year-old Male",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 404,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation with rapid ventricular response in 76-year-old Female",
+    "expectedCodes": [
+      "I48.91"
+    ]
+  },
+  {
+    "id": 405,
+    "module": "KIDNEY",
+    "text": "End stage renal disease and epilepsy in 93-year-old Female",
+    "expectedCodes": [
+      "N18.6",
+      "G40.909"
+    ]
+  },
+  {
+    "id": 406,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli in 92-year-old Female",
+    "expectedCodes": [
+      "A41.51"
+    ]
+  },
+  {
+    "id": 407,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 in 89-year-old Female",
+    "expectedCodes": [
+      "N18.1"
+    ]
+  },
+  {
+    "id": 408,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis and pulmonary embolism with acute cor pulmonale in 57-year-old Male",
+    "expectedCodes": [
+      "E10.10",
+      "I26.02"
+    ]
+  },
+  {
+    "id": 409,
+    "module": "RESPIRATORY",
+    "text": "Ventilator associated pneumonia in 94-year-old Female",
+    "expectedCodes": [
+      "J95.851"
+    ]
+  },
+  {
+    "id": 410,
+    "module": "NEUROLOGY",
+    "text": "Status epilepticus in 69-year-old Female",
+    "expectedCodes": [
+      "G40.901"
+    ]
+  },
+  {
+    "id": 411,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes and concussion without loss of consciousness in 50-year-old Male",
+    "expectedCodes": [
+      "E11.9",
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 412,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia in 86-year-old Male",
+    "expectedCodes": [
+      "E87.1"
+    ]
+  },
+  {
+    "id": 413,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory failure in 95-year-old Male",
+    "expectedCodes": [
+      "J96.00"
+    ]
+  },
+  {
+    "id": 414,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness and acute kidney failure in 54-year-old Female",
+    "expectedCodes": [
+      "S06.0X0A",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 415,
+    "module": "NEUROLOGY",
+    "text": "Alzheimer's dementia in 23-year-old Female",
+    "expectedCodes": [
+      "G30.9"
+    ]
+  },
+  {
+    "id": 416,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 25-year-old Male",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 417,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia and vascular dementia in 37-year-old Female",
+    "expectedCodes": [
+      "O14.10",
+      "F01.50"
+    ]
+  },
+  {
+    "id": 418,
+    "module": "KIDNEY",
+    "text": "Acute kidney failure in 63-year-old Male",
+    "expectedCodes": [
+      "N17.9"
+    ]
+  },
+  {
+    "id": 419,
+    "module": "NEUROLOGY",
+    "text": "Metabolic encephalopathy in 75-year-old Female",
+    "expectedCodes": [
+      "G93.41"
+    ]
+  },
+  {
+    "id": 420,
+    "module": "CARDIOLOGY",
+    "text": "Chronic systolic heart failure and type 2 diabetes in 26-year-old Female",
+    "expectedCodes": [
+      "I50.22",
+      "E11.9"
+    ]
+  },
+  {
+    "id": 421,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure in 71-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 422,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory distress syndrome in 86-year-old Female",
+    "expectedCodes": [
+      "J80"
+    ]
+  },
+  {
+    "id": 423,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 and alzheimer's dementia in 22-year-old Male",
+    "expectedCodes": [
+      "N18.1",
+      "G30.9"
+    ]
+  },
+  {
+    "id": 424,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation with rapid ventricular response in 37-year-old Male",
+    "expectedCodes": [
+      "I48.91"
+    ]
+  },
+  {
+    "id": 425,
+    "module": "ENDOCRINE",
+    "text": "Dehydration in 49-year-old Male",
+    "expectedCodes": [
+      "E86.0"
+    ]
+  },
+  {
+    "id": 426,
+    "module": "NEUROLOGY",
+    "text": "Parkinson's disease and dehydration in 88-year-old Male",
+    "expectedCodes": [
+      "G20",
+      "E86.0"
+    ]
+  },
+  {
+    "id": 427,
+    "module": "NEUROLOGY",
+    "text": "Status epilepticus in 40-year-old Female",
+    "expectedCodes": [
+      "G40.901"
+    ]
+  },
+  {
+    "id": 428,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 64-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 429,
+    "module": "TRAUMA",
+    "text": "Fall from bed and chronic diastolic heart failure in 87-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA",
+      "I50.32"
+    ]
+  },
+  {
+    "id": 430,
+    "module": "RESPIRATORY",
+    "text": "Aspiration pneumonia in 73-year-old Male",
+    "expectedCodes": [
+      "J69.0"
+    ]
+  },
+  {
+    "id": 431,
+    "module": "CARDIOLOGY",
+    "text": "Chronic systolic heart failure in 27-year-old Male",
+    "expectedCodes": [
+      "I50.22"
+    ]
+  },
+  {
+    "id": 432,
+    "module": "SEPSIS",
+    "text": "Septic shock and fracture of neck of right femur in 35-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21",
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 433,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes with ketoacidosis in 29-year-old Female",
+    "expectedCodes": [
+      "E11.10"
+    ]
+  },
+  {
+    "id": 434,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia in 80-year-old Male",
+    "expectedCodes": [
+      "E87.1"
+    ]
+  },
+  {
+    "id": 435,
+    "module": "TRAUMA",
+    "text": "Fall from bed and severe preeclampsia in 52-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA",
+      "O14.10"
+    ]
+  },
+  {
+    "id": 436,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack in 38-year-old Female",
+    "expectedCodes": [
+      "G45.9"
+    ]
+  },
+  {
+    "id": 437,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy in 23-year-old Male",
+    "expectedCodes": [
+      "G40.909"
+    ]
+  },
+  {
+    "id": 438,
+    "module": "RESPIRATORY",
+    "text": "Community acquired pneumonia and twin pregnancy in 69-year-old Female",
+    "expectedCodes": [
+      "J18.9",
+      "O30.009"
+    ]
+  },
+  {
+    "id": 439,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 64-year-old Male",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 440,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation in 93-year-old Male",
+    "expectedCodes": [
+      "I48.91"
+    ]
+  },
+  {
+    "id": 441,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation and community acquired pneumonia in 51-year-old Male",
+    "expectedCodes": [
+      "I48.91",
+      "J18.9"
+    ]
+  },
+  {
+    "id": 442,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism without acute cor pulmonale in 49-year-old Male",
+    "expectedCodes": [
+      "I26.92"
+    ]
+  },
+  {
+    "id": 443,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 60-year-old Male",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 444,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA and twin pregnancy in 93-year-old Male",
+    "expectedCodes": [
+      "A41.02",
+      "O30.009"
+    ]
+  },
+  {
+    "id": 445,
+    "module": "NEUROLOGY",
+    "text": "Metabolic encephalopathy in 24-year-old Male",
+    "expectedCodes": [
+      "G93.41"
+    ]
+  },
+  {
+    "id": 446,
+    "module": "KIDNEY",
+    "text": "End stage renal disease in 64-year-old Female",
+    "expectedCodes": [
+      "N18.6"
+    ]
+  },
+  {
+    "id": 447,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy and concussion without loss of consciousness in 93-year-old Male",
+    "expectedCodes": [
+      "G40.909",
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 448,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory failure in 71-year-old Female",
+    "expectedCodes": [
+      "J96.00"
+    ]
+  },
+  {
+    "id": 449,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 in 75-year-old Male",
+    "expectedCodes": [
+      "N18.1"
+    ]
+  },
+  {
+    "id": 450,
+    "module": "OBGYN",
+    "text": "Twin pregnancy and epilepsy in 93-year-old Female",
+    "expectedCodes": [
+      "O30.009",
+      "G40.909"
+    ]
+  },
+  {
+    "id": 451,
+    "module": "CARDIOLOGY",
+    "text": "Chronic diastolic heart failure in 56-year-old Male",
+    "expectedCodes": [
+      "I50.32"
+    ]
+  },
+  {
+    "id": 452,
+    "module": "RESPIRATORY",
+    "text": "Community acquired pneumonia in 87-year-old Male",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 453,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3a and hyponatremia in 31-year-old Male",
+    "expectedCodes": [
+      "N18.31",
+      "E87.1"
+    ]
+  },
+  {
+    "id": 454,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 in 91-year-old Female",
+    "expectedCodes": [
+      "N18.4"
+    ]
+  },
+  {
+    "id": 455,
+    "module": "RESPIRATORY",
+    "text": "Aspiration pneumonia in 92-year-old Male",
+    "expectedCodes": [
+      "J69.0"
+    ]
+  },
+  {
+    "id": 456,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness and fall from bed in 18-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A",
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 457,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack in 19-year-old Female",
+    "expectedCodes": [
+      "G45.9"
+    ]
+  },
+  {
+    "id": 458,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery in 28-year-old Male",
+    "expectedCodes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 459,
+    "module": "KIDNEY",
+    "text": "Acute kidney failure and type 1 diabetes in 20-year-old Female",
+    "expectedCodes": [
+      "N17.9",
+      "E10.9"
+    ]
+  },
+  {
+    "id": 460,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness in 20-year-old Male",
+    "expectedCodes": [
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 461,
+    "module": "CARDIOLOGY",
+    "text": "Non-ST elevation myocardial infarction in 53-year-old Female",
+    "expectedCodes": [
+      "I21.4"
+    ]
+  },
+  {
+    "id": 462,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli and chronic kidney disease stage 4 in 66-year-old Male",
+    "expectedCodes": [
+      "A41.51",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 463,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 94-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 464,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 in 82-year-old Male",
+    "expectedCodes": [
+      "N18.2"
+    ]
+  },
+  {
+    "id": 465,
+    "module": "CARDIOLOGY",
+    "text": "Acute diastolic heart failure and chronic kidney disease stage 3a in 20-year-old Male",
+    "expectedCodes": [
+      "I50.31",
+      "N18.31"
+    ]
+  },
+  {
+    "id": 466,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 53-year-old Female",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 467,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 in 63-year-old Male",
+    "expectedCodes": [
+      "N18.4"
+    ]
+  },
+  {
+    "id": 468,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia and acute diastolic heart failure in 28-year-old Female",
+    "expectedCodes": [
+      "O14.00",
+      "I50.31"
+    ]
+  },
+  {
+    "id": 469,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes with ketoacidosis in 32-year-old Male",
+    "expectedCodes": [
+      "E11.10"
+    ]
+  },
+  {
+    "id": 470,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation in 48-year-old Male",
+    "expectedCodes": [
+      "J45.901"
+    ]
+  },
+  {
+    "id": 471,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness and copd exacerbation in 61-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A",
+      "J44.1"
+    ]
+  },
+  {
+    "id": 472,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation in 95-year-old Male",
+    "expectedCodes": [
+      "J45.901"
+    ]
+  },
+  {
+    "id": 473,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack in 42-year-old Female",
+    "expectedCodes": [
+      "G45.9"
+    ]
+  },
+  {
+    "id": 474,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure and hypertensive heart disease with heart failure in 55-year-old Male",
+    "expectedCodes": [
+      "J96.01",
+      "I11.0",
+      "I50.9"
+    ]
+  },
+  {
+    "id": 475,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 69-year-old Male",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 476,
+    "module": "RESPIRATORY",
+    "text": "Ventilator associated pneumonia in 91-year-old Female",
+    "expectedCodes": [
+      "J95.851"
+    ]
+  },
+  {
+    "id": 477,
+    "module": "TRAUMA",
+    "text": "Fall from bed and metabolic encephalopathy in 88-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 478,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure in 81-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 479,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 54-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 480,
+    "module": "KIDNEY",
+    "text": "Acute kidney failure and chronic kidney disease stage 3b in 64-year-old Female",
+    "expectedCodes": [
+      "N17.9",
+      "N18.32"
+    ]
+  },
+  {
+    "id": 481,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure in 53-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 482,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 68-year-old Male",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 483,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes and severe preeclampsia in 45-year-old Female",
+    "expectedCodes": [
+      "E10.9",
+      "O14.10"
+    ]
+  },
+  {
+    "id": 484,
+    "module": "RESPIRATORY",
+    "text": "Hospital acquired pneumonia in 34-year-old Female",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 485,
+    "module": "NEUROLOGY",
+    "text": "Metabolic encephalopathy in 66-year-old Female",
+    "expectedCodes": [
+      "G93.41"
+    ]
+  },
+  {
+    "id": 486,
+    "module": "CARDIOLOGY",
+    "text": "Acute systolic heart failure and hypothyroidism in 36-year-old Male",
+    "expectedCodes": [
+      "I50.21",
+      "E03.9"
+    ]
+  },
+  {
+    "id": 487,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia in 48-year-old Male",
+    "expectedCodes": [
+      "E87.1"
+    ]
+  },
+  {
+    "id": 488,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli in 55-year-old Female",
+    "expectedCodes": [
+      "A41.51"
+    ]
+  },
+  {
+    "id": 489,
+    "module": "NEUROLOGY",
+    "text": "Status epilepticus and chronic kidney disease stage 2 in 63-year-old Female",
+    "expectedCodes": [
+      "G40.901",
+      "N18.2"
+    ]
+  },
+  {
+    "id": 490,
+    "module": "RESPIRATORY",
+    "text": "Community acquired pneumonia in 29-year-old Female",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 491,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack in 61-year-old Female",
+    "expectedCodes": [
+      "G45.9"
+    ]
+  },
+  {
+    "id": 492,
+    "module": "SEPSIS",
+    "text": "Septic shock and epilepsy in 56-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21",
+      "G40.909"
+    ]
+  },
+  {
+    "id": 493,
+    "module": "RESPIRATORY",
+    "text": "Pleural effusion in 48-year-old Female",
+    "expectedCodes": [
+      "J90"
+    ]
+  },
+  {
+    "id": 494,
+    "module": "KIDNEY",
+    "text": "End stage renal disease in 21-year-old Female",
+    "expectedCodes": [
+      "N18.6"
+    ]
+  },
+  {
+    "id": 495,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia and hypertensive heart disease with heart failure in 22-year-old Female",
+    "expectedCodes": [
+      "E87.1",
+      "I11.0",
+      "I50.9"
+    ]
+  },
+  {
+    "id": 496,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure in 43-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 497,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 39-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 498,
+    "module": "ENDOCRINE",
+    "text": "Hypothyroidism and acute ischemic stroke of unspecified artery in 57-year-old Male",
+    "expectedCodes": [
+      "E03.9",
+      "I63.9"
+    ]
+  },
+  {
+    "id": 499,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 85-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 500,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis in 72-year-old Female",
+    "expectedCodes": [
+      "E10.10"
+    ]
+  },
+  {
+    "id": 501,
+    "module": "SEPSIS",
+    "text": "Sepsis and pulmonary embolism without acute cor pulmonale in 83-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "I26.92"
+    ]
+  },
+  {
+    "id": 502,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 27-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 503,
+    "module": "OBGYN",
+    "text": "Twin pregnancy in 20-year-old Male",
+    "expectedCodes": [
+      "O30.009"
+    ]
+  },
+  {
+    "id": 504,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness and type 1 diabetes with ketoacidosis in 58-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A",
+      "E10.10"
+    ]
+  },
+  {
+    "id": 505,
+    "module": "CARDIOLOGY",
+    "text": "Acute myocardial infarction in 46-year-old Female",
+    "expectedCodes": [
+      "I21.9"
+    ]
+  },
+  {
+    "id": 506,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy in 38-year-old Male",
+    "expectedCodes": [
+      "G40.909"
+    ]
+  },
+  {
+    "id": 507,
+    "module": "CARDIOLOGY",
+    "text": "Chronic diastolic heart failure and chronic kidney disease stage 1 in 73-year-old Male",
+    "expectedCodes": [
+      "I50.32",
+      "N18.1"
+    ]
+  },
+  {
+    "id": 508,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis in 79-year-old Male",
+    "expectedCodes": [
+      "E10.10"
+    ]
+  },
+  {
+    "id": 509,
+    "module": "RESPIRATORY",
+    "text": "Pleural effusion in 81-year-old Male",
+    "expectedCodes": [
+      "J90"
+    ]
+  },
+  {
+    "id": 510,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur and severe preeclampsia in 43-year-old Male",
+    "expectedCodes": [
+      "S72.001A",
+      "O14.10"
+    ]
+  },
+  {
+    "id": 511,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 92-year-old Female",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 512,
+    "module": "CARDIOLOGY",
+    "text": "Acute on chronic diastolic heart failure in 47-year-old Female",
+    "expectedCodes": [
+      "I50.33"
+    ]
+  },
+  {
+    "id": 513,
+    "module": "RESPIRATORY",
+    "text": "Acute hypercapnic respiratory failure and acute hypoxic respiratory failure in 36-year-old Male",
+    "expectedCodes": [
+      "J96.02",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 514,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas in 29-year-old Female",
+    "expectedCodes": [
+      "A41.52"
+    ]
+  },
+  {
+    "id": 515,
+    "module": "RESPIRATORY",
+    "text": "Community acquired pneumonia in 31-year-old Female",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 516,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3b and epilepsy in 63-year-old Male",
+    "expectedCodes": [
+      "N18.32",
+      "G40.909"
+    ]
+  },
+  {
+    "id": 517,
+    "module": "RESPIRATORY",
+    "text": "Ventilator associated pneumonia in 56-year-old Female",
+    "expectedCodes": [
+      "J95.851"
+    ]
+  },
+  {
+    "id": 518,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure in 73-year-old Male",
+    "expectedCodes": [
+      "J96.01"
+    ]
+  },
+  {
+    "id": 519,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure and fall from bed in 57-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9",
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 520,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia in 58-year-old Female",
+    "expectedCodes": [
+      "E87.1"
+    ]
+  },
+  {
+    "id": 521,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory failure in 64-year-old Male",
+    "expectedCodes": [
+      "J96.00"
+    ]
+  },
+  {
+    "id": 522,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness and sepsis due to pseudomonas in 41-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A",
+      "A41.52"
+    ]
+  },
+  {
+    "id": 523,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery in 52-year-old Female",
+    "expectedCodes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 524,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes in 54-year-old Female",
+    "expectedCodes": [
+      "E10.9"
+    ]
+  },
+  {
+    "id": 525,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure and sepsis due to mrsa in 42-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9",
+      "A41.02"
+    ]
+  },
+  {
+    "id": 526,
+    "module": "CARDIOLOGY",
+    "text": "Acute on chronic systolic heart failure in 83-year-old Female",
+    "expectedCodes": [
+      "I50.23"
+    ]
+  },
+  {
+    "id": 527,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 52-year-old Female",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 528,
+    "module": "KIDNEY",
+    "text": "Acute kidney failure and chronic kidney disease stage 5 in 45-year-old Male",
+    "expectedCodes": [
+      "N17.9",
+      "N18.5"
+    ]
+  },
+  {
+    "id": 529,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 43-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 530,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 68-year-old Male",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 531,
+    "module": "SEPSIS",
+    "text": "Septic shock and transient ischemic attack in 91-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21",
+      "G45.9"
+    ]
+  },
+  {
+    "id": 532,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis in 63-year-old Male",
+    "expectedCodes": [
+      "E10.10"
+    ]
+  },
+  {
+    "id": 533,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 33-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 534,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness and sepsis due to e. coli in 38-year-old Male",
+    "expectedCodes": [
+      "S06.0X0A",
+      "A41.51"
+    ]
+  },
+  {
+    "id": 535,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery in 28-year-old Male",
+    "expectedCodes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 536,
+    "module": "CARDIOLOGY",
+    "text": "Chronic systolic heart failure in 39-year-old Male",
+    "expectedCodes": [
+      "I50.22"
+    ]
+  },
+  {
+    "id": 537,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 82-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 538,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 in 19-year-old Female",
+    "expectedCodes": [
+      "N18.4"
+    ]
+  },
+  {
+    "id": 539,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness in 72-year-old Female",
+    "expectedCodes": [
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 540,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 5 and non-st elevation myocardial infarction in 77-year-old Male",
+    "expectedCodes": [
+      "N18.5",
+      "I21.4"
+    ]
+  },
+  {
+    "id": 541,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 64-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 542,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 in 85-year-old Female",
+    "expectedCodes": [
+      "N18.1"
+    ]
+  },
+  {
+    "id": 543,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia and acute hypercapnic respiratory failure in 80-year-old Female",
+    "expectedCodes": [
+      "O14.00",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 544,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness in 91-year-old Male",
+    "expectedCodes": [
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 545,
+    "module": "NEUROLOGY",
+    "text": "Status epilepticus in 86-year-old Male",
+    "expectedCodes": [
+      "G40.901"
+    ]
+  },
+  {
+    "id": 546,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 5 and dehydration in 84-year-old Female",
+    "expectedCodes": [
+      "N18.5",
+      "E86.0"
+    ]
+  },
+  {
+    "id": 547,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 48-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 548,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation in 48-year-old Female",
+    "expectedCodes": [
+      "J45.901"
+    ]
+  },
+  {
+    "id": 549,
+    "module": "TRAUMA",
+    "text": "Fall from bed and chronic diastolic heart failure in 30-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA",
+      "I50.32"
+    ]
+  },
+  {
+    "id": 550,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli in 60-year-old Male",
+    "expectedCodes": [
+      "A41.51"
+    ]
+  },
+  {
+    "id": 551,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 70-year-old Female",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 552,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes with ketoacidosis and hyponatremia in 53-year-old Female",
+    "expectedCodes": [
+      "E11.10",
+      "E87.1"
+    ]
+  },
+  {
+    "id": 553,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas in 36-year-old Female",
+    "expectedCodes": [
+      "A41.52"
+    ]
+  },
+  {
+    "id": 554,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack in 49-year-old Male",
+    "expectedCodes": [
+      "G45.9"
+    ]
+  },
+  {
+    "id": 555,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness and hyponatremia in 53-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A",
+      "E87.1"
+    ]
+  },
+  {
+    "id": 556,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes in 42-year-old Female",
+    "expectedCodes": [
+      "E11.9"
+    ]
+  },
+  {
+    "id": 557,
+    "module": "CARDIOLOGY",
+    "text": "Chronic systolic heart failure in 30-year-old Male",
+    "expectedCodes": [
+      "I50.22"
+    ]
+  },
+  {
+    "id": 558,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation and severe sepsis with acute kidney failure in 66-year-old Male",
+    "expectedCodes": [
+      "J45.901",
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 559,
+    "module": "CARDIOLOGY",
+    "text": "Acute on chronic systolic heart failure in 55-year-old Male",
+    "expectedCodes": [
+      "I50.23"
+    ]
+  },
+  {
+    "id": 560,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 79-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 561,
+    "module": "CARDIOLOGY",
+    "text": "Acute systolic heart failure and community acquired pneumonia in 60-year-old Female",
+    "expectedCodes": [
+      "I50.21",
+      "J18.9"
+    ]
+  },
+  {
+    "id": 562,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes in 60-year-old Male",
+    "expectedCodes": [
+      "E11.9"
+    ]
+  },
+  {
+    "id": 563,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes in 92-year-old Female",
+    "expectedCodes": [
+      "E10.9"
+    ]
+  },
+  {
+    "id": 564,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy and acute diastolic heart failure in 85-year-old Female",
+    "expectedCodes": [
+      "G40.909",
+      "I50.31"
+    ]
+  },
+  {
+    "id": 565,
+    "module": "RESPIRATORY",
+    "text": "Community acquired pneumonia in 79-year-old Female",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 566,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 90-year-old Female",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 567,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas and pneumonia in 35-year-old Male",
+    "expectedCodes": [
+      "A41.52",
+      "J18.9"
+    ]
+  },
+  {
+    "id": 568,
+    "module": "CARDIOLOGY",
+    "text": "Chronic diastolic heart failure in 57-year-old Male",
+    "expectedCodes": [
+      "I50.32"
+    ]
+  },
+  {
+    "id": 569,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3b in 26-year-old Female",
+    "expectedCodes": [
+      "N18.32"
+    ]
+  },
+  {
+    "id": 570,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 and twin pregnancy in 48-year-old Female",
+    "expectedCodes": [
+      "N18.2",
+      "O30.009"
+    ]
+  },
+  {
+    "id": 571,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation in 65-year-old Female",
+    "expectedCodes": [
+      "J45.901"
+    ]
+  },
+  {
+    "id": 572,
+    "module": "CARDIOLOGY",
+    "text": "Non-ST elevation myocardial infarction in 93-year-old Male",
+    "expectedCodes": [
+      "I21.4"
+    ]
+  },
+  {
+    "id": 573,
+    "module": "NEUROLOGY",
+    "text": "Alzheimer's dementia and chronic kidney disease stage 4 in 23-year-old Female",
+    "expectedCodes": [
+      "G30.9",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 574,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes in 47-year-old Female",
+    "expectedCodes": [
+      "E11.9"
+    ]
+  },
+  {
+    "id": 575,
+    "module": "CARDIOLOGY",
+    "text": "Hypertensive heart disease with heart failure in 27-year-old Female",
+    "expectedCodes": [
+      "I11.0",
+      "I50.9"
+    ]
+  },
+  {
+    "id": 576,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 5 and acute myocardial infarction in 79-year-old Male",
+    "expectedCodes": [
+      "N18.5",
+      "I21.9"
+    ]
+  },
+  {
+    "id": 577,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli in 26-year-old Female",
+    "expectedCodes": [
+      "A41.51"
+    ]
+  },
+  {
+    "id": 578,
+    "module": "KIDNEY",
+    "text": "End stage renal disease in 90-year-old Male",
+    "expectedCodes": [
+      "N18.6"
+    ]
+  },
+  {
+    "id": 579,
+    "module": "RESPIRATORY",
+    "text": "Ventilator associated pneumonia and twin pregnancy in 46-year-old Female",
+    "expectedCodes": [
+      "J95.851",
+      "O30.009"
+    ]
+  },
+  {
+    "id": 580,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy in 74-year-old Female",
+    "expectedCodes": [
+      "G40.909"
+    ]
+  },
+  {
+    "id": 581,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 47-year-old Male",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 582,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas and acute hypoxic respiratory failure in 74-year-old Male",
+    "expectedCodes": [
+      "A41.52",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 583,
+    "module": "CARDIOLOGY",
+    "text": "Acute diastolic heart failure in 44-year-old Female",
+    "expectedCodes": [
+      "I50.31"
+    ]
+  },
+  {
+    "id": 584,
+    "module": "RESPIRATORY",
+    "text": "Pneumonia in 95-year-old Male",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 585,
+    "module": "RESPIRATORY",
+    "text": "Pleural effusion and sepsis due to mrsa in 84-year-old Female",
+    "expectedCodes": [
+      "J90",
+      "A41.02"
+    ]
+  },
+  {
+    "id": 586,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack in 32-year-old Female",
+    "expectedCodes": [
+      "G45.9"
+    ]
+  },
+  {
+    "id": 587,
+    "module": "CARDIOLOGY",
+    "text": "Chronic systolic heart failure in 22-year-old Female",
+    "expectedCodes": [
+      "I50.22"
+    ]
+  },
+  {
+    "id": 588,
+    "module": "NEUROLOGY",
+    "text": "Status epilepticus and traumatic subdural hematoma without loss of consciousness in 19-year-old Female",
+    "expectedCodes": [
+      "G40.901",
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 589,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 65-year-old Male",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 590,
+    "module": "RESPIRATORY",
+    "text": "Ventilator associated pneumonia in 40-year-old Male",
+    "expectedCodes": [
+      "J95.851"
+    ]
+  },
+  {
+    "id": 591,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 and hypertensive heart disease with heart failure in 71-year-old Male",
+    "expectedCodes": [
+      "N18.1",
+      "I11.0",
+      "I50.9"
+    ]
+  },
+  {
+    "id": 592,
+    "module": "ENDOCRINE",
+    "text": "Dehydration in 84-year-old Male",
+    "expectedCodes": [
+      "E86.0"
+    ]
+  },
+  {
+    "id": 593,
+    "module": "RESPIRATORY",
+    "text": "COPD exacerbation in 84-year-old Male",
+    "expectedCodes": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 594,
+    "module": "OBGYN",
+    "text": "Twin pregnancy and chronic kidney disease stage 3a in 86-year-old Male",
+    "expectedCodes": [
+      "O30.009",
+      "N18.31"
+    ]
+  },
+  {
+    "id": 595,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 40-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 596,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 35-year-old Male",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 597,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3b and parkinson's disease in 36-year-old Male",
+    "expectedCodes": [
+      "N18.32",
+      "G20"
+    ]
+  },
+  {
+    "id": 598,
+    "module": "NEUROLOGY",
+    "text": "Parkinson's disease in 81-year-old Female",
+    "expectedCodes": [
+      "G20"
+    ]
+  },
+  {
+    "id": 599,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia in 47-year-old Male",
+    "expectedCodes": [
+      "E87.1"
+    ]
+  },
+  {
+    "id": 600,
+    "module": "ENDOCRINE",
+    "text": "Hypothyroidism and severe preeclampsia in 92-year-old Male",
+    "expectedCodes": [
+      "E03.9",
+      "O14.10"
+    ]
+  },
+  {
+    "id": 601,
+    "module": "SEPSIS",
+    "text": "Septic shock in 56-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 602,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 41-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 603,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory distress syndrome and sepsis due to mrsa in 84-year-old Male",
+    "expectedCodes": [
+      "J80",
+      "A41.02"
+    ]
+  },
+  {
+    "id": 604,
+    "module": "RESPIRATORY",
+    "text": "Acute hypercapnic respiratory failure in 85-year-old Female",
+    "expectedCodes": [
+      "J96.02"
+    ]
+  },
+  {
+    "id": 605,
+    "module": "CARDIOLOGY",
+    "text": "Acute diastolic heart failure in 32-year-old Female",
+    "expectedCodes": [
+      "I50.31"
+    ]
+  },
+  {
+    "id": 606,
+    "module": "CARDIOLOGY",
+    "text": "Chronic diastolic heart failure and end stage renal disease in 75-year-old Male",
+    "expectedCodes": [
+      "I50.32",
+      "N18.6"
+    ]
+  },
+  {
+    "id": 607,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 47-year-old Female",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 608,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 75-year-old Male",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 609,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness and non-st elevation myocardial infarction in 45-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A",
+      "I21.4"
+    ]
+  },
+  {
+    "id": 610,
+    "module": "RESPIRATORY",
+    "text": "COPD exacerbation in 29-year-old Female",
+    "expectedCodes": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 611,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes with ketoacidosis in 55-year-old Male",
+    "expectedCodes": [
+      "E11.10"
+    ]
+  },
+  {
+    "id": 612,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes and sepsis due to e. coli in 83-year-old Female",
+    "expectedCodes": [
+      "E11.9",
+      "A41.51"
+    ]
+  },
+  {
+    "id": 613,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 54-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 614,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 78-year-old Female",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 615,
+    "module": "TRAUMA",
+    "text": "Fall from bed and traumatic subdural hematoma without loss of consciousness in 48-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA",
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 616,
+    "module": "CARDIOLOGY",
+    "text": "Acute myocardial infarction in 59-year-old Female",
+    "expectedCodes": [
+      "I21.9"
+    ]
+  },
+  {
+    "id": 617,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 62-year-old Female",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 618,
+    "module": "NEUROLOGY",
+    "text": "Status epilepticus and pulmonary embolism without acute cor pulmonale in 49-year-old Female",
+    "expectedCodes": [
+      "G40.901",
+      "I26.92"
+    ]
+  },
+  {
+    "id": 619,
+    "module": "SEPSIS",
+    "text": "Septic shock in 41-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 620,
+    "module": "NEUROLOGY",
+    "text": "Vascular dementia in 21-year-old Male",
+    "expectedCodes": [
+      "F01.50"
+    ]
+  },
+  {
+    "id": 621,
+    "module": "TRAUMA",
+    "text": "Fall from bed and hyponatremia in 32-year-old Female",
+    "expectedCodes": [
+      "W06.XXXA",
+      "E87.1"
+    ]
+  },
+  {
+    "id": 622,
+    "module": "ENDOCRINE",
+    "text": "Dehydration in 91-year-old Female",
+    "expectedCodes": [
+      "E86.0"
+    ]
+  },
+  {
+    "id": 623,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis in 52-year-old Female",
+    "expectedCodes": [
+      "E10.10"
+    ]
+  },
+  {
+    "id": 624,
+    "module": "CARDIOLOGY",
+    "text": "Acute diastolic heart failure and fracture of neck of right femur in 94-year-old Female",
+    "expectedCodes": [
+      "I50.31",
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 625,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes with ketoacidosis in 20-year-old Female",
+    "expectedCodes": [
+      "E11.10"
+    ]
+  },
+  {
+    "id": 626,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 72-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 627,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas and acute on chronic diastolic heart failure in 45-year-old Male",
+    "expectedCodes": [
+      "A41.52",
+      "I50.33"
+    ]
+  },
+  {
+    "id": 628,
+    "module": "CARDIOLOGY",
+    "text": "Hypertensive heart disease with heart failure in 20-year-old Female",
+    "expectedCodes": [
+      "I11.0",
+      "I50.9"
+    ]
+  },
+  {
+    "id": 629,
+    "module": "RESPIRATORY",
+    "text": "Aspiration pneumonia in 41-year-old Female",
+    "expectedCodes": [
+      "J69.0"
+    ]
+  },
+  {
+    "id": 630,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness and hypertensive heart disease with heart failure in 64-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A",
+      "I11.0",
+      "I50.9"
+    ]
+  },
+  {
+    "id": 631,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 37-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 632,
+    "module": "RESPIRATORY",
+    "text": "Acute hypercapnic respiratory failure in 42-year-old Male",
+    "expectedCodes": [
+      "J96.02"
+    ]
+  },
+  {
+    "id": 633,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 and twin pregnancy in 36-year-old Female",
+    "expectedCodes": [
+      "N18.2",
+      "O30.009"
+    ]
+  },
+  {
+    "id": 634,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 in 45-year-old Male",
+    "expectedCodes": [
+      "N18.4"
+    ]
+  },
+  {
+    "id": 635,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia in 87-year-old Female",
+    "expectedCodes": [
+      "E87.1"
+    ]
+  },
+  {
+    "id": 636,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism with acute cor pulmonale and metabolic encephalopathy in 65-year-old Male",
+    "expectedCodes": [
+      "I26.02",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 637,
+    "module": "CARDIOLOGY",
+    "text": "Chronic diastolic heart failure in 43-year-old Male",
+    "expectedCodes": [
+      "I50.32"
+    ]
+  },
+  {
+    "id": 638,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 in 53-year-old Male",
+    "expectedCodes": [
+      "N18.1"
+    ]
+  },
+  {
+    "id": 639,
+    "module": "CARDIOLOGY",
+    "text": "Acute on chronic diastolic heart failure and chronic kidney disease stage 4 in 63-year-old Male",
+    "expectedCodes": [
+      "I50.33",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 640,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 33-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 641,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 70-year-old Male",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 642,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack and alzheimer's dementia in 80-year-old Male",
+    "expectedCodes": [
+      "G45.9",
+      "G30.9"
+    ]
+  },
+  {
+    "id": 643,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation in 46-year-old Female",
+    "expectedCodes": [
+      "J45.901"
+    ]
+  },
+  {
+    "id": 644,
+    "module": "CARDIOLOGY",
+    "text": "Acute on chronic systolic heart failure in 77-year-old Male",
+    "expectedCodes": [
+      "I50.23"
+    ]
+  },
+  {
+    "id": 645,
+    "module": "CARDIOLOGY",
+    "text": "Chronic diastolic heart failure and acute respiratory distress syndrome in 82-year-old Male",
+    "expectedCodes": [
+      "I50.32",
+      "J80"
+    ]
+  },
+  {
+    "id": 646,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 22-year-old Female",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 647,
+    "module": "RESPIRATORY",
+    "text": "Aspiration pneumonia in 95-year-old Male",
+    "expectedCodes": [
+      "J69.0"
+    ]
+  },
+  {
+    "id": 648,
+    "module": "CARDIOLOGY",
+    "text": "Chronic systolic heart failure and community acquired pneumonia in 69-year-old Male",
+    "expectedCodes": [
+      "I50.22",
+      "J18.9"
+    ]
+  },
+  {
+    "id": 649,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 93-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 650,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 65-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 651,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur and acute hypercapnic respiratory failure in 22-year-old Male",
+    "expectedCodes": [
+      "S72.001A",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 652,
+    "module": "RESPIRATORY",
+    "text": "Aspiration pneumonia in 28-year-old Male",
+    "expectedCodes": [
+      "J69.0"
+    ]
+  },
+  {
+    "id": 653,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy in 22-year-old Female",
+    "expectedCodes": [
+      "G40.909"
+    ]
+  },
+  {
+    "id": 654,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia and hypothyroidism in 64-year-old Female",
+    "expectedCodes": [
+      "O14.00",
+      "E03.9"
+    ]
+  },
+  {
+    "id": 655,
+    "module": "CARDIOLOGY",
+    "text": "Non-ST elevation myocardial infarction in 39-year-old Male",
+    "expectedCodes": [
+      "I21.4"
+    ]
+  },
+  {
+    "id": 656,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas in 18-year-old Female",
+    "expectedCodes": [
+      "A41.52"
+    ]
+  },
+  {
+    "id": 657,
+    "module": "RESPIRATORY",
+    "text": "COPD exacerbation and asthma exacerbation in 44-year-old Male",
+    "expectedCodes": [
+      "J44.1",
+      "J45.901"
+    ]
+  },
+  {
+    "id": 658,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure in 33-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 659,
+    "module": "SEPSIS",
+    "text": "Sepsis in 72-year-old Female",
+    "expectedCodes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 660,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness and concussion without loss of consciousness in 26-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A",
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 661,
+    "module": "CARDIOLOGY",
+    "text": "Acute on chronic diastolic heart failure in 79-year-old Male",
+    "expectedCodes": [
+      "I50.33"
+    ]
+  },
+  {
+    "id": 662,
+    "module": "CARDIOLOGY",
+    "text": "Acute diastolic heart failure in 85-year-old Male",
+    "expectedCodes": [
+      "I50.31"
+    ]
+  },
+  {
+    "id": 663,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia and acute respiratory failure in 52-year-old Male",
+    "expectedCodes": [
+      "E87.1",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 664,
+    "module": "NEUROLOGY",
+    "text": "Vascular dementia in 25-year-old Female",
+    "expectedCodes": [
+      "F01.50"
+    ]
+  },
+  {
+    "id": 665,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 in 77-year-old Female",
+    "expectedCodes": [
+      "N18.1"
+    ]
+  },
+  {
+    "id": 666,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack and copd exacerbation in 38-year-old Male",
+    "expectedCodes": [
+      "G45.9",
+      "J44.1"
+    ]
+  },
+  {
+    "id": 667,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 52-year-old Female",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 668,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy in 75-year-old Female",
+    "expectedCodes": [
+      "G40.909"
+    ]
+  },
+  {
+    "id": 669,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia and acute respiratory failure in 22-year-old Male",
+    "expectedCodes": [
+      "E87.1",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 670,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 53-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 671,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation in 33-year-old Male",
+    "expectedCodes": [
+      "J45.901"
+    ]
+  },
+  {
+    "id": 672,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness and type 1 diabetes with ketoacidosis in 53-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A",
+      "E10.10"
+    ]
+  },
+  {
+    "id": 673,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 in 80-year-old Male",
+    "expectedCodes": [
+      "N18.1"
+    ]
+  },
+  {
+    "id": 674,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes in 25-year-old Female",
+    "expectedCodes": [
+      "E10.9"
+    ]
+  },
+  {
+    "id": 675,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 57-year-old Female",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 676,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 49-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 677,
+    "module": "SEPSIS",
+    "text": "Septic shock in 92-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 678,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory distress syndrome and pulmonary embolism with acute cor pulmonale in 87-year-old Female",
+    "expectedCodes": [
+      "J80",
+      "I26.02"
+    ]
+  },
+  {
+    "id": 679,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes with ketoacidosis in 69-year-old Female",
+    "expectedCodes": [
+      "E11.10"
+    ]
+  },
+  {
+    "id": 680,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes in 67-year-old Male",
+    "expectedCodes": [
+      "E11.9"
+    ]
+  },
+  {
+    "id": 681,
+    "module": "ENDOCRINE",
+    "text": "Hypothyroidism and severe preeclampsia in 71-year-old Male",
+    "expectedCodes": [
+      "E03.9",
+      "O14.10"
+    ]
+  },
+  {
+    "id": 682,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 79-year-old Female",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 683,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure in 63-year-old Female",
+    "expectedCodes": [
+      "J96.01"
+    ]
+  },
+  {
+    "id": 684,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack and twin pregnancy in 38-year-old Male",
+    "expectedCodes": [
+      "G45.9",
+      "O30.009"
+    ]
+  },
+  {
+    "id": 685,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure in 46-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 686,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 76-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 687,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur and chronic diastolic heart failure in 92-year-old Male",
+    "expectedCodes": [
+      "S72.001A",
+      "I50.32"
+    ]
+  },
+  {
+    "id": 688,
+    "module": "SEPSIS",
+    "text": "Sepsis in 69-year-old Male",
+    "expectedCodes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 689,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli in 68-year-old Female",
+    "expectedCodes": [
+      "A41.51"
+    ]
+  },
+  {
+    "id": 690,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness and sepsis due to pseudomonas in 66-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A",
+      "A41.52"
+    ]
+  },
+  {
+    "id": 691,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes in 75-year-old Female",
+    "expectedCodes": [
+      "E10.9"
+    ]
+  },
+  {
+    "id": 692,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 46-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 693,
+    "module": "CARDIOLOGY",
+    "text": "Acute myocardial infarction and epilepsy in 78-year-old Male",
+    "expectedCodes": [
+      "I21.9",
+      "G40.909"
+    ]
+  },
+  {
+    "id": 694,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli in 20-year-old Female",
+    "expectedCodes": [
+      "A41.51"
+    ]
+  },
+  {
+    "id": 695,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation in 71-year-old Male",
+    "expectedCodes": [
+      "J45.901"
+    ]
+  },
+  {
+    "id": 696,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation and atrial fibrillation with rapid ventricular response in 22-year-old Female",
+    "expectedCodes": [
+      "I48.91"
+    ]
+  },
+  {
+    "id": 697,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 68-year-old Male",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 698,
+    "module": "SEPSIS",
+    "text": "Septic shock in 88-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 699,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery and acute hypoxic respiratory failure in 62-year-old Female",
+    "expectedCodes": [
+      "I63.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 700,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism with acute cor pulmonale in 70-year-old Male",
+    "expectedCodes": [
+      "I26.02"
+    ]
+  },
+  {
+    "id": 701,
+    "module": "RESPIRATORY",
+    "text": "Ventilator associated pneumonia in 79-year-old Male",
+    "expectedCodes": [
+      "J95.851"
+    ]
+  },
+  {
+    "id": 702,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 and acute myocardial infarction in 92-year-old Male",
+    "expectedCodes": [
+      "N18.1",
+      "I21.9"
+    ]
+  },
+  {
+    "id": 703,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3a in 90-year-old Female",
+    "expectedCodes": [
+      "N18.31"
+    ]
+  },
+  {
+    "id": 704,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 66-year-old Female",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 705,
+    "module": "KIDNEY",
+    "text": "End stage renal disease and pneumonia in 73-year-old Male",
+    "expectedCodes": [
+      "N18.6",
+      "J18.9"
+    ]
+  },
+  {
+    "id": 706,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3a in 38-year-old Female",
+    "expectedCodes": [
+      "N18.31"
+    ]
+  },
+  {
+    "id": 707,
+    "module": "KIDNEY",
+    "text": "End stage renal disease in 66-year-old Female",
+    "expectedCodes": [
+      "N18.6"
+    ]
+  },
+  {
+    "id": 708,
+    "module": "NEUROLOGY",
+    "text": "Metabolic encephalopathy and copd exacerbation in 94-year-old Female",
+    "expectedCodes": [
+      "G93.41",
+      "J44.1"
+    ]
+  },
+  {
+    "id": 709,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation in 33-year-old Female",
+    "expectedCodes": [
+      "J45.901"
+    ]
+  },
+  {
+    "id": 710,
+    "module": "CARDIOLOGY",
+    "text": "Acute myocardial infarction in 45-year-old Female",
+    "expectedCodes": [
+      "I21.9"
+    ]
+  },
+  {
+    "id": 711,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness and twin pregnancy in 77-year-old Male",
+    "expectedCodes": [
+      "S06.0X0A",
+      "O30.009"
+    ]
+  },
+  {
+    "id": 712,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 31-year-old Female",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 713,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 5 in 24-year-old Male",
+    "expectedCodes": [
+      "N18.5"
+    ]
+  },
+  {
+    "id": 714,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure and chronic kidney disease stage 1 in 73-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9",
+      "N18.1"
+    ]
+  },
+  {
+    "id": 715,
+    "module": "RESPIRATORY",
+    "text": "Community acquired pneumonia in 87-year-old Female",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 716,
+    "module": "RESPIRATORY",
+    "text": "Hospital acquired pneumonia in 48-year-old Male",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 717,
+    "module": "RESPIRATORY",
+    "text": "Ventilator associated pneumonia and end stage renal disease in 35-year-old Male",
+    "expectedCodes": [
+      "J95.851",
+      "N18.6"
+    ]
+  },
+  {
+    "id": 718,
+    "module": "RESPIRATORY",
+    "text": "Aspiration pneumonia in 59-year-old Female",
+    "expectedCodes": [
+      "J69.0"
+    ]
+  },
+  {
+    "id": 719,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 in 73-year-old Male",
+    "expectedCodes": [
+      "N18.2"
+    ]
+  },
+  {
+    "id": 720,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 and severe sepsis with acute kidney failure in 43-year-old Female",
+    "expectedCodes": [
+      "N18.2",
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 721,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3b in 31-year-old Male",
+    "expectedCodes": [
+      "N18.32"
+    ]
+  },
+  {
+    "id": 722,
+    "module": "RESPIRATORY",
+    "text": "Pleural effusion in 61-year-old Male",
+    "expectedCodes": [
+      "J90"
+    ]
+  },
+  {
+    "id": 723,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 and type 1 diabetes in 23-year-old Male",
+    "expectedCodes": [
+      "N18.4",
+      "E10.9"
+    ]
+  },
+  {
+    "id": 724,
+    "module": "NEUROLOGY",
+    "text": "Vascular dementia in 38-year-old Female",
+    "expectedCodes": [
+      "F01.50"
+    ]
+  },
+  {
+    "id": 725,
+    "module": "KIDNEY",
+    "text": "Acute kidney failure in 32-year-old Female",
+    "expectedCodes": [
+      "N17.9"
+    ]
+  },
+  {
+    "id": 726,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia and fracture of neck of right femur in 30-year-old Male",
+    "expectedCodes": [
+      "O14.00",
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 727,
+    "module": "SEPSIS",
+    "text": "Septic shock in 47-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 728,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 49-year-old Female",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 729,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia and dehydration in 28-year-old Female",
+    "expectedCodes": [
+      "O14.10",
+      "E86.0"
+    ]
+  },
+  {
+    "id": 730,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 32-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 731,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure in 94-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 732,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 5 and end stage renal disease in 86-year-old Female",
+    "expectedCodes": [
+      "N18.5",
+      "N18.6"
+    ]
+  },
+  {
+    "id": 733,
+    "module": "SEPSIS",
+    "text": "Septic shock in 57-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 734,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3b in 62-year-old Male",
+    "expectedCodes": [
+      "N18.32"
+    ]
+  },
+  {
+    "id": 735,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis and hypothyroidism in 45-year-old Male",
+    "expectedCodes": [
+      "E10.10",
+      "E03.9"
+    ]
+  },
+  {
+    "id": 736,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack in 29-year-old Male",
+    "expectedCodes": [
+      "G45.9"
+    ]
+  },
+  {
+    "id": 737,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 24-year-old Male",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 738,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli in 87-year-old Male",
+    "expectedCodes": [
+      "A41.51"
+    ]
+  },
+  {
+    "id": 739,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 78-year-old Female",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 740,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia in 93-year-old Female",
+    "expectedCodes": [
+      "E87.1"
+    ]
+  },
+  {
+    "id": 741,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes and acute diastolic heart failure in 50-year-old Female",
+    "expectedCodes": [
+      "E11.9",
+      "I50.31"
+    ]
+  },
+  {
+    "id": 742,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 36-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 743,
+    "module": "NEUROLOGY",
+    "text": "Vascular dementia in 30-year-old Male",
+    "expectedCodes": [
+      "F01.50"
+    ]
+  },
+  {
+    "id": 744,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism with acute cor pulmonale and acute on chronic diastolic heart failure in 28-year-old Female",
+    "expectedCodes": [
+      "I26.02",
+      "I50.33"
+    ]
+  },
+  {
+    "id": 745,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 in 32-year-old Male",
+    "expectedCodes": [
+      "N18.1"
+    ]
+  },
+  {
+    "id": 746,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 in 87-year-old Female",
+    "expectedCodes": [
+      "N18.4"
+    ]
+  },
+  {
+    "id": 747,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 5 and traumatic subdural hematoma without loss of consciousness in 71-year-old Female",
+    "expectedCodes": [
+      "N18.5",
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 748,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3a in 47-year-old Male",
+    "expectedCodes": [
+      "N18.31"
+    ]
+  },
+  {
+    "id": 749,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas in 57-year-old Female",
+    "expectedCodes": [
+      "A41.52"
+    ]
+  },
+  {
+    "id": 750,
+    "module": "NEUROLOGY",
+    "text": "Alzheimer's dementia and severe preeclampsia in 25-year-old Male",
+    "expectedCodes": [
+      "G30.9",
+      "O14.10"
+    ]
+  },
+  {
+    "id": 751,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes in 63-year-old Male",
+    "expectedCodes": [
+      "E10.9"
+    ]
+  },
+  {
+    "id": 752,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism with acute cor pulmonale in 23-year-old Male",
+    "expectedCodes": [
+      "I26.02"
+    ]
+  },
+  {
+    "id": 753,
+    "module": "CARDIOLOGY",
+    "text": "Non-ST elevation myocardial infarction in 25-year-old Male",
+    "expectedCodes": [
+      "I21.4"
+    ]
+  },
+  {
+    "id": 754,
+    "module": "NEUROLOGY",
+    "text": "Vascular dementia in 84-year-old Male",
+    "expectedCodes": [
+      "F01.50"
+    ]
+  },
+  {
+    "id": 755,
+    "module": "NEUROLOGY",
+    "text": "Status epilepticus in 65-year-old Female",
+    "expectedCodes": [
+      "G40.901"
+    ]
+  },
+  {
+    "id": 756,
+    "module": "RESPIRATORY",
+    "text": "Pleural effusion and mild preeclampsia in 49-year-old Female",
+    "expectedCodes": [
+      "J90",
+      "O14.00"
+    ]
+  },
+  {
+    "id": 757,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism without acute cor pulmonale in 82-year-old Male",
+    "expectedCodes": [
+      "I26.92"
+    ]
+  },
+  {
+    "id": 758,
+    "module": "KIDNEY",
+    "text": "End stage renal disease in 43-year-old Female",
+    "expectedCodes": [
+      "N18.6"
+    ]
+  },
+  {
+    "id": 759,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur and type 2 diabetes in 72-year-old Female",
+    "expectedCodes": [
+      "S72.001A",
+      "E11.9"
+    ]
+  },
+  {
+    "id": 760,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli in 75-year-old Female",
+    "expectedCodes": [
+      "A41.51"
+    ]
+  },
+  {
+    "id": 761,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 24-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 762,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia and acute respiratory failure in 73-year-old Female",
+    "expectedCodes": [
+      "O14.10",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 763,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure in 22-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 764,
+    "module": "NEUROLOGY",
+    "text": "Vascular dementia in 40-year-old Female",
+    "expectedCodes": [
+      "F01.50"
+    ]
+  },
+  {
+    "id": 765,
+    "module": "CARDIOLOGY",
+    "text": "Acute diastolic heart failure and hyponatremia in 71-year-old Female",
+    "expectedCodes": [
+      "I50.31",
+      "E87.1"
+    ]
+  },
+  {
+    "id": 766,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery in 18-year-old Female",
+    "expectedCodes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 767,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure in 93-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 768,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery and type 2 diabetes in 77-year-old Male",
+    "expectedCodes": [
+      "I63.9",
+      "E11.9"
+    ]
+  },
+  {
+    "id": 769,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure in 56-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 770,
+    "module": "RESPIRATORY",
+    "text": "Community acquired pneumonia in 65-year-old Male",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 771,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas and acute on chronic diastolic heart failure in 43-year-old Male",
+    "expectedCodes": [
+      "A41.52",
+      "I50.33"
+    ]
+  },
+  {
+    "id": 772,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 in 94-year-old Female",
+    "expectedCodes": [
+      "N18.2"
+    ]
+  },
+  {
+    "id": 773,
+    "module": "KIDNEY",
+    "text": "End stage renal disease in 86-year-old Female",
+    "expectedCodes": [
+      "N18.6"
+    ]
+  },
+  {
+    "id": 774,
+    "module": "RESPIRATORY",
+    "text": "Acute hypercapnic respiratory failure and mild preeclampsia in 70-year-old Male",
+    "expectedCodes": [
+      "J96.02",
+      "O14.00"
+    ]
+  },
+  {
+    "id": 775,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes with ketoacidosis in 46-year-old Female",
+    "expectedCodes": [
+      "E11.10"
+    ]
+  },
+  {
+    "id": 776,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 93-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 777,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas and asthma exacerbation in 36-year-old Female",
+    "expectedCodes": [
+      "A41.52",
+      "J45.901"
+    ]
+  },
+  {
+    "id": 778,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism with acute cor pulmonale in 34-year-old Female",
+    "expectedCodes": [
+      "I26.02"
+    ]
+  },
+  {
+    "id": 779,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia in 66-year-old Male",
+    "expectedCodes": [
+      "E87.1"
+    ]
+  },
+  {
+    "id": 780,
+    "module": "RESPIRATORY",
+    "text": "Hospital acquired pneumonia and type 2 diabetes in 87-year-old Female",
+    "expectedCodes": [
+      "J18.9",
+      "E11.9"
+    ]
+  },
+  {
+    "id": 781,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 87-year-old Male",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 782,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack in 31-year-old Male",
+    "expectedCodes": [
+      "G45.9"
+    ]
+  },
+  {
+    "id": 783,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes and acute kidney failure in 95-year-old Male",
+    "expectedCodes": [
+      "E10.9",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 784,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3b in 58-year-old Male",
+    "expectedCodes": [
+      "N18.32"
+    ]
+  },
+  {
+    "id": 785,
+    "module": "OBGYN",
+    "text": "Twin pregnancy in 86-year-old Female",
+    "expectedCodes": [
+      "O30.009"
+    ]
+  },
+  {
+    "id": 786,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis and metabolic encephalopathy in 59-year-old Male",
+    "expectedCodes": [
+      "E10.10",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 787,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes in 51-year-old Male",
+    "expectedCodes": [
+      "E10.9"
+    ]
+  },
+  {
+    "id": 788,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 76-year-old Male",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 789,
+    "module": "KIDNEY",
+    "text": "Acute kidney failure and acute respiratory failure in 76-year-old Male",
+    "expectedCodes": [
+      "N17.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 790,
+    "module": "RESPIRATORY",
+    "text": "Pleural effusion in 67-year-old Male",
+    "expectedCodes": [
+      "J90"
+    ]
+  },
+  {
+    "id": 791,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes with ketoacidosis in 60-year-old Female",
+    "expectedCodes": [
+      "E11.10"
+    ]
+  },
+  {
+    "id": 792,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur and sepsis due to e. coli in 29-year-old Male",
+    "expectedCodes": [
+      "S72.001A",
+      "A41.51"
+    ]
+  },
+  {
+    "id": 793,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes in 70-year-old Male",
+    "expectedCodes": [
+      "E11.9"
+    ]
+  },
+  {
+    "id": 794,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis in 82-year-old Male",
+    "expectedCodes": [
+      "E10.10"
+    ]
+  },
+  {
+    "id": 795,
+    "module": "RESPIRATORY",
+    "text": "Hospital acquired pneumonia and mild preeclampsia in 34-year-old Female",
+    "expectedCodes": [
+      "J18.9",
+      "O14.00"
+    ]
+  },
+  {
+    "id": 796,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 in 65-year-old Female",
+    "expectedCodes": [
+      "N18.1"
+    ]
+  },
+  {
+    "id": 797,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 in 61-year-old Male",
+    "expectedCodes": [
+      "N18.2"
+    ]
+  },
+  {
+    "id": 798,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery and epilepsy in 59-year-old Male",
+    "expectedCodes": [
+      "I63.9",
+      "G40.909"
+    ]
+  },
+  {
+    "id": 799,
+    "module": "KIDNEY",
+    "text": "Acute kidney failure in 90-year-old Female",
+    "expectedCodes": [
+      "N17.9"
+    ]
+  },
+  {
+    "id": 800,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure in 60-year-old Female",
+    "expectedCodes": [
+      "J96.01"
+    ]
+  },
+  {
+    "id": 801,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia and chronic kidney disease stage 5 in 40-year-old Female",
+    "expectedCodes": [
+      "O14.00",
+      "N18.5"
+    ]
+  },
+  {
+    "id": 802,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 in 83-year-old Female",
+    "expectedCodes": [
+      "N18.4"
+    ]
+  },
+  {
+    "id": 803,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes in 92-year-old Male",
+    "expectedCodes": [
+      "E11.9"
+    ]
+  },
+  {
+    "id": 804,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia and asthma exacerbation in 92-year-old Male",
+    "expectedCodes": [
+      "O14.00",
+      "J45.901"
+    ]
+  },
+  {
+    "id": 805,
+    "module": "SEPSIS",
+    "text": "Septic shock in 72-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 806,
+    "module": "NEUROLOGY",
+    "text": "Parkinson's disease in 91-year-old Male",
+    "expectedCodes": [
+      "G20"
+    ]
+  },
+  {
+    "id": 807,
+    "module": "KIDNEY",
+    "text": "End stage renal disease and sepsis due to pseudomonas in 28-year-old Male",
+    "expectedCodes": [
+      "N18.6",
+      "A41.52"
+    ]
+  },
+  {
+    "id": 808,
+    "module": "KIDNEY",
+    "text": "End stage renal disease in 52-year-old Male",
+    "expectedCodes": [
+      "N18.6"
+    ]
+  },
+  {
+    "id": 809,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 87-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 810,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy and fracture of neck of right femur in 43-year-old Male",
+    "expectedCodes": [
+      "G40.909",
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 811,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 89-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 812,
+    "module": "RESPIRATORY",
+    "text": "COPD exacerbation in 43-year-old Female",
+    "expectedCodes": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 813,
+    "module": "NEUROLOGY",
+    "text": "Metabolic encephalopathy and severe preeclampsia in 50-year-old Female",
+    "expectedCodes": [
+      "G93.41",
+      "O14.10"
+    ]
+  },
+  {
+    "id": 814,
+    "module": "RESPIRATORY",
+    "text": "Pneumonia in 75-year-old Female",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 815,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 in 86-year-old Female",
+    "expectedCodes": [
+      "N18.1"
+    ]
+  },
+  {
+    "id": 816,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack and chronic kidney disease stage 3a in 28-year-old Female",
+    "expectedCodes": [
+      "G45.9",
+      "N18.31"
+    ]
+  },
+  {
+    "id": 817,
+    "module": "RESPIRATORY",
+    "text": "Community acquired pneumonia in 31-year-old Female",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 818,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 in 80-year-old Female",
+    "expectedCodes": [
+      "N18.4"
+    ]
+  },
+  {
+    "id": 819,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure and type 2 diabetes in 68-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9",
+      "E11.9"
+    ]
+  },
+  {
+    "id": 820,
+    "module": "NEUROLOGY",
+    "text": "Vascular dementia in 20-year-old Male",
+    "expectedCodes": [
+      "F01.50"
+    ]
+  },
+  {
+    "id": 821,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 77-year-old Female",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 822,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3a and type 2 diabetes in 27-year-old Female",
+    "expectedCodes": [
+      "N18.31",
+      "E11.9"
+    ]
+  },
+  {
+    "id": 823,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli in 49-year-old Male",
+    "expectedCodes": [
+      "A41.51"
+    ]
+  },
+  {
+    "id": 824,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness in 25-year-old Male",
+    "expectedCodes": [
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 825,
+    "module": "RESPIRATORY",
+    "text": "Aspiration pneumonia and epilepsy in 31-year-old Female",
+    "expectedCodes": [
+      "J69.0",
+      "G40.909"
+    ]
+  },
+  {
+    "id": 826,
+    "module": "KIDNEY",
+    "text": "Acute kidney failure in 52-year-old Male",
+    "expectedCodes": [
+      "N17.9"
+    ]
+  },
+  {
+    "id": 827,
+    "module": "CARDIOLOGY",
+    "text": "Acute on chronic diastolic heart failure in 32-year-old Male",
+    "expectedCodes": [
+      "I50.33"
+    ]
+  },
+  {
+    "id": 828,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA and fracture of neck of right femur in 50-year-old Male",
+    "expectedCodes": [
+      "A41.02",
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 829,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 86-year-old Male",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 830,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 44-year-old Female",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 831,
+    "module": "RESPIRATORY",
+    "text": "Aspiration pneumonia and type 2 diabetes with ketoacidosis in 67-year-old Female",
+    "expectedCodes": [
+      "J69.0",
+      "E11.10"
+    ]
+  },
+  {
+    "id": 832,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 22-year-old Male",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 833,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas in 90-year-old Female",
+    "expectedCodes": [
+      "A41.52"
+    ]
+  },
+  {
+    "id": 834,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes with ketoacidosis and acute hypercapnic respiratory failure in 42-year-old Male",
+    "expectedCodes": [
+      "E10.10",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 835,
+    "module": "CARDIOLOGY",
+    "text": "Acute systolic heart failure in 54-year-old Female",
+    "expectedCodes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 836,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 74-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 837,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness and chronic kidney disease stage 4 in 23-year-old Male",
+    "expectedCodes": [
+      "S06.0X0A",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 838,
+    "module": "SEPSIS",
+    "text": "Septic shock in 71-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 839,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery in 62-year-old Female",
+    "expectedCodes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 840,
+    "module": "NEUROLOGY",
+    "text": "Metabolic encephalopathy and severe sepsis with acute kidney failure in 32-year-old Male",
+    "expectedCodes": [
+      "G93.41",
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 841,
+    "module": "CARDIOLOGY",
+    "text": "Acute on chronic diastolic heart failure in 40-year-old Male",
+    "expectedCodes": [
+      "I50.33"
+    ]
+  },
+  {
+    "id": 842,
+    "module": "SEPSIS",
+    "text": "Septic shock in 20-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 843,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 and chronic kidney disease stage 1 in 25-year-old Male",
+    "expectedCodes": [
+      "N18.2",
+      "N18.1"
+    ]
+  },
+  {
+    "id": 844,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 87-year-old Male",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 845,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism without acute cor pulmonale in 86-year-old Female",
+    "expectedCodes": [
+      "I26.92"
+    ]
+  },
+  {
+    "id": 846,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia and pleural effusion in 31-year-old Male",
+    "expectedCodes": [
+      "E87.1",
+      "J90"
+    ]
+  },
+  {
+    "id": 847,
+    "module": "KIDNEY",
+    "text": "Acute kidney failure in 42-year-old Male",
+    "expectedCodes": [
+      "N17.9"
+    ]
+  },
+  {
+    "id": 848,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness in 23-year-old Male",
+    "expectedCodes": [
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 849,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 and fall from bed in 73-year-old Female",
+    "expectedCodes": [
+      "N18.2",
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 850,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery in 66-year-old Male",
+    "expectedCodes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 851,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 68-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 852,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation and type 2 diabetes in 60-year-old Female",
+    "expectedCodes": [
+      "I48.91",
+      "E11.9"
+    ]
+  },
+  {
+    "id": 853,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation in 60-year-old Female",
+    "expectedCodes": [
+      "J45.901"
+    ]
+  },
+  {
+    "id": 854,
+    "module": "RESPIRATORY",
+    "text": "Community acquired pneumonia in 38-year-old Male",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 855,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli and epilepsy in 79-year-old Male",
+    "expectedCodes": [
+      "A41.51",
+      "G40.909"
+    ]
+  },
+  {
+    "id": 856,
+    "module": "RESPIRATORY",
+    "text": "Community acquired pneumonia in 72-year-old Female",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 857,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia in 78-year-old Male",
+    "expectedCodes": [
+      "E87.1"
+    ]
+  },
+  {
+    "id": 858,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes and type 2 diabetes with ketoacidosis in 29-year-old Female",
+    "expectedCodes": [
+      "E11.9",
+      "E11.10"
+    ]
+  },
+  {
+    "id": 859,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation in 93-year-old Male",
+    "expectedCodes": [
+      "J45.901"
+    ]
+  },
+  {
+    "id": 860,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 94-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 861,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation and acute kidney failure in 72-year-old Male",
+    "expectedCodes": [
+      "I48.91",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 862,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes with ketoacidosis in 37-year-old Female",
+    "expectedCodes": [
+      "E11.10"
+    ]
+  },
+  {
+    "id": 863,
+    "module": "KIDNEY",
+    "text": "End stage renal disease in 65-year-old Female",
+    "expectedCodes": [
+      "N18.6"
+    ]
+  },
+  {
+    "id": 864,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia and type 1 diabetes in 29-year-old Female",
+    "expectedCodes": [
+      "O14.10",
+      "E10.9"
+    ]
+  },
+  {
+    "id": 865,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy in 35-year-old Female",
+    "expectedCodes": [
+      "G40.909"
+    ]
+  },
+  {
+    "id": 866,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3a in 36-year-old Male",
+    "expectedCodes": [
+      "N18.31"
+    ]
+  },
+  {
+    "id": 867,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure and chronic kidney disease stage 3a in 53-year-old Male",
+    "expectedCodes": [
+      "J96.01",
+      "N18.31"
+    ]
+  },
+  {
+    "id": 868,
+    "module": "NEUROLOGY",
+    "text": "Metabolic encephalopathy in 81-year-old Male",
+    "expectedCodes": [
+      "G93.41"
+    ]
+  },
+  {
+    "id": 869,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 18-year-old Female",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 870,
+    "module": "NEUROLOGY",
+    "text": "Alzheimer's dementia and type 1 diabetes with ketoacidosis in 83-year-old Male",
+    "expectedCodes": [
+      "G30.9",
+      "E10.10"
+    ]
+  },
+  {
+    "id": 871,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 85-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 872,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 33-year-old Female",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 873,
+    "module": "SEPSIS",
+    "text": "Septic shock and traumatic subdural hematoma without loss of consciousness in 91-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21",
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 874,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery in 29-year-old Female",
+    "expectedCodes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 875,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure in 45-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 876,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness and sepsis due to pseudomonas in 87-year-old Male",
+    "expectedCodes": [
+      "S06.0X0A",
+      "A41.52"
+    ]
+  },
+  {
+    "id": 877,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3b in 64-year-old Male",
+    "expectedCodes": [
+      "N18.32"
+    ]
+  },
+  {
+    "id": 878,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness in 49-year-old Female",
+    "expectedCodes": [
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 879,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 and mild preeclampsia in 80-year-old Male",
+    "expectedCodes": [
+      "N18.4",
+      "O14.00"
+    ]
+  },
+  {
+    "id": 880,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory distress syndrome in 45-year-old Male",
+    "expectedCodes": [
+      "J80"
+    ]
+  },
+  {
+    "id": 881,
+    "module": "RESPIRATORY",
+    "text": "COPD exacerbation in 93-year-old Male",
+    "expectedCodes": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 882,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism with acute cor pulmonale and alzheimer's dementia in 95-year-old Female",
+    "expectedCodes": [
+      "I26.02",
+      "G30.9"
+    ]
+  },
+  {
+    "id": 883,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 5 in 57-year-old Female",
+    "expectedCodes": [
+      "N18.5"
+    ]
+  },
+  {
+    "id": 884,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure in 74-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 885,
+    "module": "SEPSIS",
+    "text": "Septic shock and chronic kidney disease stage 3a in 71-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21",
+      "N18.31"
+    ]
+  },
+  {
+    "id": 886,
+    "module": "SEPSIS",
+    "text": "Severe sepsis with acute kidney failure in 47-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 887,
+    "module": "SEPSIS",
+    "text": "Septic shock in 38-year-old Male",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 888,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia and chronic kidney disease stage 3b in 55-year-old Male",
+    "expectedCodes": [
+      "O14.10",
+      "N18.32"
+    ]
+  },
+  {
+    "id": 889,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3b in 53-year-old Male",
+    "expectedCodes": [
+      "N18.32"
+    ]
+  },
+  {
+    "id": 890,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas in 53-year-old Female",
+    "expectedCodes": [
+      "A41.52"
+    ]
+  },
+  {
+    "id": 891,
+    "module": "NEUROLOGY",
+    "text": "Alzheimer's dementia and type 1 diabetes with ketoacidosis in 75-year-old Male",
+    "expectedCodes": [
+      "G30.9",
+      "E10.10"
+    ]
+  },
+  {
+    "id": 892,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness in 76-year-old Female",
+    "expectedCodes": [
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 893,
+    "module": "OBGYN",
+    "text": "Twin pregnancy in 61-year-old Male",
+    "expectedCodes": [
+      "O30.009"
+    ]
+  },
+  {
+    "id": 894,
+    "module": "NEUROLOGY",
+    "text": "Parkinson's disease and sepsis due to e. coli in 49-year-old Female",
+    "expectedCodes": [
+      "G20",
+      "A41.51"
+    ]
+  },
+  {
+    "id": 895,
+    "module": "OBGYN",
+    "text": "Twin pregnancy in 25-year-old Male",
+    "expectedCodes": [
+      "O30.009"
+    ]
+  },
+  {
+    "id": 896,
+    "module": "KIDNEY",
+    "text": "Acute kidney failure in 33-year-old Male",
+    "expectedCodes": [
+      "N17.9"
+    ]
+  },
+  {
+    "id": 897,
+    "module": "KIDNEY",
+    "text": "End stage renal disease and acute on chronic systolic heart failure in 37-year-old Female",
+    "expectedCodes": [
+      "N18.6",
+      "I50.23"
+    ]
+  },
+  {
+    "id": 898,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 in 37-year-old Female",
+    "expectedCodes": [
+      "N18.4"
+    ]
+  },
+  {
+    "id": 899,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia in 32-year-old Male",
+    "expectedCodes": [
+      "E87.1"
+    ]
+  },
+  {
+    "id": 900,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas and twin pregnancy in 89-year-old Male",
+    "expectedCodes": [
+      "A41.52",
+      "O30.009"
+    ]
+  },
+  {
+    "id": 901,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 92-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 902,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 81-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 903,
+    "module": "RESPIRATORY",
+    "text": "Acute hypercapnic respiratory failure and mild preeclampsia in 49-year-old Male",
+    "expectedCodes": [
+      "J96.02",
+      "O14.00"
+    ]
+  },
+  {
+    "id": 904,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 22-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 905,
+    "module": "NEUROLOGY",
+    "text": "Vascular dementia in 40-year-old Female",
+    "expectedCodes": [
+      "F01.50"
+    ]
+  },
+  {
+    "id": 906,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness and copd exacerbation in 80-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A",
+      "J44.1"
+    ]
+  },
+  {
+    "id": 907,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory failure in 34-year-old Female",
+    "expectedCodes": [
+      "J96.00"
+    ]
+  },
+  {
+    "id": 908,
+    "module": "CARDIOLOGY",
+    "text": "Non-ST elevation myocardial infarction in 23-year-old Female",
+    "expectedCodes": [
+      "I21.4"
+    ]
+  },
+  {
+    "id": 909,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes and acute ischemic stroke of unspecified artery in 39-year-old Male",
+    "expectedCodes": [
+      "E10.9",
+      "I63.9"
+    ]
+  },
+  {
+    "id": 910,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 25-year-old Male",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 911,
+    "module": "NEUROLOGY",
+    "text": "Alzheimer's dementia in 19-year-old Male",
+    "expectedCodes": [
+      "G30.9"
+    ]
+  },
+  {
+    "id": 912,
+    "module": "ENDOCRINE",
+    "text": "Hypothyroidism and acute diastolic heart failure in 48-year-old Female",
+    "expectedCodes": [
+      "E03.9",
+      "I50.31"
+    ]
+  },
+  {
+    "id": 913,
+    "module": "TRAUMA",
+    "text": "Traumatic subdural hematoma without loss of consciousness in 32-year-old Male",
+    "expectedCodes": [
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 914,
+    "module": "NEUROLOGY",
+    "text": "Parkinson's disease in 80-year-old Female",
+    "expectedCodes": [
+      "G20"
+    ]
+  },
+  {
+    "id": 915,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism with acute cor pulmonale and fracture of neck of right femur in 18-year-old Male",
+    "expectedCodes": [
+      "I26.02",
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 916,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism with acute cor pulmonale in 51-year-old Female",
+    "expectedCodes": [
+      "I26.02"
+    ]
+  },
+  {
+    "id": 917,
+    "module": "ENDOCRINE",
+    "text": "Hypothyroidism in 81-year-old Male",
+    "expectedCodes": [
+      "E03.9"
+    ]
+  },
+  {
+    "id": 918,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA and mild preeclampsia in 84-year-old Female",
+    "expectedCodes": [
+      "A41.02",
+      "O14.00"
+    ]
+  },
+  {
+    "id": 919,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 39-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 920,
+    "module": "SEPSIS",
+    "text": "Septic shock in 72-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 921,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 and sepsis in 46-year-old Female",
+    "expectedCodes": [
+      "N18.1",
+      "A41.9"
+    ]
+  },
+  {
+    "id": 922,
+    "module": "RESPIRATORY",
+    "text": "COPD exacerbation in 25-year-old Male",
+    "expectedCodes": [
+      "J44.1"
+    ]
+  },
+  {
+    "id": 923,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure in 69-year-old Female",
+    "expectedCodes": [
+      "J96.01"
+    ]
+  },
+  {
+    "id": 924,
+    "module": "NEUROLOGY",
+    "text": "Status epilepticus and traumatic subdural hematoma without loss of consciousness in 29-year-old Male",
+    "expectedCodes": [
+      "G40.901",
+      "S06.5X0A"
+    ]
+  },
+  {
+    "id": 925,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur in 62-year-old Female",
+    "expectedCodes": [
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 926,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 24-year-old Female",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 927,
+    "module": "CARDIOLOGY",
+    "text": "Chronic systolic heart failure and mild preeclampsia in 46-year-old Male",
+    "expectedCodes": [
+      "I50.22",
+      "O14.00"
+    ]
+  },
+  {
+    "id": 928,
+    "module": "SEPSIS",
+    "text": "Sepsis in 20-year-old Female",
+    "expectedCodes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 929,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 55-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 930,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory distress syndrome and metabolic encephalopathy in 82-year-old Male",
+    "expectedCodes": [
+      "J80",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 931,
+    "module": "SEPSIS",
+    "text": "Sepsis due to Pseudomonas in 68-year-old Female",
+    "expectedCodes": [
+      "A41.52"
+    ]
+  },
+  {
+    "id": 932,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 19-year-old Male",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 933,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure and chronic systolic heart failure in 82-year-old Male",
+    "expectedCodes": [
+      "J96.01",
+      "I50.22"
+    ]
+  },
+  {
+    "id": 934,
+    "module": "NEUROLOGY",
+    "text": "Metabolic encephalopathy in 36-year-old Female",
+    "expectedCodes": [
+      "G93.41"
+    ]
+  },
+  {
+    "id": 935,
+    "module": "RESPIRATORY",
+    "text": "Community acquired pneumonia in 52-year-old Female",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 936,
+    "module": "TRAUMA",
+    "text": "Fracture of neck of right femur and acute myocardial infarction in 59-year-old Female",
+    "expectedCodes": [
+      "S72.001A",
+      "I21.9"
+    ]
+  },
+  {
+    "id": 937,
+    "module": "SEPSIS",
+    "text": "Sepsis in 65-year-old Female",
+    "expectedCodes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 938,
+    "module": "RESPIRATORY",
+    "text": "Acute hypoxic respiratory failure in 77-year-old Male",
+    "expectedCodes": [
+      "J96.01"
+    ]
+  },
+  {
+    "id": 939,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes and acute ischemic stroke of unspecified artery in 24-year-old Male",
+    "expectedCodes": [
+      "E11.9",
+      "I63.9"
+    ]
+  },
+  {
+    "id": 940,
+    "module": "CARDIOLOGY",
+    "text": "Hypertensive heart disease with heart failure in 74-year-old Male",
+    "expectedCodes": [
+      "I11.0",
+      "I50.9"
+    ]
+  },
+  {
+    "id": 941,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 in 50-year-old Female",
+    "expectedCodes": [
+      "N18.1"
+    ]
+  },
+  {
+    "id": 942,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia and chronic kidney disease stage 5 in 48-year-old Female",
+    "expectedCodes": [
+      "O14.10",
+      "N18.5"
+    ]
+  },
+  {
+    "id": 943,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes in 26-year-old Female",
+    "expectedCodes": [
+      "E11.9"
+    ]
+  },
+  {
+    "id": 944,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 23-year-old Male",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 945,
+    "module": "OBGYN",
+    "text": "Twin pregnancy and type 1 diabetes in 89-year-old Male",
+    "expectedCodes": [
+      "O30.009",
+      "E10.9"
+    ]
+  },
+  {
+    "id": 946,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack in 81-year-old Female",
+    "expectedCodes": [
+      "G45.9"
+    ]
+  },
+  {
+    "id": 947,
+    "module": "CARDIOLOGY",
+    "text": "Pulmonary embolism without acute cor pulmonale in 27-year-old Female",
+    "expectedCodes": [
+      "I26.92"
+    ]
+  },
+  {
+    "id": 948,
+    "module": "TRAUMA",
+    "text": "Concussion without loss of consciousness and fall from bed in 37-year-old Female",
+    "expectedCodes": [
+      "S06.0X0A",
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 949,
+    "module": "CARDIOLOGY",
+    "text": "Acute diastolic heart failure in 52-year-old Female",
+    "expectedCodes": [
+      "I50.31"
+    ]
+  },
+  {
+    "id": 950,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3a in 73-year-old Male",
+    "expectedCodes": [
+      "N18.31"
+    ]
+  },
+  {
+    "id": 951,
+    "module": "OBGYN",
+    "text": "Twin pregnancy and fall from bed in 69-year-old Male",
+    "expectedCodes": [
+      "O30.009",
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 952,
+    "module": "ENDOCRINE",
+    "text": "Hyponatremia in 18-year-old Male",
+    "expectedCodes": [
+      "E87.1"
+    ]
+  },
+  {
+    "id": 953,
+    "module": "ENDOCRINE",
+    "text": "Type 1 diabetes in 57-year-old Female",
+    "expectedCodes": [
+      "E10.9"
+    ]
+  },
+  {
+    "id": 954,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 and septic shock in 48-year-old Female",
+    "expectedCodes": [
+      "N18.1",
+      "A41.9",
+      "R65.21"
+    ]
+  },
+  {
+    "id": 955,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3a in 31-year-old Female",
+    "expectedCodes": [
+      "N18.31"
+    ]
+  },
+  {
+    "id": 956,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 5 in 19-year-old Male",
+    "expectedCodes": [
+      "N18.5"
+    ]
+  },
+  {
+    "id": 957,
+    "module": "SEPSIS",
+    "text": "Sepsis and acute systolic heart failure in 26-year-old Female",
+    "expectedCodes": [
+      "A41.9",
+      "I50.21"
+    ]
+  },
+  {
+    "id": 958,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 in 27-year-old Female",
+    "expectedCodes": [
+      "N18.2"
+    ]
+  },
+  {
+    "id": 959,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 3a in 46-year-old Male",
+    "expectedCodes": [
+      "N18.31"
+    ]
+  },
+  {
+    "id": 960,
+    "module": "SEPSIS",
+    "text": "Sepsis due to E. coli and type 1 diabetes in 27-year-old Male",
+    "expectedCodes": [
+      "A41.51",
+      "E10.9"
+    ]
+  },
+  {
+    "id": 961,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 90-year-old Male",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 962,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 1 in 51-year-old Male",
+    "expectedCodes": [
+      "N18.1"
+    ]
+  },
+  {
+    "id": 963,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia and end stage renal disease in 44-year-old Female",
+    "expectedCodes": [
+      "O14.00",
+      "N18.6"
+    ]
+  },
+  {
+    "id": 964,
+    "module": "ENDOCRINE",
+    "text": "Type 2 diabetes in 45-year-old Male",
+    "expectedCodes": [
+      "E11.9"
+    ]
+  },
+  {
+    "id": 965,
+    "module": "CARDIOLOGY",
+    "text": "Acute myocardial infarction in 43-year-old Male",
+    "expectedCodes": [
+      "I21.9"
+    ]
+  },
+  {
+    "id": 966,
+    "module": "NEUROLOGY",
+    "text": "Status epilepticus and atrial fibrillation with rapid ventricular response in 29-year-old Male",
+    "expectedCodes": [
+      "G40.901",
+      "I48.91"
+    ]
+  },
+  {
+    "id": 967,
+    "module": "CARDIOLOGY",
+    "text": "Acute on chronic diastolic heart failure in 67-year-old Female",
+    "expectedCodes": [
+      "I50.33"
+    ]
+  },
+  {
+    "id": 968,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 78-year-old Female",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 969,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA and severe preeclampsia in 50-year-old Male",
+    "expectedCodes": [
+      "A41.02",
+      "O14.10"
+    ]
+  },
+  {
+    "id": 970,
+    "module": "ENDOCRINE",
+    "text": "Dehydration in 65-year-old Female",
+    "expectedCodes": [
+      "E86.0"
+    ]
+  },
+  {
+    "id": 971,
+    "module": "TRAUMA",
+    "text": "Fall from bed in 30-year-old Female",
+    "expectedCodes": [
+      "W06.XXXA"
+    ]
+  },
+  {
+    "id": 972,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia and concussion without loss of consciousness in 91-year-old Female",
+    "expectedCodes": [
+      "O14.00",
+      "S06.0X0A"
+    ]
+  },
+  {
+    "id": 973,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 in 66-year-old Male",
+    "expectedCodes": [
+      "N18.2"
+    ]
+  },
+  {
+    "id": 974,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 4 in 47-year-old Female",
+    "expectedCodes": [
+      "N18.4"
+    ]
+  },
+  {
+    "id": 975,
+    "module": "NEUROLOGY",
+    "text": "Alzheimer's dementia and pulmonary embolism without acute cor pulmonale in 69-year-old Male",
+    "expectedCodes": [
+      "G30.9",
+      "I26.92"
+    ]
+  },
+  {
+    "id": 976,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 41-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 977,
+    "module": "RESPIRATORY",
+    "text": "Ventilator associated pneumonia in 53-year-old Female",
+    "expectedCodes": [
+      "J95.851"
+    ]
+  },
+  {
+    "id": 978,
+    "module": "RESPIRATORY",
+    "text": "Acute respiratory failure and fracture of neck of right femur in 79-year-old Male",
+    "expectedCodes": [
+      "J96.00",
+      "S72.001A"
+    ]
+  },
+  {
+    "id": 979,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack in 21-year-old Male",
+    "expectedCodes": [
+      "G45.9"
+    ]
+  },
+  {
+    "id": 980,
+    "module": "CARDIOLOGY",
+    "text": "Acute diastolic heart failure in 29-year-old Male",
+    "expectedCodes": [
+      "I50.31"
+    ]
+  },
+  {
+    "id": 981,
+    "module": "NEUROLOGY",
+    "text": "Epilepsy and acute kidney failure in 47-year-old Female",
+    "expectedCodes": [
+      "G40.909",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 982,
+    "module": "OBGYN",
+    "text": "Twin pregnancy in 36-year-old Male",
+    "expectedCodes": [
+      "O30.009"
+    ]
+  },
+  {
+    "id": 983,
+    "module": "ENDOCRINE",
+    "text": "Dehydration in 80-year-old Female",
+    "expectedCodes": [
+      "E86.0"
+    ]
+  },
+  {
+    "id": 984,
+    "module": "NEUROLOGY",
+    "text": "Metabolic encephalopathy and type 1 diabetes in 36-year-old Male",
+    "expectedCodes": [
+      "G93.41",
+      "E10.9"
+    ]
+  },
+  {
+    "id": 985,
+    "module": "RESPIRATORY",
+    "text": "Asthma exacerbation in 83-year-old Female",
+    "expectedCodes": [
+      "J45.901"
+    ]
+  },
+  {
+    "id": 986,
+    "module": "RESPIRATORY",
+    "text": "Community acquired pneumonia in 92-year-old Female",
+    "expectedCodes": [
+      "J18.9"
+    ]
+  },
+  {
+    "id": 987,
+    "module": "CARDIOLOGY",
+    "text": "Atrial fibrillation and sepsis due to mrsa in 44-year-old Female",
+    "expectedCodes": [
+      "I48.91",
+      "A41.02"
+    ]
+  },
+  {
+    "id": 988,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia in 63-year-old Male",
+    "expectedCodes": [
+      "O14.00"
+    ]
+  },
+  {
+    "id": 989,
+    "module": "CARDIOLOGY",
+    "text": "Acute systolic heart failure in 37-year-old Male",
+    "expectedCodes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 990,
+    "module": "NEUROLOGY",
+    "text": "Transient ischemic attack and chronic kidney disease stage 5 in 35-year-old Male",
+    "expectedCodes": [
+      "G45.9",
+      "N18.5"
+    ]
+  },
+  {
+    "id": 991,
+    "module": "SEPSIS",
+    "text": "Sepsis due to MRSA in 38-year-old Female",
+    "expectedCodes": [
+      "A41.02"
+    ]
+  },
+  {
+    "id": 992,
+    "module": "CARDIOLOGY",
+    "text": "Non-ST elevation myocardial infarction in 90-year-old Male",
+    "expectedCodes": [
+      "I21.4"
+    ]
+  },
+  {
+    "id": 993,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia and chronic kidney disease stage 3b in 69-year-old Male",
+    "expectedCodes": [
+      "O14.00",
+      "N18.32"
+    ]
+  },
+  {
+    "id": 994,
+    "module": "KIDNEY",
+    "text": "Chronic kidney disease stage 2 in 93-year-old Female",
+    "expectedCodes": [
+      "N18.2"
+    ]
+  },
+  {
+    "id": 995,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 68-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 996,
+    "module": "KIDNEY",
+    "text": "Acute kidney failure and chronic kidney disease stage 3b in 42-year-old Female",
+    "expectedCodes": [
+      "N17.9",
+      "N18.32"
+    ]
+  },
+  {
+    "id": 997,
+    "module": "OBGYN",
+    "text": "Severe preeclampsia in 85-year-old Female",
+    "expectedCodes": [
+      "O14.10"
+    ]
+  },
+  {
+    "id": 998,
+    "module": "NEUROLOGY",
+    "text": "Acute ischemic stroke of unspecified artery in 93-year-old Female",
+    "expectedCodes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 999,
+    "module": "OBGYN",
+    "text": "Mild preeclampsia and type 1 diabetes with ketoacidosis in 58-year-old Male",
+    "expectedCodes": [
+      "O14.00",
+      "E10.10"
+    ]
+  },
+  {
+    "id": 1000,
+    "module": "NEUROLOGY",
+    "text": "Parkinson's disease in 83-year-old Female",
+    "expectedCodes": [
+      "G20"
+    ]
+  }
+]

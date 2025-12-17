@@ -43,9 +43,12 @@ export interface PatientContext {
             hyperglycemia?: { present: boolean; type?: string; };
             insulinUse?: boolean;
             oralMeds?: boolean;
+            hyponatremia?: boolean;
+            dehydration?: boolean;
+            hypothyroidism?: boolean;
         };
         ckd?: {
-            stage: '1' | '2' | '3' | '4' | '5' | 'esrd' | 'unspecified';
+            stage: '1' | '2' | '3' | '3a' | '3b' | '4' | '5' | 'esrd' | 'unspecified';
             onDialysis: boolean;
             dialysisType?: 'none' | 'temporary' | 'chronic';
             aki: boolean;
@@ -84,6 +87,7 @@ export interface PatientContext {
         renal?: {
             ckd?: {
                 stage: '1' | '2' | '3' | '4' | '5' | 'esrd' | 'unspecified';
+                isDiabetic?: boolean;
             };
             aki?: boolean;
             acuteFailure?: boolean; // N17.9 - Acute kidney injury
@@ -130,6 +134,8 @@ export interface PatientContext {
             pleuralEffusion?: boolean;
             pneumothorax?: boolean;
             pulmonaryEmbolism?: boolean;
+            acuteCorPulmonale?: boolean;
+            pulmonaryHypertension?: boolean;
             oxygenDependence?: boolean;
             oxygenTherapy?: boolean; // Z99.81
             ards?: boolean; // J80 - Acute respiratory distress syndrome

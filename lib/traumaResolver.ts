@@ -49,6 +49,22 @@ export function resolveTrauma(text: string): TraumaResolution | undefined {
     const hasFall = /fall/.test(lower);
     const fallSameLevel = /same level|from standing/.test(lower);
 
+    // --- FALL LOGIC ---
+    if (hasFall) {
+        let fallCode = 'W19.XXX'; // Unspecified fall
+        let fallLabel = 'Unspecified fall';
+        if (/bed/.test(lower)) {
+            fallCode = 'W06.XXX';
+            fallLabel = 'Fall from bed';
+        }
+
+        secondary_codes.push({
+            code: fallCode + suffix, // Add encounter suffix to external cause
+            label: fallLabel,
+            type: 'external_cause'
+        });
+    }
+
     // --- BURN LOGIC ---
     if (/burn|corrosion|scald/.test(lower) && !/friction/.test(lower) && !/rope/.test(lower)) {
         let code = 'T30.0'; // Unspecified
@@ -686,7 +702,8 @@ export function resolveTrauma(text: string): TraumaResolution | undefined {
 
     // --- WOUND / LACERATION / BITE LOGIC ---
     // Added 'abrasion', 'friction', 'foreign body', 'contusion', 'cut', 'cutting', 'penetrating'
-    if (/laceration|puncture|bite|sprain|dislocation|amputation|crush|abrasion|friction|foreign body|contusion|cut|cutting|penetrating/.test(lower)) {
+    if (/laceration|puncture|bite|sprain|dislocation|amputation|crush|abrasion|friction|foreign body|contusion|\bcut\b|cutting|penetrating/.test(lower)) {
+        console.log("DEBUG: Matched T14.8 block. Text:", lower);
         let code = 'T14.8';
         let label = 'Wound';
 
@@ -886,6 +903,17 @@ export function resolveTrauma(text: string): TraumaResolution | undefined {
             label: 'Injury, unspecified',
             attributes: { type: 'injury', encounter },
             warnings: ['Specify type of injury (laceration, contusion, etc.) and location']
+        };
+    }
+
+    // Fallback for ONLY Fall (returns Secondary code only)
+    if (/fall/.test(lower) && secondary_codes.length > 0) {
+        console.log("DEBUG: Fallback specific for Fall only triggered. Codes:", secondary_codes);
+        return {
+            code: '', // No principal code for fall event alone
+            label: '',
+            attributes: { type: 'injury', encounter },
+            secondary_codes
         };
     }
 

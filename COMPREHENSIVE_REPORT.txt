@@ -1,0 +1,146 @@
+COMPREHENSIVE BENCHMARK REPORT
+=============================
+Total Cases: 1000
+Correct: 977
+Accuracy: 97.7%
+
+ACCURACY BY MODULE
+------------------
+RESPIRATORY: 97.8% (133/136)
+ENDOCRINE: 97.3% (107/110)
+NEUROLOGY: 100.0% (129/129)
+SEPSIS: 94.4% (119/126)
+KIDNEY: 94.9% (129/136)
+TRAUMA: 98.4% (124/126)
+OBGYN: 100.0% (123/123)
+CARDIOLOGY: 99.1% (113/114)
+
+FAILED CASES (First 50)
+-----------------------
+CASE 39 (RESPIRATORY): Pneumonia and sepsis due to mrsa in 82-year-old Female
+  Expected: J18.9, A41.02
+  Got:      A41.02, J15.212
+  MISSING:  J18.9
+  EXTRA:    J15.212
+
+CASE 87 (KIDNEY): Chronic kidney disease stage 3b and acute systolic heart failure in 26-year-old Male
+  Expected: N18.32, I50.21
+  Got:      N18.32, I50.22
+  MISSING:  I50.21
+  EXTRA:    I50.22
+
+CASE 114 (SEPSIS): Sepsis due to MRSA and hospital acquired pneumonia in 51-year-old Female
+  Expected: A41.02, J18.9
+  Got:      A41.02, J15.212
+  MISSING:  J18.9
+  EXTRA:    J15.212
+
+CASE 162 (ENDOCRINE): Type 2 diabetes and end stage renal disease in 41-year-old Male
+  Expected: E11.9, N18.6
+  Got:      N18.6, E11.22
+  MISSING:  E11.9
+  EXTRA:    E11.22
+
+CASE 252 (SEPSIS): Sepsis due to Pseudomonas and acute hypoxic respiratory failure in 76-year-old Male
+  Expected: A41.52, J96.01
+  Got:      J96.01, A41.52, R65.20
+  EXTRA:    R65.20
+
+CASE 261 (TRAUMA): Traumatic subdural hematoma without loss of consciousness and concussion without loss of consciousness in 85-year-old Male
+  Expected: S06.5X0A, S06.0X0A
+  Got:      S06.0X0A
+  MISSING:  S06.5X0A
+
+CASE 279 (SEPSIS): Sepsis due to E. coli and hospital acquired pneumonia in 25-year-old Female
+  Expected: A41.51, J18.9
+  Got:      A41.51, J15.5
+  MISSING:  J18.9
+  EXTRA:    J15.5
+
+CASE 459 (KIDNEY): Acute kidney failure and type 1 diabetes in 20-year-old Female
+  Expected: N17.9, E10.9
+  Got:      N17.9, E10.22
+  MISSING:  E10.9
+  EXTRA:    E10.22
+
+CASE 465 (CARDIOLOGY): Acute diastolic heart failure and chronic kidney disease stage 3a in 20-year-old Male
+  Expected: I50.31, N18.31
+  Got:      N18.31, I50.32
+  MISSING:  I50.31
+  EXTRA:    I50.32
+
+CASE 525 (SEPSIS): Severe sepsis with acute kidney failure and sepsis due to mrsa in 42-year-old Female
+  Expected: A41.9, R65.20, N17.9, A41.02
+  Got:      A41.02, R65.20, N17.9
+  MISSING:  A41.9
+
+CASE 567 (SEPSIS): Sepsis due to Pseudomonas and pneumonia in 35-year-old Male
+  Expected: A41.52, J18.9
+  Got:      A41.52, J15.1
+  MISSING:  J18.9
+  EXTRA:    J15.1
+
+CASE 582 (SEPSIS): Sepsis due to Pseudomonas and acute hypoxic respiratory failure in 74-year-old Male
+  Expected: A41.52, J96.01
+  Got:      J96.01, A41.52, R65.20
+  EXTRA:    R65.20
+
+CASE 591 (KIDNEY): Chronic kidney disease stage 1 and hypertensive heart disease with heart failure in 71-year-old Male
+  Expected: N18.1, I11.0, I50.9
+  Got:      N18.1, I13.0, I50.9
+  MISSING:  I11.0
+  EXTRA:    I13.0
+
+CASE 603 (RESPIRATORY): Acute respiratory distress syndrome and sepsis due to mrsa in 84-year-old Male
+  Expected: J80, A41.02
+  Got:      A41.02, R65.20, J80
+  EXTRA:    R65.20
+
+CASE 657 (RESPIRATORY): COPD exacerbation and asthma exacerbation in 44-year-old Male
+  Expected: J44.1, J45.901
+  Got:      J44.1
+  MISSING:  J45.901
+
+CASE 660 (TRAUMA): Traumatic subdural hematoma without loss of consciousness and concussion without loss of consciousness in 26-year-old Male
+  Expected: S06.5X0A, S06.0X0A
+  Got:      S06.0X0A
+  MISSING:  S06.5X0A
+
+CASE 723 (KIDNEY): Chronic kidney disease stage 4 and type 1 diabetes in 23-year-old Male
+  Expected: N18.4, E10.9
+  Got:      N18.4, E10.22
+  MISSING:  E10.9
+  EXTRA:    E10.22
+
+CASE 732 (KIDNEY): Chronic kidney disease stage 5 and end stage renal disease in 86-year-old Female
+  Expected: N18.5, N18.6
+  Got:      N18.5
+  MISSING:  N18.6
+
+CASE 783 (ENDOCRINE): Type 1 diabetes and acute kidney failure in 95-year-old Male
+  Expected: E10.9, N17.9
+  Got:      N17.9, E10.22
+  MISSING:  E10.9
+  EXTRA:    E10.22
+
+CASE 819 (SEPSIS): Severe sepsis with acute kidney failure and type 2 diabetes in 68-year-old Male
+  Expected: A41.9, R65.20, N17.9, E11.9
+  Got:      A41.9, R65.20, N17.9, E11.22
+  MISSING:  E11.9
+  EXTRA:    E11.22
+
+CASE 822 (KIDNEY): Chronic kidney disease stage 3a and type 2 diabetes in 27-year-old Female
+  Expected: N18.31, E11.9
+  Got:      N18.31, E11.22
+  MISSING:  E11.9
+  EXTRA:    E11.22
+
+CASE 843 (KIDNEY): Chronic kidney disease stage 2 and chronic kidney disease stage 1 in 25-year-old Male
+  Expected: N18.2, N18.1
+  Got:      N18.1
+  MISSING:  N18.2
+
+CASE 858 (ENDOCRINE): Type 2 diabetes and type 2 diabetes with ketoacidosis in 29-year-old Female
+  Expected: E11.9, E11.10
+  Got:      E11.10
+  MISSING:  E11.9
