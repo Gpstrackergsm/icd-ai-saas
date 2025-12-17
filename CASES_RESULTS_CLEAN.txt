@@ -1,0 +1,52 @@
+=== 50 COMPLEX AUDIT CASES - FINAL RESULTS (ROUND 2) ===
+
+CASE 1 | A41.02, J15.212, J96.01, R65.20 | PNA MRSA + Sepsis + Acute RF (Severe Sepsis auto-added)
+CASE 2 | U07.1, J12.82, J96.00, A41.9, R65.21 | COVID + Septic Shock
+CASE 3 | A41.9, R65.20, J69.0, N17.9 | Aspiration PNA + Severe Sepsis + AKI
+CASE 4 | A41.51, R65.21, J15.5, J96.01 | E.Coli PNA + Septic Shock
+CASE 5 | A41.9, J18.9, J44.0 | COPD + PNA + Sepsis
+CASE 6 | J44.1, J96.02 | COPD Exacerbation + Hypercapnic RF
+CASE 7 | J81.0, J96.00, I50.9 | CHF + Pulmonary Edema
+CASE 8 | J96.20, J44.9, I50.9 | COPD + CHF + Acute/Chronic RF
+CASE 9 | J45.901, J96.01 | Asthma + Acute RF
+CASE 10 | J96.10, Z99.81 | Chronic RF + Home O2
+CASE 11 | J18.9, J96.00 | PNA + Acute RF
+CASE 12 | J10.0, J96.00 | Flu PNA + RF
+CASE 13 | J95.851, B96.5 | VAP Pseudomonas
+CASE 14 | J69.0 | Aspiration PNA
+CASE 15 | J96.00 | Acute RF Unspecified
+CASE 16 | J44.1, J96.00 | COPD Exac + Acute RF
+CASE 17 | J18.9, J96.01 | PNA + Hypoxic RF
+CASE 18 | J95.821 | Post-op RF
+CASE 19 | J45.901, J96.01 | Asthma + RF
+CASE 20 | I26.02 | PE + Cor Pulmonale
+CASE 21 | A41.9, N39.0, N18.9, E11.22 | Sepsis (Princ) + UTI + CKD/DM
+CASE 22 | E10.10 | T1DM DKA
+CASE 23 | A41.9, L97.419, E11.621 | Sepsis (Princ) + Foot Ulcer
+CASE 24 | J18.9, J96.01, E11.9 | PNA + DM
+CASE 25 | A41.9, N18.6, E11.22, Z99.2 | Sepsis + ESRD
+CASE 26 | U07.1, J12.82, J80 | COVID + ARDS
+CASE 27 | J96.20, J44.9 | Acute/Chronic RF + COPD
+CASE 28 | J18.9, J96.00 | PNA + RF
+CASE 29 | J44.1, J18.9 | COPD Exac + PNA
+CASE 30 | J81.0, J96.01 | Pulm Edema + Hypoxic RF
+CASE 31 | J96.00, J44.9, F17.210 | COPD + RF + Smoker
+CASE 32 | I50.9, J91.8 | CHF + Pleural Effusion
+CASE 33 | J12.9, J96.00 | Viral PNA + RF
+CASE 34 | U07.1, J12.82, A41.9, R65.21 | COVID + Septic Shock
+CASE 35 | A41.9, J18.9 | Severe Sepsis (R65.20 removed - No Organ Dysfunction)
+CASE 36 | J18.9, N17.9 | PNA + AKI
+CASE 37 | J69.0, J96.00 | Aspiration PNA + RF
+CASE 38 | J96.00 | RF following Intubation
+CASE 39 | J93.11 | Spontaneous Pneumothorax
+CASE 40 | I26.02 | Saddle PE
+CASE 41 | A41.9, J80, R65.20 | Sepsis + ARDS (R65.20 Auto-Added)
+CASE 42 | J44.1, J96.02 | COPD + Hypercapnic RF
+CASE 43 | J18.9, J96.20 | PNA + Acute/Chronic RF
+CASE 44 | J10.0, J96.01 | Flu + Hypoxic RF
+CASE 45 | J95.821 | Post-op RF
+CASE 46 | J95.851 | VAP
+CASE 47 | U07.1, J12.82, J80 | COVID + ARDS
+CASE 48 | A41.9, J69.0 | Sepsis + Aspiration PNA
+CASE 49 | J96.00, G93.41 | Acute RF + Metabolic Encephalopathy
+CASE 50 | A41.9, R65.21, N17.9, J80 | Septic Shock + ARDS

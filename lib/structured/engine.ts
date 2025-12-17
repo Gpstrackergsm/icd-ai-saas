@@ -4039,6 +4039,38 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         finalCodes = finalCodes.filter(c => !c.code.startsWith('J45.'));
     }
 
+    // 2. Strict Severe Sepsis Logic (Audit Case 35 & 41)
+    // 2. Strict Severe Sepsis Logic (Audit Case 35 & 41)
+    const auditHasSepsis = finalCodes.some(c => c.code.startsWith('A40') || c.code.startsWith('A41'));
+    const auditHasShock = finalCodes.some(c => c.code === 'R65.21');
+    const auditHasSevereSepsis = finalCodes.some(c => c.code === 'R65.20');
+
+    // Define Acute Organ Dysfunction codes for this check
+    // J96.0/2 (Acute Resp Fail), J80 (ARDS), N17 (AKI), G93.4 (Enceph), K72.0 (Hepatic), D65 (DIC)
+    const auditHasOrgDys = finalCodes.some(c =>
+        c.code.startsWith('J96.0') || c.code.startsWith('J96.2') || c.code === 'J80' ||
+        c.code.startsWith('N17') ||
+        c.code.startsWith('G93.4') ||
+        c.code.startsWith('K72.0') ||
+        c.code === 'D65'
+    );
+
+    // Rule A: Remove R65.20 if no organ dysfunction (Case 35)
+    if (auditHasSevereSepsis && !auditHasOrgDys) {
+        finalCodes = finalCodes.filter(c => c.code !== 'R65.20');
+        // console.log('AUDIT: Removed R65.20 because no acute organ dysfunction coded.');
+    }
+
+    // Rule B: Add R65.20 if Sepsis + Organ Dys + No Shock (Case 41)
+    if (auditHasSepsis && auditHasOrgDys && !auditHasShock && !auditHasSevereSepsis) {
+        finalCodes.push({
+            code: 'R65.20',
+            label: 'Severe sepsis without septic shock',
+            rationale: 'Sepsis + Acute Organ Dysfunction (Guideline I.C.1.d.1.b)',
+            guideline: 'ICD-10-CM'
+        });
+    }
+
     // Run Validation on ALL codes
     finalCodes.forEach(c => {
         const error = validateDomainSafety(c);
