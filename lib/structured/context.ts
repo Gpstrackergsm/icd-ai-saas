@@ -185,7 +185,7 @@ export interface PatientContext {
             type?: 'unspecified' | 'fracture' | 'burn' | 'open_wound' | 'contusion' | 'poisoning';
             bodyRegion?: string;
             laterality?: 'left' | 'right' | 'bilateral' | 'unspecified';
-            encounterType?: 'initial' | 'subsequent' | 'sequela';
+            encounterType?: 'initial' | 'subsequent' | 'sequela' | 'unspecified';
 
             general?: {
                 type: 'unspecified' | 'fracture' | 'burn' | 'wound' | 'poisoning';

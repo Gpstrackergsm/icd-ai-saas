@@ -47,7 +47,7 @@ export function resolveTrauma(text: string): TraumaResolution | undefined {
 
     // External cause detection
     const hasFall = /fall/.test(lower);
-    const fallSameLevel = /same level/.test(lower);
+    const fallSameLevel = /same level|from standing/.test(lower);
 
     // --- BURN LOGIC ---
     if (/burn|corrosion|scald/.test(lower) && !/friction/.test(lower) && !/rope/.test(lower)) {

@@ -234,12 +234,14 @@ export function parseInput(text: string): ParseResult {
                     }
 
                     // 2. Encounter Type Extraction
-                    let encounterType: 'initial' | 'subsequent' | 'sequela' | undefined;
+                    let encounterType: 'initial' | 'subsequent' | 'sequela' | 'unspecified' | undefined;
                     if (lowerValue.includes('initial') || lowerValue.includes('active treatment') || lowerValue.includes('ed visit') || lowerValue.includes('emergency')) encounterType = 'initial';
                     else if (lowerValue.includes('subsequent') || lowerValue.includes('healing') || lowerValue.includes('routine') || lowerValue.includes('aftercare') || lowerValue.includes('follow-up')) encounterType = 'subsequent';
                     else if (lowerValue.includes('sequela') || lowerValue.includes('late effect') || lowerValue.includes('residual')) encounterType = 'sequela';
+                    // User Rule: If unsafe to determine, set to unspecified, NEVER null
+                    else encounterType = 'unspecified';
 
-                    // Update if found
+                    // Update if found (or set to unspecified)
                     if (encounterType && (!context.conditions.injury.encounterType)) {
                         context.conditions.injury.encounterType = encounterType;
                     }
