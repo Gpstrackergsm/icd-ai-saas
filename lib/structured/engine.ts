@@ -10,6 +10,7 @@ import { StructuredCode, EngineOutput, SequencedCode } from './types';
 
 import { correctDiabetesCodes } from './diabetes-corrector';
 import { correctRespiratorySequencing } from './respiratory-corrector';
+import { enforceSepsisGuardrails } from './sepsisGuardrails';
 
 export { StructuredCode, EngineOutput };
 
@@ -4039,37 +4040,38 @@ export function runStructuredRules(ctx: PatientContext): EngineOutput {
         finalCodes = finalCodes.filter(c => !c.code.startsWith('J45.'));
     }
 
-    // 2. Strict Severe Sepsis Logic (Audit Case 35 & 41)
-    // 2. Strict Severe Sepsis Logic (Audit Case 35 & 41)
-    const auditHasSepsis = finalCodes.some(c => c.code.startsWith('A40') || c.code.startsWith('A41'));
-    const auditHasShock = finalCodes.some(c => c.code === 'R65.21');
-    const auditHasSevereSepsis = finalCodes.some(c => c.code === 'R65.20');
+    // 2. Sepsis Guardrails (Audit Round 3 Refactor)
+    // Extracts codes, sanitizes R65.20 usage, and ensures organism specificity.
+    const currentCodeStrings = finalCodes.map(c => c.code);
+    const guardedCodeStrings = enforceSepsisGuardrails(currentCodeStrings, {
+        hasSepsis: ctx.conditions.infection?.sepsis?.present,
+        hasSepticShock: ctx.conditions.infection?.sepsis?.shock,
+        sepsisOrganism: null, // Mapper needed if ctx has specific organism field, or rely on text fallback
+        text: ctx.encounter?.reasonForAdmission // Fallback to entire string since rawText is missing
+    });
 
-    // Define Acute Organ Dysfunction codes for this check
-    // J96.0/2 (Acute Resp Fail), J80 (ARDS), N17 (AKI), G93.4 (Enceph), K72.0 (Hepatic), D65 (DIC)
-    const auditHasOrgDys = finalCodes.some(c =>
-        c.code.startsWith('J96.0') || c.code.startsWith('J96.2') || c.code === 'J80' ||
-        c.code.startsWith('N17') ||
-        c.code.startsWith('G93.4') ||
-        c.code.startsWith('K72.0') ||
-        c.code === 'D65'
-    );
+    // Reconstruct finalCodes based on guarded list
+    // A. Remove codes that were dropped
+    finalCodes = finalCodes.filter(c => guardedCodeStrings.includes(c.code));
 
-    // Rule A: Remove R65.20 if no organ dysfunction (Case 35)
-    if (auditHasSevereSepsis && !auditHasOrgDys) {
-        finalCodes = finalCodes.filter(c => c.code !== 'R65.20');
-        // console.log('AUDIT: Removed R65.20 because no acute organ dysfunction coded.');
-    }
+    // B. Add new codes (R65.20, R65.21, Specific Organisms)
+    guardedCodeStrings.forEach(codeStr => {
+        if (!finalCodes.some(c => c.code === codeStr)) {
+            // Create proper StructuredCode object
+            let label = 'Sepsis related condition';
+            if (codeStr === 'R65.20') label = 'Severe sepsis without septic shock';
+            if (codeStr === 'R65.21') label = 'Severe sepsis with septic shock';
+            if (codeStr === 'A41.02') label = 'Sepsis due to Methicillin resistant Staphylococcus aureus';
+            if (codeStr === 'A41.51') label = 'Sepsis due to Escherichia coli';
 
-    // Rule B: Add R65.20 if Sepsis + Organ Dys + No Shock (Case 41)
-    if (auditHasSepsis && auditHasOrgDys && !auditHasShock && !auditHasSevereSepsis) {
-        finalCodes.push({
-            code: 'R65.20',
-            label: 'Severe sepsis without septic shock',
-            rationale: 'Sepsis + Acute Organ Dysfunction (Guideline I.C.1.d.1.b)',
-            guideline: 'ICD-10-CM'
-        });
-    }
+            finalCodes.push({
+                code: codeStr,
+                label: label,
+                rationale: 'Sepsis Guardrails Enforced',
+                guideline: 'ICD-10-CM Guideline I.C.1.d'
+            });
+        }
+    });
 
     // Rule 3: COPD + Pneumonia (Audit Case 5)
     // If J44.0 (COPD with Acute LRI) is present AND Pneumonia (J18/J15/J13/etc) is present,
