@@ -123,8 +123,14 @@ export function validateContext(ctx: PatientContext, options?: ValidationOptions
         }
     }
 
+    // === HARD STOP 9: SEPSIS REQUIRES INFECTION SITE ===
+    if (ctx.conditions.infection?.sepsis?.present) {
+        if (!ctx.conditions.infection.site) {
+            errors.push('HARD STOP: Sepsis selected but no infection site specified. Infection Site (Lung, Blood, UTI, etc.) is REQUIRED for sepsis coding.');
+        }
+    }
 
-    // === STRICT ONLY: SEPTIC SHOCK REQUIRES SEPSIS ===
+    // === HARD STOP 10: SEPTIC SHOCK REQUIRES SEPSIS ===
     if (ctx.conditions.infection?.sepsis?.shock === true) {
         if (!ctx.conditions.infection.sepsis.present) {
             errors.push('HARD STOP: Septic shock selected but sepsis not documented. Sepsis = Yes is REQUIRED for septic shock.');
