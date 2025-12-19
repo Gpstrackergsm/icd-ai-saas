@@ -143,6 +143,11 @@
                     <h3 class="text-xl font-bold text-slate-900 mb-4">Codes Submitted by Human Reviewer</h3>
                     <div id="case-codes" class="flex flex-wrap gap-2 mb-6"></div>
 
+                    <p class="text-sm text-slate-600 italic mb-4">
+                        <i class="fa-solid fa-info-circle text-audit-600 mr-1"></i>
+                        This example reflects a real-world audit scenario reviewed by human coders before validation.
+                    </p>
+
                     <button onclick="runAudit()" id="run-audit-btn"
                         class="w-full md:w-auto px-8 py-4 bg-audit-700 hover:bg-audit-800 text-white font-bold rounded-lg shadow-lg transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
                         <i class="fa-solid fa-play"></i>
@@ -167,6 +172,7 @@
                             <label class="text-sm font-semibold text-slate-600 uppercase tracking-wide mb-2 block">Final
                                 Decision</label>
                             <div id="decision-badge"></div>
+                            <div id="radv-risk" class="hidden mt-3"></div>
                         </div>
 
                         <!-- HCC Status -->
@@ -200,6 +206,17 @@
                             <div id="reasoning"
                                 class="bg-slate-50 border border-slate-200 rounded-lg p-4 text-slate-700 leading-relaxed">
                             </div>
+                        </div>
+
+                        <!-- Contextual CTA -->
+                        <div class="pt-6 border-t border-slate-200">
+                            <a href="contact.html"
+                                class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-audit-700 hover:bg-audit-800 text-white font-semibold rounded-lg transition-all">
+                                <i class="fa-solid fa-comments"></i>
+                                Discuss this scenario
+                            </a>
+                            <p class="text-sm text-slate-500 mt-2">See how this logic would apply to your audit
+                                workflows.</p>
                         </div>
                     </div>
                 </div>
@@ -362,6 +379,15 @@
                 ? '<span class="inline-flex items-center gap-2 px-6 py-3 bg-green-100 text-green-800 font-bold rounded-lg border-2 border-green-300"><i class="fa-solid fa-check-circle"></i> PASS</span>'
                 : '<span class="inline-flex items-center gap-2 px-6 py-3 bg-red-100 text-red-800 font-bold rounded-lg border-2 border-red-300"><i class="fa-solid fa-times-circle"></i> FAIL</span>';
             document.getElementById('decision-badge').innerHTML = decisionHTML;
+
+            // RADV Risk Badge (Case 2 only)
+            const radvRiskElement = document.getElementById('radv-risk');
+            if (selectedCase === 2 && caseData.decision === 'FAIL') {
+                radvRiskElement.classList.remove('hidden');
+                radvRiskElement.innerHTML = '<span class="inline-flex items-center gap-2 px-4 py-2 bg-amber-100 text-amber-800 font-semibold rounded-lg border border-amber-300 text-sm"><i class="fa-solid fa-exclamation-triangle"></i> RADV Risk: HIGH if submitted as-is</span>';
+            } else {
+                radvRiskElement.classList.add('hidden');
+            }
 
             // HCC Status
             const hccHTML = caseData.hcc === 'Supported'
