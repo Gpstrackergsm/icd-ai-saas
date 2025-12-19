@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9DPX4FW21M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-9DPX4FW21M');
+    </script>
+    <title>Interactive Audit Demo - ICD Audit Engine | BALLEY LTD</title>
+    <meta name="description"
+        content="Experience deterministic ICD-10-CM audit validation with read-only demonstration cases. See how the engine validates HCC decisions after human review.">
+
+    <link rel="icon" type="image/png" href="https://www.icd-10-cm.online/favicon.png">
+    <link rel="canonical" href="https://www.icd-10-cm.online/demo.html" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        audit: {
+                            50: '#f0f9ff', 100: '#e0f2fe', 500: '#0284c7',
+                            600: '#0369a1', 700: '#075985', 800: '#0c4a6e', 900: '#082f49'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(203, 213, 225, 0.5);
+        }
+    </style>
+</head>
+
+<body class="font-sans text-slate-800 antialiased bg-slate-50">
+
+    <!-- Header -->
+    <nav class="fixed w-full z-40 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <a href="/" class="flex-shrink-0 flex items-center gap-3">
+                    <div
+                        class="w-10 h-10 bg-audit-700 rounded-lg flex items-center justify-center text-white shadow-lg">
+                        <i class="fa-solid fa-shield-halved text-xl"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-slate-900">ICD Audit Engine</span>
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-slate-600 hover:text-audit-600 font-medium transition-colors">Home</a>
+                    <a href="for-audit-firms.html"
+                        class="text-slate-600 hover:text-audit-600 font-medium transition-colors">For Audit Firms</a>
+                    <a href="icd-audit-engine.html"
+                        class="text-slate-600 hover:text-audit-600 font-medium transition-colors">Product</a>
+                    <a href="demo.html" class="text-audit-600 font-bold transition-colors">Demo</a>
+                    <a href="about.html"
+                        class="text-slate-600 hover:text-audit-600 font-medium transition-colors">About</a>
+                    <a href="contact.html"
+                        class="bg-audit-700 hover:bg-audit-800 text-white px-5 py-2.5 rounded-lg font-medium transition-all shadow-lg transform hover:-translate-y-0.5 text-sm">Discuss
+                        Integration</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="pt-32 pb-12 bg-gradient-to-br from-slate-900 to-slate-800">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-block px-4 py-2 bg-amber-500/10 border border-amber-500/20 rounded-full mb-6">
+                <span class="text-amber-400 font-semibold text-sm">READ-ONLY DEMONSTRATION</span>
+            </div>
+            <h1 class="text-4xl lg:text-5xl font-bold text-white mb-6">Interactive Audit Demo</h1>
+            <p class="text-lg text-slate-300 max-w-3xl mx-auto leading-relaxed">
+                This demo shows how the ICD Audit Engine validates ICD-10-CM and HCC decisions<br>
+                <span class="text-white font-semibold">after human review.</span> No data upload. No auto-coding.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Demo -->
+    <section class="py-16 bg-white">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+            <!-- Case Selector -->
+            <div class="mb-12">
+                <h2 class="text-2xl font-bold text-slate-900 mb-6">Select a Sample Case</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Case 1 -->
+                    <button onclick="selectCase(1)" id="case-1-btn"
+                        class="case-btn text-left p-6 bg-slate-50 hover:bg-audit-50 border-2 border-slate-200 hover:border-audit-500 rounded-xl transition-all">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fa-solid fa-file-medical text-audit-600"></i>
+                            <span class="font-bold text-slate-900">Case 1</span>
+                        </div>
+                        <p class="text-sm text-slate-600">Type 2 Diabetes with CKD + Neuropathy</p>
+                    </button>
+
+                    <!-- Case 2 -->
+                    <button onclick="selectCase(2)" id="case-2-btn"
+                        class="case-btn text-left p-6 bg-slate-50 hover:bg-audit-50 border-2 border-slate-200 hover:border-audit-500 rounded-xl transition-all">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fa-solid fa-file-medical text-audit-600"></i>
+                            <span class="font-bold text-slate-900">Case 2</span>
+                        </div>
+                        <p class="text-sm text-slate-600">Pneumonia with Sepsis vs Severe Sepsis</p>
+                    </button>
+
+                    <!-- Case 3 -->
+                    <button onclick="selectCase(3)" id="case-3-btn"
+                        class="case-btn text-left p-6 bg-slate-50 hover:bg-audit-50 border-2 border-slate-200 hover:border-audit-500 rounded-xl transition-all">
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fa-solid fa-file-medical text-audit-600"></i>
+                            <span class="font-bold text-slate-900">Case 3</span>
+                        </div>
+                        <p class="text-sm text-slate-600">CHF with Documentation Ambiguity</p>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Case Details -->
+            <div id="case-details" class="hidden mb-8">
+                <div class="bg-slate-50 rounded-xl p-8 border border-slate-200">
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">Clinical Summary</h3>
+                    <p id="case-summary" class="text-slate-700 mb-6 leading-relaxed"></p>
+
+                    <h3 class="text-xl font-bold text-slate-900 mb-4">Codes Submitted by Human Reviewer</h3>
+                    <div id="case-codes" class="flex flex-wrap gap-2 mb-6"></div>
+
+                    <button onclick="runAudit()" id="run-audit-btn"
+                        class="w-full md:w-auto px-8 py-4 bg-audit-700 hover:bg-audit-800 text-white font-bold rounded-lg shadow-lg transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i>
+                        <span>Run Second-Pass Audit</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Audit Results -->
+            <div id="audit-results" class="hidden">
+                <div class="bg-white rounded-xl border-2 border-slate-200 overflow-hidden">
+                    <div class="bg-slate-900 text-white px-8 py-4 flex items-center justify-between">
+                        <h3 class="text-xl font-bold">Engine Output</h3>
+                        <span
+                            class="text-sm bg-amber-500/20 px-3 py-1 rounded-full border border-amber-500/30 text-amber-300">Example
+                            Output — For Demonstration</span>
+                    </div>
+
+                    <div class="p-8 space-y-6">
+                        <!-- Final Decision -->
+                        <div>
+                            <label class="text-sm font-semibold text-slate-600 uppercase tracking-wide mb-2 block">Final
+                                Decision</label>
+                            <div id="decision-badge"></div>
+                        </div>
+
+                        <!-- HCC Status -->
+                        <div>
+                            <label class="text-sm font-semibold text-slate-600 uppercase tracking-wide mb-2 block">HCC
+                                Status</label>
+                            <div id="hcc-status"></div>
+                        </div>
+
+                        <!-- Triggered Guideline -->
+                        <div>
+                            <label
+                                class="text-sm font-semibold text-slate-600 uppercase tracking-wide mb-2 block">Triggered
+                                ICD-10-CM Guideline</label>
+                            <div id="guideline" class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-slate-700">
+                            </div>
+                        </div>
+
+                        <!-- Missing/Conflicting Evidence -->
+                        <div id="evidence-section">
+                            <label
+                                class="text-sm font-semibold text-slate-600 uppercase tracking-wide mb-2 block">Missing
+                                / Conflicting Evidence</label>
+                            <div id="evidence" class="space-y-2"></div>
+                        </div>
+
+                        <!-- Audit Reasoning -->
+                        <div>
+                            <label class="text-sm font-semibold text-slate-600 uppercase tracking-wide mb-2 block">Audit
+                                Reasoning</label>
+                            <div id="reasoning"
+                                class="bg-slate-50 border border-slate-200 rounded-lg p-4 text-slate-700 leading-relaxed">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Clarifier -->
+    <div class="bg-slate-100 border-y border-slate-200 py-12">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-lg text-slate-700 leading-relaxed">
+                <i class="fa-solid fa-info-circle text-audit-600 mr-2"></i>
+                This demo reflects <span class="font-semibold">fixed scenarios</span> to illustrate audit logic.<br>
+                Enterprise access is provisioned only through <span class="font-semibold">guided pilots</span>.
+            </p>
+        </div>
+    </div>
+
+    <!-- Request Test Access -->
+    <section class="py-16 bg-white">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-slate-900 mb-4">Request Test Access</h2>
+                <p class="text-slate-600">This platform is provisioned for organizations with audit
+                    responsibility.<br>Test access is granted after qualification.</p>
+            </div>
+
+            <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200">
+                <form id="testAccessForm" class="space-y-6">
+                    <div id="testSuccessMessage"
+                        class="hidden bg-green-50 text-green-700 p-4 rounded-lg border border-green-200 mb-4">
+                        <i class="fa-solid fa-check-circle mr-2"></i>
+                        <span>Request submitted! We'll contact you shortly to discuss qualifications.</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Name *</label>
+                            <input type="text" id="testName" required
+                                class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-audit-600 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Company *</label>
+                            <input type="text" id="testCompany" required
+                                class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-audit-600 outline-none">
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Email *</label>
+                            <input type="email" id="testEmail" required
+                                class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-audit-600 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">Role *</label>
+                            <input type="text" id="testRole" required placeholder="e.g., Coding Director"
+                                class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-audit-600 outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-slate-700 mb-1">Use Case *</label>
+                        <textarea id="testUseCase" required rows="3"
+                            placeholder="Describe your audit environment and what you'd like to test..."
+                            class="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-audit-600 outline-none"></textarea>
+                    </div>
+                    <button type="submit"
+                        class="w-full bg-audit-700 hover:bg-audit-800 text-white font-bold py-3 rounded-lg transition-all">
+                        Submit Test Access Request
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-sm">&copy; 2025 BALLEY LTD. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Sample case data
+        const cases = {
+            1: {
+                summary: "67-year-old female with Type 2 Diabetes Mellitus. Current medications include metformin and lisinopril. Labs show eGFR 42 (Stage 3a CKD). Patient reports bilateral foot numbness consistent with peripheral neuropathy. HbA1c 7.8%.",
+                codes: ["E11.22", "N18.3", "E11.40"],
+                decision: "PASS",
+                hcc: "Supported",
+                guideline: "ICD-10-CM Section I.C.9.a.1 — When diabetes and CKD are both documented, code both conditions. Sequencing depends on the circumstances of admission.",
+                evidence: [],
+                reasoning: "All submitted codes are supported by clinical documentation. E11.22 correctly identifies Type 2 diabetes with chronic kidney disease. N18.3 properly stages the CKD at 3a based on eGFR 42. E11.40 correctly codes diabetic neuropathy based on documented peripheral neuropathy. HCC 18 (Diabetes with Chronic Complications) and HCC 138 (Chronic Kidney Disease, Stage 3-4) are both supported."
+            },
+            2: {
+                summary: "82-year-old male admitted with fever, cough, and hypotension. Chest X-ray confirms pneumonia. Blood cultures positive for E. coli. Documentation states 'sepsis' but does not specify organ dysfunction. Lactate 1.8 (normal). No evidence of acute organ failure documented.",
+                codes: ["J18.9", "A41.9", "R65.20"],
+                decision: "FAIL",
+                hcc: "Unsupported",
+                guideline: "ICD-10-CM Section I.C.1.d.1.b — Severe sepsis (R65.20/R65.21) requires explicit documentation of acute organ dysfunction associated with sepsis.",
+                evidence: [
+                    "Missing: Documentation of acute organ dysfunction",
+                    "Conflicting: Normal lactate contradicts severe sepsis severity"
+                ],
+                reasoning: "R65.20 (Severe sepsis without septic shock) is not supported. While sepsis is documented (A41.9 is appropriate), there is no evidence of acute organ dysfunction required for severe sepsis coding. Normal lactate and absence of organ failure documentation contradict severe sepsis. Recommendation: Remove R65.20. Code as uncomplicated sepsis (A41.9) with pneumonia (J18.9). HCC 2 (Septicemia, Sepsis, Systemic Inflammatory Response Syndrome) would be supported, but not the higher weight HCC for severe sepsis."
+            },
+            3: {
+                summary: "75-year-old male with 'heart failure' documented in assessment. No specification of acute vs chronic, systolic vs diastolic, or left vs right. No ejection fraction documented. No other details provided.",
+                codes: ["I50.9"],
+                decision: "FAIL",
+                hcc: "Unsupported",
+                guideline: "ICD-10-CM Section I.C.9.a.1 — Heart failure codes require specificity: acute vs chronic, systolic vs diastolic, and clinical details to support proper code assignment.",
+                evidence: [
+                    "Missing: Acute vs chronic specification",
+                    "Missing: Systolic vs diastolic designation",
+                    "Missing: Ejection fraction or other supporting clinical details"
+                ],
+                reasoning: "I50.9 (Heart failure, unspecified) represents incomplete documentation and is not acceptable for accurate HCC risk adjustment. Without specification of heart failure type and acuity, the diagnosis cannot be properly validated or assigned an appropriate risk score. Recommendation: Query provider for: (1) Acute vs chronic status, (2) Systolic vs diastolic function, (3) Supporting diagnostic evidence (echo, BNP, clinical signs). Proper documentation would allow assignment of I50.21-I50.43 codes which support HCC 85 (Congestive Heart Failure)."
+            }
+        };
+
+        let selectedCase = null;
+
+        function selectCase(caseNum) {
+            selectedCase = caseNum;
+            const caseData = cases[caseNum];
+
+            // Update UI
+            document.querySelectorAll('.case-btn').forEach(btn => {
+                btn.classList.remove('bg-audit-50', 'border-audit-500');
+                btn.classList.add('bg-slate-50', 'border-slate-200');
+            });
+            document.getElementById(`case-${caseNum}-btn`).classList.add('bg-audit-50', 'border-audit-500');
+
+            // Show case details
+            document.getElementById('case-details').classList.remove('hidden');
+            document.getElementById('case-summary').textContent = caseData.summary;
+
+            const codesContainer = document.getElementById('case-codes');
+            codesContainer.innerHTML = caseData.codes.map(code =>
+                `<span class="px-4 py-2 bg-blue-100 text-blue-800 font-mono font-semibold rounded-lg border border-blue-200">${code}</span>`
+            ).join('');
+
+            // Hide results
+            document.getElementById('audit-results').classList.add('hidden');
+
+            // Scroll to details
+            document.getElementById('case-details').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function runAudit() {
+            if (!selectedCase) return;
+
+            const caseData = cases[selectedCase];
+
+            // Show results
+            document.getElementById('audit-results').classList.remove('hidden');
+
+            // Decision badge
+            const decisionHTML = caseData.decision === 'PASS'
+                ? '<span class="inline-flex items-center gap-2 px-6 py-3 bg-green-100 text-green-800 font-bold rounded-lg border-2 border-green-300"><i class="fa-solid fa-check-circle"></i> PASS</span>'
+                : '<span class="inline-flex items-center gap-2 px-6 py-3 bg-red-100 text-red-800 font-bold rounded-lg border-2 border-red-300"><i class="fa-solid fa-times-circle"></i> FAIL</span>';
+            document.getElementById('decision-badge').innerHTML = decisionHTML;
+
+            // HCC Status
+            const hccHTML = caseData.hcc === 'Supported'
+                ? '<span class="inline-flex items-center gap-2 px-6 py-3 bg-green-100 text-green-800 font-bold rounded-lg border-2 border-green-300"><i class="fa-solid fa-shield-check"></i> Supported</span>'
+                : '<span class="inline-flex items-center gap-2 px-6 py-3 bg-red-100 text-red-800 font-bold rounded-lg border-2 border-red-300"><i class="fa-solid fa-shield-xmark"></i> Unsupported</span>';
+            document.getElementById('hcc-status').innerHTML = hccHTML;
+
+            // Guideline
+            document.getElementById('guideline').innerHTML = `<i class="fa-solid fa-book text-blue-600 mr-2"></i>${caseData.guideline}`;
+
+            // Evidence
+            const evidenceSection = document.getElementById('evidence-section');
+            if (caseData.evidence.length > 0) {
+                evidenceSection.classList.remove('hidden');
+                document.getElementById('evidence').innerHTML = caseData.evidence.map(item =>
+                    `<div class="flex items-start gap-2 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <i class="fa-solid fa-exclamation-triangle text-yellow-600 mt-1"></i>
+                        <span class="text-slate-700">${item}</span>
+                    </div>`
+                ).join('');
+            } else {
+                evidenceSection.classList.add('hidden');
+            }
+
+            // Reasoning
+            document.getElementById('reasoning').textContent = caseData.reasoning;
+
+            // Scroll to results
+            document.getElementById('audit-results').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        // Test Access Form
+        document.getElementById('testAccessForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const data = {
+                name: document.getElementById('testName').value,
+                company: document.getElementById('testCompany').value,
+                email: document.getElementById('testEmail').value,
+                role: document.getElementById('testRole').value,
+                useCase: document.getElementById('testUseCase').value
+            };
+
+            // In production, would POST to /api/test-access
+            // For now, fallback to mailto
+            const subject = encodeURIComponent('Test Access Request - ' + data.company);
+            const body = encodeURIComponent(
+                `Name: ${data.name}\nCompany: ${data.company}\nEmail: ${data.email}\nRole: ${data.role}\n\nUse Case:\n${data.useCase}`
+            );
+            window.location.href = `mailto:Gsmkhalid@msn.com?subject=${subject}&body=${body}`;
+
+            // Show success message
+            setTimeout(() => {
+                document.getElementById('testSuccessMessage').classList.remove('hidden');
+                this.reset();
+            }, 1000);
+        });
+    </script>
+
+</body>
+
+</html>
