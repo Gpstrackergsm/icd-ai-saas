@@ -250,7 +250,7 @@
         const token = localStorage.getItem('token');
         const payloadBody = isBatch ? { items: lines.map(l => l.replace(/^\d+[\.\)\s]\s*/, '').trim()) } : { text };
 
-        const response = await fetch('/api/encode-structured', {
+        const response = await fetch('/api/encode', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
           body: JSON.stringify(payloadBody)
