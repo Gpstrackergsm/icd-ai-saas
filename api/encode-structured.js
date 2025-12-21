@@ -8,8 +8,8 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = handler;
-const parserIntegration_1 = require("../engine/audit/parserIntegration");
-const middleware_1 = require("../lib/auth/middleware");
+const parserIntegration_1 = require("../dist/engine/audit/parserIntegration");
+const middleware_1 = require("../dist/lib/auth/middleware");
 const lookupDetail = require('../lib/icd-dictionary.js').lookupDetail;
 async function handler(req, res) {
     if (req.method !== 'POST') {
