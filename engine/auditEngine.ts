@@ -9,7 +9,7 @@ import { DecisionState, AuditRiskLevel } from './decision';
 import { AuditResult, createAuditResult, formatAuditResult } from './auditResult';
 
 // Rule Group Imports
-import { evaluateConflictingDocumentation, evaluateNonDefinitiveLanguage, ConflictCheck } from './rules/ruleGroup1_conflictingDocs';
+import { evaluateConflictingDocumentation, evaluateNonDefinitiveLanguage, evaluateAKIConflict, ConflictCheck, AKIConflictCheck } from './rules/ruleGroup1_conflictingDocs';
 import { evaluateSepsisWithoutOrganDysfunction, evaluateSevereSepsisLanguage, evaluateSepticShockCriteria, evaluateInfectionWithSIRS, SepsisContext } from './rules/ruleGroup2_sepsis';
 import { evaluateNonSpecificRenalTerms, evaluateCKDStaging, evaluateLabsWithoutDiagnosis, RenalContext } from './rules/ruleGroup3_renalDetermination';
 import { evaluateDiabetesLinking, evaluateHeartFailureStatus, evaluateCOPDExacerbation, DiabetesLinkingContext, HeartFailureContext, COPDContext } from './rules/ruleGroup4_linkingSpecificity';
@@ -110,9 +110,15 @@ export class AuditEngine {
      */
     evaluateRenalCase(renalContext: RenalContext): AuditResult {
         const rules = [
+            // Rule Group 1.3: AKI conflict check (BLOCK_AND_QUERY - highest priority)
+            () => evaluateAKIConflict({
+                akiDocumented: renalContext.akiDocumented || false,
+                creatinineBaseline: renalContext.creatinineBaseline,
+                creatinineCurrent: renalContext.creatinineCurrent,
+            }),
             () => evaluateLabsWithoutDiagnosis(renalContext), // AUTO_EXCLUDE (high priority)
             () => evaluateNonSpecificRenalTerms(renalContext), // AUTO_QUERY
-            () => evaluateCKDStaging(renalContext), // AUTO_QUERY
+            () => evaluateCKDStaging(renalContext), // AUTO_QUERY or AUTO_CODE
         ];
 
         for (const rule of rules) {

@@ -1,0 +1,8654 @@
+[
+  {
+    "id": 1,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 2,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 3,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 4,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 5,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 6,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 7,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 8,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 9,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 10,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 11,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 12,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 13,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 14,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 15,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 16,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 17,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 18,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 19,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 20,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 21,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 22,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 23,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 24,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 25,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 26,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 27,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 28,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 29,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 30,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 31,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 32,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 33,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 34,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 35,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 36,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 37,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 38,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 39,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 40,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 41,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 42,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 43,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 44,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 45,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 46,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 47,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 48,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 49,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 50,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 51,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 52,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 53,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 54,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 55,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 56,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 57,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 58,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 59,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 60,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 61,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 62,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 63,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 64,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 65,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 66,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 67,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 68,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 69,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 70,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 71,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 72,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 73,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 74,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 75,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 76,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 77,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 78,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 79,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 80,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 81,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 82,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 83,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 84,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 85,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 86,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 87,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 88,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 89,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 90,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 91,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 92,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 93,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 94,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 95,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 96,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 97,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 98,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 99,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 100,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 101,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 102,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 103,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 104,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 105,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 106,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 107,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 108,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 109,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 110,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 111,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 112,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 113,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 114,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 115,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 116,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 117,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 118,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 119,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 120,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 121,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 122,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 123,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 124,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 125,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 126,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 127,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 128,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 129,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 130,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 131,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 132,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 133,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 134,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 135,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 136,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 137,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 138,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 139,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 140,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 141,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 142,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 143,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 144,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 145,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 146,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 147,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 148,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 149,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 150,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 151,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 152,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 153,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 154,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 155,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 156,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 157,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 158,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 159,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 160,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 161,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 162,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 163,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 164,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 165,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 166,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 167,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 168,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 169,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 170,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 171,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 172,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 173,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 174,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 175,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 176,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 177,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 178,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 179,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 180,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 181,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 182,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 183,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 184,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 185,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 186,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 187,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 188,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 189,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 190,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 191,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 192,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 193,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 194,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 195,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 196,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 197,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 198,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 199,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 200,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 201,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 202,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 203,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 204,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 205,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 206,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 207,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 208,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 209,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 210,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 211,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 212,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 213,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 214,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 215,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 216,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 217,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 218,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 219,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 220,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 221,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 222,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 223,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 224,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 225,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 226,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 227,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 228,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 229,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 230,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 231,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 232,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 233,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 234,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 235,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 236,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 237,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 238,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 239,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 240,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 241,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 242,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 243,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 244,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 245,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 246,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 247,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 248,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 249,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 250,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 251,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 252,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 253,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 254,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 255,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 256,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 257,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 258,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 259,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 260,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 261,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 262,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 263,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 264,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 265,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 266,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 267,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 268,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 269,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 270,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 271,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 272,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 273,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 274,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 275,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 276,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 277,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 278,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 279,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 280,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 281,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 282,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 283,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 284,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 285,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 286,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 287,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 288,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 289,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 290,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 291,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 292,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 293,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 294,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 295,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 296,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 297,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 298,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 299,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 300,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 301,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 302,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 303,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 304,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 305,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 306,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 307,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 308,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 309,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 310,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 311,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 312,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 313,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 314,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 315,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 316,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 317,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 318,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 319,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 320,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 321,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 322,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 323,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 324,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 325,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 326,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 327,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 328,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 329,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 330,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 331,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 332,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 333,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 334,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 335,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 336,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 337,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 338,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 339,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 340,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 341,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 342,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 343,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 344,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 345,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 346,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 347,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 348,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 349,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 350,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 351,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 352,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 353,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 354,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 355,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 356,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 357,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 358,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 359,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 360,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 361,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 362,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 363,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 364,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 365,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 366,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 367,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 368,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 369,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 370,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 371,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 372,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 373,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 374,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 375,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 376,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 377,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 378,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 379,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 380,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 381,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 382,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 383,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 384,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 385,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 386,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 387,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 388,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 389,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 390,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 391,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 392,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 393,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 394,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 395,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 396,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 397,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 398,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 399,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 400,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 401,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 402,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 403,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 404,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 405,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 406,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 407,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 408,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 409,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 410,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 411,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 412,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 413,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 414,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 415,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 416,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 417,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 418,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 419,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 420,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 421,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 422,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 423,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 424,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 425,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 426,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 427,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 428,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 429,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 430,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 431,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 432,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 433,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 434,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 435,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 436,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 437,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 438,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 439,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 440,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 441,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 442,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 443,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 444,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 445,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 446,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 447,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 448,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 449,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 450,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 451,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 452,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 453,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 454,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 455,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 456,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 457,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 458,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 459,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 460,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 461,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 462,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 463,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 464,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 465,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 466,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 467,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 468,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 469,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 470,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 471,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 472,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 473,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 474,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 475,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 476,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 477,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 478,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 479,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 480,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 481,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 482,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 483,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 484,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 485,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 486,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 487,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 488,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 489,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 490,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 491,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 492,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 493,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 494,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 495,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 496,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 497,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 498,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 499,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 500,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 501,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 502,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 503,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 504,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 505,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 506,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 507,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 508,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 509,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 510,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 511,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 512,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 513,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 514,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 515,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 516,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 517,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 518,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 519,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 520,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 521,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 522,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 523,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 524,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 525,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 526,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 527,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 528,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 529,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 530,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 531,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 532,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 533,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 534,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 535,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 536,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 537,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 538,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 539,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 540,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 541,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 542,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 543,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 544,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 545,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 546,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 547,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 548,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 549,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 550,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 551,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 552,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 553,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 554,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 555,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 556,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 557,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 558,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 559,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 560,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 561,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 562,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 563,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 564,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 565,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 566,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 567,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 568,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 569,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 570,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 571,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 572,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 573,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 574,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 575,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 576,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 577,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 578,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 579,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 580,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 581,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 582,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 583,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 584,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 585,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 586,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 587,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 588,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 589,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 590,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 591,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 592,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 593,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 594,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 595,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 596,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 597,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 598,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 599,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 600,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 601,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 602,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 603,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 604,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 605,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 606,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 607,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 608,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 609,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 610,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 611,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 612,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 613,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 614,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 615,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 616,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 617,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 618,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 619,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 620,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 621,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 622,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 623,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 624,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 625,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 626,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 627,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 628,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 629,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 630,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 631,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 632,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 633,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 634,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 635,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 636,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 637,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 638,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 639,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 640,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 641,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 642,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 643,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 644,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 645,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 646,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 647,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 648,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 649,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 650,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 651,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 652,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 653,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 654,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 655,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 656,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 657,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 658,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 659,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 660,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 661,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 662,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 663,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 664,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 665,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 666,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 667,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 668,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 669,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 670,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 671,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 672,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 673,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 674,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 675,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 676,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 677,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 678,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 679,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 680,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 681,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 682,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 683,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 684,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 685,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 686,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 687,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 688,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 689,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 690,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 691,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 692,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 693,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 694,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 695,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 696,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 697,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 698,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 699,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 700,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 701,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 702,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 703,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 704,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 705,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 706,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 707,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 708,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 709,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 710,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 711,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 712,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 713,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 714,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 715,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 716,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 717,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 718,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 719,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 720,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 721,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 722,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 723,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 724,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 725,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 726,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 727,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 728,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 729,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 730,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 731,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 732,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 733,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 734,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 735,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 736,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 737,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 738,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 739,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 740,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 741,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 742,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 743,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 744,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 745,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 746,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 747,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 748,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 749,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 750,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 751,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 752,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 753,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 754,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 755,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 756,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 757,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 758,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 759,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 760,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 761,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 762,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 763,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 764,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 765,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 766,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 767,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 768,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 769,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 770,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 771,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 772,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 773,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 774,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 775,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 776,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 777,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 778,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 779,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 780,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 781,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 782,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 783,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 784,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 785,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 786,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 787,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 788,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 789,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 790,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 791,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 792,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 793,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 794,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 795,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 796,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 797,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 798,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 799,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 800,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 801,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 802,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 803,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 804,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 805,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 806,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 807,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 808,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 809,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 810,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 811,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 812,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 813,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 814,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 815,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 816,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 817,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 818,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 819,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 820,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 821,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 822,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 823,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 824,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 825,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 826,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 827,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 828,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 829,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 830,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 831,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 832,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 833,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 834,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 835,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 836,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 837,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 838,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 839,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 840,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 841,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 842,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 843,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 844,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 845,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 846,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 847,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 848,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 849,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 850,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 851,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 852,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 853,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 854,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 855,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 856,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 857,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 858,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 859,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 860,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 861,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.9",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 862,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 863,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 864,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 865,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 866,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 867,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 868,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 869,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 870,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 871,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 872,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 873,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 874,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 875,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 876,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 877,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 878,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 879,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 880,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 881,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 882,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 883,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 884,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 885,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 886,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 887,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 888,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 889,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 890,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 891,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 892,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 893,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 894,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 895,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 896,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 897,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 898,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 899,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 900,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 901,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 902,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 903,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.01"
+    ]
+  },
+  {
+    "id": 904,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 905,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 906,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 907,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 908,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 909,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 910,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 911,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 912,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.02",
+      "J15.212",
+      "R65.20",
+      "N17.9"
+    ]
+  },
+  {
+    "id": 913,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 914,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 915,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 916,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 917,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 918,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 919,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 920,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 921,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 922,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 923,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "G93.41"
+    ]
+  },
+  {
+    "id": 924,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 925,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 926,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 927,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 928,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 929,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 930,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 931,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 932,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 933,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 934,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 935,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 936,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 937,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 938,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 939,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 940,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 941,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 942,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 943,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 944,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 945,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.10"
+    ]
+  },
+  {
+    "id": 946,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 947,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 948,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 949,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 950,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 951,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to unspecified organism",
+    "expected_codes": [
+      "A41.9"
+    ]
+  },
+  {
+    "id": 952,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 953,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 954,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 955,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 956,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 957,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 958,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.02"
+    ]
+  },
+  {
+    "id": 959,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 960,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 961,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 962,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 963,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 964,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli complicated by acute organ dysfunction",
+    "expected_codes": [
+      "A41.51",
+      "J15.5",
+      "R65.20",
+      "J80"
+    ]
+  },
+  {
+    "id": 965,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 966,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 967,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 968,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 969,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 970,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 971,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 972,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 973,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 974,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 975,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 976,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 977,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 978,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.20"
+    ]
+  },
+  {
+    "id": 979,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 980,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 981,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 982,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 983,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 984,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 985,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 986,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 987,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to MRSA",
+    "expected_codes": [
+      "A41.02",
+      "J15.212"
+    ]
+  },
+  {
+    "id": 988,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 989,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 990,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 991,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 992,
+    "module": "Obstetrics",
+    "clinical_text": "Pregnant patient at 32 weeks with mild preeclampsia",
+    "expected_codes": [
+      "O14.03",
+      "Z3A.32"
+    ]
+  },
+  {
+    "id": 993,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 994,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  },
+  {
+    "id": 995,
+    "module": "Cardiology",
+    "clinical_text": "Patient admitted with acute systolic heart failure",
+    "expected_codes": [
+      "I50.21"
+    ]
+  },
+  {
+    "id": 996,
+    "module": "Neurology",
+    "clinical_text": "Patient with acute ischemic stroke",
+    "expected_codes": [
+      "I63.9"
+    ]
+  },
+  {
+    "id": 997,
+    "module": "Trauma",
+    "clinical_text": "Patient admitted after fall with fracture of tibia",
+    "expected_codes": [
+      "S82.209A"
+    ]
+  },
+  {
+    "id": 998,
+    "module": "Respiratory",
+    "clinical_text": "Patient admitted with pneumonia and respiratory failure",
+    "expected_codes": [
+      "J18.9",
+      "J96.00"
+    ]
+  },
+  {
+    "id": 999,
+    "module": "Sepsis",
+    "clinical_text": "Patient admitted with sepsis due to E. coli",
+    "expected_codes": [
+      "A41.51",
+      "J15.5"
+    ]
+  },
+  {
+    "id": 1000,
+    "module": "Diabetes",
+    "clinical_text": "Type 2 diabetes with chronic kidney disease stage 4",
+    "expected_codes": [
+      "E11.22",
+      "N18.4"
+    ]
+  }
+]

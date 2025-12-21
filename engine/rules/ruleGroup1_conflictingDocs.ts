@@ -15,6 +15,12 @@ export interface ConflictCheck {
     criteriaDescription?: string;
 }
 
+export interface AKIConflictCheck {
+    akiDocumented: boolean;
+    creatinineBaseline?: number;
+    creatinineCurrent?: number;
+}
+
 /**
  * Rule 1.1: Conflicting Documentation Gate
  * 
@@ -47,6 +53,52 @@ export function evaluateConflictingDocumentation(
         concept: providerDiagnosis,
         query: `You documented "${providerDiagnosis}." However, clinical data shows ${conflictCheck.clinicalEvidence}. Can you confirm if ${providerDiagnosis} is present? If not, please amend documentation.`,
         ruleGroup: 'Rule Group 1',
+    });
+
+    return result;
+}
+
+/**
+ * Rule 1.3: AKI Conflicting Documentation
+ * 
+ * Validates AKI diagnosis against KDIGO criteria:
+ * - Creatinine rise ≥0.3 mg/dL OR
+ * - Creatinine rise ≥1.5x baseline
+ * 
+ * If AKI documented but criteria NOT met → BLOCK_AND_QUERY
+ */
+export function evaluateAKIConflict(ctx: AKIConflictCheck): AuditResult | null {
+    if (!ctx.akiDocumented) {
+        return null; // No AKI documented
+    }
+
+    if (!ctx.creatinineBaseline || !ctx.creatinineCurrent) {
+        return null; // Cannot validate without baseline and current values
+    }
+
+    const creatinineRise = ctx.creatinineCurrent - ctx.creatinineBaseline;
+    const creatinineRatio = ctx.creatinineCurrent / ctx.creatinineBaseline;
+
+    // Check KDIGO criteria
+    const meetsAbsoluteRise = creatinineRise >= 0.3;
+    const meetsRelativeRise = creatinineRatio >= 1.5;
+
+    if (meetsAbsoluteRise || meetsRelativeRise) {
+        return null; // Criteria met, allow other rules
+    }
+
+    // CONFLICT: AKI documented but criteria NOT met
+    const result = createAuditResult(
+        DecisionState.BLOCK_AND_QUERY,
+        AuditRiskLevel.HIGH,
+        'AKI documented but KDIGO criteria not met - mandatory query required',
+        ['Rule Group 1.3: AKI Conflicting Documentation']
+    );
+
+    result.queriesRequired.push({
+        concept: 'Acute Kidney Injury',
+        query: `You documented "acute kidney injury," but creatinine increased from ${ctx.creatinineBaseline} to ${ctx.creatinineCurrent} (+${creatinineRise.toFixed(2)} mg/dL, ${creatinineRatio.toFixed(2)}x baseline). This does not meet KDIGO criteria (≥0.3 mg/dL rise OR ≥1.5x baseline). Can you confirm AKI is present, or should documentation be amended?`,
+        ruleGroup: 'Rule Group 1.3',
     });
 
     return result;

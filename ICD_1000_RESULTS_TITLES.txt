@@ -1,0 +1,1000 @@
+CASE 1 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 2 Pneumonia with acute respiratory failure
+CASE 3 Acute systolic heart failure
+CASE 4 COPD exacerbation with acute respiratory failure
+CASE 5 Septic shock due to pneumonia
+CASE 6 Type 2 diabetes mellitus with chronic kidney disease
+CASE 7 Acute ischemic stroke
+CASE 8 Aspiration pneumonia
+CASE 9 Acute on chronic diastolic heart failure
+CASE 10 Pulmonary embolism with acute cor pulmonale
+CASE 11 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 12 Pneumonia with acute respiratory failure
+CASE 13 Acute systolic heart failure
+CASE 14 COPD exacerbation with acute respiratory failure
+CASE 15 Septic shock due to pneumonia
+CASE 16 Type 2 diabetes mellitus with chronic kidney disease
+CASE 17 Acute ischemic stroke
+CASE 18 Aspiration pneumonia
+CASE 19 Acute on chronic diastolic heart failure
+CASE 20 Pulmonary embolism with acute cor pulmonale
+CASE 21 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 22 Pneumonia with acute respiratory failure
+CASE 23 Acute systolic heart failure
+CASE 24 COPD exacerbation with acute respiratory failure
+CASE 25 Septic shock due to pneumonia
+CASE 26 Type 2 diabetes mellitus with chronic kidney disease
+CASE 27 Acute ischemic stroke
+CASE 28 Aspiration pneumonia
+CASE 29 Acute on chronic diastolic heart failure
+CASE 30 Pulmonary embolism with acute cor pulmonale
+CASE 31 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 32 Pneumonia with acute respiratory failure
+CASE 33 Acute systolic heart failure
+CASE 34 COPD exacerbation with acute respiratory failure
+CASE 35 Septic shock due to pneumonia
+CASE 36 Type 2 diabetes mellitus with chronic kidney disease
+CASE 37 Acute ischemic stroke
+CASE 38 Aspiration pneumonia
+CASE 39 Acute on chronic diastolic heart failure
+CASE 40 Pulmonary embolism with acute cor pulmonale
+CASE 41 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 42 Pneumonia with acute respiratory failure
+CASE 43 Acute systolic heart failure
+CASE 44 COPD exacerbation with acute respiratory failure
+CASE 45 Septic shock due to pneumonia
+CASE 46 Type 2 diabetes mellitus with chronic kidney disease
+CASE 47 Acute ischemic stroke
+CASE 48 Aspiration pneumonia
+CASE 49 Acute on chronic diastolic heart failure
+CASE 50 Pulmonary embolism with acute cor pulmonale
+CASE 51 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 52 Pneumonia with acute respiratory failure
+CASE 53 Acute systolic heart failure
+CASE 54 COPD exacerbation with acute respiratory failure
+CASE 55 Septic shock due to pneumonia
+CASE 56 Type 2 diabetes mellitus with chronic kidney disease
+CASE 57 Acute ischemic stroke
+CASE 58 Aspiration pneumonia
+CASE 59 Acute on chronic diastolic heart failure
+CASE 60 Pulmonary embolism with acute cor pulmonale
+CASE 61 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 62 Pneumonia with acute respiratory failure
+CASE 63 Acute systolic heart failure
+CASE 64 COPD exacerbation with acute respiratory failure
+CASE 65 Septic shock due to pneumonia
+CASE 66 Type 2 diabetes mellitus with chronic kidney disease
+CASE 67 Acute ischemic stroke
+CASE 68 Aspiration pneumonia
+CASE 69 Acute on chronic diastolic heart failure
+CASE 70 Pulmonary embolism with acute cor pulmonale
+CASE 71 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 72 Pneumonia with acute respiratory failure
+CASE 73 Acute systolic heart failure
+CASE 74 COPD exacerbation with acute respiratory failure
+CASE 75 Septic shock due to pneumonia
+CASE 76 Type 2 diabetes mellitus with chronic kidney disease
+CASE 77 Acute ischemic stroke
+CASE 78 Aspiration pneumonia
+CASE 79 Acute on chronic diastolic heart failure
+CASE 80 Pulmonary embolism with acute cor pulmonale
+CASE 81 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 82 Pneumonia with acute respiratory failure
+CASE 83 Acute systolic heart failure
+CASE 84 COPD exacerbation with acute respiratory failure
+CASE 85 Septic shock due to pneumonia
+CASE 86 Type 2 diabetes mellitus with chronic kidney disease
+CASE 87 Acute ischemic stroke
+CASE 88 Aspiration pneumonia
+CASE 89 Acute on chronic diastolic heart failure
+CASE 90 Pulmonary embolism with acute cor pulmonale
+CASE 91 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 92 Pneumonia with acute respiratory failure
+CASE 93 Acute systolic heart failure
+CASE 94 COPD exacerbation with acute respiratory failure
+CASE 95 Septic shock due to pneumonia
+CASE 96 Type 2 diabetes mellitus with chronic kidney disease
+CASE 97 Acute ischemic stroke
+CASE 98 Aspiration pneumonia
+CASE 99 Acute on chronic diastolic heart failure
+CASE 100 Pulmonary embolism with acute cor pulmonale
+CASE 101 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 102 Pneumonia with acute respiratory failure
+CASE 103 Acute systolic heart failure
+CASE 104 COPD exacerbation with acute respiratory failure
+CASE 105 Septic shock due to pneumonia
+CASE 106 Type 2 diabetes mellitus with chronic kidney disease
+CASE 107 Acute ischemic stroke
+CASE 108 Aspiration pneumonia
+CASE 109 Acute on chronic diastolic heart failure
+CASE 110 Pulmonary embolism with acute cor pulmonale
+CASE 111 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 112 Pneumonia with acute respiratory failure
+CASE 113 Acute systolic heart failure
+CASE 114 COPD exacerbation with acute respiratory failure
+CASE 115 Septic shock due to pneumonia
+CASE 116 Type 2 diabetes mellitus with chronic kidney disease
+CASE 117 Acute ischemic stroke
+CASE 118 Aspiration pneumonia
+CASE 119 Acute on chronic diastolic heart failure
+CASE 120 Pulmonary embolism with acute cor pulmonale
+CASE 121 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 122 Pneumonia with acute respiratory failure
+CASE 123 Acute systolic heart failure
+CASE 124 COPD exacerbation with acute respiratory failure
+CASE 125 Septic shock due to pneumonia
+CASE 126 Type 2 diabetes mellitus with chronic kidney disease
+CASE 127 Acute ischemic stroke
+CASE 128 Aspiration pneumonia
+CASE 129 Acute on chronic diastolic heart failure
+CASE 130 Pulmonary embolism with acute cor pulmonale
+CASE 131 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 132 Pneumonia with acute respiratory failure
+CASE 133 Acute systolic heart failure
+CASE 134 COPD exacerbation with acute respiratory failure
+CASE 135 Septic shock due to pneumonia
+CASE 136 Type 2 diabetes mellitus with chronic kidney disease
+CASE 137 Acute ischemic stroke
+CASE 138 Aspiration pneumonia
+CASE 139 Acute on chronic diastolic heart failure
+CASE 140 Pulmonary embolism with acute cor pulmonale
+CASE 141 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 142 Pneumonia with acute respiratory failure
+CASE 143 Acute systolic heart failure
+CASE 144 COPD exacerbation with acute respiratory failure
+CASE 145 Septic shock due to pneumonia
+CASE 146 Type 2 diabetes mellitus with chronic kidney disease
+CASE 147 Acute ischemic stroke
+CASE 148 Aspiration pneumonia
+CASE 149 Acute on chronic diastolic heart failure
+CASE 150 Pulmonary embolism with acute cor pulmonale
+CASE 151 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 152 Pneumonia with acute respiratory failure
+CASE 153 Acute systolic heart failure
+CASE 154 COPD exacerbation with acute respiratory failure
+CASE 155 Septic shock due to pneumonia
+CASE 156 Type 2 diabetes mellitus with chronic kidney disease
+CASE 157 Acute ischemic stroke
+CASE 158 Aspiration pneumonia
+CASE 159 Acute on chronic diastolic heart failure
+CASE 160 Pulmonary embolism with acute cor pulmonale
+CASE 161 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 162 Pneumonia with acute respiratory failure
+CASE 163 Acute systolic heart failure
+CASE 164 COPD exacerbation with acute respiratory failure
+CASE 165 Septic shock due to pneumonia
+CASE 166 Type 2 diabetes mellitus with chronic kidney disease
+CASE 167 Acute ischemic stroke
+CASE 168 Aspiration pneumonia
+CASE 169 Acute on chronic diastolic heart failure
+CASE 170 Pulmonary embolism with acute cor pulmonale
+CASE 171 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 172 Pneumonia with acute respiratory failure
+CASE 173 Acute systolic heart failure
+CASE 174 COPD exacerbation with acute respiratory failure
+CASE 175 Septic shock due to pneumonia
+CASE 176 Type 2 diabetes mellitus with chronic kidney disease
+CASE 177 Acute ischemic stroke
+CASE 178 Aspiration pneumonia
+CASE 179 Acute on chronic diastolic heart failure
+CASE 180 Pulmonary embolism with acute cor pulmonale
+CASE 181 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 182 Pneumonia with acute respiratory failure
+CASE 183 Acute systolic heart failure
+CASE 184 COPD exacerbation with acute respiratory failure
+CASE 185 Septic shock due to pneumonia
+CASE 186 Type 2 diabetes mellitus with chronic kidney disease
+CASE 187 Acute ischemic stroke
+CASE 188 Aspiration pneumonia
+CASE 189 Acute on chronic diastolic heart failure
+CASE 190 Pulmonary embolism with acute cor pulmonale
+CASE 191 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 192 Pneumonia with acute respiratory failure
+CASE 193 Acute systolic heart failure
+CASE 194 COPD exacerbation with acute respiratory failure
+CASE 195 Septic shock due to pneumonia
+CASE 196 Type 2 diabetes mellitus with chronic kidney disease
+CASE 197 Acute ischemic stroke
+CASE 198 Aspiration pneumonia
+CASE 199 Acute on chronic diastolic heart failure
+CASE 200 Pulmonary embolism with acute cor pulmonale
+CASE 201 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 202 Pneumonia with acute respiratory failure
+CASE 203 Acute systolic heart failure
+CASE 204 COPD exacerbation with acute respiratory failure
+CASE 205 Septic shock due to pneumonia
+CASE 206 Type 2 diabetes mellitus with chronic kidney disease
+CASE 207 Acute ischemic stroke
+CASE 208 Aspiration pneumonia
+CASE 209 Acute on chronic diastolic heart failure
+CASE 210 Pulmonary embolism with acute cor pulmonale
+CASE 211 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 212 Pneumonia with acute respiratory failure
+CASE 213 Acute systolic heart failure
+CASE 214 COPD exacerbation with acute respiratory failure
+CASE 215 Septic shock due to pneumonia
+CASE 216 Type 2 diabetes mellitus with chronic kidney disease
+CASE 217 Acute ischemic stroke
+CASE 218 Aspiration pneumonia
+CASE 219 Acute on chronic diastolic heart failure
+CASE 220 Pulmonary embolism with acute cor pulmonale
+CASE 221 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 222 Pneumonia with acute respiratory failure
+CASE 223 Acute systolic heart failure
+CASE 224 COPD exacerbation with acute respiratory failure
+CASE 225 Septic shock due to pneumonia
+CASE 226 Type 2 diabetes mellitus with chronic kidney disease
+CASE 227 Acute ischemic stroke
+CASE 228 Aspiration pneumonia
+CASE 229 Acute on chronic diastolic heart failure
+CASE 230 Pulmonary embolism with acute cor pulmonale
+CASE 231 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 232 Pneumonia with acute respiratory failure
+CASE 233 Acute systolic heart failure
+CASE 234 COPD exacerbation with acute respiratory failure
+CASE 235 Septic shock due to pneumonia
+CASE 236 Type 2 diabetes mellitus with chronic kidney disease
+CASE 237 Acute ischemic stroke
+CASE 238 Aspiration pneumonia
+CASE 239 Acute on chronic diastolic heart failure
+CASE 240 Pulmonary embolism with acute cor pulmonale
+CASE 241 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 242 Pneumonia with acute respiratory failure
+CASE 243 Acute systolic heart failure
+CASE 244 COPD exacerbation with acute respiratory failure
+CASE 245 Septic shock due to pneumonia
+CASE 246 Type 2 diabetes mellitus with chronic kidney disease
+CASE 247 Acute ischemic stroke
+CASE 248 Aspiration pneumonia
+CASE 249 Acute on chronic diastolic heart failure
+CASE 250 Pulmonary embolism with acute cor pulmonale
+CASE 251 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 252 Pneumonia with acute respiratory failure
+CASE 253 Acute systolic heart failure
+CASE 254 COPD exacerbation with acute respiratory failure
+CASE 255 Septic shock due to pneumonia
+CASE 256 Type 2 diabetes mellitus with chronic kidney disease
+CASE 257 Acute ischemic stroke
+CASE 258 Aspiration pneumonia
+CASE 259 Acute on chronic diastolic heart failure
+CASE 260 Pulmonary embolism with acute cor pulmonale
+CASE 261 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 262 Pneumonia with acute respiratory failure
+CASE 263 Acute systolic heart failure
+CASE 264 COPD exacerbation with acute respiratory failure
+CASE 265 Septic shock due to pneumonia
+CASE 266 Type 2 diabetes mellitus with chronic kidney disease
+CASE 267 Acute ischemic stroke
+CASE 268 Aspiration pneumonia
+CASE 269 Acute on chronic diastolic heart failure
+CASE 270 Pulmonary embolism with acute cor pulmonale
+CASE 271 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 272 Pneumonia with acute respiratory failure
+CASE 273 Acute systolic heart failure
+CASE 274 COPD exacerbation with acute respiratory failure
+CASE 275 Septic shock due to pneumonia
+CASE 276 Type 2 diabetes mellitus with chronic kidney disease
+CASE 277 Acute ischemic stroke
+CASE 278 Aspiration pneumonia
+CASE 279 Acute on chronic diastolic heart failure
+CASE 280 Pulmonary embolism with acute cor pulmonale
+CASE 281 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 282 Pneumonia with acute respiratory failure
+CASE 283 Acute systolic heart failure
+CASE 284 COPD exacerbation with acute respiratory failure
+CASE 285 Septic shock due to pneumonia
+CASE 286 Type 2 diabetes mellitus with chronic kidney disease
+CASE 287 Acute ischemic stroke
+CASE 288 Aspiration pneumonia
+CASE 289 Acute on chronic diastolic heart failure
+CASE 290 Pulmonary embolism with acute cor pulmonale
+CASE 291 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 292 Pneumonia with acute respiratory failure
+CASE 293 Acute systolic heart failure
+CASE 294 COPD exacerbation with acute respiratory failure
+CASE 295 Septic shock due to pneumonia
+CASE 296 Type 2 diabetes mellitus with chronic kidney disease
+CASE 297 Acute ischemic stroke
+CASE 298 Aspiration pneumonia
+CASE 299 Acute on chronic diastolic heart failure
+CASE 300 Pulmonary embolism with acute cor pulmonale
+CASE 301 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 302 Pneumonia with acute respiratory failure
+CASE 303 Acute systolic heart failure
+CASE 304 COPD exacerbation with acute respiratory failure
+CASE 305 Septic shock due to pneumonia
+CASE 306 Type 2 diabetes mellitus with chronic kidney disease
+CASE 307 Acute ischemic stroke
+CASE 308 Aspiration pneumonia
+CASE 309 Acute on chronic diastolic heart failure
+CASE 310 Pulmonary embolism with acute cor pulmonale
+CASE 311 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 312 Pneumonia with acute respiratory failure
+CASE 313 Acute systolic heart failure
+CASE 314 COPD exacerbation with acute respiratory failure
+CASE 315 Septic shock due to pneumonia
+CASE 316 Type 2 diabetes mellitus with chronic kidney disease
+CASE 317 Acute ischemic stroke
+CASE 318 Aspiration pneumonia
+CASE 319 Acute on chronic diastolic heart failure
+CASE 320 Pulmonary embolism with acute cor pulmonale
+CASE 321 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 322 Pneumonia with acute respiratory failure
+CASE 323 Acute systolic heart failure
+CASE 324 COPD exacerbation with acute respiratory failure
+CASE 325 Septic shock due to pneumonia
+CASE 326 Type 2 diabetes mellitus with chronic kidney disease
+CASE 327 Acute ischemic stroke
+CASE 328 Aspiration pneumonia
+CASE 329 Acute on chronic diastolic heart failure
+CASE 330 Pulmonary embolism with acute cor pulmonale
+CASE 331 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 332 Pneumonia with acute respiratory failure
+CASE 333 Acute systolic heart failure
+CASE 334 COPD exacerbation with acute respiratory failure
+CASE 335 Septic shock due to pneumonia
+CASE 336 Type 2 diabetes mellitus with chronic kidney disease
+CASE 337 Acute ischemic stroke
+CASE 338 Aspiration pneumonia
+CASE 339 Acute on chronic diastolic heart failure
+CASE 340 Pulmonary embolism with acute cor pulmonale
+CASE 341 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 342 Pneumonia with acute respiratory failure
+CASE 343 Acute systolic heart failure
+CASE 344 COPD exacerbation with acute respiratory failure
+CASE 345 Septic shock due to pneumonia
+CASE 346 Type 2 diabetes mellitus with chronic kidney disease
+CASE 347 Acute ischemic stroke
+CASE 348 Aspiration pneumonia
+CASE 349 Acute on chronic diastolic heart failure
+CASE 350 Pulmonary embolism with acute cor pulmonale
+CASE 351 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 352 Pneumonia with acute respiratory failure
+CASE 353 Acute systolic heart failure
+CASE 354 COPD exacerbation with acute respiratory failure
+CASE 355 Septic shock due to pneumonia
+CASE 356 Type 2 diabetes mellitus with chronic kidney disease
+CASE 357 Acute ischemic stroke
+CASE 358 Aspiration pneumonia
+CASE 359 Acute on chronic diastolic heart failure
+CASE 360 Pulmonary embolism with acute cor pulmonale
+CASE 361 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 362 Pneumonia with acute respiratory failure
+CASE 363 Acute systolic heart failure
+CASE 364 COPD exacerbation with acute respiratory failure
+CASE 365 Septic shock due to pneumonia
+CASE 366 Type 2 diabetes mellitus with chronic kidney disease
+CASE 367 Acute ischemic stroke
+CASE 368 Aspiration pneumonia
+CASE 369 Acute on chronic diastolic heart failure
+CASE 370 Pulmonary embolism with acute cor pulmonale
+CASE 371 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 372 Pneumonia with acute respiratory failure
+CASE 373 Acute systolic heart failure
+CASE 374 COPD exacerbation with acute respiratory failure
+CASE 375 Septic shock due to pneumonia
+CASE 376 Type 2 diabetes mellitus with chronic kidney disease
+CASE 377 Acute ischemic stroke
+CASE 378 Aspiration pneumonia
+CASE 379 Acute on chronic diastolic heart failure
+CASE 380 Pulmonary embolism with acute cor pulmonale
+CASE 381 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 382 Pneumonia with acute respiratory failure
+CASE 383 Acute systolic heart failure
+CASE 384 COPD exacerbation with acute respiratory failure
+CASE 385 Septic shock due to pneumonia
+CASE 386 Type 2 diabetes mellitus with chronic kidney disease
+CASE 387 Acute ischemic stroke
+CASE 388 Aspiration pneumonia
+CASE 389 Acute on chronic diastolic heart failure
+CASE 390 Pulmonary embolism with acute cor pulmonale
+CASE 391 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 392 Pneumonia with acute respiratory failure
+CASE 393 Acute systolic heart failure
+CASE 394 COPD exacerbation with acute respiratory failure
+CASE 395 Septic shock due to pneumonia
+CASE 396 Type 2 diabetes mellitus with chronic kidney disease
+CASE 397 Acute ischemic stroke
+CASE 398 Aspiration pneumonia
+CASE 399 Acute on chronic diastolic heart failure
+CASE 400 Pulmonary embolism with acute cor pulmonale
+CASE 401 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 402 Pneumonia with acute respiratory failure
+CASE 403 Acute systolic heart failure
+CASE 404 COPD exacerbation with acute respiratory failure
+CASE 405 Septic shock due to pneumonia
+CASE 406 Type 2 diabetes mellitus with chronic kidney disease
+CASE 407 Acute ischemic stroke
+CASE 408 Aspiration pneumonia
+CASE 409 Acute on chronic diastolic heart failure
+CASE 410 Pulmonary embolism with acute cor pulmonale
+CASE 411 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 412 Pneumonia with acute respiratory failure
+CASE 413 Acute systolic heart failure
+CASE 414 COPD exacerbation with acute respiratory failure
+CASE 415 Septic shock due to pneumonia
+CASE 416 Type 2 diabetes mellitus with chronic kidney disease
+CASE 417 Acute ischemic stroke
+CASE 418 Aspiration pneumonia
+CASE 419 Acute on chronic diastolic heart failure
+CASE 420 Pulmonary embolism with acute cor pulmonale
+CASE 421 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 422 Pneumonia with acute respiratory failure
+CASE 423 Acute systolic heart failure
+CASE 424 COPD exacerbation with acute respiratory failure
+CASE 425 Septic shock due to pneumonia
+CASE 426 Type 2 diabetes mellitus with chronic kidney disease
+CASE 427 Acute ischemic stroke
+CASE 428 Aspiration pneumonia
+CASE 429 Acute on chronic diastolic heart failure
+CASE 430 Pulmonary embolism with acute cor pulmonale
+CASE 431 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 432 Pneumonia with acute respiratory failure
+CASE 433 Acute systolic heart failure
+CASE 434 COPD exacerbation with acute respiratory failure
+CASE 435 Septic shock due to pneumonia
+CASE 436 Type 2 diabetes mellitus with chronic kidney disease
+CASE 437 Acute ischemic stroke
+CASE 438 Aspiration pneumonia
+CASE 439 Acute on chronic diastolic heart failure
+CASE 440 Pulmonary embolism with acute cor pulmonale
+CASE 441 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 442 Pneumonia with acute respiratory failure
+CASE 443 Acute systolic heart failure
+CASE 444 COPD exacerbation with acute respiratory failure
+CASE 445 Septic shock due to pneumonia
+CASE 446 Type 2 diabetes mellitus with chronic kidney disease
+CASE 447 Acute ischemic stroke
+CASE 448 Aspiration pneumonia
+CASE 449 Acute on chronic diastolic heart failure
+CASE 450 Pulmonary embolism with acute cor pulmonale
+CASE 451 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 452 Pneumonia with acute respiratory failure
+CASE 453 Acute systolic heart failure
+CASE 454 COPD exacerbation with acute respiratory failure
+CASE 455 Septic shock due to pneumonia
+CASE 456 Type 2 diabetes mellitus with chronic kidney disease
+CASE 457 Acute ischemic stroke
+CASE 458 Aspiration pneumonia
+CASE 459 Acute on chronic diastolic heart failure
+CASE 460 Pulmonary embolism with acute cor pulmonale
+CASE 461 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 462 Pneumonia with acute respiratory failure
+CASE 463 Acute systolic heart failure
+CASE 464 COPD exacerbation with acute respiratory failure
+CASE 465 Septic shock due to pneumonia
+CASE 466 Type 2 diabetes mellitus with chronic kidney disease
+CASE 467 Acute ischemic stroke
+CASE 468 Aspiration pneumonia
+CASE 469 Acute on chronic diastolic heart failure
+CASE 470 Pulmonary embolism with acute cor pulmonale
+CASE 471 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 472 Pneumonia with acute respiratory failure
+CASE 473 Acute systolic heart failure
+CASE 474 COPD exacerbation with acute respiratory failure
+CASE 475 Septic shock due to pneumonia
+CASE 476 Type 2 diabetes mellitus with chronic kidney disease
+CASE 477 Acute ischemic stroke
+CASE 478 Aspiration pneumonia
+CASE 479 Acute on chronic diastolic heart failure
+CASE 480 Pulmonary embolism with acute cor pulmonale
+CASE 481 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 482 Pneumonia with acute respiratory failure
+CASE 483 Acute systolic heart failure
+CASE 484 COPD exacerbation with acute respiratory failure
+CASE 485 Septic shock due to pneumonia
+CASE 486 Type 2 diabetes mellitus with chronic kidney disease
+CASE 487 Acute ischemic stroke
+CASE 488 Aspiration pneumonia
+CASE 489 Acute on chronic diastolic heart failure
+CASE 490 Pulmonary embolism with acute cor pulmonale
+CASE 491 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 492 Pneumonia with acute respiratory failure
+CASE 493 Acute systolic heart failure
+CASE 494 COPD exacerbation with acute respiratory failure
+CASE 495 Septic shock due to pneumonia
+CASE 496 Type 2 diabetes mellitus with chronic kidney disease
+CASE 497 Acute ischemic stroke
+CASE 498 Aspiration pneumonia
+CASE 499 Acute on chronic diastolic heart failure
+CASE 500 Pulmonary embolism with acute cor pulmonale
+CASE 501 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 502 Pneumonia with acute respiratory failure
+CASE 503 Acute systolic heart failure
+CASE 504 COPD exacerbation with acute respiratory failure
+CASE 505 Septic shock due to pneumonia
+CASE 506 Type 2 diabetes mellitus with chronic kidney disease
+CASE 507 Acute ischemic stroke
+CASE 508 Aspiration pneumonia
+CASE 509 Acute on chronic diastolic heart failure
+CASE 510 Pulmonary embolism with acute cor pulmonale
+CASE 511 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 512 Pneumonia with acute respiratory failure
+CASE 513 Acute systolic heart failure
+CASE 514 COPD exacerbation with acute respiratory failure
+CASE 515 Septic shock due to pneumonia
+CASE 516 Type 2 diabetes mellitus with chronic kidney disease
+CASE 517 Acute ischemic stroke
+CASE 518 Aspiration pneumonia
+CASE 519 Acute on chronic diastolic heart failure
+CASE 520 Pulmonary embolism with acute cor pulmonale
+CASE 521 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 522 Pneumonia with acute respiratory failure
+CASE 523 Acute systolic heart failure
+CASE 524 COPD exacerbation with acute respiratory failure
+CASE 525 Septic shock due to pneumonia
+CASE 526 Type 2 diabetes mellitus with chronic kidney disease
+CASE 527 Acute ischemic stroke
+CASE 528 Aspiration pneumonia
+CASE 529 Acute on chronic diastolic heart failure
+CASE 530 Pulmonary embolism with acute cor pulmonale
+CASE 531 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 532 Pneumonia with acute respiratory failure
+CASE 533 Acute systolic heart failure
+CASE 534 COPD exacerbation with acute respiratory failure
+CASE 535 Septic shock due to pneumonia
+CASE 536 Type 2 diabetes mellitus with chronic kidney disease
+CASE 537 Acute ischemic stroke
+CASE 538 Aspiration pneumonia
+CASE 539 Acute on chronic diastolic heart failure
+CASE 540 Pulmonary embolism with acute cor pulmonale
+CASE 541 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 542 Pneumonia with acute respiratory failure
+CASE 543 Acute systolic heart failure
+CASE 544 COPD exacerbation with acute respiratory failure
+CASE 545 Septic shock due to pneumonia
+CASE 546 Type 2 diabetes mellitus with chronic kidney disease
+CASE 547 Acute ischemic stroke
+CASE 548 Aspiration pneumonia
+CASE 549 Acute on chronic diastolic heart failure
+CASE 550 Pulmonary embolism with acute cor pulmonale
+CASE 551 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 552 Pneumonia with acute respiratory failure
+CASE 553 Acute systolic heart failure
+CASE 554 COPD exacerbation with acute respiratory failure
+CASE 555 Septic shock due to pneumonia
+CASE 556 Type 2 diabetes mellitus with chronic kidney disease
+CASE 557 Acute ischemic stroke
+CASE 558 Aspiration pneumonia
+CASE 559 Acute on chronic diastolic heart failure
+CASE 560 Pulmonary embolism with acute cor pulmonale
+CASE 561 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 562 Pneumonia with acute respiratory failure
+CASE 563 Acute systolic heart failure
+CASE 564 COPD exacerbation with acute respiratory failure
+CASE 565 Septic shock due to pneumonia
+CASE 566 Type 2 diabetes mellitus with chronic kidney disease
+CASE 567 Acute ischemic stroke
+CASE 568 Aspiration pneumonia
+CASE 569 Acute on chronic diastolic heart failure
+CASE 570 Pulmonary embolism with acute cor pulmonale
+CASE 571 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 572 Pneumonia with acute respiratory failure
+CASE 573 Acute systolic heart failure
+CASE 574 COPD exacerbation with acute respiratory failure
+CASE 575 Septic shock due to pneumonia
+CASE 576 Type 2 diabetes mellitus with chronic kidney disease
+CASE 577 Acute ischemic stroke
+CASE 578 Aspiration pneumonia
+CASE 579 Acute on chronic diastolic heart failure
+CASE 580 Pulmonary embolism with acute cor pulmonale
+CASE 581 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 582 Pneumonia with acute respiratory failure
+CASE 583 Acute systolic heart failure
+CASE 584 COPD exacerbation with acute respiratory failure
+CASE 585 Septic shock due to pneumonia
+CASE 586 Type 2 diabetes mellitus with chronic kidney disease
+CASE 587 Acute ischemic stroke
+CASE 588 Aspiration pneumonia
+CASE 589 Acute on chronic diastolic heart failure
+CASE 590 Pulmonary embolism with acute cor pulmonale
+CASE 591 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 592 Pneumonia with acute respiratory failure
+CASE 593 Acute systolic heart failure
+CASE 594 COPD exacerbation with acute respiratory failure
+CASE 595 Septic shock due to pneumonia
+CASE 596 Type 2 diabetes mellitus with chronic kidney disease
+CASE 597 Acute ischemic stroke
+CASE 598 Aspiration pneumonia
+CASE 599 Acute on chronic diastolic heart failure
+CASE 600 Pulmonary embolism with acute cor pulmonale
+CASE 601 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 602 Pneumonia with acute respiratory failure
+CASE 603 Acute systolic heart failure
+CASE 604 COPD exacerbation with acute respiratory failure
+CASE 605 Septic shock due to pneumonia
+CASE 606 Type 2 diabetes mellitus with chronic kidney disease
+CASE 607 Acute ischemic stroke
+CASE 608 Aspiration pneumonia
+CASE 609 Acute on chronic diastolic heart failure
+CASE 610 Pulmonary embolism with acute cor pulmonale
+CASE 611 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 612 Pneumonia with acute respiratory failure
+CASE 613 Acute systolic heart failure
+CASE 614 COPD exacerbation with acute respiratory failure
+CASE 615 Septic shock due to pneumonia
+CASE 616 Type 2 diabetes mellitus with chronic kidney disease
+CASE 617 Acute ischemic stroke
+CASE 618 Aspiration pneumonia
+CASE 619 Acute on chronic diastolic heart failure
+CASE 620 Pulmonary embolism with acute cor pulmonale
+CASE 621 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 622 Pneumonia with acute respiratory failure
+CASE 623 Acute systolic heart failure
+CASE 624 COPD exacerbation with acute respiratory failure
+CASE 625 Septic shock due to pneumonia
+CASE 626 Type 2 diabetes mellitus with chronic kidney disease
+CASE 627 Acute ischemic stroke
+CASE 628 Aspiration pneumonia
+CASE 629 Acute on chronic diastolic heart failure
+CASE 630 Pulmonary embolism with acute cor pulmonale
+CASE 631 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 632 Pneumonia with acute respiratory failure
+CASE 633 Acute systolic heart failure
+CASE 634 COPD exacerbation with acute respiratory failure
+CASE 635 Septic shock due to pneumonia
+CASE 636 Type 2 diabetes mellitus with chronic kidney disease
+CASE 637 Acute ischemic stroke
+CASE 638 Aspiration pneumonia
+CASE 639 Acute on chronic diastolic heart failure
+CASE 640 Pulmonary embolism with acute cor pulmonale
+CASE 641 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 642 Pneumonia with acute respiratory failure
+CASE 643 Acute systolic heart failure
+CASE 644 COPD exacerbation with acute respiratory failure
+CASE 645 Septic shock due to pneumonia
+CASE 646 Type 2 diabetes mellitus with chronic kidney disease
+CASE 647 Acute ischemic stroke
+CASE 648 Aspiration pneumonia
+CASE 649 Acute on chronic diastolic heart failure
+CASE 650 Pulmonary embolism with acute cor pulmonale
+CASE 651 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 652 Pneumonia with acute respiratory failure
+CASE 653 Acute systolic heart failure
+CASE 654 COPD exacerbation with acute respiratory failure
+CASE 655 Septic shock due to pneumonia
+CASE 656 Type 2 diabetes mellitus with chronic kidney disease
+CASE 657 Acute ischemic stroke
+CASE 658 Aspiration pneumonia
+CASE 659 Acute on chronic diastolic heart failure
+CASE 660 Pulmonary embolism with acute cor pulmonale
+CASE 661 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 662 Pneumonia with acute respiratory failure
+CASE 663 Acute systolic heart failure
+CASE 664 COPD exacerbation with acute respiratory failure
+CASE 665 Septic shock due to pneumonia
+CASE 666 Type 2 diabetes mellitus with chronic kidney disease
+CASE 667 Acute ischemic stroke
+CASE 668 Aspiration pneumonia
+CASE 669 Acute on chronic diastolic heart failure
+CASE 670 Pulmonary embolism with acute cor pulmonale
+CASE 671 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 672 Pneumonia with acute respiratory failure
+CASE 673 Acute systolic heart failure
+CASE 674 COPD exacerbation with acute respiratory failure
+CASE 675 Septic shock due to pneumonia
+CASE 676 Type 2 diabetes mellitus with chronic kidney disease
+CASE 677 Acute ischemic stroke
+CASE 678 Aspiration pneumonia
+CASE 679 Acute on chronic diastolic heart failure
+CASE 680 Pulmonary embolism with acute cor pulmonale
+CASE 681 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 682 Pneumonia with acute respiratory failure
+CASE 683 Acute systolic heart failure
+CASE 684 COPD exacerbation with acute respiratory failure
+CASE 685 Septic shock due to pneumonia
+CASE 686 Type 2 diabetes mellitus with chronic kidney disease
+CASE 687 Acute ischemic stroke
+CASE 688 Aspiration pneumonia
+CASE 689 Acute on chronic diastolic heart failure
+CASE 690 Pulmonary embolism with acute cor pulmonale
+CASE 691 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 692 Pneumonia with acute respiratory failure
+CASE 693 Acute systolic heart failure
+CASE 694 COPD exacerbation with acute respiratory failure
+CASE 695 Septic shock due to pneumonia
+CASE 696 Type 2 diabetes mellitus with chronic kidney disease
+CASE 697 Acute ischemic stroke
+CASE 698 Aspiration pneumonia
+CASE 699 Acute on chronic diastolic heart failure
+CASE 700 Pulmonary embolism with acute cor pulmonale
+CASE 701 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 702 Pneumonia with acute respiratory failure
+CASE 703 Acute systolic heart failure
+CASE 704 COPD exacerbation with acute respiratory failure
+CASE 705 Septic shock due to pneumonia
+CASE 706 Type 2 diabetes mellitus with chronic kidney disease
+CASE 707 Acute ischemic stroke
+CASE 708 Aspiration pneumonia
+CASE 709 Acute on chronic diastolic heart failure
+CASE 710 Pulmonary embolism with acute cor pulmonale
+CASE 711 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 712 Pneumonia with acute respiratory failure
+CASE 713 Acute systolic heart failure
+CASE 714 COPD exacerbation with acute respiratory failure
+CASE 715 Septic shock due to pneumonia
+CASE 716 Type 2 diabetes mellitus with chronic kidney disease
+CASE 717 Acute ischemic stroke
+CASE 718 Aspiration pneumonia
+CASE 719 Acute on chronic diastolic heart failure
+CASE 720 Pulmonary embolism with acute cor pulmonale
+CASE 721 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 722 Pneumonia with acute respiratory failure
+CASE 723 Acute systolic heart failure
+CASE 724 COPD exacerbation with acute respiratory failure
+CASE 725 Septic shock due to pneumonia
+CASE 726 Type 2 diabetes mellitus with chronic kidney disease
+CASE 727 Acute ischemic stroke
+CASE 728 Aspiration pneumonia
+CASE 729 Acute on chronic diastolic heart failure
+CASE 730 Pulmonary embolism with acute cor pulmonale
+CASE 731 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 732 Pneumonia with acute respiratory failure
+CASE 733 Acute systolic heart failure
+CASE 734 COPD exacerbation with acute respiratory failure
+CASE 735 Septic shock due to pneumonia
+CASE 736 Type 2 diabetes mellitus with chronic kidney disease
+CASE 737 Acute ischemic stroke
+CASE 738 Aspiration pneumonia
+CASE 739 Acute on chronic diastolic heart failure
+CASE 740 Pulmonary embolism with acute cor pulmonale
+CASE 741 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 742 Pneumonia with acute respiratory failure
+CASE 743 Acute systolic heart failure
+CASE 744 COPD exacerbation with acute respiratory failure
+CASE 745 Septic shock due to pneumonia
+CASE 746 Type 2 diabetes mellitus with chronic kidney disease
+CASE 747 Acute ischemic stroke
+CASE 748 Aspiration pneumonia
+CASE 749 Acute on chronic diastolic heart failure
+CASE 750 Pulmonary embolism with acute cor pulmonale
+CASE 751 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 752 Pneumonia with acute respiratory failure
+CASE 753 Acute systolic heart failure
+CASE 754 COPD exacerbation with acute respiratory failure
+CASE 755 Septic shock due to pneumonia
+CASE 756 Type 2 diabetes mellitus with chronic kidney disease
+CASE 757 Acute ischemic stroke
+CASE 758 Aspiration pneumonia
+CASE 759 Acute on chronic diastolic heart failure
+CASE 760 Pulmonary embolism with acute cor pulmonale
+CASE 761 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 762 Pneumonia with acute respiratory failure
+CASE 763 Acute systolic heart failure
+CASE 764 COPD exacerbation with acute respiratory failure
+CASE 765 Septic shock due to pneumonia
+CASE 766 Type 2 diabetes mellitus with chronic kidney disease
+CASE 767 Acute ischemic stroke
+CASE 768 Aspiration pneumonia
+CASE 769 Acute on chronic diastolic heart failure
+CASE 770 Pulmonary embolism with acute cor pulmonale
+CASE 771 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 772 Pneumonia with acute respiratory failure
+CASE 773 Acute systolic heart failure
+CASE 774 COPD exacerbation with acute respiratory failure
+CASE 775 Septic shock due to pneumonia
+CASE 776 Type 2 diabetes mellitus with chronic kidney disease
+CASE 777 Acute ischemic stroke
+CASE 778 Aspiration pneumonia
+CASE 779 Acute on chronic diastolic heart failure
+CASE 780 Pulmonary embolism with acute cor pulmonale
+CASE 781 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 782 Pneumonia with acute respiratory failure
+CASE 783 Acute systolic heart failure
+CASE 784 COPD exacerbation with acute respiratory failure
+CASE 785 Septic shock due to pneumonia
+CASE 786 Type 2 diabetes mellitus with chronic kidney disease
+CASE 787 Acute ischemic stroke
+CASE 788 Aspiration pneumonia
+CASE 789 Acute on chronic diastolic heart failure
+CASE 790 Pulmonary embolism with acute cor pulmonale
+CASE 791 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 792 Pneumonia with acute respiratory failure
+CASE 793 Acute systolic heart failure
+CASE 794 COPD exacerbation with acute respiratory failure
+CASE 795 Septic shock due to pneumonia
+CASE 796 Type 2 diabetes mellitus with chronic kidney disease
+CASE 797 Acute ischemic stroke
+CASE 798 Aspiration pneumonia
+CASE 799 Acute on chronic diastolic heart failure
+CASE 800 Pulmonary embolism with acute cor pulmonale
+CASE 801 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 802 Pneumonia with acute respiratory failure
+CASE 803 Acute systolic heart failure
+CASE 804 COPD exacerbation with acute respiratory failure
+CASE 805 Septic shock due to pneumonia
+CASE 806 Type 2 diabetes mellitus with chronic kidney disease
+CASE 807 Acute ischemic stroke
+CASE 808 Aspiration pneumonia
+CASE 809 Acute on chronic diastolic heart failure
+CASE 810 Pulmonary embolism with acute cor pulmonale
+CASE 811 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 812 Pneumonia with acute respiratory failure
+CASE 813 Acute systolic heart failure
+CASE 814 COPD exacerbation with acute respiratory failure
+CASE 815 Septic shock due to pneumonia
+CASE 816 Type 2 diabetes mellitus with chronic kidney disease
+CASE 817 Acute ischemic stroke
+CASE 818 Aspiration pneumonia
+CASE 819 Acute on chronic diastolic heart failure
+CASE 820 Pulmonary embolism with acute cor pulmonale
+CASE 821 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 822 Pneumonia with acute respiratory failure
+CASE 823 Acute systolic heart failure
+CASE 824 COPD exacerbation with acute respiratory failure
+CASE 825 Septic shock due to pneumonia
+CASE 826 Type 2 diabetes mellitus with chronic kidney disease
+CASE 827 Acute ischemic stroke
+CASE 828 Aspiration pneumonia
+CASE 829 Acute on chronic diastolic heart failure
+CASE 830 Pulmonary embolism with acute cor pulmonale
+CASE 831 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 832 Pneumonia with acute respiratory failure
+CASE 833 Acute systolic heart failure
+CASE 834 COPD exacerbation with acute respiratory failure
+CASE 835 Septic shock due to pneumonia
+CASE 836 Type 2 diabetes mellitus with chronic kidney disease
+CASE 837 Acute ischemic stroke
+CASE 838 Aspiration pneumonia
+CASE 839 Acute on chronic diastolic heart failure
+CASE 840 Pulmonary embolism with acute cor pulmonale
+CASE 841 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 842 Pneumonia with acute respiratory failure
+CASE 843 Acute systolic heart failure
+CASE 844 COPD exacerbation with acute respiratory failure
+CASE 845 Septic shock due to pneumonia
+CASE 846 Type 2 diabetes mellitus with chronic kidney disease
+CASE 847 Acute ischemic stroke
+CASE 848 Aspiration pneumonia
+CASE 849 Acute on chronic diastolic heart failure
+CASE 850 Pulmonary embolism with acute cor pulmonale
+CASE 851 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 852 Pneumonia with acute respiratory failure
+CASE 853 Acute systolic heart failure
+CASE 854 COPD exacerbation with acute respiratory failure
+CASE 855 Septic shock due to pneumonia
+CASE 856 Type 2 diabetes mellitus with chronic kidney disease
+CASE 857 Acute ischemic stroke
+CASE 858 Aspiration pneumonia
+CASE 859 Acute on chronic diastolic heart failure
+CASE 860 Pulmonary embolism with acute cor pulmonale
+CASE 861 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 862 Pneumonia with acute respiratory failure
+CASE 863 Acute systolic heart failure
+CASE 864 COPD exacerbation with acute respiratory failure
+CASE 865 Septic shock due to pneumonia
+CASE 866 Type 2 diabetes mellitus with chronic kidney disease
+CASE 867 Acute ischemic stroke
+CASE 868 Aspiration pneumonia
+CASE 869 Acute on chronic diastolic heart failure
+CASE 870 Pulmonary embolism with acute cor pulmonale
+CASE 871 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 872 Pneumonia with acute respiratory failure
+CASE 873 Acute systolic heart failure
+CASE 874 COPD exacerbation with acute respiratory failure
+CASE 875 Septic shock due to pneumonia
+CASE 876 Type 2 diabetes mellitus with chronic kidney disease
+CASE 877 Acute ischemic stroke
+CASE 878 Aspiration pneumonia
+CASE 879 Acute on chronic diastolic heart failure
+CASE 880 Pulmonary embolism with acute cor pulmonale
+CASE 881 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 882 Pneumonia with acute respiratory failure
+CASE 883 Acute systolic heart failure
+CASE 884 COPD exacerbation with acute respiratory failure
+CASE 885 Septic shock due to pneumonia
+CASE 886 Type 2 diabetes mellitus with chronic kidney disease
+CASE 887 Acute ischemic stroke
+CASE 888 Aspiration pneumonia
+CASE 889 Acute on chronic diastolic heart failure
+CASE 890 Pulmonary embolism with acute cor pulmonale
+CASE 891 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 892 Pneumonia with acute respiratory failure
+CASE 893 Acute systolic heart failure
+CASE 894 COPD exacerbation with acute respiratory failure
+CASE 895 Septic shock due to pneumonia
+CASE 896 Type 2 diabetes mellitus with chronic kidney disease
+CASE 897 Acute ischemic stroke
+CASE 898 Aspiration pneumonia
+CASE 899 Acute on chronic diastolic heart failure
+CASE 900 Pulmonary embolism with acute cor pulmonale
+CASE 901 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 902 Pneumonia with acute respiratory failure
+CASE 903 Acute systolic heart failure
+CASE 904 COPD exacerbation with acute respiratory failure
+CASE 905 Septic shock due to pneumonia
+CASE 906 Type 2 diabetes mellitus with chronic kidney disease
+CASE 907 Acute ischemic stroke
+CASE 908 Aspiration pneumonia
+CASE 909 Acute on chronic diastolic heart failure
+CASE 910 Pulmonary embolism with acute cor pulmonale
+CASE 911 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 912 Pneumonia with acute respiratory failure
+CASE 913 Acute systolic heart failure
+CASE 914 COPD exacerbation with acute respiratory failure
+CASE 915 Septic shock due to pneumonia
+CASE 916 Type 2 diabetes mellitus with chronic kidney disease
+CASE 917 Acute ischemic stroke
+CASE 918 Aspiration pneumonia
+CASE 919 Acute on chronic diastolic heart failure
+CASE 920 Pulmonary embolism with acute cor pulmonale
+CASE 921 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 922 Pneumonia with acute respiratory failure
+CASE 923 Acute systolic heart failure
+CASE 924 COPD exacerbation with acute respiratory failure
+CASE 925 Septic shock due to pneumonia
+CASE 926 Type 2 diabetes mellitus with chronic kidney disease
+CASE 927 Acute ischemic stroke
+CASE 928 Aspiration pneumonia
+CASE 929 Acute on chronic diastolic heart failure
+CASE 930 Pulmonary embolism with acute cor pulmonale
+CASE 931 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 932 Pneumonia with acute respiratory failure
+CASE 933 Acute systolic heart failure
+CASE 934 COPD exacerbation with acute respiratory failure
+CASE 935 Septic shock due to pneumonia
+CASE 936 Type 2 diabetes mellitus with chronic kidney disease
+CASE 937 Acute ischemic stroke
+CASE 938 Aspiration pneumonia
+CASE 939 Acute on chronic diastolic heart failure
+CASE 940 Pulmonary embolism with acute cor pulmonale
+CASE 941 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 942 Pneumonia with acute respiratory failure
+CASE 943 Acute systolic heart failure
+CASE 944 COPD exacerbation with acute respiratory failure
+CASE 945 Septic shock due to pneumonia
+CASE 946 Type 2 diabetes mellitus with chronic kidney disease
+CASE 947 Acute ischemic stroke
+CASE 948 Aspiration pneumonia
+CASE 949 Acute on chronic diastolic heart failure
+CASE 950 Pulmonary embolism with acute cor pulmonale
+CASE 951 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 952 Pneumonia with acute respiratory failure
+CASE 953 Acute systolic heart failure
+CASE 954 COPD exacerbation with acute respiratory failure
+CASE 955 Septic shock due to pneumonia
+CASE 956 Type 2 diabetes mellitus with chronic kidney disease
+CASE 957 Acute ischemic stroke
+CASE 958 Aspiration pneumonia
+CASE 959 Acute on chronic diastolic heart failure
+CASE 960 Pulmonary embolism with acute cor pulmonale
+CASE 961 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 962 Pneumonia with acute respiratory failure
+CASE 963 Acute systolic heart failure
+CASE 964 COPD exacerbation with acute respiratory failure
+CASE 965 Septic shock due to pneumonia
+CASE 966 Type 2 diabetes mellitus with chronic kidney disease
+CASE 967 Acute ischemic stroke
+CASE 968 Aspiration pneumonia
+CASE 969 Acute on chronic diastolic heart failure
+CASE 970 Pulmonary embolism with acute cor pulmonale
+CASE 971 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 972 Pneumonia with acute respiratory failure
+CASE 973 Acute systolic heart failure
+CASE 974 COPD exacerbation with acute respiratory failure
+CASE 975 Septic shock due to pneumonia
+CASE 976 Type 2 diabetes mellitus with chronic kidney disease
+CASE 977 Acute ischemic stroke
+CASE 978 Aspiration pneumonia
+CASE 979 Acute on chronic diastolic heart failure
+CASE 980 Pulmonary embolism with acute cor pulmonale
+CASE 981 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 982 Pneumonia with acute respiratory failure
+CASE 983 Acute systolic heart failure
+CASE 984 COPD exacerbation with acute respiratory failure
+CASE 985 Septic shock due to pneumonia
+CASE 986 Type 2 diabetes mellitus with chronic kidney disease
+CASE 987 Acute ischemic stroke
+CASE 988 Aspiration pneumonia
+CASE 989 Acute on chronic diastolic heart failure
+CASE 990 Pulmonary embolism with acute cor pulmonale
+CASE 991 Sepsis due to MRSA with acute hypoxic respiratory failure
+CASE 992 Pneumonia with acute respiratory failure
+CASE 993 Acute systolic heart failure
+CASE 994 COPD exacerbation with acute respiratory failure
+CASE 995 Septic shock due to pneumonia
+CASE 996 Type 2 diabetes mellitus with chronic kidney disease
+CASE 997 Acute ischemic stroke
+CASE 998 Aspiration pneumonia
+CASE 999 Acute on chronic diastolic heart failure
+CASE 1000 Pulmonary embolism with acute cor pulmonale

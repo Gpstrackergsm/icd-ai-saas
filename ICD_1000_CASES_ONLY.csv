@@ -1,0 +1,1001 @@
+Case_Title
+CASE 1 Community-acquired pneumonia in 64-year-old Male
+CASE 2 Sepsis due to MRSA in 58-year-old Female
+CASE 3 Type 2 diabetes mellitus with chronic kidney disease in 85-year-old Male
+CASE 4 Acute liver failure in 77-year-old Male
+CASE 5 Type 1 diabetes mellitus with ketoacidosis in 29-year-old Male
+CASE 6 Metabolic encephalopathy in 38-year-old Female
+CASE 7 Atrial fibrillation with rapid ventricular response in 71-year-old Female
+CASE 8 Asthma with acute exacerbation in 81-year-old Female
+CASE 9 Acute ischemic stroke in 71-year-old Female
+CASE 10 Mild preeclampsia at 32 weeks gestation in 50-year-old Male
+CASE 11 Closed fracture of right tibial shaft in 94-year-old Male
+CASE 12 Hypertensive heart disease with heart failure in 86-year-old Female
+CASE 13 Alzheimer dementia in 50-year-old Female
+CASE 14 Acute pulmonary edema in 85-year-old Female
+CASE 15 Mild preeclampsia at 32 weeks gestation in 88-year-old Female
+CASE 16 Seizure disorder in 75-year-old Male
+CASE 17 Chronic obstructive pulmonary disease without exacerbation in 66-year-old Female
+CASE 18 Hypertensive heart disease with heart failure in 27-year-old Male
+CASE 19 Urinary tract infection in 88-year-old Male
+CASE 20 Multiple rib fractures due to fall in 82-year-old Male
+CASE 21 COVID-19 pneumonia with ARDS in 18-year-old Male
+CASE 22 Acute pulmonary edema in 22-year-old Female
+CASE 23 Metabolic encephalopathy in 59-year-old Female
+CASE 24 Acute kidney failure in 88-year-old Female
+CASE 25 Acute hypoxic respiratory failure in 53-year-old Female
+CASE 26 Asthma with acute exacerbation in 56-year-old Male
+CASE 27 Chronic kidney disease stage 4 in 71-year-old Female
+CASE 28 Community-acquired pneumonia in 53-year-old Male
+CASE 29 Chronic obstructive pulmonary disease without exacerbation in 86-year-old Male
+CASE 30 Community-acquired pneumonia in 23-year-old Female
+CASE 31 COVID-19 pneumonia in 30-year-old Female
+CASE 32 COPD exacerbation with acute respiratory failure in 92-year-old Female
+CASE 33 Type 1 diabetes mellitus with ketoacidosis in 44-year-old Male
+CASE 34 COVID-19 pneumonia with ARDS in 30-year-old Female
+CASE 35 Chronic kidney disease stage 4 in 84-year-old Male
+CASE 36 COPD exacerbation in 58-year-old Male
+CASE 37 Acute hypoxic respiratory failure in 85-year-old Male
+CASE 38 Left femoral neck fracture in 57-year-old Female
+CASE 39 Metabolic encephalopathy in 83-year-old Female
+CASE 40 Sepsis due to MRSA in 62-year-old Female
+CASE 41 Sepsis secondary to urinary tract infection in 62-year-old Female
+CASE 42 Transient ischemic attack in 18-year-old Male
+CASE 43 Metabolic encephalopathy in 77-year-old Male
+CASE 44 Severe preeclampsia in third trimester in 57-year-old Female
+CASE 45 Severe preeclampsia in third trimester in 41-year-old Male
+CASE 46 Alcoholic cirrhosis with ascites in 47-year-old Female
+CASE 47 Acute liver failure in 73-year-old Male
+CASE 48 Status epilepticus in 50-year-old Female
+CASE 49 Acute ischemic stroke in 58-year-old Female
+CASE 50 Closed fracture of right tibial shaft in 43-year-old Male
+CASE 51 Acute liver failure in 94-year-old Female
+CASE 52 COPD exacerbation in 74-year-old Female
+CASE 53 COPD exacerbation with acute respiratory failure in 75-year-old Female
+CASE 54 Chronic kidney disease stage 4 in 25-year-old Male
+CASE 55 Hypertensive heart disease with heart failure in 51-year-old Female
+CASE 56 Acute hypoxic respiratory failure in 54-year-old Female
+CASE 57 Community-acquired pneumonia in 65-year-old Female
+CASE 58 Left femoral neck fracture in 92-year-old Male
+CASE 59 Chronic obstructive pulmonary disease without exacerbation in 22-year-old Female
+CASE 60 Pulmonary embolism with acute cor pulmonale in 92-year-old Male
+CASE 61 Twin pregnancy in third trimester in 91-year-old Male
+CASE 62 Seizure disorder in 53-year-old Female
+CASE 63 Chronic obstructive pulmonary disease without exacerbation in 51-year-old Male
+CASE 64 COVID-19 pneumonia in 94-year-old Male
+CASE 65 Postoperative respiratory failure in 49-year-old Male
+CASE 66 Parkinson disease in 20-year-old Male
+CASE 67 Alcoholic cirrhosis with ascites in 43-year-old Female
+CASE 68 Pneumonia due to MRSA in 47-year-old Female
+CASE 69 Sepsis secondary to urinary tract infection in 59-year-old Female
+CASE 70 COVID-19 pneumonia in 30-year-old Female
+CASE 71 Hypertensive heart disease with heart failure in 22-year-old Male
+CASE 72 Acute liver failure in 91-year-old Male
+CASE 73 Diabetic foot ulcer with infection in 71-year-old Male
+CASE 74 Acute pancreatitis in 38-year-old Male
+CASE 75 Acute pancreatitis in 63-year-old Female
+CASE 76 Diabetic foot ulcer with infection in 83-year-old Male
+CASE 77 Septic shock secondary to pneumonia in 90-year-old Female
+CASE 78 Traumatic subdural hematoma in 19-year-old Male
+CASE 79 Acute pulmonary edema in 63-year-old Female
+CASE 80 Acute respiratory distress syndrome in 69-year-old Male
+CASE 81 Status epilepticus in 32-year-old Male
+CASE 82 Successful VBAC delivery in 28-year-old Female
+CASE 83 Closed fracture of right tibial shaft in 70-year-old Female
+CASE 84 Traumatic subdural hematoma in 89-year-old Female
+CASE 85 Atrial fibrillation with rapid ventricular response in 80-year-old Male
+CASE 86 Asthma with acute exacerbation in 58-year-old Male
+CASE 87 COVID-19 pneumonia in 30-year-old Male
+CASE 88 Pleural effusion due to heart failure in 78-year-old Female
+CASE 89 Transient ischemic attack in 41-year-old Male
+CASE 90 Hypertensive heart disease with heart failure in 78-year-old Male
+CASE 91 Aspiration pneumonia in 25-year-old Male
+CASE 92 Acute liver failure in 27-year-old Female
+CASE 93 Seizure disorder in 74-year-old Female
+CASE 94 Type 1 diabetes mellitus with ketoacidosis in 94-year-old Female
+CASE 95 Septic shock secondary to pneumonia in 44-year-old Male
+CASE 96 Metabolic encephalopathy in 30-year-old Male
+CASE 97 Postoperative respiratory failure in 39-year-old Male
+CASE 98 Acute respiratory distress syndrome in 80-year-old Female
+CASE 99 Asthma with acute exacerbation in 47-year-old Female
+CASE 100 Sepsis due to E. coli in 78-year-old Female
+CASE 101 Traumatic subdural hematoma in 31-year-old Female
+CASE 102 Acute systolic heart failure in 71-year-old Female
+CASE 103 Acute myocardial infarction in 52-year-old Female
+CASE 104 Alzheimer dementia in 30-year-old Female
+CASE 105 Multiple rib fractures due to fall in 44-year-old Male
+CASE 106 COVID-19 pneumonia in 63-year-old Male
+CASE 107 Closed fracture of right tibial shaft in 61-year-old Female
+CASE 108 Atrial fibrillation with rapid ventricular response in 88-year-old Female
+CASE 109 Pleural effusion due to heart failure in 86-year-old Female
+CASE 110 Left femoral neck fracture in 50-year-old Female
+CASE 111 Acute pancreatitis in 88-year-old Male
+CASE 112 Twin pregnancy in third trimester in 60-year-old Male
+CASE 113 Mild preeclampsia at 32 weeks gestation in 21-year-old Male
+CASE 114 COVID-19 pneumonia with ARDS in 23-year-old Male
+CASE 115 Status epilepticus in 72-year-old Female
+CASE 116 Mild preeclampsia at 32 weeks gestation in 71-year-old Male
+CASE 117 COVID-19 pneumonia in 64-year-old Male
+CASE 118 Twin pregnancy in third trimester in 67-year-old Female
+CASE 119 Twin pregnancy in third trimester in 69-year-old Male
+CASE 120 COPD exacerbation with acute respiratory failure in 18-year-old Female
+CASE 121 Transient ischemic attack in 92-year-old Male
+CASE 122 Ventilator associated pneumonia in 50-year-old Female
+CASE 123 Closed fracture of right tibial shaft in 79-year-old Male
+CASE 124 Acute pulmonary edema in 83-year-old Female
+CASE 125 COPD exacerbation in 51-year-old Male
+CASE 126 Aspiration pneumonia in 21-year-old Female
+CASE 127 Septic shock secondary to pneumonia in 46-year-old Female
+CASE 128 Alzheimer dementia in 61-year-old Male
+CASE 129 Pleural effusion due to heart failure in 80-year-old Male
+CASE 130 Pneumonia due to MRSA in 55-year-old Female
+CASE 131 Sepsis due to MRSA in 36-year-old Female
+CASE 132 Sepsis secondary to urinary tract infection in 28-year-old Male
+CASE 133 Gangrene of left foot in diabetic patient in 25-year-old Male
+CASE 134 Acute pulmonary edema in 77-year-old Male
+CASE 135 Aspiration pneumonia in 30-year-old Female
+CASE 136 Transient ischemic attack in 57-year-old Male
+CASE 137 Acute systolic heart failure in 28-year-old Male
+CASE 138 COVID-19 pneumonia with ARDS in 62-year-old Male
+CASE 139 Type 1 diabetes mellitus with ketoacidosis in 27-year-old Female
+CASE 140 Traumatic subdural hematoma in 64-year-old Male
+CASE 141 Acute pancreatitis in 91-year-old Male
+CASE 142 Alzheimer dementia in 23-year-old Male
+CASE 143 Diabetic foot ulcer with infection in 34-year-old Female
+CASE 144 Postoperative respiratory failure in 31-year-old Male
+CASE 145 Status epilepticus in 58-year-old Female
+CASE 146 Community-acquired pneumonia in 39-year-old Female
+CASE 147 Type 2 diabetes mellitus with chronic kidney disease in 62-year-old Female
+CASE 148 Gangrene of left foot in diabetic patient in 34-year-old Male
+CASE 149 Successful VBAC delivery in 21-year-old Female
+CASE 150 Diabetic foot ulcer with infection in 77-year-old Male
+CASE 151 Acute ischemic stroke in 94-year-old Male
+CASE 152 Sepsis due to E. coli in 38-year-old Male
+CASE 153 Upper gastrointestinal bleeding in 57-year-old Male
+CASE 154 Sepsis due to E. coli in 71-year-old Male
+CASE 155 Closed fracture of right tibial shaft in 22-year-old Male
+CASE 156 Chronic kidney disease stage 4 in 92-year-old Male
+CASE 157 COPD exacerbation in 40-year-old Male
+CASE 158 Acute liver failure in 48-year-old Male
+CASE 159 Acute liver failure in 37-year-old Female
+CASE 160 Acute hypoxic respiratory failure in 56-year-old Female
+CASE 161 Hypertensive heart disease with heart failure in 25-year-old Male
+CASE 162 Atrial fibrillation with rapid ventricular response in 84-year-old Female
+CASE 163 Acute myocardial infarction in 20-year-old Female
+CASE 164 Closed fracture of right tibial shaft in 71-year-old Female
+CASE 165 Aspiration pneumonia in 64-year-old Male
+CASE 166 Successful VBAC delivery in 29-year-old Male
+CASE 167 Parkinson disease in 85-year-old Female
+CASE 168 Chronic obstructive pulmonary disease without exacerbation in 79-year-old Female
+CASE 169 COPD exacerbation in 52-year-old Female
+CASE 170 Successful VBAC delivery in 43-year-old Male
+CASE 171 Aspiration pneumonia in 45-year-old Male
+CASE 172 Acute liver failure in 78-year-old Male
+CASE 173 COVID-19 pneumonia with ARDS in 90-year-old Female
+CASE 174 Left femoral neck fracture in 60-year-old Male
+CASE 175 Parkinson disease in 89-year-old Male
+CASE 176 Acute pancreatitis in 84-year-old Male
+CASE 177 Pulmonary embolism with acute cor pulmonale in 85-year-old Female
+CASE 178 Parkinson disease in 66-year-old Male
+CASE 179 Acute liver failure in 56-year-old Female
+CASE 180 Metabolic encephalopathy in 79-year-old Male
+CASE 181 Acute kidney failure in 43-year-old Male
+CASE 182 Asthma with acute exacerbation in 37-year-old Female
+CASE 183 Acute myocardial infarction in 59-year-old Male
+CASE 184 Community-acquired pneumonia in 43-year-old Male
+CASE 185 Type 2 diabetes mellitus with chronic kidney disease in 45-year-old Male
+CASE 186 Mild preeclampsia at 32 weeks gestation in 35-year-old Female
+CASE 187 Acute liver failure in 41-year-old Female
+CASE 188 Chronic kidney disease stage 4 in 26-year-old Male
+CASE 189 Acute ischemic stroke in 78-year-old Female
+CASE 190 Pneumonia due to MRSA in 92-year-old Male
+CASE 191 Pleural effusion due to heart failure in 91-year-old Female
+CASE 192 Alzheimer dementia in 55-year-old Female
+CASE 193 Alzheimer dementia in 45-year-old Female
+CASE 194 Type 2 diabetes mellitus with chronic kidney disease in 32-year-old Male
+CASE 195 Hypertensive heart disease with heart failure in 72-year-old Male
+CASE 196 Transient ischemic attack in 81-year-old Female
+CASE 197 Alcoholic cirrhosis with ascites in 67-year-old Female
+CASE 198 Acute myocardial infarction in 39-year-old Female
+CASE 199 Acute systolic heart failure in 30-year-old Female
+CASE 200 Pneumonia due to MRSA in 87-year-old Female
+CASE 201 Community-acquired pneumonia in 26-year-old Male
+CASE 202 Traumatic subdural hematoma in 89-year-old Male
+CASE 203 Successful VBAC delivery in 92-year-old Female
+CASE 204 Closed fracture of right tibial shaft in 61-year-old Female
+CASE 205 Aspiration pneumonia in 76-year-old Male
+CASE 206 Acute myocardial infarction in 56-year-old Male
+CASE 207 COPD exacerbation with acute respiratory failure in 79-year-old Male
+CASE 208 Asthma with acute exacerbation in 91-year-old Male
+CASE 209 Multiple rib fractures due to fall in 66-year-old Male
+CASE 210 Acute hypoxic respiratory failure in 37-year-old Male
+CASE 211 Acute hypercapnic respiratory failure in 88-year-old Male
+CASE 212 Urinary tract infection in 66-year-old Male
+CASE 213 Acute hypercapnic respiratory failure in 54-year-old Female
+CASE 214 Acute pancreatitis in 95-year-old Female
+CASE 215 Type 1 diabetes mellitus with ketoacidosis in 42-year-old Male
+CASE 216 Status epilepticus in 94-year-old Male
+CASE 217 Sepsis secondary to urinary tract infection in 19-year-old Male
+CASE 218 Diabetic foot ulcer with infection in 64-year-old Male
+CASE 219 Acute pulmonary edema in 75-year-old Male
+CASE 220 COVID-19 pneumonia in 19-year-old Male
+CASE 221 Chronic obstructive pulmonary disease without exacerbation in 84-year-old Female
+CASE 222 Transient ischemic attack in 68-year-old Male
+CASE 223 Acute ischemic stroke in 82-year-old Male
+CASE 224 Transient ischemic attack in 93-year-old Male
+CASE 225 Transient ischemic attack in 84-year-old Male
+CASE 226 Acute hypoxic respiratory failure in 53-year-old Male
+CASE 227 Successful VBAC delivery in 42-year-old Female
+CASE 228 Acute ischemic stroke in 25-year-old Female
+CASE 229 Upper gastrointestinal bleeding in 20-year-old Male
+CASE 230 Metabolic encephalopathy in 74-year-old Male
+CASE 231 Multiple rib fractures due to fall in 95-year-old Female
+CASE 232 Acute ischemic stroke in 38-year-old Female
+CASE 233 Chronic obstructive pulmonary disease without exacerbation in 64-year-old Male
+CASE 234 Acute systolic heart failure in 67-year-old Female
+CASE 235 Chronic obstructive pulmonary disease without exacerbation in 73-year-old Female
+CASE 236 COPD exacerbation with acute respiratory failure in 71-year-old Male
+CASE 237 Acute systolic heart failure in 43-year-old Male
+CASE 238 Metabolic encephalopathy in 20-year-old Female
+CASE 239 Chronic obstructive pulmonary disease without exacerbation in 53-year-old Female
+CASE 240 Type 1 diabetes mellitus with ketoacidosis in 45-year-old Female
+CASE 241 Acute pulmonary edema in 77-year-old Male
+CASE 242 Upper gastrointestinal bleeding in 68-year-old Female
+CASE 243 Hypertensive heart disease with heart failure in 95-year-old Female
+CASE 244 Pneumonia due to MRSA in 90-year-old Female
+CASE 245 Acute kidney failure in 58-year-old Male
+CASE 246 Postoperative respiratory failure in 23-year-old Male
+CASE 247 Acute pancreatitis in 26-year-old Female
+CASE 248 Transient ischemic attack in 83-year-old Male
+CASE 249 Pneumonia due to MRSA in 58-year-old Male
+CASE 250 COPD exacerbation with acute respiratory failure in 84-year-old Male
+CASE 251 Acute respiratory distress syndrome in 62-year-old Female
+CASE 252 Ventilator associated pneumonia in 72-year-old Male
+CASE 253 Septic shock secondary to pneumonia in 48-year-old Female
+CASE 254 Pleural effusion due to heart failure in 44-year-old Male
+CASE 255 Acute hypoxic respiratory failure in 95-year-old Male
+CASE 256 Severe preeclampsia in third trimester in 39-year-old Male
+CASE 257 Sepsis secondary to urinary tract infection in 71-year-old Male
+CASE 258 Pleural effusion due to heart failure in 72-year-old Male
+CASE 259 Seizure disorder in 91-year-old Female
+CASE 260 Atrial fibrillation with rapid ventricular response in 90-year-old Male
+CASE 261 Atrial fibrillation with rapid ventricular response in 18-year-old Female
+CASE 262 Acute systolic heart failure in 18-year-old Male
+CASE 263 Acute liver failure in 88-year-old Male
+CASE 264 Diabetic foot ulcer with infection in 76-year-old Female
+CASE 265 Sepsis due to MRSA in 86-year-old Female
+CASE 266 Atrial fibrillation with rapid ventricular response in 87-year-old Male
+CASE 267 Mild preeclampsia at 32 weeks gestation in 28-year-old Male
+CASE 268 Postoperative respiratory failure in 74-year-old Female
+CASE 269 COVID-19 pneumonia with ARDS in 44-year-old Female
+CASE 270 Acute hypoxic respiratory failure in 64-year-old Male
+CASE 271 Pleural effusion due to heart failure in 64-year-old Female
+CASE 272 Type 1 diabetes mellitus with ketoacidosis in 53-year-old Male
+CASE 273 Upper gastrointestinal bleeding in 57-year-old Female
+CASE 274 Transient ischemic attack in 52-year-old Female
+CASE 275 Acute hypercapnic respiratory failure in 49-year-old Male
+CASE 276 Sepsis secondary to urinary tract infection in 94-year-old Female
+CASE 277 Atrial fibrillation with rapid ventricular response in 80-year-old Male
+CASE 278 Sepsis secondary to urinary tract infection in 45-year-old Female
+CASE 279 Severe preeclampsia in third trimester in 68-year-old Female
+CASE 280 Severe preeclampsia in third trimester in 61-year-old Female
+CASE 281 Aspiration pneumonia in 45-year-old Male
+CASE 282 Pleural effusion due to heart failure in 20-year-old Male
+CASE 283 Acute pancreatitis in 88-year-old Female
+CASE 284 Sepsis due to E. coli in 78-year-old Male
+CASE 285 Urinary tract infection in 55-year-old Female
+CASE 286 Acute kidney failure in 59-year-old Female
+CASE 287 Chronic kidney disease stage 4 in 19-year-old Female
+CASE 288 Acute on chronic diastolic heart failure in 70-year-old Female
+CASE 289 Successful VBAC delivery in 39-year-old Male
+CASE 290 Community-acquired pneumonia in 27-year-old Male
+CASE 291 Acute on chronic diastolic heart failure in 83-year-old Female
+CASE 292 Septic shock secondary to pneumonia in 88-year-old Male
+CASE 293 Type 1 diabetes mellitus with ketoacidosis in 74-year-old Female
+CASE 294 Status epilepticus in 29-year-old Female
+CASE 295 Chronic obstructive pulmonary disease without exacerbation in 26-year-old Female
+CASE 296 Acute ischemic stroke in 65-year-old Male
+CASE 297 Septic shock secondary to pneumonia in 67-year-old Male
+CASE 298 Pneumonia due to MRSA in 63-year-old Female
+CASE 299 Acute hypoxic respiratory failure in 60-year-old Female
+CASE 300 Successful VBAC delivery in 91-year-old Female
+CASE 301 COPD exacerbation with acute respiratory failure in 73-year-old Male
+CASE 302 Gangrene of left foot in diabetic patient in 63-year-old Female
+CASE 303 Septic shock secondary to pneumonia in 63-year-old Male
+CASE 304 Pneumonia due to MRSA in 50-year-old Male
+CASE 305 Alcoholic cirrhosis with ascites in 49-year-old Female
+CASE 306 Urinary tract infection in 88-year-old Male
+CASE 307 Sepsis due to E. coli in 79-year-old Male
+CASE 308 Urinary tract infection in 30-year-old Female
+CASE 309 Community-acquired pneumonia in 53-year-old Male
+CASE 310 Alcoholic cirrhosis with ascites in 61-year-old Female
+CASE 311 Type 2 diabetes mellitus with chronic kidney disease in 82-year-old Male
+CASE 312 Pulmonary embolism with acute cor pulmonale in 35-year-old Male
+CASE 313 Severe preeclampsia in third trimester in 18-year-old Female
+CASE 314 Sepsis secondary to urinary tract infection in 46-year-old Female
+CASE 315 Seizure disorder in 43-year-old Male
+CASE 316 Severe preeclampsia in third trimester in 18-year-old Female
+CASE 317 Mild preeclampsia at 32 weeks gestation in 73-year-old Female
+CASE 318 Acute on chronic diastolic heart failure in 23-year-old Female
+CASE 319 Acute pulmonary edema in 52-year-old Male
+CASE 320 Acute hypoxic respiratory failure in 34-year-old Female
+CASE 321 Acute ischemic stroke in 93-year-old Female
+CASE 322 COPD exacerbation with acute respiratory failure in 94-year-old Female
+CASE 323 Asthma with acute exacerbation in 73-year-old Male
+CASE 324 Acute hypoxic respiratory failure in 53-year-old Female
+CASE 325 Status epilepticus in 78-year-old Male
+CASE 326 Acute systolic heart failure in 47-year-old Male
+CASE 327 Aspiration pneumonia in 61-year-old Female
+CASE 328 Pneumonia due to MRSA in 65-year-old Male
+CASE 329 Severe preeclampsia in third trimester in 23-year-old Female
+CASE 330 Aspiration pneumonia in 43-year-old Female
+CASE 331 COPD exacerbation in 35-year-old Female
+CASE 332 Severe preeclampsia in third trimester in 60-year-old Male
+CASE 333 Hypertensive heart disease with heart failure in 77-year-old Female
+CASE 334 Type 2 diabetes mellitus with chronic kidney disease in 18-year-old Male
+CASE 335 Acute respiratory distress syndrome in 86-year-old Female
+CASE 336 Asthma with acute exacerbation in 93-year-old Male
+CASE 337 Hypertensive heart disease with heart failure in 19-year-old Female
+CASE 338 Acute pancreatitis in 71-year-old Female
+CASE 339 Gangrene of left foot in diabetic patient in 64-year-old Female
+CASE 340 Mild preeclampsia at 32 weeks gestation in 39-year-old Female
+CASE 341 Metabolic encephalopathy in 27-year-old Female
+CASE 342 Metabolic encephalopathy in 61-year-old Male
+CASE 343 Acute hypercapnic respiratory failure in 67-year-old Male
+CASE 344 Multiple rib fractures due to fall in 80-year-old Female
+CASE 345 Ventilator associated pneumonia in 48-year-old Male
+CASE 346 Seizure disorder in 35-year-old Female
+CASE 347 Chronic kidney disease stage 4 in 37-year-old Male
+CASE 348 Left femoral neck fracture in 44-year-old Female
+CASE 349 Acute kidney failure in 89-year-old Female
+CASE 350 Multiple rib fractures due to fall in 51-year-old Female
+CASE 351 Acute kidney failure in 85-year-old Male
+CASE 352 Pneumonia due to MRSA in 21-year-old Female
+CASE 353 Acute pulmonary edema in 27-year-old Male
+CASE 354 Alzheimer dementia in 26-year-old Female
+CASE 355 Acute ischemic stroke in 58-year-old Female
+CASE 356 Transient ischemic attack in 73-year-old Female
+CASE 357 Acute liver failure in 43-year-old Female
+CASE 358 Sepsis secondary to urinary tract infection in 52-year-old Male
+CASE 359 Status epilepticus in 26-year-old Male
+CASE 360 COVID-19 pneumonia with ARDS in 49-year-old Female
+CASE 361 Status epilepticus in 33-year-old Female
+CASE 362 Left femoral neck fracture in 62-year-old Female
+CASE 363 Type 1 diabetes mellitus with ketoacidosis in 79-year-old Female
+CASE 364 Alzheimer dementia in 64-year-old Male
+CASE 365 Acute respiratory distress syndrome in 63-year-old Female
+CASE 366 Type 2 diabetes mellitus with chronic kidney disease in 63-year-old Female
+CASE 367 Acute ischemic stroke in 94-year-old Male
+CASE 368 Upper gastrointestinal bleeding in 24-year-old Female
+CASE 369 Alzheimer dementia in 19-year-old Male
+CASE 370 Septic shock secondary to pneumonia in 58-year-old Male
+CASE 371 Type 1 diabetes mellitus with ketoacidosis in 88-year-old Male
+CASE 372 COVID-19 pneumonia with ARDS in 23-year-old Male
+CASE 373 COPD exacerbation in 24-year-old Male
+CASE 374 Acute ischemic stroke in 39-year-old Male
+CASE 375 Acute ischemic stroke in 32-year-old Female
+CASE 376 Acute on chronic diastolic heart failure in 59-year-old Female
+CASE 377 Urinary tract infection in 58-year-old Male
+CASE 378 Acute hypoxic respiratory failure in 59-year-old Female
+CASE 379 Pulmonary embolism with acute cor pulmonale in 19-year-old Male
+CASE 380 Ventilator associated pneumonia in 39-year-old Male
+CASE 381 Sepsis secondary to urinary tract infection in 93-year-old Female
+CASE 382 Acute respiratory distress syndrome in 31-year-old Female
+CASE 383 Alcoholic cirrhosis with ascites in 56-year-old Female
+CASE 384 Acute liver failure in 71-year-old Male
+CASE 385 Pulmonary embolism with acute cor pulmonale in 74-year-old Female
+CASE 386 Sepsis secondary to urinary tract infection in 78-year-old Female
+CASE 387 COVID-19 pneumonia in 89-year-old Female
+CASE 388 Aspiration pneumonia in 86-year-old Female
+CASE 389 Postoperative respiratory failure in 23-year-old Female
+CASE 390 Diabetic foot ulcer with infection in 28-year-old Female
+CASE 391 Ventilator associated pneumonia in 65-year-old Male
+CASE 392 COVID-19 pneumonia in 35-year-old Male
+CASE 393 Multiple rib fractures due to fall in 36-year-old Male
+CASE 394 Alcoholic cirrhosis with ascites in 18-year-old Male
+CASE 395 Pleural effusion due to heart failure in 71-year-old Female
+CASE 396 Hypertensive heart disease with heart failure in 81-year-old Female
+CASE 397 Metabolic encephalopathy in 24-year-old Male
+CASE 398 COPD exacerbation with acute respiratory failure in 58-year-old Female
+CASE 399 Acute respiratory distress syndrome in 30-year-old Male
+CASE 400 Twin pregnancy in third trimester in 29-year-old Female
+CASE 401 Sepsis secondary to urinary tract infection in 88-year-old Female
+CASE 402 Acute hypercapnic respiratory failure in 49-year-old Female
+CASE 403 Septic shock secondary to pneumonia in 42-year-old Female
+CASE 404 Parkinson disease in 45-year-old Male
+CASE 405 Mild preeclampsia at 32 weeks gestation in 47-year-old Female
+CASE 406 Sepsis due to E. coli in 25-year-old Female
+CASE 407 Pneumonia due to MRSA in 71-year-old Male
+CASE 408 Severe preeclampsia in third trimester in 34-year-old Male
+CASE 409 Sepsis due to E. coli in 87-year-old Female
+CASE 410 Septic shock secondary to pneumonia in 27-year-old Male
+CASE 411 Type 1 diabetes mellitus with ketoacidosis in 77-year-old Male
+CASE 412 Chronic obstructive pulmonary disease without exacerbation in 93-year-old Male
+CASE 413 Asthma with acute exacerbation in 70-year-old Female
+CASE 414 Community-acquired pneumonia in 30-year-old Female
+CASE 415 COVID-19 pneumonia with ARDS in 37-year-old Male
+CASE 416 COVID-19 pneumonia with ARDS in 43-year-old Female
+CASE 417 Pulmonary embolism with acute cor pulmonale in 95-year-old Male
+CASE 418 Aspiration pneumonia in 23-year-old Male
+CASE 419 Chronic obstructive pulmonary disease without exacerbation in 81-year-old Female
+CASE 420 COVID-19 pneumonia with ARDS in 30-year-old Male
+CASE 421 Type 1 diabetes mellitus with ketoacidosis in 73-year-old Male
+CASE 422 Acute on chronic diastolic heart failure in 34-year-old Female
+CASE 423 Chronic kidney disease stage 4 in 93-year-old Female
+CASE 424 Pulmonary embolism with acute cor pulmonale in 26-year-old Male
+CASE 425 Pneumonia due to MRSA in 94-year-old Female
+CASE 426 Chronic kidney disease stage 4 in 56-year-old Male
+CASE 427 Community-acquired pneumonia in 80-year-old Male
+CASE 428 Urinary tract infection in 74-year-old Male
+CASE 429 Acute hypoxic respiratory failure in 55-year-old Male
+CASE 430 Sepsis due to MRSA in 88-year-old Female
+CASE 431 Acute hypercapnic respiratory failure in 54-year-old Female
+CASE 432 Acute ischemic stroke in 30-year-old Female
+CASE 433 COVID-19 pneumonia in 53-year-old Female
+CASE 434 Acute hypoxic respiratory failure in 61-year-old Male
+CASE 435 Parkinson disease in 61-year-old Female
+CASE 436 Twin pregnancy in third trimester in 70-year-old Male
+CASE 437 Chronic obstructive pulmonary disease without exacerbation in 51-year-old Male
+CASE 438 Alzheimer dementia in 28-year-old Female
+CASE 439 Transient ischemic attack in 18-year-old Male
+CASE 440 Upper gastrointestinal bleeding in 72-year-old Female
+CASE 441 Type 2 diabetes mellitus with chronic kidney disease in 85-year-old Male
+CASE 442 Chronic kidney disease stage 4 in 45-year-old Female
+CASE 443 Chronic kidney disease stage 4 in 50-year-old Male
+CASE 444 Metabolic encephalopathy in 76-year-old Female
+CASE 445 Acute myocardial infarction in 49-year-old Female
+CASE 446 Hypertensive heart disease with heart failure in 19-year-old Male
+CASE 447 Postoperative respiratory failure in 39-year-old Male
+CASE 448 Urinary tract infection in 83-year-old Male
+CASE 449 COVID-19 pneumonia with ARDS in 72-year-old Male
+CASE 450 COVID-19 pneumonia in 52-year-old Male
+CASE 451 Alzheimer dementia in 65-year-old Male
+CASE 452 Chronic kidney disease stage 4 in 64-year-old Female
+CASE 453 Hypertensive heart disease with heart failure in 25-year-old Female
+CASE 454 Type 2 diabetes mellitus with chronic kidney disease in 29-year-old Male
+CASE 455 Acute respiratory distress syndrome in 65-year-old Female
+CASE 456 Ventilator associated pneumonia in 95-year-old Female
+CASE 457 Pneumonia due to MRSA in 35-year-old Female
+CASE 458 Pleural effusion due to heart failure in 64-year-old Female
+CASE 459 Metabolic encephalopathy in 85-year-old Male
+CASE 460 Ventilator associated pneumonia in 73-year-old Female
+CASE 461 Hypertensive heart disease with heart failure in 63-year-old Male
+CASE 462 Traumatic subdural hematoma in 41-year-old Female
+CASE 463 Seizure disorder in 21-year-old Male
+CASE 464 Acute kidney failure in 79-year-old Male
+CASE 465 Successful VBAC delivery in 90-year-old Male
+CASE 466 COVID-19 pneumonia in 67-year-old Female
+CASE 467 Septic shock secondary to pneumonia in 60-year-old Male
+CASE 468 Asthma with acute exacerbation in 47-year-old Female
+CASE 469 Status epilepticus in 48-year-old Female
+CASE 470 Acute kidney failure in 68-year-old Female
+CASE 471 Alcoholic cirrhosis with ascites in 86-year-old Male
+CASE 472 Severe preeclampsia in third trimester in 31-year-old Female
+CASE 473 Type 2 diabetes mellitus with chronic kidney disease in 93-year-old Female
+CASE 474 Acute hypoxic respiratory failure in 65-year-old Male
+CASE 475 Diabetic foot ulcer with infection in 40-year-old Male
+CASE 476 Community-acquired pneumonia in 82-year-old Female
+CASE 477 Atrial fibrillation with rapid ventricular response in 95-year-old Male
+CASE 478 Upper gastrointestinal bleeding in 80-year-old Female
+CASE 479 Postoperative respiratory failure in 34-year-old Female
+CASE 480 Upper gastrointestinal bleeding in 20-year-old Male
+CASE 481 Septic shock secondary to pneumonia in 33-year-old Male
+CASE 482 Pleural effusion due to heart failure in 58-year-old Male
+CASE 483 Septic shock secondary to pneumonia in 72-year-old Male
+CASE 484 Type 1 diabetes mellitus with ketoacidosis in 82-year-old Female
+CASE 485 Metabolic encephalopathy in 45-year-old Female
+CASE 486 Traumatic subdural hematoma in 89-year-old Female
+CASE 487 Acute myocardial infarction in 66-year-old Female
+CASE 488 Community-acquired pneumonia in 49-year-old Male
+CASE 489 Ventilator associated pneumonia in 74-year-old Female
+CASE 490 Type 1 diabetes mellitus with ketoacidosis in 72-year-old Female
+CASE 491 Sepsis due to MRSA in 35-year-old Male
+CASE 492 COVID-19 pneumonia in 33-year-old Male
+CASE 493 Mild preeclampsia at 32 weeks gestation in 54-year-old Female
+CASE 494 Pleural effusion due to heart failure in 72-year-old Female
+CASE 495 Community-acquired pneumonia in 28-year-old Female
+CASE 496 Pleural effusion due to heart failure in 94-year-old Male
+CASE 497 Gangrene of left foot in diabetic patient in 85-year-old Male
+CASE 498 COPD exacerbation in 26-year-old Male
+CASE 499 Traumatic subdural hematoma in 65-year-old Female
+CASE 500 Asthma with acute exacerbation in 69-year-old Male
+CASE 501 Pneumonia due to MRSA in 28-year-old Male
+CASE 502 Alzheimer dementia in 47-year-old Male
+CASE 503 Acute liver failure in 77-year-old Male
+CASE 504 Septic shock secondary to pneumonia in 78-year-old Male
+CASE 505 Asthma with acute exacerbation in 46-year-old Female
+CASE 506 Status epilepticus in 25-year-old Male
+CASE 507 Successful VBAC delivery in 64-year-old Female
+CASE 508 Diabetic foot ulcer with infection in 22-year-old Female
+CASE 509 Ventilator associated pneumonia in 27-year-old Male
+CASE 510 Acute systolic heart failure in 69-year-old Male
+CASE 511 Gangrene of left foot in diabetic patient in 57-year-old Female
+CASE 512 Type 1 diabetes mellitus with ketoacidosis in 78-year-old Female
+CASE 513 Pneumonia due to MRSA in 49-year-old Male
+CASE 514 Diabetic foot ulcer with infection in 34-year-old Female
+CASE 515 Acute hypoxic respiratory failure in 79-year-old Female
+CASE 516 Acute on chronic diastolic heart failure in 42-year-old Male
+CASE 517 Parkinson disease in 67-year-old Male
+CASE 518 Parkinson disease in 72-year-old Female
+CASE 519 Alcoholic cirrhosis with ascites in 35-year-old Female
+CASE 520 Acute on chronic diastolic heart failure in 53-year-old Female
+CASE 521 Acute ischemic stroke in 34-year-old Male
+CASE 522 Parkinson disease in 34-year-old Female
+CASE 523 Severe preeclampsia in third trimester in 70-year-old Female
+CASE 524 Acute liver failure in 73-year-old Male
+CASE 525 Chronic obstructive pulmonary disease without exacerbation in 93-year-old Male
+CASE 526 Acute liver failure in 77-year-old Male
+CASE 527 Sepsis secondary to urinary tract infection in 48-year-old Male
+CASE 528 Acute ischemic stroke in 18-year-old Male
+CASE 529 Community-acquired pneumonia in 70-year-old Male
+CASE 530 Acute pancreatitis in 55-year-old Male
+CASE 531 Diabetic foot ulcer with infection in 27-year-old Male
+CASE 532 Asthma with acute exacerbation in 67-year-old Male
+CASE 533 Severe preeclampsia in third trimester in 41-year-old Female
+CASE 534 Closed fracture of right tibial shaft in 66-year-old Female
+CASE 535 COPD exacerbation with acute respiratory failure in 37-year-old Female
+CASE 536 Acute pancreatitis in 24-year-old Female
+CASE 537 Seizure disorder in 41-year-old Male
+CASE 538 Pneumonia due to MRSA in 70-year-old Male
+CASE 539 Asthma with acute exacerbation in 85-year-old Female
+CASE 540 Hypertensive heart disease with heart failure in 51-year-old Female
+CASE 541 Multiple rib fractures due to fall in 58-year-old Male
+CASE 542 Alcoholic cirrhosis with ascites in 45-year-old Male
+CASE 543 Transient ischemic attack in 25-year-old Female
+CASE 544 Chronic obstructive pulmonary disease without exacerbation in 21-year-old Male
+CASE 545 Acute ischemic stroke in 52-year-old Male
+CASE 546 Acute pulmonary edema in 88-year-old Male
+CASE 547 Type 1 diabetes mellitus with ketoacidosis in 41-year-old Female
+CASE 548 Closed fracture of right tibial shaft in 83-year-old Male
+CASE 549 Acute pulmonary edema in 70-year-old Male
+CASE 550 Alcoholic cirrhosis with ascites in 62-year-old Female
+CASE 551 Acute pulmonary edema in 51-year-old Male
+CASE 552 Sepsis secondary to urinary tract infection in 71-year-old Male
+CASE 553 Chronic obstructive pulmonary disease without exacerbation in 61-year-old Male
+CASE 554 Type 1 diabetes mellitus with ketoacidosis in 58-year-old Female
+CASE 555 COVID-19 pneumonia in 42-year-old Female
+CASE 556 Traumatic subdural hematoma in 65-year-old Female
+CASE 557 Acute liver failure in 20-year-old Male
+CASE 558 Ventilator associated pneumonia in 28-year-old Female
+CASE 559 Acute on chronic diastolic heart failure in 25-year-old Female
+CASE 560 Gangrene of left foot in diabetic patient in 60-year-old Female
+CASE 561 Acute pulmonary edema in 48-year-old Female
+CASE 562 Acute on chronic diastolic heart failure in 61-year-old Female
+CASE 563 Aspiration pneumonia in 82-year-old Male
+CASE 564 Transient ischemic attack in 88-year-old Male
+CASE 565 Asthma with acute exacerbation in 88-year-old Male
+CASE 566 Atrial fibrillation with rapid ventricular response in 72-year-old Female
+CASE 567 Traumatic subdural hematoma in 60-year-old Female
+CASE 568 Asthma with acute exacerbation in 27-year-old Male
+CASE 569 Status epilepticus in 19-year-old Female
+CASE 570 Severe preeclampsia in third trimester in 57-year-old Male
+CASE 571 Seizure disorder in 33-year-old Female
+CASE 572 Hypertensive heart disease with heart failure in 78-year-old Female
+CASE 573 Acute hypoxic respiratory failure in 60-year-old Male
+CASE 574 Mild preeclampsia at 32 weeks gestation in 38-year-old Male
+CASE 575 Left femoral neck fracture in 90-year-old Female
+CASE 576 Seizure disorder in 20-year-old Male
+CASE 577 COPD exacerbation with acute respiratory failure in 76-year-old Female
+CASE 578 Alzheimer dementia in 72-year-old Male
+CASE 579 Aspiration pneumonia in 45-year-old Male
+CASE 580 Acute systolic heart failure in 44-year-old Male
+CASE 581 Aspiration pneumonia in 46-year-old Female
+CASE 582 Diabetic foot ulcer with infection in 55-year-old Female
+CASE 583 COVID-19 pneumonia with ARDS in 47-year-old Female
+CASE 584 Status epilepticus in 93-year-old Male
+CASE 585 Parkinson disease in 79-year-old Female
+CASE 586 Alcoholic cirrhosis with ascites in 32-year-old Male
+CASE 587 Acute respiratory distress syndrome in 25-year-old Female
+CASE 588 Multiple rib fractures due to fall in 26-year-old Female
+CASE 589 Acute ischemic stroke in 67-year-old Male
+CASE 590 Pneumonia due to MRSA in 58-year-old Female
+CASE 591 Acute ischemic stroke in 64-year-old Female
+CASE 592 Sepsis due to E. coli in 41-year-old Male
+CASE 593 Acute hypoxic respiratory failure in 53-year-old Male
+CASE 594 Ventilator associated pneumonia in 72-year-old Male
+CASE 595 Multiple rib fractures due to fall in 82-year-old Male
+CASE 596 Seizure disorder in 93-year-old Male
+CASE 597 Multiple rib fractures due to fall in 72-year-old Female
+CASE 598 Acute systolic heart failure in 32-year-old Female
+CASE 599 Postoperative respiratory failure in 45-year-old Male
+CASE 600 Sepsis due to E. coli in 67-year-old Male
+CASE 601 COVID-19 pneumonia in 66-year-old Male
+CASE 602 Acute systolic heart failure in 29-year-old Male
+CASE 603 Alcoholic cirrhosis with ascites in 76-year-old Female
+CASE 604 Chronic obstructive pulmonary disease without exacerbation in 72-year-old Male
+CASE 605 Acute respiratory distress syndrome in 50-year-old Male
+CASE 606 Sepsis due to MRSA in 75-year-old Male
+CASE 607 Acute hypoxic respiratory failure in 67-year-old Female
+CASE 608 Community-acquired pneumonia in 43-year-old Female
+CASE 609 Seizure disorder in 63-year-old Female
+CASE 610 Aspiration pneumonia in 21-year-old Female
+CASE 611 Diabetic foot ulcer with infection in 85-year-old Female
+CASE 612 Atrial fibrillation with rapid ventricular response in 40-year-old Female
+CASE 613 Acute myocardial infarction in 95-year-old Female
+CASE 614 Metabolic encephalopathy in 39-year-old Female
+CASE 615 COVID-19 pneumonia with ARDS in 87-year-old Male
+CASE 616 Acute on chronic diastolic heart failure in 27-year-old Male
+CASE 617 Alzheimer dementia in 33-year-old Female
+CASE 618 Chronic obstructive pulmonary disease without exacerbation in 70-year-old Female
+CASE 619 Pulmonary embolism with acute cor pulmonale in 86-year-old Male
+CASE 620 Multiple rib fractures due to fall in 81-year-old Male
+CASE 621 COPD exacerbation with acute respiratory failure in 70-year-old Female
+CASE 622 Sepsis due to MRSA in 92-year-old Female
+CASE 623 Atrial fibrillation with rapid ventricular response in 30-year-old Female
+CASE 624 COPD exacerbation in 81-year-old Female
+CASE 625 Mild preeclampsia at 32 weeks gestation in 81-year-old Male
+CASE 626 Closed fracture of right tibial shaft in 37-year-old Female
+CASE 627 Pulmonary embolism with acute cor pulmonale in 91-year-old Female
+CASE 628 Sepsis secondary to urinary tract infection in 86-year-old Female
+CASE 629 Community-acquired pneumonia in 26-year-old Male
+CASE 630 Alcoholic cirrhosis with ascites in 60-year-old Male
+CASE 631 Pleural effusion due to heart failure in 54-year-old Female
+CASE 632 Alzheimer dementia in 30-year-old Female
+CASE 633 Urinary tract infection in 37-year-old Male
+CASE 634 Sepsis secondary to urinary tract infection in 37-year-old Male
+CASE 635 Sepsis due to MRSA in 61-year-old Male
+CASE 636 Acute systolic heart failure in 42-year-old Female
+CASE 637 Alzheimer dementia in 56-year-old Female
+CASE 638 Community-acquired pneumonia in 87-year-old Male
+CASE 639 Hypertensive heart disease with heart failure in 34-year-old Male
+CASE 640 Acute ischemic stroke in 84-year-old Male
+CASE 641 Successful VBAC delivery in 34-year-old Female
+CASE 642 Metabolic encephalopathy in 18-year-old Male
+CASE 643 Ventilator associated pneumonia in 76-year-old Male
+CASE 644 Twin pregnancy in third trimester in 19-year-old Female
+CASE 645 Acute kidney failure in 51-year-old Male
+CASE 646 Acute systolic heart failure in 76-year-old Male
+CASE 647 Septic shock secondary to pneumonia in 66-year-old Female
+CASE 648 Pulmonary embolism with acute cor pulmonale in 47-year-old Female
+CASE 649 Left femoral neck fracture in 78-year-old Male
+CASE 650 COVID-19 pneumonia with ARDS in 91-year-old Male
+CASE 651 Diabetic foot ulcer with infection in 41-year-old Male
+CASE 652 Pneumonia due to MRSA in 28-year-old Male
+CASE 653 Pneumonia due to MRSA in 94-year-old Female
+CASE 654 Acute liver failure in 23-year-old Female
+CASE 655 Left femoral neck fracture in 29-year-old Female
+CASE 656 Severe preeclampsia in third trimester in 47-year-old Female
+CASE 657 Acute systolic heart failure in 89-year-old Male
+CASE 658 Twin pregnancy in third trimester in 23-year-old Male
+CASE 659 Severe preeclampsia in third trimester in 73-year-old Female
+CASE 660 Atrial fibrillation with rapid ventricular response in 88-year-old Male
+CASE 661 Gangrene of left foot in diabetic patient in 29-year-old Female
+CASE 662 Sepsis due to E. coli in 40-year-old Female
+CASE 663 Acute systolic heart failure in 85-year-old Male
+CASE 664 Multiple rib fractures due to fall in 59-year-old Female
+CASE 665 Mild preeclampsia at 32 weeks gestation in 50-year-old Male
+CASE 666 Sepsis due to MRSA in 31-year-old Female
+CASE 667 Twin pregnancy in third trimester in 74-year-old Female
+CASE 668 Urinary tract infection in 88-year-old Male
+CASE 669 Multiple rib fractures due to fall in 69-year-old Male
+CASE 670 Metabolic encephalopathy in 82-year-old Male
+CASE 671 Chronic kidney disease stage 4 in 63-year-old Male
+CASE 672 Twin pregnancy in third trimester in 87-year-old Female
+CASE 673 Aspiration pneumonia in 57-year-old Male
+CASE 674 Chronic kidney disease stage 4 in 90-year-old Male
+CASE 675 Closed fracture of right tibial shaft in 81-year-old Male
+CASE 676 Metabolic encephalopathy in 45-year-old Male
+CASE 677 Acute respiratory distress syndrome in 47-year-old Male
+CASE 678 Acute pulmonary edema in 93-year-old Female
+CASE 679 Acute kidney failure in 22-year-old Male
+CASE 680 Acute on chronic diastolic heart failure in 56-year-old Male
+CASE 681 Sepsis due to E. coli in 45-year-old Male
+CASE 682 Left femoral neck fracture in 42-year-old Female
+CASE 683 Traumatic subdural hematoma in 52-year-old Male
+CASE 684 Acute on chronic diastolic heart failure in 92-year-old Female
+CASE 685 COPD exacerbation with acute respiratory failure in 39-year-old Female
+CASE 686 Pleural effusion due to heart failure in 78-year-old Male
+CASE 687 Postoperative respiratory failure in 74-year-old Female
+CASE 688 COVID-19 pneumonia in 22-year-old Female
+CASE 689 Acute systolic heart failure in 40-year-old Male
+CASE 690 Alzheimer dementia in 36-year-old Male
+CASE 691 Chronic kidney disease stage 4 in 87-year-old Male
+CASE 692 Sepsis secondary to urinary tract infection in 86-year-old Female
+CASE 693 COPD exacerbation with acute respiratory failure in 38-year-old Male
+CASE 694 Severe preeclampsia in third trimester in 19-year-old Male
+CASE 695 Pulmonary embolism with acute cor pulmonale in 65-year-old Male
+CASE 696 Asthma with acute exacerbation in 92-year-old Female
+CASE 697 Pulmonary embolism with acute cor pulmonale in 68-year-old Female
+CASE 698 Acute hypercapnic respiratory failure in 64-year-old Male
+CASE 699 Acute on chronic diastolic heart failure in 79-year-old Female
+CASE 700 Type 1 diabetes mellitus with ketoacidosis in 72-year-old Female
+CASE 701 COVID-19 pneumonia in 71-year-old Female
+CASE 702 Community-acquired pneumonia in 75-year-old Female
+CASE 703 Type 1 diabetes mellitus with ketoacidosis in 95-year-old Male
+CASE 704 Ventilator associated pneumonia in 56-year-old Male
+CASE 705 Acute myocardial infarction in 55-year-old Male
+CASE 706 Asthma with acute exacerbation in 78-year-old Male
+CASE 707 Type 1 diabetes mellitus with ketoacidosis in 88-year-old Male
+CASE 708 Acute hypoxic respiratory failure in 58-year-old Female
+CASE 709 Acute kidney failure in 77-year-old Female
+CASE 710 Acute systolic heart failure in 78-year-old Female
+CASE 711 COPD exacerbation with acute respiratory failure in 89-year-old Female
+CASE 712 Pneumonia due to MRSA in 49-year-old Female
+CASE 713 Acute respiratory distress syndrome in 47-year-old Male
+CASE 714 Acute kidney failure in 95-year-old Male
+CASE 715 Alzheimer dementia in 31-year-old Male
+CASE 716 COVID-19 pneumonia in 57-year-old Male
+CASE 717 Acute kidney failure in 29-year-old Male
+CASE 718 Acute hypercapnic respiratory failure in 37-year-old Male
+CASE 719 Chronic kidney disease stage 4 in 79-year-old Male
+CASE 720 Aspiration pneumonia in 90-year-old Male
+CASE 721 Severe preeclampsia in third trimester in 83-year-old Female
+CASE 722 Acute liver failure in 88-year-old Female
+CASE 723 Seizure disorder in 65-year-old Male
+CASE 724 Upper gastrointestinal bleeding in 49-year-old Male
+CASE 725 Chronic kidney disease stage 4 in 69-year-old Male
+CASE 726 Hypertensive heart disease with heart failure in 55-year-old Male
+CASE 727 Pneumonia due to MRSA in 83-year-old Female
+CASE 728 COVID-19 pneumonia with ARDS in 60-year-old Male
+CASE 729 Septic shock secondary to pneumonia in 72-year-old Female
+CASE 730 Acute systolic heart failure in 31-year-old Female
+CASE 731 Twin pregnancy in third trimester in 52-year-old Male
+CASE 732 Successful VBAC delivery in 92-year-old Female
+CASE 733 Alcoholic cirrhosis with ascites in 52-year-old Male
+CASE 734 Acute myocardial infarction in 34-year-old Male
+CASE 735 Chronic kidney disease stage 4 in 20-year-old Female
+CASE 736 Acute ischemic stroke in 93-year-old Female
+CASE 737 Type 2 diabetes mellitus with chronic kidney disease in 93-year-old Female
+CASE 738 Type 1 diabetes mellitus with ketoacidosis in 73-year-old Female
+CASE 739 Atrial fibrillation with rapid ventricular response in 28-year-old Female
+CASE 740 Type 2 diabetes mellitus with chronic kidney disease in 25-year-old Female
+CASE 741 Alzheimer dementia in 55-year-old Female
+CASE 742 COPD exacerbation in 57-year-old Male
+CASE 743 Atrial fibrillation with rapid ventricular response in 57-year-old Female
+CASE 744 Severe preeclampsia in third trimester in 77-year-old Male
+CASE 745 Mild preeclampsia at 32 weeks gestation in 48-year-old Female
+CASE 746 Upper gastrointestinal bleeding in 28-year-old Male
+CASE 747 Acute respiratory distress syndrome in 70-year-old Female
+CASE 748 Acute pancreatitis in 39-year-old Female
+CASE 749 Severe preeclampsia in third trimester in 89-year-old Male
+CASE 750 Community-acquired pneumonia in 64-year-old Male
+CASE 751 Acute ischemic stroke in 47-year-old Male
+CASE 752 Urinary tract infection in 94-year-old Male
+CASE 753 Mild preeclampsia at 32 weeks gestation in 76-year-old Female
+CASE 754 Pleural effusion due to heart failure in 80-year-old Male
+CASE 755 Closed fracture of right tibial shaft in 37-year-old Male
+CASE 756 Acute hypercapnic respiratory failure in 58-year-old Male
+CASE 757 Acute hypercapnic respiratory failure in 34-year-old Female
+CASE 758 Traumatic subdural hematoma in 29-year-old Female
+CASE 759 Acute pancreatitis in 93-year-old Male
+CASE 760 Acute myocardial infarction in 79-year-old Male
+CASE 761 Pleural effusion due to heart failure in 74-year-old Male
+CASE 762 Twin pregnancy in third trimester in 86-year-old Female
+CASE 763 Transient ischemic attack in 18-year-old Female
+CASE 764 Pneumonia due to MRSA in 85-year-old Male
+CASE 765 Seizure disorder in 65-year-old Female
+CASE 766 Acute on chronic diastolic heart failure in 29-year-old Male
+CASE 767 Aspiration pneumonia in 35-year-old Male
+CASE 768 Multiple rib fractures due to fall in 59-year-old Female
+CASE 769 Acute pancreatitis in 81-year-old Male
+CASE 770 Atrial fibrillation with rapid ventricular response in 35-year-old Male
+CASE 771 Pleural effusion due to heart failure in 23-year-old Male
+CASE 772 Ventilator associated pneumonia in 47-year-old Male
+CASE 773 Acute systolic heart failure in 61-year-old Female
+CASE 774 Acute pancreatitis in 34-year-old Male
+CASE 775 Successful VBAC delivery in 31-year-old Female
+CASE 776 Acute myocardial infarction in 25-year-old Female
+CASE 777 Severe preeclampsia in third trimester in 70-year-old Female
+CASE 778 Parkinson disease in 22-year-old Female
+CASE 779 Successful VBAC delivery in 18-year-old Male
+CASE 780 Alcoholic cirrhosis with ascites in 71-year-old Male
+CASE 781 Aspiration pneumonia in 70-year-old Male
+CASE 782 Acute ischemic stroke in 58-year-old Female
+CASE 783 Sepsis due to E. coli in 32-year-old Male
+CASE 784 Urinary tract infection in 57-year-old Male
+CASE 785 Transient ischemic attack in 30-year-old Female
+CASE 786 Sepsis due to MRSA in 23-year-old Female
+CASE 787 Left femoral neck fracture in 55-year-old Female
+CASE 788 Acute myocardial infarction in 66-year-old Male
+CASE 789 Twin pregnancy in third trimester in 30-year-old Female
+CASE 790 Pulmonary embolism with acute cor pulmonale in 38-year-old Male
+CASE 791 Left femoral neck fracture in 34-year-old Female
+CASE 792 Acute on chronic diastolic heart failure in 68-year-old Female
+CASE 793 Acute pancreatitis in 48-year-old Female
+CASE 794 Asthma with acute exacerbation in 78-year-old Female
+CASE 795 Diabetic foot ulcer with infection in 25-year-old Male
+CASE 796 Septic shock secondary to pneumonia in 94-year-old Male
+CASE 797 Left femoral neck fracture in 56-year-old Female
+CASE 798 COVID-19 pneumonia with ARDS in 76-year-old Female
+CASE 799 Parkinson disease in 90-year-old Female
+CASE 800 Gangrene of left foot in diabetic patient in 90-year-old Male
+CASE 801 Pleural effusion due to heart failure in 49-year-old Male
+CASE 802 Multiple rib fractures due to fall in 89-year-old Male
+CASE 803 Left femoral neck fracture in 67-year-old Male
+CASE 804 Septic shock secondary to pneumonia in 24-year-old Male
+CASE 805 Hypertensive heart disease with heart failure in 37-year-old Male
+CASE 806 Acute ischemic stroke in 30-year-old Male
+CASE 807 Acute hypoxic respiratory failure in 80-year-old Female
+CASE 808 Pulmonary embolism with acute cor pulmonale in 57-year-old Female
+CASE 809 Pleural effusion due to heart failure in 36-year-old Female
+CASE 810 Urinary tract infection in 33-year-old Male
+CASE 811 Seizure disorder in 80-year-old Female
+CASE 812 Upper gastrointestinal bleeding in 41-year-old Female
+CASE 813 COVID-19 pneumonia in 18-year-old Female
+CASE 814 Seizure disorder in 39-year-old Female
+CASE 815 Acute kidney failure in 39-year-old Female
+CASE 816 Acute respiratory distress syndrome in 41-year-old Male
+CASE 817 Diabetic foot ulcer with infection in 26-year-old Male
+CASE 818 Parkinson disease in 78-year-old Female
+CASE 819 Alzheimer dementia in 53-year-old Male
+CASE 820 Acute ischemic stroke in 65-year-old Male
+CASE 821 Acute kidney failure in 23-year-old Male
+CASE 822 Aspiration pneumonia in 35-year-old Male
+CASE 823 Metabolic encephalopathy in 88-year-old Male
+CASE 824 Closed fracture of right tibial shaft in 70-year-old Male
+CASE 825 COVID-19 pneumonia with ARDS in 61-year-old Female
+CASE 826 Pleural effusion due to heart failure in 69-year-old Female
+CASE 827 Aspiration pneumonia in 39-year-old Male
+CASE 828 COPD exacerbation with acute respiratory failure in 45-year-old Male
+CASE 829 Type 2 diabetes mellitus with chronic kidney disease in 64-year-old Male
+CASE 830 Postoperative respiratory failure in 73-year-old Male
+CASE 831 Parkinson disease in 87-year-old Male
+CASE 832 Sepsis due to MRSA in 76-year-old Female
+CASE 833 Type 2 diabetes mellitus with chronic kidney disease in 25-year-old Male
+CASE 834 Parkinson disease in 59-year-old Female
+CASE 835 Acute myocardial infarction in 47-year-old Female
+CASE 836 Postoperative respiratory failure in 74-year-old Male
+CASE 837 Diabetic foot ulcer with infection in 83-year-old Male
+CASE 838 Alcoholic cirrhosis with ascites in 26-year-old Female
+CASE 839 Ventilator associated pneumonia in 55-year-old Male
+CASE 840 Acute pulmonary edema in 63-year-old Female
+CASE 841 Acute hypercapnic respiratory failure in 23-year-old Female
+CASE 842 Acute on chronic diastolic heart failure in 37-year-old Female
+CASE 843 Acute kidney failure in 46-year-old Female
+CASE 844 Type 1 diabetes mellitus with ketoacidosis in 69-year-old Male
+CASE 845 COVID-19 pneumonia in 88-year-old Male
+CASE 846 Acute hypercapnic respiratory failure in 81-year-old Male
+CASE 847 Left femoral neck fracture in 41-year-old Male
+CASE 848 COVID-19 pneumonia in 85-year-old Female
+CASE 849 Mild preeclampsia at 32 weeks gestation in 51-year-old Female
+CASE 850 Acute ischemic stroke in 67-year-old Male
+CASE 851 Pulmonary embolism with acute cor pulmonale in 53-year-old Female
+CASE 852 Twin pregnancy in third trimester in 48-year-old Male
+CASE 853 Atrial fibrillation with rapid ventricular response in 38-year-old Female
+CASE 854 Sepsis due to MRSA in 30-year-old Male
+CASE 855 Acute respiratory distress syndrome in 45-year-old Female
+CASE 856 Sepsis secondary to urinary tract infection in 68-year-old Male
+CASE 857 COPD exacerbation in 95-year-old Male
+CASE 858 Septic shock secondary to pneumonia in 69-year-old Male
+CASE 859 Acute liver failure in 90-year-old Male
+CASE 860 Gangrene of left foot in diabetic patient in 94-year-old Male
+CASE 861 Metabolic encephalopathy in 61-year-old Male
+CASE 862 Acute respiratory distress syndrome in 81-year-old Male
+CASE 863 Alcoholic cirrhosis with ascites in 40-year-old Male
+CASE 864 Twin pregnancy in third trimester in 71-year-old Female
+CASE 865 Mild preeclampsia at 32 weeks gestation in 81-year-old Male
+CASE 866 COVID-19 pneumonia with ARDS in 76-year-old Male
+CASE 867 Acute liver failure in 32-year-old Female
+CASE 868 COPD exacerbation with acute respiratory failure in 29-year-old Male
+CASE 869 Twin pregnancy in third trimester in 93-year-old Male
+CASE 870 Chronic kidney disease stage 4 in 87-year-old Male
+CASE 871 Asthma with acute exacerbation in 77-year-old Female
+CASE 872 Hypertensive heart disease with heart failure in 29-year-old Female
+CASE 873 Sepsis secondary to urinary tract infection in 84-year-old Female
+CASE 874 Acute on chronic diastolic heart failure in 51-year-old Male
+CASE 875 Postoperative respiratory failure in 51-year-old Female
+CASE 876 Type 1 diabetes mellitus with ketoacidosis in 93-year-old Male
+CASE 877 Successful VBAC delivery in 68-year-old Female
+CASE 878 Pleural effusion due to heart failure in 95-year-old Female
+CASE 879 Sepsis due to E. coli in 86-year-old Female
+CASE 880 Pulmonary embolism with acute cor pulmonale in 36-year-old Male
+CASE 881 Mild preeclampsia at 32 weeks gestation in 83-year-old Male
+CASE 882 COVID-19 pneumonia with ARDS in 52-year-old Male
+CASE 883 Alcoholic cirrhosis with ascites in 24-year-old Male
+CASE 884 Septic shock secondary to pneumonia in 33-year-old Male
+CASE 885 Septic shock secondary to pneumonia in 58-year-old Male
+CASE 886 Alzheimer dementia in 68-year-old Female
+CASE 887 Acute liver failure in 33-year-old Female
+CASE 888 Pneumonia due to MRSA in 28-year-old Female
+CASE 889 COPD exacerbation with acute respiratory failure in 39-year-old Male
+CASE 890 Postoperative respiratory failure in 47-year-old Female
+CASE 891 Chronic obstructive pulmonary disease without exacerbation in 87-year-old Male
+CASE 892 Transient ischemic attack in 56-year-old Male
+CASE 893 Acute on chronic diastolic heart failure in 63-year-old Male
+CASE 894 Sepsis due to E. coli in 66-year-old Female
+CASE 895 Community-acquired pneumonia in 19-year-old Male
+CASE 896 Gangrene of left foot in diabetic patient in 27-year-old Male
+CASE 897 Closed fracture of right tibial shaft in 33-year-old Male
+CASE 898 Aspiration pneumonia in 35-year-old Female
+CASE 899 Urinary tract infection in 34-year-old Female
+CASE 900 Parkinson disease in 80-year-old Male
+CASE 901 Chronic obstructive pulmonary disease without exacerbation in 81-year-old Female
+CASE 902 Alcoholic cirrhosis with ascites in 72-year-old Male
+CASE 903 Ventilator associated pneumonia in 22-year-old Male
+CASE 904 Aspiration pneumonia in 21-year-old Male
+CASE 905 Alcoholic cirrhosis with ascites in 94-year-old Female
+CASE 906 Severe preeclampsia in third trimester in 41-year-old Male
+CASE 907 Multiple rib fractures due to fall in 63-year-old Male
+CASE 908 Atrial fibrillation with rapid ventricular response in 95-year-old Male
+CASE 909 Acute liver failure in 92-year-old Female
+CASE 910 Sepsis due to MRSA in 59-year-old Female
+CASE 911 Multiple rib fractures due to fall in 32-year-old Female
+CASE 912 COVID-19 pneumonia in 69-year-old Female
+CASE 913 Chronic obstructive pulmonary disease without exacerbation in 92-year-old Female
+CASE 914 Traumatic subdural hematoma in 27-year-old Female
+CASE 915 Community-acquired pneumonia in 72-year-old Male
+CASE 916 Twin pregnancy in third trimester in 84-year-old Male
+CASE 917 Sepsis secondary to urinary tract infection in 52-year-old Male
+CASE 918 Acute systolic heart failure in 86-year-old Female
+CASE 919 COVID-19 pneumonia with ARDS in 31-year-old Female
+CASE 920 COPD exacerbation with acute respiratory failure in 47-year-old Female
+CASE 921 Diabetic foot ulcer with infection in 31-year-old Male
+CASE 922 Chronic kidney disease stage 4 in 49-year-old Female
+CASE 923 Gangrene of left foot in diabetic patient in 70-year-old Female
+CASE 924 Pleural effusion due to heart failure in 26-year-old Male
+CASE 925 COPD exacerbation with acute respiratory failure in 67-year-old Female
+CASE 926 Upper gastrointestinal bleeding in 18-year-old Female
+CASE 927 Pulmonary embolism with acute cor pulmonale in 87-year-old Male
+CASE 928 COVID-19 pneumonia with ARDS in 77-year-old Female
+CASE 929 Acute myocardial infarction in 23-year-old Male
+CASE 930 Acute ischemic stroke in 31-year-old Male
+CASE 931 Parkinson disease in 20-year-old Female
+CASE 932 Sepsis due to MRSA in 50-year-old Female
+CASE 933 Chronic kidney disease stage 4 in 73-year-old Female
+CASE 934 COVID-19 pneumonia with ARDS in 62-year-old Male
+CASE 935 Mild preeclampsia at 32 weeks gestation in 34-year-old Female
+CASE 936 Type 2 diabetes mellitus with chronic kidney disease in 59-year-old Male
+CASE 937 Seizure disorder in 20-year-old Female
+CASE 938 Alzheimer dementia in 85-year-old Female
+CASE 939 Transient ischemic attack in 61-year-old Female
+CASE 940 Acute hypercapnic respiratory failure in 40-year-old Male
+CASE 941 Urinary tract infection in 74-year-old Female
+CASE 942 COVID-19 pneumonia with ARDS in 69-year-old Male
+CASE 943 Gangrene of left foot in diabetic patient in 55-year-old Female
+CASE 944 Pulmonary embolism with acute cor pulmonale in 40-year-old Female
+CASE 945 Successful VBAC delivery in 39-year-old Female
+CASE 946 Urinary tract infection in 94-year-old Male
+CASE 947 Severe preeclampsia in third trimester in 79-year-old Male
+CASE 948 Gangrene of left foot in diabetic patient in 44-year-old Female
+CASE 949 Twin pregnancy in third trimester in 60-year-old Male
+CASE 950 Acute ischemic stroke in 55-year-old Male
+CASE 951 Closed fracture of right tibial shaft in 94-year-old Male
+CASE 952 Community-acquired pneumonia in 22-year-old Female
+CASE 953 Aspiration pneumonia in 66-year-old Male
+CASE 954 Acute systolic heart failure in 64-year-old Male
+CASE 955 Acute pulmonary edema in 53-year-old Female
+CASE 956 Acute hypoxic respiratory failure in 47-year-old Male
+CASE 957 Multiple rib fractures due to fall in 79-year-old Male
+CASE 958 Pleural effusion due to heart failure in 90-year-old Male
+CASE 959 Diabetic foot ulcer with infection in 27-year-old Male
+CASE 960 Acute on chronic diastolic heart failure in 36-year-old Male
+CASE 961 Acute liver failure in 93-year-old Female
+CASE 962 Acute ischemic stroke in 94-year-old Female
+CASE 963 Transient ischemic attack in 92-year-old Male
+CASE 964 Acute systolic heart failure in 88-year-old Female
+CASE 965 Acute systolic heart failure in 47-year-old Female
+CASE 966 Urinary tract infection in 39-year-old Female
+CASE 967 Status epilepticus in 95-year-old Male
+CASE 968 Community-acquired pneumonia in 34-year-old Male
+CASE 969 Ventilator associated pneumonia in 66-year-old Female
+CASE 970 Alcoholic cirrhosis with ascites in 81-year-old Male
+CASE 971 COVID-19 pneumonia with ARDS in 83-year-old Male
+CASE 972 Traumatic subdural hematoma in 73-year-old Female
+CASE 973 Acute pulmonary edema in 21-year-old Female
+CASE 974 Acute hypoxic respiratory failure in 33-year-old Female
+CASE 975 Status epilepticus in 68-year-old Male
+CASE 976 Diabetic foot ulcer with infection in 80-year-old Male
+CASE 977 Asthma with acute exacerbation in 83-year-old Male
+CASE 978 Acute myocardial infarction in 66-year-old Female
+CASE 979 Community-acquired pneumonia in 56-year-old Female
+CASE 980 Type 2 diabetes mellitus with chronic kidney disease in 91-year-old Male
+CASE 981 Pleural effusion due to heart failure in 44-year-old Female
+CASE 982 Atrial fibrillation with rapid ventricular response in 89-year-old Female
+CASE 983 Alcoholic cirrhosis with ascites in 73-year-old Male
+CASE 984 Acute ischemic stroke in 19-year-old Female
+CASE 985 Acute respiratory distress syndrome in 25-year-old Female
+CASE 986 Chronic obstructive pulmonary disease without exacerbation in 66-year-old Male
+CASE 987 Chronic kidney disease stage 4 in 47-year-old Male
+CASE 988 Metabolic encephalopathy in 78-year-old Female
+CASE 989 Closed fracture of right tibial shaft in 18-year-old Female
+CASE 990 Acute kidney failure in 20-year-old Male
+CASE 991 Left femoral neck fracture in 65-year-old Male
+CASE 992 COPD exacerbation in 58-year-old Female
+CASE 993 Mild preeclampsia at 32 weeks gestation in 32-year-old Male
+CASE 994 Parkinson disease in 84-year-old Female
+CASE 995 Type 2 diabetes mellitus with chronic kidney disease in 27-year-old Male
+CASE 996 Metabolic encephalopathy in 24-year-old Female
+CASE 997 Type 2 diabetes mellitus with chronic kidney disease in 63-year-old Male
+CASE 998 Successful VBAC delivery in 64-year-old Male
+CASE 999 Pneumonia due to MRSA in 46-year-old Female
+CASE 1000 Alcoholic cirrhosis with ascites in 53-year-old Female

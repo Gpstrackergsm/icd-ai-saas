@@ -1,0 +1,1001 @@
+Case_ID,Clinical_Title,ICD10_Codes
+CASE 1,Acute systolic heart failure in 75-year-old Female,I50.21
+CASE 2,COPD exacerbation with acute respiratory failure in 47-year-old Female,J44.1; J96.00
+CASE 3,Ventilator associated pneumonia in 46-year-old Female,J95.851
+CASE 4,Acute ischemic stroke in 54-year-old Female,I63.9
+CASE 5,Type 2 diabetes with chronic kidney disease stage 4 in 88-year-old Male,E11.22; N18.4
+CASE 6,Postoperative respiratory failure in 55-year-old Male,J95.821
+CASE 7,Pulmonary embolism with acute cor pulmonale in 64-year-old Female,I26.02
+CASE 8,Septic shock due to pneumonia in 89-year-old Male,A41.9; R65.21; J18.9
+CASE 9,Septic shock due to pneumonia in 23-year-old Male,A41.9; R65.21; J18.9
+CASE 10,Pneumonia due to MRSA in 50-year-old Male,J15.212
+CASE 11,Acute systolic heart failure in 29-year-old Female,I50.21
+CASE 12,Metabolic encephalopathy in 62-year-old Female,G93.41
+CASE 13,Acute systolic heart failure in 46-year-old Female,I50.21
+CASE 14,Septic shock due to pneumonia in 55-year-old Female,A41.9; R65.21; J18.9
+CASE 15,Acute kidney failure in 33-year-old Male,N17.9
+CASE 16,Sepsis due to MRSA in 23-year-old Male,A41.02
+CASE 17,Acute ischemic stroke in 21-year-old Male,I63.9
+CASE 18,Acute systolic heart failure in 83-year-old Female,I50.21
+CASE 19,Postoperative respiratory failure in 80-year-old Male,J95.821
+CASE 20,Pneumonia due to MRSA in 68-year-old Male,J15.212
+CASE 21,Acute kidney failure in 86-year-old Male,N17.9
+CASE 22,Acute on chronic diastolic heart failure in 54-year-old Female,I50.33
+CASE 23,Acute kidney failure in 56-year-old Female,N17.9
+CASE 24,Acute ischemic stroke in 77-year-old Male,I63.9
+CASE 25,Septic shock due to pneumonia in 49-year-old Female,A41.9; R65.21; J18.9
+CASE 26,Aspiration pneumonia in 70-year-old Female,J69.0
+CASE 27,Acute on chronic diastolic heart failure in 45-year-old Male,I50.33
+CASE 28,Aspiration pneumonia in 62-year-old Female,J69.0
+CASE 29,Postoperative respiratory failure in 39-year-old Female,J95.821
+CASE 30,Acute on chronic diastolic heart failure in 67-year-old Female,I50.33
+CASE 31,Acute ischemic stroke in 29-year-old Male,I63.9
+CASE 32,Aspiration pneumonia in 58-year-old Male,J69.0
+CASE 33,Acute on chronic diastolic heart failure in 66-year-old Female,I50.33
+CASE 34,Acute hypoxic respiratory failure in 87-year-old Female,J96.01
+CASE 35,Septic shock due to pneumonia in 26-year-old Male,A41.9; R65.21; J18.9
+CASE 36,Ventilator associated pneumonia in 76-year-old Male,J95.851
+CASE 37,Acute on chronic diastolic heart failure in 30-year-old Female,I50.33
+CASE 38,Sepsis due to MRSA in 52-year-old Female,A41.02
+CASE 39,Acute on chronic diastolic heart failure in 80-year-old Female,I50.33
+CASE 40,Acute kidney failure in 90-year-old Female,N17.9
+CASE 41,Aspiration pneumonia in 59-year-old Female,J69.0
+CASE 42,Ventilator associated pneumonia in 35-year-old Female,J95.851
+CASE 43,COPD exacerbation with acute respiratory failure in 35-year-old Male,J44.1; J96.00
+CASE 44,Acute systolic heart failure in 49-year-old Female,I50.21
+CASE 45,Pulmonary embolism with acute cor pulmonale in 93-year-old Female,I26.02
+CASE 46,COPD exacerbation with acute respiratory failure in 53-year-old Male,J44.1; J96.00
+CASE 47,Sepsis due to MRSA in 26-year-old Female,A41.02
+CASE 48,Acute systolic heart failure in 70-year-old Male,I50.21
+CASE 49,COPD exacerbation with acute respiratory failure in 94-year-old Female,J44.1; J96.00
+CASE 50,Acute systolic heart failure in 73-year-old Female,I50.21
+CASE 51,Pneumonia due to MRSA in 88-year-old Female,J15.212
+CASE 52,Aspiration pneumonia in 52-year-old Female,J69.0
+CASE 53,Sepsis due to MRSA in 65-year-old Female,A41.02
+CASE 54,Aspiration pneumonia in 29-year-old Male,J69.0
+CASE 55,Sepsis due to MRSA in 35-year-old Female,A41.02
+CASE 56,Sepsis due to MRSA in 46-year-old Female,A41.02
+CASE 57,Pulmonary embolism with acute cor pulmonale in 40-year-old Male,I26.02
+CASE 58,Pneumonia due to MRSA in 73-year-old Female,J15.212
+CASE 59,Acute hypoxic respiratory failure in 54-year-old Male,J96.01
+CASE 60,Metabolic encephalopathy in 60-year-old Female,G93.41
+CASE 61,Type 2 diabetes with chronic kidney disease stage 4 in 32-year-old Male,E11.22; N18.4
+CASE 62,Pneumonia due to MRSA in 34-year-old Female,J15.212
+CASE 63,Acute ischemic stroke in 92-year-old Female,I63.9
+CASE 64,Septic shock due to pneumonia in 70-year-old Female,A41.9; R65.21; J18.9
+CASE 65,Sepsis due to MRSA in 83-year-old Female,A41.02
+CASE 66,Aspiration pneumonia in 86-year-old Female,J69.0
+CASE 67,Sepsis due to MRSA in 78-year-old Female,A41.02
+CASE 68,Acute systolic heart failure in 81-year-old Female,I50.21
+CASE 69,Acute ischemic stroke in 42-year-old Male,I63.9
+CASE 70,Septic shock due to pneumonia in 24-year-old Male,A41.9; R65.21; J18.9
+CASE 71,Acute kidney failure in 57-year-old Male,N17.9
+CASE 72,Postoperative respiratory failure in 51-year-old Female,J95.821
+CASE 73,Septic shock due to pneumonia in 94-year-old Female,A41.9; R65.21; J18.9
+CASE 74,Ventilator associated pneumonia in 71-year-old Female,J95.851
+CASE 75,Acute on chronic diastolic heart failure in 82-year-old Male,I50.33
+CASE 76,Acute hypoxic respiratory failure in 37-year-old Male,J96.01
+CASE 77,Pneumonia due to MRSA in 37-year-old Male,J15.212
+CASE 78,Pneumonia due to MRSA in 79-year-old Female,J15.212
+CASE 79,Acute kidney failure in 40-year-old Male,N17.9
+CASE 80,Acute on chronic diastolic heart failure in 39-year-old Male,I50.33
+CASE 81,Acute kidney failure in 76-year-old Female,N17.9
+CASE 82,Acute hypoxic respiratory failure in 65-year-old Female,J96.01
+CASE 83,Sepsis due to MRSA in 21-year-old Male,A41.02
+CASE 84,Type 2 diabetes with chronic kidney disease stage 4 in 71-year-old Male,E11.22; N18.4
+CASE 85,Sepsis due to MRSA in 25-year-old Female,A41.02
+CASE 86,Pulmonary embolism with acute cor pulmonale in 48-year-old Male,I26.02
+CASE 87,Pneumonia due to MRSA in 82-year-old Female,J15.212
+CASE 88,Metabolic encephalopathy in 93-year-old Male,G93.41
+CASE 89,COPD exacerbation with acute respiratory failure in 77-year-old Female,J44.1; J96.00
+CASE 90,Acute on chronic diastolic heart failure in 45-year-old Female,I50.33
+CASE 91,Postoperative respiratory failure in 82-year-old Male,J95.821
+CASE 92,Acute systolic heart failure in 88-year-old Male,I50.21
+CASE 93,Acute on chronic diastolic heart failure in 89-year-old Female,I50.33
+CASE 94,Acute ischemic stroke in 73-year-old Female,I63.9
+CASE 95,COPD exacerbation with acute respiratory failure in 87-year-old Female,J44.1; J96.00
+CASE 96,Sepsis due to MRSA in 69-year-old Female,A41.02
+CASE 97,Acute systolic heart failure in 60-year-old Male,I50.21
+CASE 98,Sepsis due to MRSA in 76-year-old Female,A41.02
+CASE 99,Postoperative respiratory failure in 43-year-old Male,J95.821
+CASE 100,Ventilator associated pneumonia in 21-year-old Female,J95.851
+CASE 101,Ventilator associated pneumonia in 48-year-old Male,J95.851
+CASE 102,Type 2 diabetes with chronic kidney disease stage 4 in 78-year-old Male,E11.22; N18.4
+CASE 103,Pulmonary embolism with acute cor pulmonale in 44-year-old Female,I26.02
+CASE 104,Sepsis due to MRSA in 31-year-old Male,A41.02
+CASE 105,Aspiration pneumonia in 52-year-old Male,J69.0
+CASE 106,Aspiration pneumonia in 40-year-old Male,J69.0
+CASE 107,Acute hypoxic respiratory failure in 25-year-old Female,J96.01
+CASE 108,Acute kidney failure in 68-year-old Female,N17.9
+CASE 109,Type 2 diabetes with chronic kidney disease stage 4 in 47-year-old Male,E11.22; N18.4
+CASE 110,Pneumonia due to MRSA in 85-year-old Female,J15.212
+CASE 111,Acute ischemic stroke in 35-year-old Female,I63.9
+CASE 112,Septic shock due to pneumonia in 74-year-old Female,A41.9; R65.21; J18.9
+CASE 113,Pneumonia due to MRSA in 61-year-old Female,J15.212
+CASE 114,Sepsis due to MRSA in 61-year-old Male,A41.02
+CASE 115,Pulmonary embolism with acute cor pulmonale in 72-year-old Female,I26.02
+CASE 116,Postoperative respiratory failure in 69-year-old Female,J95.821
+CASE 117,Ventilator associated pneumonia in 29-year-old Male,J95.851
+CASE 118,Acute kidney failure in 90-year-old Male,N17.9
+CASE 119,Aspiration pneumonia in 33-year-old Female,J69.0
+CASE 120,COPD exacerbation with acute respiratory failure in 48-year-old Male,J44.1; J96.00
+CASE 121,Pneumonia due to MRSA in 54-year-old Male,J15.212
+CASE 122,Type 2 diabetes with chronic kidney disease stage 4 in 55-year-old Female,E11.22; N18.4
+CASE 123,Type 2 diabetes with chronic kidney disease stage 4 in 52-year-old Female,E11.22; N18.4
+CASE 124,Acute hypoxic respiratory failure in 66-year-old Female,J96.01
+CASE 125,Metabolic encephalopathy in 72-year-old Female,G93.41
+CASE 126,Acute ischemic stroke in 31-year-old Female,I63.9
+CASE 127,Postoperative respiratory failure in 54-year-old Female,J95.821
+CASE 128,Type 2 diabetes with chronic kidney disease stage 4 in 87-year-old Female,E11.22; N18.4
+CASE 129,Acute systolic heart failure in 80-year-old Female,I50.21
+CASE 130,Acute ischemic stroke in 65-year-old Male,I63.9
+CASE 131,Sepsis due to MRSA in 34-year-old Female,A41.02
+CASE 132,Pulmonary embolism with acute cor pulmonale in 80-year-old Female,I26.02
+CASE 133,Acute kidney failure in 84-year-old Male,N17.9
+CASE 134,Pulmonary embolism with acute cor pulmonale in 39-year-old Female,I26.02
+CASE 135,Postoperative respiratory failure in 59-year-old Male,J95.821
+CASE 136,Acute kidney failure in 43-year-old Male,N17.9
+CASE 137,Acute systolic heart failure in 41-year-old Male,I50.21
+CASE 138,Sepsis due to MRSA in 70-year-old Female,A41.02
+CASE 139,Aspiration pneumonia in 68-year-old Male,J69.0
+CASE 140,Septic shock due to pneumonia in 29-year-old Male,A41.9; R65.21; J18.9
+CASE 141,Acute systolic heart failure in 80-year-old Male,I50.21
+CASE 142,Acute on chronic diastolic heart failure in 71-year-old Female,I50.33
+CASE 143,Acute hypoxic respiratory failure in 93-year-old Female,J96.01
+CASE 144,COPD exacerbation with acute respiratory failure in 19-year-old Female,J44.1; J96.00
+CASE 145,Ventilator associated pneumonia in 91-year-old Female,J95.851
+CASE 146,Postoperative respiratory failure in 37-year-old Female,J95.821
+CASE 147,Pulmonary embolism with acute cor pulmonale in 78-year-old Male,I26.02
+CASE 148,Sepsis due to MRSA in 51-year-old Male,A41.02
+CASE 149,Type 2 diabetes with chronic kidney disease stage 4 in 18-year-old Female,E11.22; N18.4
+CASE 150,Acute on chronic diastolic heart failure in 41-year-old Female,I50.33
+CASE 151,Sepsis due to MRSA in 36-year-old Female,A41.02
+CASE 152,Pulmonary embolism with acute cor pulmonale in 34-year-old Female,I26.02
+CASE 153,Pneumonia due to MRSA in 40-year-old Female,J15.212
+CASE 154,Pulmonary embolism with acute cor pulmonale in 45-year-old Male,I26.02
+CASE 155,Aspiration pneumonia in 75-year-old Male,J69.0
+CASE 156,Type 2 diabetes with chronic kidney disease stage 4 in 32-year-old Female,E11.22; N18.4
+CASE 157,Type 2 diabetes with chronic kidney disease stage 4 in 93-year-old Male,E11.22; N18.4
+CASE 158,Aspiration pneumonia in 78-year-old Male,J69.0
+CASE 159,Acute kidney failure in 76-year-old Male,N17.9
+CASE 160,Acute ischemic stroke in 33-year-old Female,I63.9
+CASE 161,COPD exacerbation with acute respiratory failure in 27-year-old Male,J44.1; J96.00
+CASE 162,Metabolic encephalopathy in 78-year-old Female,G93.41
+CASE 163,Acute systolic heart failure in 73-year-old Male,I50.21
+CASE 164,Pneumonia due to MRSA in 24-year-old Female,J15.212
+CASE 165,Aspiration pneumonia in 89-year-old Female,J69.0
+CASE 166,COPD exacerbation with acute respiratory failure in 66-year-old Male,J44.1; J96.00
+CASE 167,Postoperative respiratory failure in 36-year-old Female,J95.821
+CASE 168,Acute systolic heart failure in 24-year-old Female,I50.21
+CASE 169,Ventilator associated pneumonia in 87-year-old Female,J95.851
+CASE 170,Metabolic encephalopathy in 46-year-old Male,G93.41
+CASE 171,Pulmonary embolism with acute cor pulmonale in 40-year-old Female,I26.02
+CASE 172,Acute ischemic stroke in 82-year-old Male,I63.9
+CASE 173,Pneumonia due to MRSA in 59-year-old Female,J15.212
+CASE 174,Aspiration pneumonia in 46-year-old Male,J69.0
+CASE 175,Postoperative respiratory failure in 19-year-old Male,J95.821
+CASE 176,Acute ischemic stroke in 42-year-old Female,I63.9
+CASE 177,Postoperative respiratory failure in 61-year-old Female,J95.821
+CASE 178,Aspiration pneumonia in 22-year-old Male,J69.0
+CASE 179,Ventilator associated pneumonia in 66-year-old Female,J95.851
+CASE 180,COPD exacerbation with acute respiratory failure in 82-year-old Male,J44.1; J96.00
+CASE 181,Metabolic encephalopathy in 60-year-old Male,G93.41
+CASE 182,Metabolic encephalopathy in 87-year-old Male,G93.41
+CASE 183,Acute systolic heart failure in 65-year-old Female,I50.21
+CASE 184,Acute on chronic diastolic heart failure in 92-year-old Female,I50.33
+CASE 185,Septic shock due to pneumonia in 41-year-old Female,A41.9; R65.21; J18.9
+CASE 186,Aspiration pneumonia in 54-year-old Female,J69.0
+CASE 187,Acute ischemic stroke in 27-year-old Male,I63.9
+CASE 188,Acute kidney failure in 51-year-old Male,N17.9
+CASE 189,Ventilator associated pneumonia in 23-year-old Female,J95.851
+CASE 190,Acute systolic heart failure in 52-year-old Female,I50.21
+CASE 191,Metabolic encephalopathy in 84-year-old Male,G93.41
+CASE 192,Septic shock due to pneumonia in 59-year-old Female,A41.9; R65.21; J18.9
+CASE 193,Postoperative respiratory failure in 53-year-old Male,J95.821
+CASE 194,Acute ischemic stroke in 58-year-old Male,I63.9
+CASE 195,Acute systolic heart failure in 33-year-old Male,I50.21
+CASE 196,Postoperative respiratory failure in 83-year-old Male,J95.821
+CASE 197,Acute hypoxic respiratory failure in 45-year-old Male,J96.01
+CASE 198,Acute ischemic stroke in 62-year-old Male,I63.9
+CASE 199,Acute on chronic diastolic heart failure in 85-year-old Female,I50.33
+CASE 200,Sepsis due to MRSA in 27-year-old Female,A41.02
+CASE 201,Acute kidney failure in 54-year-old Female,N17.9
+CASE 202,Acute kidney failure in 55-year-old Female,N17.9
+CASE 203,Pulmonary embolism with acute cor pulmonale in 54-year-old Male,I26.02
+CASE 204,COPD exacerbation with acute respiratory failure in 43-year-old Male,J44.1; J96.00
+CASE 205,Postoperative respiratory failure in 57-year-old Male,J95.821
+CASE 206,Acute hypoxic respiratory failure in 28-year-old Female,J96.01
+CASE 207,Sepsis due to MRSA in 68-year-old Female,A41.02
+CASE 208,Pneumonia due to MRSA in 93-year-old Male,J15.212
+CASE 209,Pulmonary embolism with acute cor pulmonale in 73-year-old Female,I26.02
+CASE 210,Acute kidney failure in 30-year-old Female,N17.9
+CASE 211,Acute kidney failure in 50-year-old Male,N17.9
+CASE 212,Aspiration pneumonia in 23-year-old Female,J69.0
+CASE 213,Acute kidney failure in 60-year-old Male,N17.9
+CASE 214,Sepsis due to MRSA in 32-year-old Male,A41.02
+CASE 215,Aspiration pneumonia in 87-year-old Male,J69.0
+CASE 216,Type 2 diabetes with chronic kidney disease stage 4 in 56-year-old Female,E11.22; N18.4
+CASE 217,Acute hypoxic respiratory failure in 92-year-old Male,J96.01
+CASE 218,Sepsis due to MRSA in 18-year-old Female,A41.02
+CASE 219,Metabolic encephalopathy in 42-year-old Female,G93.41
+CASE 220,Ventilator associated pneumonia in 59-year-old Female,J95.851
+CASE 221,Aspiration pneumonia in 34-year-old Male,J69.0
+CASE 222,Pneumonia due to MRSA in 62-year-old Male,J15.212
+CASE 223,Septic shock due to pneumonia in 27-year-old Male,A41.9; R65.21; J18.9
+CASE 224,Pulmonary embolism with acute cor pulmonale in 18-year-old Male,I26.02
+CASE 225,Acute hypoxic respiratory failure in 40-year-old Female,J96.01
+CASE 226,Ventilator associated pneumonia in 34-year-old Male,J95.851
+CASE 227,Metabolic encephalopathy in 65-year-old Male,G93.41
+CASE 228,Type 2 diabetes with chronic kidney disease stage 4 in 43-year-old Male,E11.22; N18.4
+CASE 229,Aspiration pneumonia in 43-year-old Female,J69.0
+CASE 230,Ventilator associated pneumonia in 24-year-old Male,J95.851
+CASE 231,Acute on chronic diastolic heart failure in 46-year-old Female,I50.33
+CASE 232,Acute systolic heart failure in 75-year-old Male,I50.21
+CASE 233,Acute hypoxic respiratory failure in 43-year-old Female,J96.01
+CASE 234,Postoperative respiratory failure in 58-year-old Male,J95.821
+CASE 235,Acute systolic heart failure in 74-year-old Female,I50.21
+CASE 236,Acute hypoxic respiratory failure in 81-year-old Female,J96.01
+CASE 237,Acute systolic heart failure in 67-year-old Male,I50.21
+CASE 238,Pulmonary embolism with acute cor pulmonale in 66-year-old Female,I26.02
+CASE 239,Acute hypoxic respiratory failure in 65-year-old Male,J96.01
+CASE 240,COPD exacerbation with acute respiratory failure in 64-year-old Female,J44.1; J96.00
+CASE 241,Metabolic encephalopathy in 27-year-old Female,G93.41
+CASE 242,Acute kidney failure in 48-year-old Male,N17.9
+CASE 243,Sepsis due to MRSA in 19-year-old Male,A41.02
+CASE 244,Type 2 diabetes with chronic kidney disease stage 4 in 38-year-old Male,E11.22; N18.4
+CASE 245,Acute on chronic diastolic heart failure in 74-year-old Male,I50.33
+CASE 246,Acute on chronic diastolic heart failure in 22-year-old Male,I50.33
+CASE 247,Type 2 diabetes with chronic kidney disease stage 4 in 57-year-old Male,E11.22; N18.4
+CASE 248,Acute ischemic stroke in 34-year-old Male,I63.9
+CASE 249,Type 2 diabetes with chronic kidney disease stage 4 in 27-year-old Male,E11.22; N18.4
+CASE 250,Type 2 diabetes with chronic kidney disease stage 4 in 55-year-old Male,E11.22; N18.4
+CASE 251,Septic shock due to pneumonia in 38-year-old Female,A41.9; R65.21; J18.9
+CASE 252,Type 2 diabetes with chronic kidney disease stage 4 in 62-year-old Female,E11.22; N18.4
+CASE 253,Postoperative respiratory failure in 18-year-old Female,J95.821
+CASE 254,Metabolic encephalopathy in 83-year-old Male,G93.41
+CASE 255,Postoperative respiratory failure in 56-year-old Female,J95.821
+CASE 256,Septic shock due to pneumonia in 43-year-old Female,A41.9; R65.21; J18.9
+CASE 257,Acute ischemic stroke in 91-year-old Female,I63.9
+CASE 258,Acute kidney failure in 22-year-old Male,N17.9
+CASE 259,Pulmonary embolism with acute cor pulmonale in 88-year-old Female,I26.02
+CASE 260,Acute kidney failure in 85-year-old Female,N17.9
+CASE 261,Ventilator associated pneumonia in 64-year-old Female,J95.851
+CASE 262,Acute kidney failure in 45-year-old Female,N17.9
+CASE 263,Sepsis due to MRSA in 84-year-old Female,A41.02
+CASE 264,Pneumonia due to MRSA in 51-year-old Female,J15.212
+CASE 265,COPD exacerbation with acute respiratory failure in 37-year-old Male,J44.1; J96.00
+CASE 266,Aspiration pneumonia in 23-year-old Male,J69.0
+CASE 267,Ventilator associated pneumonia in 41-year-old Male,J95.851
+CASE 268,Type 2 diabetes with chronic kidney disease stage 4 in 94-year-old Female,E11.22; N18.4
+CASE 269,Sepsis due to MRSA in 72-year-old Female,A41.02
+CASE 270,Acute ischemic stroke in 53-year-old Male,I63.9
+CASE 271,Postoperative respiratory failure in 68-year-old Male,J95.821
+CASE 272,Ventilator associated pneumonia in 60-year-old Female,J95.851
+CASE 273,Acute on chronic diastolic heart failure in 81-year-old Male,I50.33
+CASE 274,COPD exacerbation with acute respiratory failure in 92-year-old Male,J44.1; J96.00
+CASE 275,Acute hypoxic respiratory failure in 35-year-old Female,J96.01
+CASE 276,Acute hypoxic respiratory failure in 42-year-old Male,J96.01
+CASE 277,Pneumonia due to MRSA in 49-year-old Male,J15.212
+CASE 278,Acute kidney failure in 42-year-old Male,N17.9
+CASE 279,COPD exacerbation with acute respiratory failure in 72-year-old Male,J44.1; J96.00
+CASE 280,Ventilator associated pneumonia in 62-year-old Male,J95.851
+CASE 281,Type 2 diabetes with chronic kidney disease stage 4 in 70-year-old Male,E11.22; N18.4
+CASE 282,Acute ischemic stroke in 19-year-old Female,I63.9
+CASE 283,Sepsis due to MRSA in 41-year-old Female,A41.02
+CASE 284,Type 2 diabetes with chronic kidney disease stage 4 in 77-year-old Female,E11.22; N18.4
+CASE 285,Metabolic encephalopathy in 69-year-old Male,G93.41
+CASE 286,Aspiration pneumonia in 50-year-old Male,J69.0
+CASE 287,Type 2 diabetes with chronic kidney disease stage 4 in 54-year-old Male,E11.22; N18.4
+CASE 288,Acute hypoxic respiratory failure in 68-year-old Male,J96.01
+CASE 289,COPD exacerbation with acute respiratory failure in 21-year-old Male,J44.1; J96.00
+CASE 290,Aspiration pneumonia in 30-year-old Female,J69.0
+CASE 291,Pulmonary embolism with acute cor pulmonale in 24-year-old Male,I26.02
+CASE 292,Acute systolic heart failure in 20-year-old Male,I50.21
+CASE 293,Aspiration pneumonia in 93-year-old Male,J69.0
+CASE 294,Acute kidney failure in 82-year-old Female,N17.9
+CASE 295,Sepsis due to MRSA in 40-year-old Female,A41.02
+CASE 296,Metabolic encephalopathy in 57-year-old Male,G93.41
+CASE 297,Postoperative respiratory failure in 38-year-old Male,J95.821
+CASE 298,Aspiration pneumonia in 48-year-old Male,J69.0
+CASE 299,Acute systolic heart failure in 26-year-old Male,I50.21
+CASE 300,Pneumonia due to MRSA in 92-year-old Female,J15.212
+CASE 301,Acute hypoxic respiratory failure in 61-year-old Male,J96.01
+CASE 302,Postoperative respiratory failure in 31-year-old Male,J95.821
+CASE 303,Acute hypoxic respiratory failure in 53-year-old Male,J96.01
+CASE 304,Sepsis due to MRSA in 48-year-old Female,A41.02
+CASE 305,Pulmonary embolism with acute cor pulmonale in 85-year-old Male,I26.02
+CASE 306,Type 2 diabetes with chronic kidney disease stage 4 in 41-year-old Male,E11.22; N18.4
+CASE 307,Ventilator associated pneumonia in 76-year-old Female,J95.851
+CASE 308,Acute on chronic diastolic heart failure in 29-year-old Male,I50.33
+CASE 309,Metabolic encephalopathy in 73-year-old Male,G93.41
+CASE 310,Type 2 diabetes with chronic kidney disease stage 4 in 83-year-old Male,E11.22; N18.4
+CASE 311,Postoperative respiratory failure in 34-year-old Female,J95.821
+CASE 312,Metabolic encephalopathy in 77-year-old Male,G93.41
+CASE 313,Acute hypoxic respiratory failure in 44-year-old Male,J96.01
+CASE 314,Aspiration pneumonia in 27-year-old Male,J69.0
+CASE 315,Sepsis due to MRSA in 45-year-old Male,A41.02
+CASE 316,Septic shock due to pneumonia in 62-year-old Female,A41.9; R65.21; J18.9
+CASE 317,Postoperative respiratory failure in 42-year-old Male,J95.821
+CASE 318,Postoperative respiratory failure in 92-year-old Female,J95.821
+CASE 319,Pulmonary embolism with acute cor pulmonale in 71-year-old Male,I26.02
+CASE 320,COPD exacerbation with acute respiratory failure in 45-year-old Male,J44.1; J96.00
+CASE 321,Pulmonary embolism with acute cor pulmonale in 76-year-old Female,I26.02
+CASE 322,Pulmonary embolism with acute cor pulmonale in 67-year-old Female,I26.02
+CASE 323,Septic shock due to pneumonia in 92-year-old Female,A41.9; R65.21; J18.9
+CASE 324,Pulmonary embolism with acute cor pulmonale in 82-year-old Female,I26.02
+CASE 325,Postoperative respiratory failure in 79-year-old Female,J95.821
+CASE 326,COPD exacerbation with acute respiratory failure in 64-year-old Male,J44.1; J96.00
+CASE 327,Pneumonia due to MRSA in 44-year-old Male,J15.212
+CASE 328,Metabolic encephalopathy in 26-year-old Male,G93.41
+CASE 329,Ventilator associated pneumonia in 73-year-old Female,J95.851
+CASE 330,Pulmonary embolism with acute cor pulmonale in 25-year-old Male,I26.02
+CASE 331,Ventilator associated pneumonia in 61-year-old Male,J95.851
+CASE 332,Postoperative respiratory failure in 52-year-old Male,J95.821
+CASE 333,Pneumonia due to MRSA in 42-year-old Female,J15.212
+CASE 334,Ventilator associated pneumonia in 42-year-old Female,J95.851
+CASE 335,Acute kidney failure in 29-year-old Male,N17.9
+CASE 336,Acute systolic heart failure in 89-year-old Male,I50.21
+CASE 337,Aspiration pneumonia in 32-year-old Male,J69.0
+CASE 338,Acute on chronic diastolic heart failure in 56-year-old Male,I50.33
+CASE 339,Septic shock due to pneumonia in 37-year-old Female,A41.9; R65.21; J18.9
+CASE 340,Acute ischemic stroke in 93-year-old Female,I63.9
+CASE 341,COPD exacerbation with acute respiratory failure in 93-year-old Male,J44.1; J96.00
+CASE 342,COPD exacerbation with acute respiratory failure in 34-year-old Female,J44.1; J96.00
+CASE 343,Acute ischemic stroke in 79-year-old Female,I63.9
+CASE 344,Acute systolic heart failure in 93-year-old Male,I50.21
+CASE 345,Metabolic encephalopathy in 63-year-old Female,G93.41
+CASE 346,Metabolic encephalopathy in 59-year-old Female,G93.41
+CASE 347,Postoperative respiratory failure in 43-year-old Female,J95.821
+CASE 348,Pulmonary embolism with acute cor pulmonale in 79-year-old Female,I26.02
+CASE 349,Acute kidney failure in 79-year-old Female,N17.9
+CASE 350,Acute on chronic diastolic heart failure in 51-year-old Female,I50.33
+CASE 351,Metabolic encephalopathy in 76-year-old Male,G93.41
+CASE 352,Acute kidney failure in 94-year-old Male,N17.9
+CASE 353,Aspiration pneumonia in 86-year-old Male,J69.0
+CASE 354,Sepsis due to MRSA in 36-year-old Male,A41.02
+CASE 355,Type 2 diabetes with chronic kidney disease stage 4 in 89-year-old Female,E11.22; N18.4
+CASE 356,Ventilator associated pneumonia in 52-year-old Male,J95.851
+CASE 357,Acute hypoxic respiratory failure in 55-year-old Female,J96.01
+CASE 358,Metabolic encephalopathy in 64-year-old Female,G93.41
+CASE 359,Acute hypoxic respiratory failure in 67-year-old Female,J96.01
+CASE 360,Metabolic encephalopathy in 90-year-old Male,G93.41
+CASE 361,Septic shock due to pneumonia in 32-year-old Male,A41.9; R65.21; J18.9
+CASE 362,Acute hypoxic respiratory failure in 90-year-old Female,J96.01
+CASE 363,COPD exacerbation with acute respiratory failure in 59-year-old Female,J44.1; J96.00
+CASE 364,Septic shock due to pneumonia in 57-year-old Female,A41.9; R65.21; J18.9
+CASE 365,Acute kidney failure in 18-year-old Female,N17.9
+CASE 366,Acute systolic heart failure in 56-year-old Female,I50.21
+CASE 367,Ventilator associated pneumonia in 42-year-old Male,J95.851
+CASE 368,Acute ischemic stroke in 79-year-old Male,I63.9
+CASE 369,Pneumonia due to MRSA in 40-year-old Male,J15.212
+CASE 370,Acute hypoxic respiratory failure in 78-year-old Female,J96.01
+CASE 371,Acute kidney failure in 74-year-old Male,N17.9
+CASE 372,Acute systolic heart failure in 89-year-old Female,I50.21
+CASE 373,Sepsis due to MRSA in 65-year-old Male,A41.02
+CASE 374,Ventilator associated pneumonia in 20-year-old Female,J95.851
+CASE 375,Septic shock due to pneumonia in 54-year-old Female,A41.9; R65.21; J18.9
+CASE 376,Pneumonia due to MRSA in 87-year-old Male,J15.212
+CASE 377,Acute systolic heart failure in 36-year-old Male,I50.21
+CASE 378,Acute on chronic diastolic heart failure in 24-year-old Female,I50.33
+CASE 379,Septic shock due to pneumonia in 26-year-old Female,A41.9; R65.21; J18.9
+CASE 380,Pulmonary embolism with acute cor pulmonale in 35-year-old Male,I26.02
+CASE 381,Septic shock due to pneumonia in 46-year-old Female,A41.9; R65.21; J18.9
+CASE 382,Acute ischemic stroke in 67-year-old Male,I63.9
+CASE 383,Aspiration pneumonia in 93-year-old Female,J69.0
+CASE 384,Metabolic encephalopathy in 79-year-old Female,G93.41
+CASE 385,Septic shock due to pneumonia in 81-year-old Male,A41.9; R65.21; J18.9
+CASE 386,Ventilator associated pneumonia in 32-year-old Male,J95.851
+CASE 387,Septic shock due to pneumonia in 22-year-old Female,A41.9; R65.21; J18.9
+CASE 388,Acute hypoxic respiratory failure in 75-year-old Male,J96.01
+CASE 389,Aspiration pneumonia in 38-year-old Female,J69.0
+CASE 390,Type 2 diabetes with chronic kidney disease stage 4 in 90-year-old Female,E11.22; N18.4
+CASE 391,Pulmonary embolism with acute cor pulmonale in 53-year-old Female,I26.02
+CASE 392,Ventilator associated pneumonia in 72-year-old Male,J95.851
+CASE 393,Ventilator associated pneumonia in 24-year-old Female,J95.851
+CASE 394,Pulmonary embolism with acute cor pulmonale in 36-year-old Female,I26.02
+CASE 395,Type 2 diabetes with chronic kidney disease stage 4 in 60-year-old Female,E11.22; N18.4
+CASE 396,Acute kidney failure in 67-year-old Male,N17.9
+CASE 397,Sepsis due to MRSA in 85-year-old Female,A41.02
+CASE 398,Pulmonary embolism with acute cor pulmonale in 44-year-old Male,I26.02
+CASE 399,Ventilator associated pneumonia in 44-year-old Female,J95.851
+CASE 400,Acute hypoxic respiratory failure in 34-year-old Female,J96.01
+CASE 401,Pulmonary embolism with acute cor pulmonale in 71-year-old Female,I26.02
+CASE 402,Aspiration pneumonia in 82-year-old Female,J69.0
+CASE 403,Acute on chronic diastolic heart failure in 68-year-old Male,I50.33
+CASE 404,Aspiration pneumonia in 74-year-old Male,J69.0
+CASE 405,Acute on chronic diastolic heart failure in 69-year-old Female,I50.33
+CASE 406,COPD exacerbation with acute respiratory failure in 37-year-old Female,J44.1; J96.00
+CASE 407,Septic shock due to pneumonia in 25-year-old Female,A41.9; R65.21; J18.9
+CASE 408,Acute ischemic stroke in 57-year-old Male,I63.9
+CASE 409,Type 2 diabetes with chronic kidney disease stage 4 in 65-year-old Male,E11.22; N18.4
+CASE 410,Type 2 diabetes with chronic kidney disease stage 4 in 72-year-old Female,E11.22; N18.4
+CASE 411,Postoperative respiratory failure in 45-year-old Female,J95.821
+CASE 412,Pneumonia due to MRSA in 58-year-old Male,J15.212
+CASE 413,Postoperative respiratory failure in 20-year-old Male,J95.821
+CASE 414,Acute ischemic stroke in 32-year-old Female,I63.9
+CASE 415,Pulmonary embolism with acute cor pulmonale in 82-year-old Male,I26.02
+CASE 416,Ventilator associated pneumonia in 62-year-old Female,J95.851
+CASE 417,Ventilator associated pneumonia in 63-year-old Female,J95.851
+CASE 418,Acute kidney failure in 59-year-old Male,N17.9
+CASE 419,Postoperative respiratory failure in 82-year-old Female,J95.821
+CASE 420,Acute hypoxic respiratory failure in 70-year-old Male,J96.01
+CASE 421,Acute systolic heart failure in 45-year-old Male,I50.21
+CASE 422,Septic shock due to pneumonia in 86-year-old Female,A41.9; R65.21; J18.9
+CASE 423,Ventilator associated pneumonia in 40-year-old Male,J95.851
+CASE 424,Type 2 diabetes with chronic kidney disease stage 4 in 82-year-old Female,E11.22; N18.4
+CASE 425,Metabolic encephalopathy in 47-year-old Female,G93.41
+CASE 426,Sepsis due to MRSA in 94-year-old Female,A41.02
+CASE 427,Type 2 diabetes with chronic kidney disease stage 4 in 23-year-old Male,E11.22; N18.4
+CASE 428,Pulmonary embolism with acute cor pulmonale in 70-year-old Male,I26.02
+CASE 429,Acute kidney failure in 93-year-old Male,N17.9
+CASE 430,Pneumonia due to MRSA in 45-year-old Male,J15.212
+CASE 431,Ventilator associated pneumonia in 64-year-old Male,J95.851
+CASE 432,Acute hypoxic respiratory failure in 83-year-old Male,J96.01
+CASE 433,Acute kidney failure in 71-year-old Female,N17.9
+CASE 434,Acute ischemic stroke in 53-year-old Female,I63.9
+CASE 435,Type 2 diabetes with chronic kidney disease stage 4 in 27-year-old Female,E11.22; N18.4
+CASE 436,Acute kidney failure in 68-year-old Male,N17.9
+CASE 437,Acute hypoxic respiratory failure in 19-year-old Female,J96.01
+CASE 438,Pneumonia due to MRSA in 66-year-old Female,J15.212
+CASE 439,Metabolic encephalopathy in 70-year-old Male,G93.41
+CASE 440,Sepsis due to MRSA in 61-year-old Female,A41.02
+CASE 441,Acute ischemic stroke in 18-year-old Male,I63.9
+CASE 442,Acute ischemic stroke in 40-year-old Female,I63.9
+CASE 443,Ventilator associated pneumonia in 31-year-old Female,J95.851
+CASE 444,Acute hypoxic respiratory failure in 58-year-old Male,J96.01
+CASE 445,Type 2 diabetes with chronic kidney disease stage 4 in 76-year-old Male,E11.22; N18.4
+CASE 446,Acute ischemic stroke in 93-year-old Male,I63.9
+CASE 447,Type 2 diabetes with chronic kidney disease stage 4 in 74-year-old Female,E11.22; N18.4
+CASE 448,Metabolic encephalopathy in 18-year-old Male,G93.41
+CASE 449,Aspiration pneumonia in 42-year-old Female,J69.0
+CASE 450,Pneumonia due to MRSA in 90-year-old Female,J15.212
+CASE 451,Acute ischemic stroke in 80-year-old Male,I63.9
+CASE 452,Acute on chronic diastolic heart failure in 75-year-old Male,I50.33
+CASE 453,Metabolic encephalopathy in 90-year-old Female,G93.41
+CASE 454,Ventilator associated pneumonia in 72-year-old Female,J95.851
+CASE 455,Aspiration pneumonia in 19-year-old Male,J69.0
+CASE 456,Acute kidney failure in 89-year-old Male,N17.9
+CASE 457,Acute ischemic stroke in 78-year-old Female,I63.9
+CASE 458,Metabolic encephalopathy in 39-year-old Male,G93.41
+CASE 459,Acute hypoxic respiratory failure in 57-year-old Male,J96.01
+CASE 460,Acute ischemic stroke in 48-year-old Female,I63.9
+CASE 461,Acute hypoxic respiratory failure in 42-year-old Female,J96.01
+CASE 462,Pneumonia due to MRSA in 25-year-old Female,J15.212
+CASE 463,Sepsis due to MRSA in 78-year-old Male,A41.02
+CASE 464,Acute ischemic stroke in 60-year-old Male,I63.9
+CASE 465,COPD exacerbation with acute respiratory failure in 63-year-old Male,J44.1; J96.00
+CASE 466,Metabolic encephalopathy in 91-year-old Female,G93.41
+CASE 467,Acute hypoxic respiratory failure in 57-year-old Female,J96.01
+CASE 468,Postoperative respiratory failure in 87-year-old Female,J95.821
+CASE 469,Acute kidney failure in 53-year-old Female,N17.9
+CASE 470,Acute systolic heart failure in 86-year-old Male,I50.21
+CASE 471,Metabolic encephalopathy in 75-year-old Male,G93.41
+CASE 472,Acute on chronic diastolic heart failure in 35-year-old Male,I50.33
+CASE 473,Metabolic encephalopathy in 71-year-old Female,G93.41
+CASE 474,Acute systolic heart failure in 90-year-old Female,I50.21
+CASE 475,Pneumonia due to MRSA in 41-year-old Female,J15.212
+CASE 476,Postoperative respiratory failure in 87-year-old Male,J95.821
+CASE 477,Pulmonary embolism with acute cor pulmonale in 19-year-old Male,I26.02
+CASE 478,Aspiration pneumonia in 55-year-old Female,J69.0
+CASE 479,Acute on chronic diastolic heart failure in 36-year-old Female,I50.33
+CASE 480,Acute on chronic diastolic heart failure in 60-year-old Male,I50.33
+CASE 481,Acute systolic heart failure in 87-year-old Male,I50.21
+CASE 482,Acute kidney failure in 81-year-old Female,N17.9
+CASE 483,Sepsis due to MRSA in 44-year-old Male,A41.02
+CASE 484,Sepsis due to MRSA in 33-year-old Male,A41.02
+CASE 485,Pneumonia due to MRSA in 20-year-old Female,J15.212
+CASE 486,Septic shock due to pneumonia in 93-year-old Male,A41.9; R65.21; J18.9
+CASE 487,Acute kidney failure in 19-year-old Male,N17.9
+CASE 488,Pneumonia due to MRSA in 43-year-old Male,J15.212
+CASE 489,Septic shock due to pneumonia in 32-year-old Female,A41.9; R65.21; J18.9
+CASE 490,Pulmonary embolism with acute cor pulmonale in 47-year-old Male,I26.02
+CASE 491,Postoperative respiratory failure in 25-year-old Female,J95.821
+CASE 492,Ventilator associated pneumonia in 54-year-old Male,J95.851
+CASE 493,Acute systolic heart failure in 79-year-old Male,I50.21
+CASE 494,Acute hypoxic respiratory failure in 86-year-old Male,J96.01
+CASE 495,Pneumonia due to MRSA in 64-year-old Male,J15.212
+CASE 496,Septic shock due to pneumonia in 63-year-old Male,A41.9; R65.21; J18.9
+CASE 497,Metabolic encephalopathy in 32-year-old Female,G93.41
+CASE 498,Ventilator associated pneumonia in 63-year-old Male,J95.851
+CASE 499,Acute on chronic diastolic heart failure in 48-year-old Female,I50.33
+CASE 500,Type 2 diabetes with chronic kidney disease stage 4 in 82-year-old Male,E11.22; N18.4
+CASE 501,Acute on chronic diastolic heart failure in 47-year-old Female,I50.33
+CASE 502,Sepsis due to MRSA in 27-year-old Male,A41.02
+CASE 503,Pulmonary embolism with acute cor pulmonale in 65-year-old Male,I26.02
+CASE 504,Type 2 diabetes with chronic kidney disease stage 4 in 24-year-old Female,E11.22; N18.4
+CASE 505,Septic shock due to pneumonia in 24-year-old Female,A41.9; R65.21; J18.9
+CASE 506,Metabolic encephalopathy in 81-year-old Female,G93.41
+CASE 507,Acute ischemic stroke in 23-year-old Male,I63.9
+CASE 508,Ventilator associated pneumonia in 41-year-old Female,J95.851
+CASE 509,Type 2 diabetes with chronic kidney disease stage 4 in 90-year-old Male,E11.22; N18.4
+CASE 510,Septic shock due to pneumonia in 64-year-old Female,A41.9; R65.21; J18.9
+CASE 511,Acute on chronic diastolic heart failure in 64-year-old Male,I50.33
+CASE 512,Septic shock due to pneumonia in 69-year-old Female,A41.9; R65.21; J18.9
+CASE 513,Type 2 diabetes with chronic kidney disease stage 4 in 21-year-old Female,E11.22; N18.4
+CASE 514,Acute kidney failure in 63-year-old Male,N17.9
+CASE 515,Postoperative respiratory failure in 28-year-old Female,J95.821
+CASE 516,Aspiration pneumonia in 80-year-old Male,J69.0
+CASE 517,Pulmonary embolism with acute cor pulmonale in 83-year-old Female,I26.02
+CASE 518,Pulmonary embolism with acute cor pulmonale in 31-year-old Male,I26.02
+CASE 519,Type 2 diabetes with chronic kidney disease stage 4 in 22-year-old Female,E11.22; N18.4
+CASE 520,Pneumonia due to MRSA in 56-year-old Male,J15.212
+CASE 521,Acute systolic heart failure in 33-year-old Female,I50.21
+CASE 522,Acute on chronic diastolic heart failure in 38-year-old Male,I50.33
+CASE 523,Acute kidney failure in 93-year-old Female,N17.9
+CASE 524,Pneumonia due to MRSA in 36-year-old Female,J15.212
+CASE 525,COPD exacerbation with acute respiratory failure in 32-year-old Female,J44.1; J96.00
+CASE 526,Acute hypoxic respiratory failure in 78-year-old Male,J96.01
+CASE 527,Acute kidney failure in 75-year-old Female,N17.9
+CASE 528,Metabolic encephalopathy in 62-year-old Male,G93.41
+CASE 529,Pulmonary embolism with acute cor pulmonale in 45-year-old Female,I26.02
+CASE 530,Metabolic encephalopathy in 63-year-old Male,G93.41
+CASE 531,COPD exacerbation with acute respiratory failure in 81-year-old Male,J44.1; J96.00
+CASE 532,Type 2 diabetes with chronic kidney disease stage 4 in 61-year-old Female,E11.22; N18.4
+CASE 533,COPD exacerbation with acute respiratory failure in 57-year-old Male,J44.1; J96.00
+CASE 534,Acute systolic heart failure in 28-year-old Female,I50.21
+CASE 535,Pneumonia due to MRSA in 21-year-old Male,J15.212
+CASE 536,COPD exacerbation with acute respiratory failure in 76-year-old Female,J44.1; J96.00
+CASE 537,Septic shock due to pneumonia in 82-year-old Male,A41.9; R65.21; J18.9
+CASE 538,Acute systolic heart failure in 58-year-old Male,I50.21
+CASE 539,Pneumonia due to MRSA in 48-year-old Female,J15.212
+CASE 540,COPD exacerbation with acute respiratory failure in 92-year-old Female,J44.1; J96.00
+CASE 541,Aspiration pneumonia in 27-year-old Female,J69.0
+CASE 542,Septic shock due to pneumonia in 73-year-old Female,A41.9; R65.21; J18.9
+CASE 543,Pulmonary embolism with acute cor pulmonale in 28-year-old Male,I26.02
+CASE 544,Acute systolic heart failure in 68-year-old Female,I50.21
+CASE 545,Acute on chronic diastolic heart failure in 25-year-old Male,I50.33
+CASE 546,Sepsis due to MRSA in 24-year-old Male,A41.02
+CASE 547,Acute systolic heart failure in 42-year-old Male,I50.21
+CASE 548,COPD exacerbation with acute respiratory failure in 26-year-old Female,J44.1; J96.00
+CASE 549,Pneumonia due to MRSA in 91-year-old Female,J15.212
+CASE 550,COPD exacerbation with acute respiratory failure in 89-year-old Male,J44.1; J96.00
+CASE 551,Type 2 diabetes with chronic kidney disease stage 4 in 81-year-old Male,E11.22; N18.4
+CASE 552,Aspiration pneumonia in 88-year-old Female,J69.0
+CASE 553,Acute hypoxic respiratory failure in 71-year-old Female,J96.01
+CASE 554,Aspiration pneumonia in 25-year-old Female,J69.0
+CASE 555,Acute systolic heart failure in 32-year-old Female,I50.21
+CASE 556,Pulmonary embolism with acute cor pulmonale in 34-year-old Male,I26.02
+CASE 557,Postoperative respiratory failure in 21-year-old Female,J95.821
+CASE 558,COPD exacerbation with acute respiratory failure in 30-year-old Male,J44.1; J96.00
+CASE 559,Pulmonary embolism with acute cor pulmonale in 69-year-old Female,I26.02
+CASE 560,Sepsis due to MRSA in 31-year-old Female,A41.02
+CASE 561,Septic shock due to pneumonia in 36-year-old Male,A41.9; R65.21; J18.9
+CASE 562,Pulmonary embolism with acute cor pulmonale in 50-year-old Female,I26.02
+CASE 563,Acute systolic heart failure in 44-year-old Male,I50.21
+CASE 564,Metabolic encephalopathy in 58-year-old Female,G93.41
+CASE 565,Acute systolic heart failure in 59-year-old Female,I50.21
+CASE 566,Aspiration pneumonia in 90-year-old Female,J69.0
+CASE 567,Pulmonary embolism with acute cor pulmonale in 83-year-old Male,I26.02
+CASE 568,Acute systolic heart failure in 31-year-old Male,I50.21
+CASE 569,Sepsis due to MRSA in 39-year-old Male,A41.02
+CASE 570,Metabolic encephalopathy in 50-year-old Male,G93.41
+CASE 571,Sepsis due to MRSA in 64-year-old Female,A41.02
+CASE 572,Pulmonary embolism with acute cor pulmonale in 42-year-old Male,I26.02
+CASE 573,Pulmonary embolism with acute cor pulmonale in 22-year-old Male,I26.02
+CASE 574,Acute hypoxic respiratory failure in 71-year-old Male,J96.01
+CASE 575,Postoperative respiratory failure in 46-year-old Male,J95.821
+CASE 576,Postoperative respiratory failure in 66-year-old Female,J95.821
+CASE 577,Pneumonia due to MRSA in 68-year-old Female,J15.212
+CASE 578,Acute systolic heart failure in 30-year-old Male,I50.21
+CASE 579,Ventilator associated pneumonia in 45-year-old Female,J95.851
+CASE 580,Aspiration pneumonia in 67-year-old Male,J69.0
+CASE 581,Ventilator associated pneumonia in 18-year-old Male,J95.851
+CASE 582,Postoperative respiratory failure in 32-year-old Female,J95.821
+CASE 583,Septic shock due to pneumonia in 21-year-old Female,A41.9; R65.21; J18.9
+CASE 584,Aspiration pneumonia in 38-year-old Male,J69.0
+CASE 585,Acute on chronic diastolic heart failure in 58-year-old Female,I50.33
+CASE 586,Metabolic encephalopathy in 24-year-old Female,G93.41
+CASE 587,Pneumonia due to MRSA in 64-year-old Female,J15.212
+CASE 588,Type 2 diabetes with chronic kidney disease stage 4 in 43-year-old Female,E11.22; N18.4
+CASE 589,Acute systolic heart failure in 93-year-old Female,I50.21
+CASE 590,Acute ischemic stroke in 58-year-old Female,I63.9
+CASE 591,Sepsis due to MRSA in 18-year-old Male,A41.02
+CASE 592,Acute hypoxic respiratory failure in 32-year-old Male,J96.01
+CASE 593,Acute hypoxic respiratory failure in 38-year-old Female,J96.01
+CASE 594,Acute hypoxic respiratory failure in 37-year-old Female,J96.01
+CASE 595,Ventilator associated pneumonia in 50-year-old Female,J95.851
+CASE 596,Metabolic encephalopathy in 74-year-old Female,G93.41
+CASE 597,Sepsis due to MRSA in 25-year-old Male,A41.02
+CASE 598,Type 2 diabetes with chronic kidney disease stage 4 in 37-year-old Male,E11.22; N18.4
+CASE 599,Acute kidney failure in 18-year-old Male,N17.9
+CASE 600,Ventilator associated pneumonia in 54-year-old Female,J95.851
+CASE 601,Septic shock due to pneumonia in 38-year-old Male,A41.9; R65.21; J18.9
+CASE 602,Pulmonary embolism with acute cor pulmonale in 21-year-old Female,I26.02
+CASE 603,Sepsis due to MRSA in 88-year-old Female,A41.02
+CASE 604,Acute hypoxic respiratory failure in 52-year-old Female,J96.01
+CASE 605,Aspiration pneumonia in 47-year-old Male,J69.0
+CASE 606,Acute systolic heart failure in 62-year-old Female,I50.21
+CASE 607,Aspiration pneumonia in 62-year-old Male,J69.0
+CASE 608,Pneumonia due to MRSA in 60-year-old Female,J15.212
+CASE 609,Aspiration pneumonia in 71-year-old Male,J69.0
+CASE 610,Sepsis due to MRSA in 60-year-old Female,A41.02
+CASE 611,Acute kidney failure in 50-year-old Female,N17.9
+CASE 612,Metabolic encephalopathy in 54-year-old Male,G93.41
+CASE 613,Metabolic encephalopathy in 38-year-old Male,G93.41
+CASE 614,Pneumonia due to MRSA in 87-year-old Female,J15.212
+CASE 615,Acute hypoxic respiratory failure in 33-year-old Female,J96.01
+CASE 616,Ventilator associated pneumonia in 78-year-old Female,J95.851
+CASE 617,Acute kidney failure in 19-year-old Female,N17.9
+CASE 618,Acute on chronic diastolic heart failure in 71-year-old Male,I50.33
+CASE 619,Type 2 diabetes with chronic kidney disease stage 4 in 40-year-old Male,E11.22; N18.4
+CASE 620,Aspiration pneumonia in 75-year-old Female,J69.0
+CASE 621,Type 2 diabetes with chronic kidney disease stage 4 in 72-year-old Male,E11.22; N18.4
+CASE 622,Postoperative respiratory failure in 86-year-old Male,J95.821
+CASE 623,Acute kidney failure in 47-year-old Female,N17.9
+CASE 624,Pneumonia due to MRSA in 43-year-old Female,J15.212
+CASE 625,Sepsis due to MRSA in 58-year-old Female,A41.02
+CASE 626,Ventilator associated pneumonia in 93-year-old Male,J95.851
+CASE 627,Acute hypoxic respiratory failure in 74-year-old Male,J96.01
+CASE 628,Ventilator associated pneumonia in 77-year-old Female,J95.851
+CASE 629,Pulmonary embolism with acute cor pulmonale in 69-year-old Male,I26.02
+CASE 630,Metabolic encephalopathy in 72-year-old Male,G93.41
+CASE 631,Aspiration pneumonia in 76-year-old Male,J69.0
+CASE 632,Acute ischemic stroke in 38-year-old Female,I63.9
+CASE 633,Acute on chronic diastolic heart failure in 21-year-old Male,I50.33
+CASE 634,Pulmonary embolism with acute cor pulmonale in 65-year-old Female,I26.02
+CASE 635,Pulmonary embolism with acute cor pulmonale in 39-year-old Male,I26.02
+CASE 636,Septic shock due to pneumonia in 76-year-old Female,A41.9; R65.21; J18.9
+CASE 637,Acute systolic heart failure in 69-year-old Male,I50.21
+CASE 638,Ventilator associated pneumonia in 31-year-old Male,J95.851
+CASE 639,Postoperative respiratory failure in 24-year-old Female,J95.821
+CASE 640,Sepsis due to MRSA in 44-year-old Female,A41.02
+CASE 641,Sepsis due to MRSA in 58-year-old Male,A41.02
+CASE 642,Acute ischemic stroke in 24-year-old Male,I63.9
+CASE 643,Acute on chronic diastolic heart failure in 59-year-old Male,I50.33
+CASE 644,Acute hypoxic respiratory failure in 91-year-old Male,J96.01
+CASE 645,Postoperative respiratory failure in 80-year-old Female,J95.821
+CASE 646,Acute on chronic diastolic heart failure in 34-year-old Male,I50.33
+CASE 647,Postoperative respiratory failure in 93-year-old Male,J95.821
+CASE 648,Sepsis due to MRSA in 70-year-old Male,A41.02
+CASE 649,Aspiration pneumonia in 20-year-old Male,J69.0
+CASE 650,Acute kidney failure in 65-year-old Female,N17.9
+CASE 651,Ventilator associated pneumonia in 19-year-old Female,J95.851
+CASE 652,Acute ischemic stroke in 55-year-old Male,I63.9
+CASE 653,Pneumonia due to MRSA in 37-year-old Female,J15.212
+CASE 654,Acute ischemic stroke in 30-year-old Male,I63.9
+CASE 655,Pulmonary embolism with acute cor pulmonale in 61-year-old Female,I26.02
+CASE 656,Acute hypoxic respiratory failure in 27-year-old Male,J96.01
+CASE 657,Pneumonia due to MRSA in 29-year-old Male,J15.212
+CASE 658,Postoperative respiratory failure in 77-year-old Female,J95.821
+CASE 659,Metabolic encephalopathy in 74-year-old Male,G93.41
+CASE 660,Pulmonary embolism with acute cor pulmonale in 70-year-old Female,I26.02
+CASE 661,Pneumonia due to MRSA in 80-year-old Female,J15.212
+CASE 662,Ventilator associated pneumonia in 20-year-old Male,J95.851
+CASE 663,Acute kidney failure in 80-year-old Female,N17.9
+CASE 664,Acute kidney failure in 71-year-old Male,N17.9
+CASE 665,Pulmonary embolism with acute cor pulmonale in 24-year-old Female,I26.02
+CASE 666,Metabolic encephalopathy in 25-year-old Female,G93.41
+CASE 667,Acute on chronic diastolic heart failure in 77-year-old Female,I50.33
+CASE 668,Acute kidney failure in 83-year-old Male,N17.9
+CASE 669,Acute systolic heart failure in 29-year-old Male,I50.21
+CASE 670,Type 2 diabetes with chronic kidney disease stage 4 in 75-year-old Female,E11.22; N18.4
+CASE 671,Postoperative respiratory failure in 40-year-old Male,J95.821
+CASE 672,Acute systolic heart failure in 23-year-old Female,I50.21
+CASE 673,Type 2 diabetes with chronic kidney disease stage 4 in 75-year-old Male,E11.22; N18.4
+CASE 674,Pulmonary embolism with acute cor pulmonale in 37-year-old Female,I26.02
+CASE 675,COPD exacerbation with acute respiratory failure in 20-year-old Female,J44.1; J96.00
+CASE 676,Acute on chronic diastolic heart failure in 51-year-old Male,I50.33
+CASE 677,Acute hypoxic respiratory failure in 58-year-old Female,J96.01
+CASE 678,Acute kidney failure in 31-year-old Female,N17.9
+CASE 679,Acute kidney failure in 36-year-old Female,N17.9
+CASE 680,Acute ischemic stroke in 82-year-old Female,I63.9
+CASE 681,Type 2 diabetes with chronic kidney disease stage 4 in 83-year-old Female,E11.22; N18.4
+CASE 682,Pulmonary embolism with acute cor pulmonale in 72-year-old Male,I26.02
+CASE 683,Septic shock due to pneumonia in 19-year-old Male,A41.9; R65.21; J18.9
+CASE 684,Acute hypoxic respiratory failure in 61-year-old Female,J96.01
+CASE 685,Acute kidney failure in 41-year-old Male,N17.9
+CASE 686,Type 2 diabetes with chronic kidney disease stage 4 in 67-year-old Female,E11.22; N18.4
+CASE 687,Acute hypoxic respiratory failure in 56-year-old Female,J96.01
+CASE 688,COPD exacerbation with acute respiratory failure in 54-year-old Male,J44.1; J96.00
+CASE 689,Aspiration pneumonia in 53-year-old Female,J69.0
+CASE 690,Acute ischemic stroke in 61-year-old Male,I63.9
+CASE 691,Postoperative respiratory failure in 29-year-old Male,J95.821
+CASE 692,Septic shock due to pneumonia in 50-year-old Female,A41.9; R65.21; J18.9
+CASE 693,Acute kidney failure in 27-year-old Female,N17.9
+CASE 694,Sepsis due to MRSA in 81-year-old Male,A41.02
+CASE 695,Ventilator associated pneumonia in 40-year-old Female,J95.851
+CASE 696,Septic shock due to pneumonia in 72-year-old Female,A41.9; R65.21; J18.9
+CASE 697,Acute systolic heart failure in 64-year-old Female,I50.21
+CASE 698,Aspiration pneumonia in 18-year-old Male,J69.0
+CASE 699,Acute on chronic diastolic heart failure in 65-year-old Male,I50.33
+CASE 700,Aspiration pneumonia in 88-year-old Male,J69.0
+CASE 701,Acute kidney failure in 56-year-old Male,N17.9
+CASE 702,Acute on chronic diastolic heart failure in 40-year-old Female,I50.33
+CASE 703,Postoperative respiratory failure in 48-year-old Female,J95.821
+CASE 704,Pulmonary embolism with acute cor pulmonale in 49-year-old Female,I26.02
+CASE 705,Aspiration pneumonia in 19-year-old Female,J69.0
+CASE 706,Acute kidney failure in 28-year-old Female,N17.9
+CASE 707,Acute on chronic diastolic heart failure in 52-year-old Female,I50.33
+CASE 708,Pulmonary embolism with acute cor pulmonale in 87-year-old Female,I26.02
+CASE 709,Pneumonia due to MRSA in 69-year-old Female,J15.212
+CASE 710,Metabolic encephalopathy in 51-year-old Male,G93.41
+CASE 711,Pneumonia due to MRSA in 78-year-old Male,J15.212
+CASE 712,Acute ischemic stroke in 59-year-old Female,I63.9
+CASE 713,Ventilator associated pneumonia in 69-year-old Female,J95.851
+CASE 714,Postoperative respiratory failure in 75-year-old Female,J95.821
+CASE 715,Metabolic encephalopathy in 49-year-old Male,G93.41
+CASE 716,Postoperative respiratory failure in 84-year-old Female,J95.821
+CASE 717,COPD exacerbation with acute respiratory failure in 47-year-old Male,J44.1; J96.00
+CASE 718,Acute on chronic diastolic heart failure in 44-year-old Male,I50.33
+CASE 719,Ventilator associated pneumonia in 85-year-old Male,J95.851
+CASE 720,Ventilator associated pneumonia in 38-year-old Female,J95.851
+CASE 721,Pulmonary embolism with acute cor pulmonale in 77-year-old Female,I26.02
+CASE 722,COPD exacerbation with acute respiratory failure in 31-year-old Female,J44.1; J96.00
+CASE 723,COPD exacerbation with acute respiratory failure in 77-year-old Male,J44.1; J96.00
+CASE 724,Type 2 diabetes with chronic kidney disease stage 4 in 25-year-old Male,E11.22; N18.4
+CASE 725,Acute on chronic diastolic heart failure in 43-year-old Male,I50.33
+CASE 726,Pneumonia due to MRSA in 75-year-old Female,J15.212
+CASE 727,Metabolic encephalopathy in 40-year-old Male,G93.41
+CASE 728,Ventilator associated pneumonia in 90-year-old Female,J95.851
+CASE 729,Acute kidney failure in 26-year-old Male,N17.9
+CASE 730,Pneumonia due to MRSA in 18-year-old Female,J15.212
+CASE 731,Septic shock due to pneumonia in 58-year-old Female,A41.9; R65.21; J18.9
+CASE 732,Pneumonia due to MRSA in 53-year-old Female,J15.212
+CASE 733,Postoperative respiratory failure in 29-year-old Female,J95.821
+CASE 734,Postoperative respiratory failure in 21-year-old Male,J95.821
+CASE 735,COPD exacerbation with acute respiratory failure in 94-year-old Male,J44.1; J96.00
+CASE 736,Pneumonia due to MRSA in 59-year-old Male,J15.212
+CASE 737,Postoperative respiratory failure in 22-year-old Male,J95.821
+CASE 738,Type 2 diabetes with chronic kidney disease stage 4 in 20-year-old Male,E11.22; N18.4
+CASE 739,Acute on chronic diastolic heart failure in 34-year-old Female,I50.33
+CASE 740,Acute ischemic stroke in 92-year-old Male,I63.9
+CASE 741,Ventilator associated pneumonia in 39-year-old Female,J95.851
+CASE 742,Acute hypoxic respiratory failure in 21-year-old Female,J96.01
+CASE 743,COPD exacerbation with acute respiratory failure in 39-year-old Male,J44.1; J96.00
+CASE 744,Pulmonary embolism with acute cor pulmonale in 26-year-old Female,I26.02
+CASE 745,Aspiration pneumonia in 65-year-old Female,J69.0
+CASE 746,Type 2 diabetes with chronic kidney disease stage 4 in 48-year-old Male,E11.22; N18.4
+CASE 747,Ventilator associated pneumonia in 69-year-old Male,J95.851
+CASE 748,Pulmonary embolism with acute cor pulmonale in 53-year-old Male,I26.02
+CASE 749,Ventilator associated pneumonia in 56-year-old Female,J95.851
+CASE 750,Acute ischemic stroke in 25-year-old Male,I63.9
+CASE 751,Postoperative respiratory failure in 47-year-old Female,J95.821
+CASE 752,Acute systolic heart failure in 72-year-old Female,I50.21
+CASE 753,Acute hypoxic respiratory failure in 36-year-old Female,J96.01
+CASE 754,Ventilator associated pneumonia in 56-year-old Male,J95.851
+CASE 755,Acute systolic heart failure in 57-year-old Male,I50.21
+CASE 756,Acute kidney failure in 72-year-old Male,N17.9
+CASE 757,Aspiration pneumonia in 48-year-old Female,J69.0
+CASE 758,COPD exacerbation with acute respiratory failure in 19-year-old Male,J44.1; J96.00
+CASE 759,Sepsis due to MRSA in 80-year-old Male,A41.02
+CASE 760,Acute on chronic diastolic heart failure in 38-year-old Female,I50.33
+CASE 761,Type 2 diabetes with chronic kidney disease stage 4 in 79-year-old Male,E11.22; N18.4
+CASE 762,Acute systolic heart failure in 42-year-old Female,I50.21
+CASE 763,Septic shock due to pneumonia in 20-year-old Female,A41.9; R65.21; J18.9
+CASE 764,Postoperative respiratory failure in 33-year-old Female,J95.821
+CASE 765,COPD exacerbation with acute respiratory failure in 38-year-old Male,J44.1; J96.00
+CASE 766,Aspiration pneumonia in 41-year-old Female,J69.0
+CASE 767,Type 2 diabetes with chronic kidney disease stage 4 in 50-year-old Male,E11.22; N18.4
+CASE 768,Acute kidney failure in 91-year-old Male,N17.9
+CASE 769,Acute on chronic diastolic heart failure in 61-year-old Male,I50.33
+CASE 770,Acute systolic heart failure in 36-year-old Female,I50.21
+CASE 771,Sepsis due to MRSA in 93-year-old Female,A41.02
+CASE 772,Sepsis due to MRSA in 94-year-old Male,A41.02
+CASE 773,Acute ischemic stroke in 49-year-old Male,I63.9
+CASE 774,Pulmonary embolism with acute cor pulmonale in 75-year-old Male,I26.02
+CASE 775,Ventilator associated pneumonia in 94-year-old Male,J95.851
+CASE 776,Sepsis due to MRSA in 22-year-old Female,A41.02
+CASE 777,Metabolic encephalopathy in 89-year-old Female,G93.41
+CASE 778,Acute hypoxic respiratory failure in 94-year-old Male,J96.01
+CASE 779,Ventilator associated pneumonia in 43-year-old Male,J95.851
+CASE 780,Metabolic encephalopathy in 69-year-old Female,G93.41
+CASE 781,Septic shock due to pneumonia in 37-year-old Male,A41.9; R65.21; J18.9
+CASE 782,Septic shock due to pneumonia in 78-year-old Male,A41.9; R65.21; J18.9
+CASE 783,Acute ischemic stroke in 47-year-old Female,I63.9
+CASE 784,Acute ischemic stroke in 56-year-old Male,I63.9
+CASE 785,Acute ischemic stroke in 20-year-old Male,I63.9
+CASE 786,Acute on chronic diastolic heart failure in 68-year-old Female,I50.33
+CASE 787,Acute ischemic stroke in 70-year-old Male,I63.9
+CASE 788,Type 2 diabetes with chronic kidney disease stage 4 in 56-year-old Male,E11.22; N18.4
+CASE 789,COPD exacerbation with acute respiratory failure in 54-year-old Female,J44.1; J96.00
+CASE 790,Acute ischemic stroke in 69-year-old Female,I63.9
+CASE 791,Ventilator associated pneumonia in 49-year-old Female,J95.851
+CASE 792,Acute kidney failure in 45-year-old Male,N17.9
+CASE 793,Metabolic encephalopathy in 68-year-old Male,G93.41
+CASE 794,Postoperative respiratory failure in 18-year-old Male,J95.821
+CASE 795,Aspiration pneumonia in 41-year-old Male,J69.0
+CASE 796,Pneumonia due to MRSA in 47-year-old Male,J15.212
+CASE 797,COPD exacerbation with acute respiratory failure in 41-year-old Female,J44.1; J96.00
+CASE 798,Acute on chronic diastolic heart failure in 35-year-old Female,I50.33
+CASE 799,Septic shock due to pneumonia in 88-year-old Male,A41.9; R65.21; J18.9
+CASE 800,Sepsis due to MRSA in 29-year-old Male,A41.02
+CASE 801,Acute kidney failure in 54-year-old Male,N17.9
+CASE 802,Pneumonia due to MRSA in 34-year-old Male,J15.212
+CASE 803,Sepsis due to MRSA in 82-year-old Female,A41.02
+CASE 804,Postoperative respiratory failure in 62-year-old Male,J95.821
+CASE 805,Septic shock due to pneumonia in 22-year-old Male,A41.9; R65.21; J18.9
+CASE 806,Aspiration pneumonia in 57-year-old Male,J69.0
+CASE 807,Pneumonia due to MRSA in 67-year-old Female,J15.212
+CASE 808,Septic shock due to pneumonia in 51-year-old Female,A41.9; R65.21; J18.9
+CASE 809,Pulmonary embolism with acute cor pulmonale in 36-year-old Male,I26.02
+CASE 810,Acute hypoxic respiratory failure in 31-year-old Female,J96.01
+CASE 811,Type 2 diabetes with chronic kidney disease stage 4 in 88-year-old Female,E11.22; N18.4
+CASE 812,Ventilator associated pneumonia in 44-year-old Male,J95.851
+CASE 813,Septic shock due to pneumonia in 60-year-old Female,A41.9; R65.21; J18.9
+CASE 814,Acute ischemic stroke in 26-year-old Male,I63.9
+CASE 815,Sepsis due to MRSA in 90-year-old Male,A41.02
+CASE 816,Pulmonary embolism with acute cor pulmonale in 26-year-old Male,I26.02
+CASE 817,Type 2 diabetes with chronic kidney disease stage 4 in 74-year-old Male,E11.22; N18.4
+CASE 818,Acute ischemic stroke in 83-year-old Male,I63.9
+CASE 819,Acute systolic heart failure in 51-year-old Female,I50.21
+CASE 820,Pulmonary embolism with acute cor pulmonale in 19-year-old Female,I26.02
+CASE 821,Septic shock due to pneumonia in 89-year-old Female,A41.9; R65.21; J18.9
+CASE 822,Sepsis due to MRSA in 74-year-old Male,A41.02
+CASE 823,Septic shock due to pneumonia in 36-year-old Female,A41.9; R65.21; J18.9
+CASE 824,Acute systolic heart failure in 31-year-old Female,I50.21
+CASE 825,Metabolic encephalopathy in 42-year-old Male,G93.41
+CASE 826,Ventilator associated pneumonia in 29-year-old Female,J95.851
+CASE 827,Acute hypoxic respiratory failure in 73-year-old Female,J96.01
+CASE 828,Metabolic encephalopathy in 18-year-old Female,G93.41
+CASE 829,Acute kidney failure in 67-year-old Female,N17.9
+CASE 830,Acute kidney failure in 63-year-old Female,N17.9
+CASE 831,Postoperative respiratory failure in 41-year-old Male,J95.821
+CASE 832,Pneumonia due to MRSA in 62-year-old Female,J15.212
+CASE 833,Acute on chronic diastolic heart failure in 18-year-old Male,I50.33
+CASE 834,Acute hypoxic respiratory failure in 26-year-old Female,J96.01
+CASE 835,COPD exacerbation with acute respiratory failure in 75-year-old Female,J44.1; J96.00
+CASE 836,Ventilator associated pneumonia in 26-year-old Female,J95.851
+CASE 837,Aspiration pneumonia in 53-year-old Male,J69.0
+CASE 838,Pneumonia due to MRSA in 76-year-old Male,J15.212
+CASE 839,Pneumonia due to MRSA in 46-year-old Male,J15.212
+CASE 840,Acute hypoxic respiratory failure in 52-year-old Male,J96.01
+CASE 841,COPD exacerbation with acute respiratory failure in 42-year-old Female,J44.1; J96.00
+CASE 842,Acute hypoxic respiratory failure in 75-year-old Female,J96.01
+CASE 843,Sepsis due to MRSA in 53-year-old Female,A41.02
+CASE 844,Acute systolic heart failure in 24-year-old Male,I50.21
+CASE 845,Aspiration pneumonia in 71-year-old Female,J69.0
+CASE 846,Pulmonary embolism with acute cor pulmonale in 62-year-old Female,I26.02
+CASE 847,Septic shock due to pneumonia in 42-year-old Female,A41.9; R65.21; J18.9
+CASE 848,Aspiration pneumonia in 76-year-old Female,J69.0
+CASE 849,Aspiration pneumonia in 60-year-old Male,J69.0
+CASE 850,Pulmonary embolism with acute cor pulmonale in 27-year-old Female,I26.02
+CASE 851,Acute on chronic diastolic heart failure in 23-year-old Male,I50.33
+CASE 852,Acute hypoxic respiratory failure in 46-year-old Male,J96.01
+CASE 853,Ventilator associated pneumonia in 48-year-old Female,J95.851
+CASE 854,Acute hypoxic respiratory failure in 29-year-old Female,J96.01
+CASE 855,Pneumonia due to MRSA in 29-year-old Female,J15.212
+CASE 856,Pneumonia due to MRSA in 74-year-old Female,J15.212
+CASE 857,Acute systolic heart failure in 60-year-old Female,I50.21
+CASE 858,Pneumonia due to MRSA in 42-year-old Male,J15.212
+CASE 859,Septic shock due to pneumonia in 91-year-old Male,A41.9; R65.21; J18.9
+CASE 860,Pulmonary embolism with acute cor pulmonale in 30-year-old Male,I26.02
+CASE 861,Type 2 diabetes with chronic kidney disease stage 4 in 22-year-old Male,E11.22; N18.4
+CASE 862,COPD exacerbation with acute respiratory failure in 26-year-old Male,J44.1; J96.00
+CASE 863,Postoperative respiratory failure in 48-year-old Male,J95.821
+CASE 864,Sepsis due to MRSA in 66-year-old Female,A41.02
+CASE 865,Acute kidney failure in 20-year-old Male,N17.9
+CASE 866,Acute kidney failure in 78-year-old Female,N17.9
+CASE 867,Pneumonia due to MRSA in 52-year-old Male,J15.212
+CASE 868,Acute systolic heart failure in 22-year-old Female,I50.21
+CASE 869,Pneumonia due to MRSA in 19-year-old Female,J15.212
+CASE 870,COPD exacerbation with acute respiratory failure in 52-year-old Female,J44.1; J96.00
+CASE 871,Ventilator associated pneumonia in 26-year-old Male,J95.851
+CASE 872,Postoperative respiratory failure in 52-year-old Female,J95.821
+CASE 873,Acute ischemic stroke in 85-year-old Male,I63.9
+CASE 874,Type 2 diabetes with chronic kidney disease stage 4 in 21-year-old Male,E11.22; N18.4
+CASE 875,Postoperative respiratory failure in 72-year-old Female,J95.821
+CASE 876,COPD exacerbation with acute respiratory failure in 18-year-old Female,J44.1; J96.00
+CASE 877,Pulmonary embolism with acute cor pulmonale in 60-year-old Female,I26.02
+CASE 878,Septic shock due to pneumonia in 56-year-old Male,A41.9; R65.21; J18.9
+CASE 879,Postoperative respiratory failure in 44-year-old Female,J95.821
+CASE 880,Acute on chronic diastolic heart failure in 27-year-old Female,I50.33
+CASE 881,COPD exacerbation with acute respiratory failure in 50-year-old Male,J44.1; J96.00
+CASE 882,Pneumonia due to MRSA in 74-year-old Male,J15.212
+CASE 883,Aspiration pneumonia in 66-year-old Female,J69.0
+CASE 884,Acute on chronic diastolic heart failure in 26-year-old Female,I50.33
+CASE 885,Pneumonia due to MRSA in 26-year-old Male,J15.212
+CASE 886,Acute systolic heart failure in 37-year-old Female,I50.21
+CASE 887,Acute on chronic diastolic heart failure in 82-year-old Female,I50.33
+CASE 888,Acute systolic heart failure in 79-year-old Female,I50.21
+CASE 889,Acute systolic heart failure in 47-year-old Male,I50.21
+CASE 890,Postoperative respiratory failure in 30-year-old Male,J95.821
+CASE 891,Acute ischemic stroke in 26-year-old Female,I63.9
+CASE 892,Metabolic encephalopathy in 64-year-old Male,G93.41
+CASE 893,Ventilator associated pneumonia in 37-year-old Female,J95.851
+CASE 894,Acute hypoxic respiratory failure in 63-year-old Female,J96.01
+CASE 895,Acute on chronic diastolic heart failure in 65-year-old Female,I50.33
+CASE 896,COPD exacerbation with acute respiratory failure in 52-year-old Male,J44.1; J96.00
+CASE 897,Septic shock due to pneumonia in 25-year-old Male,A41.9; R65.21; J18.9
+CASE 898,Acute on chronic diastolic heart failure in 50-year-old Female,I50.33
+CASE 899,Postoperative respiratory failure in 46-year-old Female,J95.821
+CASE 900,Acute ischemic stroke in 63-year-old Male,I63.9
+CASE 901,Metabolic encephalopathy in 56-year-old Female,G93.41
+CASE 902,Postoperative respiratory failure in 86-year-old Female,J95.821
+CASE 903,Acute hypoxic respiratory failure in 53-year-old Female,J96.01
+CASE 904,Acute hypoxic respiratory failure in 87-year-old Male,J96.01
+CASE 905,Pneumonia due to MRSA in 35-year-old Female,J15.212
+CASE 906,Type 2 diabetes with chronic kidney disease stage 4 in 57-year-old Female,E11.22; N18.4
+CASE 907,Ventilator associated pneumonia in 75-year-old Female,J95.851
+CASE 908,Type 2 diabetes with chronic kidney disease stage 4 in 51-year-old Female,E11.22; N18.4
+CASE 909,Acute systolic heart failure in 61-year-old Female,I50.21
+CASE 910,Acute hypoxic respiratory failure in 20-year-old Female,J96.01
+CASE 911,COPD exacerbation with acute respiratory failure in 61-year-old Female,J44.1; J96.00
+CASE 912,Ventilator associated pneumonia in 82-year-old Female,J95.851
+CASE 913,Pneumonia due to MRSA in 73-year-old Male,J15.212
+CASE 914,Pneumonia due to MRSA in 26-year-old Female,J15.212
+CASE 915,Postoperative respiratory failure in 60-year-old Female,J95.821
+CASE 916,Acute ischemic stroke in 40-year-old Male,I63.9
+CASE 917,Acute systolic heart failure in 38-year-old Female,I50.21
+CASE 918,Acute systolic heart failure in 74-year-old Male,I50.21
+CASE 919,Acute kidney failure in 25-year-old Female,N17.9
+CASE 920,Acute ischemic stroke in 33-year-old Male,I63.9
+CASE 921,Aspiration pneumonia in 58-year-old Female,J69.0
+CASE 922,Pneumonia due to MRSA in 51-year-old Male,J15.212
+CASE 923,Type 2 diabetes with chronic kidney disease stage 4 in 81-year-old Female,E11.22; N18.4
+CASE 924,Septic shock due to pneumonia in 56-year-old Female,A41.9; R65.21; J18.9
+CASE 925,Acute on chronic diastolic heart failure in 78-year-old Male,I50.33
+CASE 926,COPD exacerbation with acute respiratory failure in 58-year-old Male,J44.1; J96.00
+CASE 927,Acute systolic heart failure in 25-year-old Male,I50.21
+CASE 928,Metabolic encephalopathy in 43-year-old Female,G93.41
+CASE 929,Acute systolic heart failure in 71-year-old Male,I50.21
+CASE 930,COPD exacerbation with acute respiratory failure in 60-year-old Male,J44.1; J96.00
+CASE 931,Pulmonary embolism with acute cor pulmonale in 23-year-old Female,I26.02
+CASE 932,Ventilator associated pneumonia in 18-year-old Female,J95.851
+CASE 933,COPD exacerbation with acute respiratory failure in 51-year-old Female,J44.1; J96.00
+CASE 934,Metabolic encephalopathy in 43-year-old Male,G93.41
+CASE 935,Acute systolic heart failure in 77-year-old Male,I50.21
+CASE 936,Pulmonary embolism with acute cor pulmonale in 22-year-old Female,I26.02
+CASE 937,Acute on chronic diastolic heart failure in 39-year-old Female,I50.33
+CASE 938,Metabolic encephalopathy in 53-year-old Male,G93.41
+CASE 939,Septic shock due to pneumonia in 57-year-old Male,A41.9; R65.21; J18.9
+CASE 940,Septic shock due to pneumonia in 33-year-old Male,A41.9; R65.21; J18.9
+CASE 941,Sepsis due to MRSA in 68-year-old Male,A41.02
+CASE 942,Ventilator associated pneumonia in 55-year-old Male,J95.851
+CASE 943,Sepsis due to MRSA in 91-year-old Female,A41.02
+CASE 944,Pulmonary embolism with acute cor pulmonale in 29-year-old Female,I26.02
+CASE 945,Acute systolic heart failure in 68-year-old Male,I50.21
+CASE 946,Postoperative respiratory failure in 33-year-old Male,J95.821
+CASE 947,Septic shock due to pneumonia in 82-year-old Female,A41.9; R65.21; J18.9
+CASE 948,Acute ischemic stroke in 74-year-old Male,I63.9
+CASE 949,Septic shock due to pneumonia in 53-year-old Female,A41.9; R65.21; J18.9
+CASE 950,Type 2 diabetes with chronic kidney disease stage 4 in 86-year-old Female,E11.22; N18.4
+CASE 951,COPD exacerbation with acute respiratory failure in 55-year-old Female,J44.1; J96.00
+CASE 952,Type 2 diabetes with chronic kidney disease stage 4 in 47-year-old Female,E11.22; N18.4
+CASE 953,COPD exacerbation with acute respiratory failure in 51-year-old Male,J44.1; J96.00
+CASE 954,Acute hypoxic respiratory failure in 85-year-old Male,J96.01
+CASE 955,Sepsis due to MRSA in 53-year-old Male,A41.02
+CASE 956,Ventilator associated pneumonia in 58-year-old Male,J95.851
+CASE 957,Type 2 diabetes with chronic kidney disease stage 4 in 58-year-old Male,E11.22; N18.4
+CASE 958,Sepsis due to MRSA in 79-year-old Female,A41.02
+CASE 959,Acute ischemic stroke in 88-year-old Female,I63.9
+CASE 960,Ventilator associated pneumonia in 60-year-old Male,J95.851
+CASE 961,Acute on chronic diastolic heart failure in 74-year-old Female,I50.33
+CASE 962,Aspiration pneumonia in 87-year-old Female,J69.0
+CASE 963,Postoperative respiratory failure in 63-year-old Female,J95.821
+CASE 964,Acute kidney failure in 28-year-old Male,N17.9
+CASE 965,COPD exacerbation with acute respiratory failure in 70-year-old Female,J44.1; J96.00
+CASE 966,Acute on chronic diastolic heart failure in 19-year-old Male,I50.33
+CASE 967,Septic shock due to pneumonia in 78-year-old Female,A41.9; R65.21; J18.9
+CASE 968,Acute ischemic stroke in 73-year-old Male,I63.9
+CASE 969,Ventilator associated pneumonia in 51-year-old Male,J95.851
+CASE 970,Acute systolic heart failure in 54-year-old Female,I50.21
+CASE 971,Acute on chronic diastolic heart failure in 31-year-old Female,I50.33
+CASE 972,Postoperative respiratory failure in 47-year-old Male,J95.821
+CASE 973,Pulmonary embolism with acute cor pulmonale in 56-year-old Female,I26.02
+CASE 974,Postoperative respiratory failure in 61-year-old Male,J95.821
+CASE 975,Septic shock due to pneumonia in 74-year-old Male,A41.9; R65.21; J18.9
+CASE 976,Acute hypoxic respiratory failure in 49-year-old Male,J96.01
+CASE 977,Acute systolic heart failure in 65-year-old Male,I50.21
+CASE 978,Pulmonary embolism with acute cor pulmonale in 91-year-old Male,I26.02
+CASE 979,Aspiration pneumonia in 47-year-old Female,J69.0
+CASE 980,Ventilator associated pneumonia in 83-year-old Male,J95.851
+CASE 981,Ventilator associated pneumonia in 74-year-old Female,J95.851
+CASE 982,Metabolic encephalopathy in 89-year-old Male,G93.41
+CASE 983,Septic shock due to pneumonia in 94-year-old Male,A41.9; R65.21; J18.9
+CASE 984,Pneumonia due to MRSA in 85-year-old Male,J15.212
+CASE 985,Acute on chronic diastolic heart failure in 90-year-old Male,I50.33
+CASE 986,Pneumonia due to MRSA in 81-year-old Female,J15.212
+CASE 987,Sepsis due to MRSA in 90-year-old Female,A41.02
+CASE 988,Acute systolic heart failure in 18-year-old Female,I50.21
+CASE 989,Ventilator associated pneumonia in 45-year-old Male,J95.851
+CASE 990,Acute ischemic stroke in 69-year-old Male,I63.9
+CASE 991,Aspiration pneumonia in 49-year-old Male,J69.0
+CASE 992,Acute ischemic stroke in 86-year-old Male,I63.9
+CASE 993,Acute kidney failure in 32-year-old Male,N17.9
+CASE 994,Acute systolic heart failure in 71-year-old Female,I50.21
+CASE 995,Sepsis due to MRSA in 66-year-old Male,A41.02
+CASE 996,Sepsis due to MRSA in 73-year-old Male,A41.02
+CASE 997,Acute on chronic diastolic heart failure in 73-year-old Female,I50.33
+CASE 998,Pulmonary embolism with acute cor pulmonale in 33-year-old Male,I26.02
+CASE 999,Acute systolic heart failure in 43-year-old Male,I50.21
+CASE 1000,Acute systolic heart failure in 21-year-old Male,I50.21

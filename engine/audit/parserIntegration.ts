@@ -102,11 +102,73 @@ export class ParserIntegrationLayer {
     }
 
     /**
+     * Normalize diagnosis terms for consistent detection
+     */
+    private normalizeDiagnoses(diagnoses: string[]): string[] {
+        const normalized: string[] = [];
+
+        for (const dx of diagnoses) {
+            const lower = dx.toLowerCase();
+
+            // Normalize AKI terms
+            if (lower.includes('acute kidney injury') || lower === 'aki' || lower.includes('acute renal failure')) {
+                if (!normalized.includes('AKI')) {
+                    normalized.push('AKI');
+                }
+            }
+
+            // Also keep original
+            normalized.push(dx);
+        }
+
+        return normalized;
+    }
+
+    /**
+     * Extract CKD stage from diagnosis text
+     */
+    private extractCKDStage(diagnoses: string[]): number | undefined {
+        const romanToArabic: Record<string, number> = {
+            'i': 1, 'ii': 2, 'iii': 3, 'iv': 4, 'v': 5
+        };
+
+        for (const dx of diagnoses) {
+            const lower = dx.toLowerCase();
+
+            // Pattern: "CKD stage [1-5]"
+            const numericMatch = lower.match(/(?:ckd|chronic kidney disease)\s*stage\s*([1-5])/);
+            if (numericMatch) {
+                return parseInt(numericMatch[1]);
+            }
+
+            // Pattern: "stage [1-5] CKD"
+            const reverseMatch = lower.match(/stage\s*([1-5])\s*(?:ckd|chronic kidney)/);
+            if (reverseMatch) {
+                return parseInt(reverseMatch[1]);
+            }
+
+            // Pattern: "CKD stage IV" or "CKD IV"
+            const romanMatch = lower.match(/(?:ckd|chronic kidney disease)\s*(?:stage\s*)?([iv]+)\b/);
+            if (romanMatch) {
+                const romanNumeral = romanMatch[1].toLowerCase();
+                if (romanToArabic[romanNumeral]) {
+                    return romanToArabic[romanNumeral];
+                }
+            }
+        }
+
+        return undefined;
+    }
+
+    /**
      * Build audit contexts from parser output
      * NO inference - only explicit provider documentation
      */
     private buildAuditContexts(parserOutput: ParserOutput): any {
         const contexts: any = {};
+
+        // Normalize provider diagnoses
+        const normalizedDiagnoses = this.normalizeDiagnoses(parserOutput.providerTerms.diagnoses);
 
         // Sepsis context (only if provider documented sepsis-related term)
         const sepsisTerms = ['sepsis', 'severe sepsis', 'septic shock', 'sirs'];
@@ -131,7 +193,7 @@ export class ParserIntegrationLayer {
 
         // Renal context
         const renalTerms = ['aki', 'acute kidney', 'ckd', 'chronic kidney', 'renal insufficiency', 'azotemia'];
-        const renalDocumented = parserOutput.providerTerms.diagnoses.some(d =>
+        const renalDocumented = normalizedDiagnoses.some(d =>
             renalTerms.some(term => d.toLowerCase().includes(term))
         );
 
@@ -140,11 +202,17 @@ export class ParserIntegrationLayer {
                 renalTerms.some(term => d.toLowerCase().includes(term))
             );
 
+            const ckdStage = this.extractCKDStage(parserOutput.providerTerms.diagnoses);
+
+            const akiDocumented = normalizedDiagnoses.includes('AKI');
+
             contexts.renal = {
                 providerTerm: renalTerm,
                 creatinineBaseline: parserOutput.labValues.creatinine?.baseline,
                 creatinineCurrent: parserOutput.labValues.creatinine?.value,
                 providerDocumentedDiagnosis: !!renalTerm,
+                ckdStage,
+                akiDocumented,
             };
         }
 

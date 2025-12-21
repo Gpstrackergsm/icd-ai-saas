@@ -13,6 +13,7 @@ export interface RenalContext {
     creatinineBaseline?: number;
     creatinineCurrent?: number;
     ckdStage?: number; // 1-5
+    akiDocumented?: boolean;
     providerDocumentedDiagnosis: boolean;
 }
 
@@ -59,7 +60,7 @@ export function evaluateNonSpecificRenalTerms(ctx: RenalContext): AuditResult | 
 
 /**
  * Rule 3.2: CKD Staging Missing
- * Validated: Case 34
+ * Validated: Case 34, R8
  */
 export function evaluateCKDStaging(ctx: RenalContext): AuditResult | null {
     if (!ctx.providerTerm?.toLowerCase().includes('ckd') &&
@@ -67,10 +68,26 @@ export function evaluateCKDStaging(ctx: RenalContext): AuditResult | null {
         return null;
     }
 
+    // Check if stage was extracted
     if (ctx.ckdStage !== undefined && ctx.ckdStage >= 1 && ctx.ckdStage <= 5) {
-        return null; // Stage specified, no issue
+        // Stage documented - AUTO_CODE with specific stage code
+        const result = createAuditResult(
+            DecisionState.AUTO_CODE,
+            AuditRiskLevel.LOW,
+            `CKD stage ${ctx.ckdStage} documented - coding N18.${ctx.ckdStage}`,
+            ['Rule Group 3.2: CKD Staging Documented']
+        );
+
+        result.autoCoded.push({
+            code: `N18.${ctx.ckdStage}`,
+            description: `Chronic kidney disease, stage ${ctx.ckdStage}`,
+            position: 'Secondary',
+        });
+
+        return result;
     }
 
+    // No stage extracted - query for staging
     const result = createAuditResult(
         DecisionState.AUTO_QUERY,
         AuditRiskLevel.MEDIUM,
