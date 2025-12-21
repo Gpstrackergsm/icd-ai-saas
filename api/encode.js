@@ -48,16 +48,24 @@ module.exports = async function handler(req, res) {
     const lower = text.toLowerCase();
     const diagnoses = [];
 
-    // Extract renal diagnoses
-    if (lower.includes('acute kidney injury') || lower.match(/\baki\b/)) {
+    // Helper to check if a term is negated in the text
+    const isNegated = (term) => {
+      const pattern = new RegExp(`(no|without|denies|negative for|ruled out|absence of)\\s+(documented\\s+)?(diagnosis of\\s+)?${term}`, 'i');
+      return pattern.test(text);
+    };
+
+    // Extract renal diagnoses (only if NOT negated)
+    if ((lower.includes('acute kidney injury') || lower.match(/\baki\b/)) && !isNegated('acute kidney injury') && !isNegated('aki')) {
       diagnoses.push('acute kidney injury');
     }
     if (lower.match(/chronic kidney disease|ckd/)) {
-      const stageMatch = text.match(/(?:ckd|chronic kidney disease)\s*stage\s*([1-5]|[iv]+)/i);
-      if (stageMatch) {
-        diagnoses.push(`CKD stage ${stageMatch[1]}`);
-      } else {
-        diagnoses.push('chronic kidney disease');
+      if (!isNegated('chronic kidney disease') && !isNegated('ckd')) {
+        const stageMatch = text.match(/(?:ckd|chronic kidney disease)\s*stage\s*([1-5]|[iv]+)/i);
+        if (stageMatch) {
+          diagnoses.push(`CKD stage ${stageMatch[1]}`);
+        } else {
+          diagnoses.push('chronic kidney disease');
+        }
       }
     }
 
