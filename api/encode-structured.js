@@ -6,8 +6,6 @@
  * Single source of truth: TypeScript → JavaScript compilation
  * No legacy validation, no runtime TypeScript
  */
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = handler;
 const parserIntegration_1 = require("../dist/engine/audit/parserIntegration");
 const middleware_1 = require("../dist/lib/auth/middleware");
 const lookupDetail = require('../lib/icd-dictionary.js').lookupDetail;
@@ -201,3 +199,5 @@ function buildAPIResponse(result, enhanceCode) {
         }
     };
 }
+
+module.exports = handler;
