@@ -4,12 +4,31 @@
 const lookupDetail = require('../lib/icd-dictionary.js').lookupDetail;
 
 // Import compiled audit engine modules
-let parserIntegration, auditEngine;
+let parser Integration, auditEngine;
 
 try {
   parserIntegration = require('../dist/engine/audit/parserIntegration.js').parserIntegration;
+  console.log('[AUDIT ENGINE] Successfully loaded parserIntegration');
 } catch (err) {
-  console.error('Failed to load audit engine:', err.message);
+  console.error('[AUDIT ENGINE] Failed to load audit engine:');
+  console.error('[AUDIT ENGINE] Error:', err.message);
+  console.error('[AUDIT ENGINE] Stack:', err.stack);
+  console.error('[AUDIT ENGINE] CWD:', process.cwd());
+  console.error('[AUDIT ENGINE] __dirname:', __dirname);
+
+  // Try to check if dist directory exists
+  const fs = require('fs');
+  const path = require('path');
+  const distPath = path.join(__dirname, '..', 'dist');
+  const enginePath = path.join(__dirname, '..', 'dist', 'engine', 'audit');
+
+  console.error('[AUDIT ENGINE] dist exists?', fs.existsSync(distPath));
+  console.error('[AUDIT ENGINE] dist/engine/audit exists?', fs.existsSync(enginePath));
+
+  if (fs.existsSync(enginePath)) {
+    console.error('[AUDIT ENGINE] Files in dist/engine/audit:', fs.readdirSync(enginePath));
+  }
+
   parserIntegration = null;
 }
 
