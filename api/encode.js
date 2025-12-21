@@ -4,7 +4,7 @@
 const lookupDetail = require('../lib/icd-dictionary.js').lookupDetail;
 
 // Import compiled audit engine modules
-let parser Integration, auditEngine;
+let parserIntegration, auditEngine;
 
 try {
   parserIntegration = require('../dist/engine/audit/parserIntegration.js').parserIntegration;
