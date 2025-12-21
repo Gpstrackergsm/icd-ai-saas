@@ -1,9 +1,15 @@
-const { parseInput } = require('../dist/lib/structured/parser.js');
-const { validateContext } = require('../dist/lib/structured/validator.js');
-const { runStructuredRules } = require('../dist/lib/structured/engine.js');
-const { validateCodeSet } = require('../dist/lib/structured/validator-post.js');
+/**
+ * ICD-10-CM AUDIT ENGINE API
+ * Production endpoint using deterministic audit engine
+ * 
+ * Replaces legacy parser/validator/engine with:
+ * - parserIntegration (extraction-only)
+ * - auditEngine (EXCLUDE > QUERY > CODE hierarchy)
+ * - auditResult (normalized output)
+ */
+
+const { parserIntegration } = require('../dist/engine/audit/parserIntegration.js');
 const { requireAuth } = require('../dist/lib/auth/middleware.js');
-// FORCE UPDATE CHECK v3.4-FIXED (HF negation fix)
 const { lookupDetail } = require('../lib/icd-dictionary.js');
 
 module.exports = async function handler(req, res) {
@@ -13,7 +19,7 @@ module.exports = async function handler(req, res) {
 
     // Authentication check
     const auth = await requireAuth(req, res);
-    if (!auth) return; // requireAuth already sent error response
+    if (!auth) return;
 
     try {
         const { text } = req.body;
@@ -22,158 +28,203 @@ module.exports = async function handler(req, res) {
             return res.status(400).json({ error: 'Missing or invalid "text" field' });
         }
 
-        // Parse the structured input
-        const { context, errors: parseErrors } = parseInput(text);
+        // Build parser output from text (extraction-only, no inference)
+        const parserOutput = buildParserOutputFromText(text);
 
-        if (parseErrors.length > 0) {
-            return res.status(200).json({
-                success: true,
-                data: {
-                    text,
-                    primary: null,
-                    secondary: [],
-                    validationErrors: parseErrors,
-                    warnings: []
-                }
-            });
-        }
-
-        // Validate the context with STRICT MODE for audit-safe production coding
-        const validation = validateContext(context, { strictMode: true });
-
-        if (!validation.valid) {
-            return res.status(200).json({
-                success: true,
-                data: {
-                    text,
-                    primary: null,
-                    secondary: [],
-                    validationErrors: validation.errors,
-                    warnings: validation.warnings
-                }
-            });
-        }
-
-        // Run the rules engine
-        const result = runStructuredRules(context);
-
-        // CARDIOLOGY HANDLING: Now fully integrated into lib/structured/engine.ts
-        // The structured engine handles all cardiology sequencing correctly per UHDDS
-        // No additional override needed here
-
-
-        // Apply ICD-10-CM validation for claim compliance
-        const validated = validateCodeSet(result.primary, result.secondary, context);
-
-        // --- ENFORCE OFFICIAL DESCRIPTIONS & SEPARATE METADATA ---
-        const enhanceCode = (c) => {
-            if (!c) return null;
-
-            const detail = lookupDetail(c.code);
-
-            // Use official details if available
-            if (detail) {
-                c.label = detail.description;
-                c.description = detail.description; // Clean description
-                c.annotations = detail.annotations || [];
-                c.references = detail.references || [];
-            } else {
-                // Ensure array fields exist even if lookup failed
-                c.annotations = [];
-                c.references = [];
-            }
-
-            // FINAL SAFEGUARD: Check for missing description
-            if (!c.label || c.label === 'No description' || c.label.trim() === '') {
-                c.label = "Missing ICD Description (Data error)";
-                c.description = "Missing ICD Description (Data error)";
-                console.error(`ICD_MAPPING_ERROR: Missing description for code ${c.code}`);
-                // Add to validation errors if strictly required by user
-                result.validationErrors.push(`ICD_MAPPING_ERROR: Missing description for code ${c.code}`);
-            }
-            return c;
-        };
-
-        // Extract validated validated codes for checking
-        const tempCodes = [validated.codes[0], ...validated.codes.slice(1)].filter(Boolean);
-
-        // [STRICT RULE INJECTION] Run high-risk validation rules
-        // This ensures audit-grade validation messages (e.g. O80 exclusivity) are returned
-        const { runValidation } = require('../dist/lib/validation/validationEngine.js');
-
-        // Map to SequencedCode format
-        const sequencedCodes = tempCodes.map(c => ({
-            code: c.code,
-            label: c.label || '',
-            triggeredBy: 'structured_engine',
-            hcc: false
-        }));
-
-        const validationResults = runValidation(sequencedCodes, { text });
-
-        // Add any strict validation failures
-        if (validationResults.errors.length > 0) {
-            result.validationErrors.push(...validationResults.errors);
-        }
-
-        // Add warnings if needed (optional, keeping strict for now)
-        if (validationResults.warnings.length > 0) {
-            result.warnings.push(...validationResults.warnings);
-        }
-
-        // Block if we have validation errors
-        if (result.validationErrors.length > 0) {
-            return res.status(200).json({
-                success: true,
-                data: {
-                    text,
-                    primary: null,
-                    secondary: [],
-                    validationErrors: result.validationErrors,
-                    warnings: [...validation.warnings, ...result.warnings]
-                }
-            });
-        }
-
-        // Extract validated primary and secondary codes
-        const validatedPrimary = enhanceCode(validated.codes[0] || null);
-        let validatedSecondary = validated.codes.slice(1).map(enhanceCode);
-
-        // DEDUPLICATE: Remove duplicate codes from secondary
-        const seenCodes = new Set([validatedPrimary?.code].filter(Boolean));
-        validatedSecondary = validatedSecondary.filter(c => {
-            if (!c || seenCodes.has(c.code)) return false;
-            seenCodes.add(c.code);
-            return true;
+        // Run audit engine
+        const result = await parserIntegration.processCase(text, parserOutput, {
+            caseId: `api_${Date.now()}`,
+            facilityId: 'production',
+            userId: auth.user?.id
         });
 
-        // Format response with claim-ready codes
-        const response = {
-            primary: validatedPrimary,
-            secondary: validatedSecondary,
-            procedures: result.procedures,
-            warnings: [...validation.warnings, ...result.warnings],
-            validationErrors: result.validationErrors,
-            validationChanges: {
-                removed: validated.removed,
-                added: validated.added
-            },
-            _debug: {
-                apiVersion: 'v3.7-TRAUMA-DEBUG',
-                buildTime: new Date().toISOString(),
-                trauma: {
-                    parsed: context.conditions.injury || 'not-parsed',
-                    engineResult: result._debugTrauma || 'no-debug-info-from-engine',
-                    hasPrimary: !!result.primary,
-                    primaryCode: result.primary?.code
-                }
-            }
+        // Enhance codes with official ICD-10-CM descriptions
+        const enhanceCode = (code) => {
+            if (!code || !code.code) return null;
+
+            const detail = lookupDetail(code.code);
+
+            return {
+                code: code.code,
+                label: detail?.description || code.description || 'No description',
+                description: detail?.description || code.description || 'No description',
+                position: code.position || 'Secondary',
+                annotations: detail?.annotations || [],
+                references: detail?.references || []
+            };
         };
+
+        // Map audit result to API response format
+        const response = buildAPIResponse(result, enhanceCode);
 
         return res.status(200).json({ success: true, data: response });
 
     } catch (error) {
-        console.error('Encoding error:', error);
-        return res.status(500).json({ error: 'Internal server error' });
+        console.error('Audit engine error:', error);
+        return res.status(500).json({ error: 'Internal server error', details: error.message });
     }
 };
+
+/**
+ * Build parser output from narrative text
+ * Extraction-only - no inference
+ */
+function buildParserOutputFromText(text) {
+    const lower = text.toLowerCase();
+
+    // Extract provider-documented diagnoses (explicit terms only)
+    const diagnoses = [];
+
+    // Renal terms
+    if (lower.includes('acute kidney injury') || lower.match(/\baki\b/)) {
+        diagnoses.push('acute kidney injury');
+    }
+    if (lower.match(/chronic kidney disease|ckd/)) {
+        const stageMatch = text.match(/(?:ckd|chronic kidney disease)\s*stage\s*([1-5]|[iv]+)/i);
+        if (stageMatch) {
+            diagnoses.push(`CKD stage ${stageMatch[1]}`);
+        } else {
+            diagnoses.push('chronic kidney disease');
+        }
+    }
+    if (lower.includes('renal insufficiency')) {
+        diagnoses.push('renal insufficiency');
+    }
+
+    // Sepsis terms
+    if (lower.includes('septic shock')) {
+        diagnoses.push('septic shock');
+    } else if (lower.includes('severe sepsis')) {
+        diagnoses.push('severe sepsis');
+    } else if (lower.includes('sepsis')) {
+        diagnoses.push('sepsis');
+    }
+
+    // Extract lab values
+    const labValues = {};
+
+    const crMatch = text.match(/creatinine[:\s]+(\d+\.?\d*)/i);
+    const baselineMatch = text.match(/baseline[:\s]+(\d+\.?\d*)/i);
+
+    if (crMatch) {
+        labValues.creatinine = {
+            value: parseFloat(crMatch[1]),
+            baseline: baselineMatch ? parseFloat(baselineMatch[1]) : undefined
+        };
+    }
+
+    const lactateMatch = text.match(/lactate[:\s]+(\d+\.?\d*)/i);
+    if (lactateMatch) {
+        labValues.lactate = parseFloat(lactateMatch[1]);
+    }
+
+    // Extract treatments
+    const treatments = {};
+    const medications = [];
+
+    if (lower.includes('vasopressor') || lower.includes('norepinephrine') || lower.includes('levophed')) {
+        medications.push('vasopressor');
+    }
+    if (lower.includes('iv fluid') || lower.includes('intravenous fluid')) {
+        medications.push('IV fluids');
+    }
+
+    if (medications.length > 0) {
+        treatments.medications = medications;
+    }
+
+    return {
+        providerTerms: {
+            diagnoses,
+            symptoms: [],
+            procedures: []
+        },
+        vitalSigns: {},
+        labValues,
+        clinicalFindings: {},
+        treatments,
+        containsInferredDiagnosis: false
+    };
+}
+
+/**
+ * Build API response from audit result
+ */
+function buildAPIResponse(result, enhanceCode) {
+    const auditResult = result.auditResult;
+
+    // Map decision state to response
+    const primary = auditResult.autoCoded.length > 0
+        ? enhanceCode(auditResult.autoCoded.find(c => c.position === 'Primary') || auditResult.autoCoded[0])
+        : null;
+
+    const secondary = auditResult.autoCoded
+        .filter(c => c.position !== 'Primary')
+        .map(enhanceCode)
+        .filter(Boolean);
+
+    // Build validation errors/warnings based on decision state
+    const validationErrors = [];
+    const warnings = [];
+
+    if (auditResult.decisionState === 'BLOCK_AND_QUERY') {
+        validationErrors.push(`COMPLIANCE GATE — ${auditResult.queriesRequired.length} ITEM(S) PENDING RESOLUTION`);
+        auditResult.queriesRequired.forEach(q => {
+            validationErrors.push(`Query required: ${q.queryText.substring(0, 100)}...`);
+        });
+    }
+
+    if (auditResult.decisionState === 'AUTO_EXCLUDE') {
+        if (auditResult.autoExcluded.length > 0) {
+            warnings.push(`AUTO_EXCLUDE: ${auditResult.autoExcluded.map(e => e.concept).join(', ')}`);
+        }
+    }
+
+    if (auditResult.decisionState === 'AUTO_QUERY') {
+        auditResult.queriesRequired.forEach(q => {
+            warnings.push(`Query recommended: ${q.concept}`);
+        });
+    }
+
+    // If BLOCK_AND_QUERY or AUTO_EXCLUDE, return no codes
+    if (auditResult.decisionState === 'BLOCK_AND_QUERY' || auditResult.decisionState === 'AUTO_EXCLUDE') {
+        return {
+            primary: null,
+            secondary: [],
+            procedures: [],
+            warnings,
+            validationErrors,
+            validationChanges: { removed: [], added: [] },
+            _audit: {
+                decisionState: auditResult.decisionState,
+                riskLevel: auditResult.riskLevel,
+                riskRationale: auditResult.riskRationale,
+                rulesTriggered: auditResult.rulesTriggered,
+                auditTrailId: result.auditTrailId,
+                queriesGenerated: result.queriesGenerated.length,
+                engineVersion: 'v1.0.1-renal-fix',
+                buildTime: new Date().toISOString()
+            }
+        };
+    }
+
+    // AUTO_CODE or AUTO_QUERY with fallback codes
+    return {
+        primary,
+        secondary,
+        procedures: [],
+        warnings,
+        validationErrors,
+        validationChanges: { removed: [], added: [] },
+        _audit: {
+            decisionState: auditResult.decisionState,
+            riskLevel: auditResult.riskLevel,
+            riskRationale: auditResult.riskRationale,
+            rulesTriggered: auditResult.rulesTriggered,
+            auditTrailId: result.auditTrailId,
+            queriesGenerated: result.queriesGenerated.length,
+            engineVersion: 'v1.0.1-renal-fix',
+            buildTime: new Date().toISOString()
+        }
+    };
+}
