@@ -50,7 +50,7 @@ module.exports = async function handler(req, res) {
 
     // Helper to check if a term is negated in the text
     const isNegated = (term) => {
-      const pattern = new RegExp(`(no|without|denies|negative for|ruled out|absence of)\\s+(documented\\s+)?(diagnosis of\\s+)?${term}`, 'i');
+      const pattern = new RegExp(`(no|without|denies|negative for|ruled out|absence of)\\s+(documented\\s+)?(diagnosis of\\s+)?[^.]*?${term}`, 'i');
       return pattern.test(text);
     };
 
