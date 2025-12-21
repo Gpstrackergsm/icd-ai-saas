@@ -4,7 +4,7 @@
   "cleanUrls": true,
   "functions": {
     "api/**/*.js": {
-      "includeFiles": "dist/**"
+      "includeFiles": "{dist/**,lib/**,data/**,node_modules/**}"
     }
   },
   "headers": [
