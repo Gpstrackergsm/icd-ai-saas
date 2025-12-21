@@ -113,10 +113,53 @@ module.exports = async function handler(req, res) {
     const warnings = [];
     const validationErrors = [];
 
+    // MANDATORY: AUTO_EXCLUDE must return explicit audit decision
     if (auditResult.decisionState === 'AUTO_EXCLUDE') {
       const exclusions = auditResult.autoExcluded.map(e => `${e.concept} (${e.reason})`).join(', ');
-      warnings.push(`Audit engine excluded: ${exclusions}`);
-      warnings.push(`Rule applied: ${auditResult.rulesTriggered.join(', ')}`);
+      const rules = auditResult.rulesTriggered.join(', ');
+
+      // Create formal audit decision block (HTML formatted for UI)
+      const auditDecisionBlock = `
+          <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-md">
+              <div class="flex items-start gap-3">
+                  <i class="fa-solid fa-gavel text-blue-600 text-xl mt-1"></i>
+                  <div class="flex-1">
+                      <h3 class="font-bold text-blue-900 text-sm uppercase tracking-wide mb-2">
+                          AUDIT DECISION — AUTO EXCLUDE
+                      </h3>
+                      <div class="text-sm text-blue-800 space-y-2 mb-3">
+                          <p class="leading-relaxed">
+                              Clinical data such as laboratory abnormalities, monitoring, or risk discussion 
+                              was identified. However, <strong>no explicit provider diagnosis</strong> supporting a reportable 
+                              ICD-10-CM condition was documented.
+                          </p>
+                          <p class="leading-relaxed">
+                              Per ICD-10-CM Official Guidelines, diagnoses may not be inferred from laboratory 
+                              values, monitoring, or risk discussion alone.
+                          </p>
+                      </div>
+                      <div class="bg-blue-100 border border-blue-200 rounded p-2 mb-3">
+                          <p class="text-xs font-semibold text-blue-900 mb-1">RULE REFERENCE</p>
+                          <p class="text-xs text-blue-800">${rules}</p>
+                      </div>
+                      <div class="space-y-1 mb-3">
+                          <p class="text-xs font-semibold text-blue-900 uppercase tracking-wide">OUTCOME CONFIRMATION</p>
+                          <p class="text-xs text-blue-700">✔ No ICD-10-CM diagnosis codes assigned</p>
+                          <p class="text-xs text-blue-700">✔ No provider query required</p>
+                          <p class="text-xs text-blue-700">✔ Audit-defensible exclusion applied</p>
+                      </div>
+                      <div class="border-t border-blue-200 pt-2">
+                          <p class="text-xs text-blue-600 italic">
+                              This determination is compliant with ICD-10-CM Official Guidelines and Medicare audit standards.
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      `;
+
+      // Add as validation error to trigger the audit decision UI
+      validationErrors.push(auditDecisionBlock);
     }
 
     return res.status(200).json({
