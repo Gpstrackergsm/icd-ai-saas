@@ -34,7 +34,7 @@ export default async function handler(req: any, res: any) {
         const result = await parserIntegration.processCase(text, parserOutput, {
             caseId: `api_${Date.now()}`,
             facilityId: 'production',
-            userId: auth.user?.id
+            userId: (auth as any).userId || (auth as any).user?.id
         });
 
         // Enhance codes with official ICD-10-CM descriptions
