@@ -2,17 +2,16 @@
  * ICD-10-CM AUDIT ENGINE API
  * Production endpoint using deterministic audit engine
  * 
- * Replaces legacy parser/validator/engine with:
- * - parserIntegration (extraction-only)
- * - auditEngine (EXCLUDE > QUERY > CODE hierarchy)
- * - auditResult (normalized output)
+ * Single source of truth: TypeScript → JavaScript compilation
+ * No legacy validation, no runtime TypeScript
  */
 
-const { parserIntegration } = require('../dist/engine/audit/parserIntegration.js');
-const { requireAuth } = require('../dist/lib/auth/middleware.js');
-const { lookupDetail } = require('../lib/icd-dictionary.js');
+import { parserIntegration, ParserOutput } from '../engine/audit/parserIntegration';
+import { requireAuth } from '../lib/auth/middleware';
 
-module.exports = async function handler(req, res) {
+const lookupDetail = require('../lib/icd-dictionary.js').lookupDetail;
+
+export default async function handler(req: any, res: any) {
     if (req.method !== 'POST') {
         return res.status(405).json({ error: 'Method not allowed' });
     }
@@ -39,7 +38,7 @@ module.exports = async function handler(req, res) {
         });
 
         // Enhance codes with official ICD-10-CM descriptions
-        const enhanceCode = (code) => {
+        const enhanceCode = (code: any) => {
             if (!code || !code.code) return null;
 
             const detail = lookupDetail(code.code);
@@ -59,21 +58,21 @@ module.exports = async function handler(req, res) {
 
         return res.status(200).json({ success: true, data: response });
 
-    } catch (error) {
+    } catch (error: any) {
         console.error('Audit engine error:', error);
         return res.status(500).json({ error: 'Internal server error', details: error.message });
     }
-};
+}
 
 /**
  * Build parser output from narrative text
  * Extraction-only - no inference
  */
-function buildParserOutputFromText(text) {
+function buildParserOutputFromText(text: string): ParserOutput {
     const lower = text.toLowerCase();
 
     // Extract provider-documented diagnoses (explicit terms only)
-    const diagnoses = [];
+    const diagnoses: string[] = [];
 
     // Renal terms
     if (lower.includes('acute kidney injury') || lower.match(/\baki\b/)) {
@@ -101,7 +100,7 @@ function buildParserOutputFromText(text) {
     }
 
     // Extract lab values
-    const labValues = {};
+    const labValues: any = {};
 
     const crMatch = text.match(/creatinine[:\s]+(\d+\.?\d*)/i);
     const baselineMatch = text.match(/baseline[:\s]+(\d+\.?\d*)/i);
@@ -119,8 +118,8 @@ function buildParserOutputFromText(text) {
     }
 
     // Extract treatments
-    const treatments = {};
-    const medications = [];
+    const treatments: any = {};
+    const medications: string[] = [];
 
     if (lower.includes('vasopressor') || lower.includes('norepinephrine') || lower.includes('levophed')) {
         medications.push('vasopressor');
@@ -150,38 +149,38 @@ function buildParserOutputFromText(text) {
 /**
  * Build API response from audit result
  */
-function buildAPIResponse(result, enhanceCode) {
+function buildAPIResponse(result: any, enhanceCode: (code: any) => any) {
     const auditResult = result.auditResult;
 
     // Map decision state to response
     const primary = auditResult.autoCoded.length > 0
-        ? enhanceCode(auditResult.autoCoded.find(c => c.position === 'Primary') || auditResult.autoCoded[0])
+        ? enhanceCode(auditResult.autoCoded.find((c: any) => c.position === 'Primary') || auditResult.autoCoded[0])
         : null;
 
     const secondary = auditResult.autoCoded
-        .filter(c => c.position !== 'Primary')
+        .filter((c: any) => c.position !== 'Primary')
         .map(enhanceCode)
         .filter(Boolean);
 
     // Build validation errors/warnings based on decision state
-    const validationErrors = [];
-    const warnings = [];
+    const validationErrors: string[] = [];
+    const warnings: string[] = [];
 
     if (auditResult.decisionState === 'BLOCK_AND_QUERY') {
         validationErrors.push(`COMPLIANCE GATE — ${auditResult.queriesRequired.length} ITEM(S) PENDING RESOLUTION`);
-        auditResult.queriesRequired.forEach(q => {
+        auditResult.queriesRequired.forEach((q: any) => {
             validationErrors.push(`Query required: ${q.queryText.substring(0, 100)}...`);
         });
     }
 
     if (auditResult.decisionState === 'AUTO_EXCLUDE') {
         if (auditResult.autoExcluded.length > 0) {
-            warnings.push(`AUTO_EXCLUDE: ${auditResult.autoExcluded.map(e => e.concept).join(', ')}`);
+            warnings.push(`AUTO_EXCLUDE: ${auditResult.autoExcluded.map((e: any) => e.concept).join(', ')}`);
         }
     }
 
     if (auditResult.decisionState === 'AUTO_QUERY') {
-        auditResult.queriesRequired.forEach(q => {
+        auditResult.queriesRequired.forEach((q: any) => {
             warnings.push(`Query recommended: ${q.concept}`);
         });
     }

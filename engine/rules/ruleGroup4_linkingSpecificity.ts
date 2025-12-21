@@ -160,7 +160,7 @@ export function evaluateCOPDExacerbation(ctx: COPDContext): AuditResult | null {
         ['Rule Group 4.3: COPD Exacerbation Inference Prohibition']
     );
 
-    const treatmentInfo = [];
+    const treatmentInfo: string[] = [];
     if (ctx.treatedWithBronchodilators) treatmentInfo.push('bronchodilators');
     if (ctx.treatedWithSteroids) treatmentInfo.push('steroids');
 

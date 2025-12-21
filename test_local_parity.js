@@ -3,7 +3,7 @@
  * Tests that local audit engine produces expected output
  */
 
-const { parserIntegration } = require('../dist/engine/audit/parserIntegration.js');
+const { parserIntegration } = require('./dist/engine/audit/parserIntegration.js');
 
 const narrative = '68-year-old admitted for dehydration and weakness. Creatinine was elevated on admission and improved after intravenous fluids. Renal function was monitored during hospitalization. There was no documented diagnosis of acute kidney injury or chronic kidney disease.';
 
