@@ -66,6 +66,12 @@ export function evaluateConflictingDocumentation(
  * - Creatinine rise ≥1.5x baseline
  * 
  * If AKI documented but criteria NOT met → BLOCK_AND_QUERY
+ * 
+ * REGRESSION GUARD: This rule is FROZEN to prevent inappropriate AKI coding.
+ * Any future changes must:
+ * 1. Trigger BLOCK_AND_QUERY when AKI documented with insufficient criteria
+ * 2. Never AUTO_CODE N17.x without meeting KDIGO thresholds
+ * 3. Pass regression test R6 before deployment
  */
 export function evaluateAKIConflict(ctx: AKIConflictCheck): AuditResult | null {
     if (!ctx.akiDocumented) {

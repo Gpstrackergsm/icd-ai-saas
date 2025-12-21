@@ -61,6 +61,12 @@ export function evaluateNonSpecificRenalTerms(ctx: RenalContext): AuditResult | 
 /**
  * Rule 3.2: CKD Staging Missing
  * Validated: Case 34, R8
+ * 
+ * REGRESSION GUARD: This rule is FROZEN to prevent inappropriate staging queries.
+ * Any future changes must:
+ * 1. AUTO_CODE when ckdStage is explicitly documented (1-5)
+ * 2. AUTO_QUERY only when CKD present WITHOUT stage
+ * 3. Pass regression test R8 before deployment
  */
 export function evaluateCKDStaging(ctx: RenalContext): AuditResult | null {
     if (!ctx.providerTerm?.toLowerCase().includes('ckd') &&
@@ -114,6 +120,12 @@ export function evaluateCKDStaging(ctx: RenalContext): AuditResult | null {
 /**
  * Rule 3.3: Laboratory Values Alone
  * Validated: Cases 1, 4, 16
+ * 
+ * REGRESSION GUARD: This rule is FROZEN to prevent renal inference bug.
+ * Any future changes must:
+ * 1. Maintain AUTO_EXCLUDE when provider diagnosis absent
+ * 2. Never create N17.x or N18.x codes from labs alone
+ * 3. Pass regression test R1-R4 before deployment
  */
 export function evaluateLabsWithoutDiagnosis(ctx: RenalContext): AuditResult | null {
     // If provider documented a diagnosis, this rule doesn't apply
