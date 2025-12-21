@@ -44,18 +44,50 @@ module.exports = async function handler(req, res) {
         }
       });
     }
+    // Extract clinical information from text
+    const lower = text.toLowerCase();
+    const diagnoses = [];
 
-    // Build simple parser output
+    // Extract renal diagnoses
+    if (lower.includes('acute kidney injury') || lower.match(/\baki\b/)) {
+      diagnoses.push('acute kidney injury');
+    }
+    if (lower.match(/chronic kidney disease|ckd/)) {
+      const stageMatch = text.match(/(?:ckd|chronic kidney disease)\s*stage\s*([1-5]|[iv]+)/i);
+      if (stageMatch) {
+        diagnoses.push(`CKD stage ${stageMatch[1]}`);
+      } else {
+        diagnoses.push('chronic kidney disease');
+      }
+    }
+
+    // Extract lab values
+    const labValues = {};
+    const crMatch = text.match(/creatinine[:\s]+(\d+\.?\d*)/i);
+    const baselineMatch = text.match(/baseline[:\s]+(\d+\.?\d*)/i);
+    if (crMatch) {
+      labValues.creatinine = {
+        value: parseFloat(crMatch[1]),
+        baseline: baselineMatch ? parseFloat(baselineMatch[1]) : undefined
+      };
+    }
+
+    // Extract treatments
+    const medications = [];
+    if (lower.includes('iv fluid') || lower.includes('intravenous fluid')) {
+      medications.push('IV fluids');
+    }
+
     const parserOutput = {
       providerTerms: {
-        diagnoses: [],
+        diagnoses,
         symptoms: [],
         procedures: []
       },
       vitalSigns: {},
-      labValues: {},
+      labValues,
       clinicalFindings: {},
-      treatments: {},
+      treatments: medications.length > 0 ? { medications } : {},
       containsInferredDiagnosis: false
     };
 
@@ -82,7 +114,9 @@ module.exports = async function handler(req, res) {
     const validationErrors = [];
 
     if (auditResult.decisionState === 'AUTO_EXCLUDE') {
-      warnings.push(`No codes generated: ${auditResult.autoExcluded.map(e => e.concept).join(', ')}`);
+      const exclusions = auditResult.autoExcluded.map(e => `${e.concept} (${e.reason})`).join(', ');
+      warnings.push(`Audit engine excluded: ${exclusions}`);
+      warnings.push(`Rule applied: ${auditResult.rulesTriggered.join(', ')}`);
     }
 
     return res.status(200).json({
@@ -95,8 +129,11 @@ module.exports = async function handler(req, res) {
         validationErrors,
         validationChanges: { removed: [], added: [] },
         _debug: {
-          apiVersion: 'v1.0.1-renal-fix',
+          apiVersion: 'v1.0.1-renal-fix-prod',
           decisionState: auditResult.decisionState,
+          rulesTriggered: auditResult.rulesTriggered,
+          parsedDiagnoses: diagnoses,
+          parsedLabs: labValues,
           timestamp: new Date().toISOString()
         }
       }
