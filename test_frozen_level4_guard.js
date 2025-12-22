@@ -2,7 +2,7 @@
 // Golden snapshots for LEVEL 4 behavior - frozen at v1.4-level4-freeze (commit 3f9c63f)
 // ANY change to these outputs indicates a regression and MUST be reverted
 
-const handler = require('../api/encode.js');
+const handler = require('./api/encode.js');
 
 const FROZEN_LEVEL4_SNAPSHOTS = [
     {
@@ -127,8 +127,14 @@ async function runFrozenLevel4Guard() {
         const mockReq = { method: 'POST', body: { text: snapshot.input } };
         let responseData = null;
         const mockRes = {
-            status: function (code) { this.statusCode = code; return this; },
-            json: function (data) { responseData = data; return this; }
+            status: function (code) {
+                this.statusCode = code;
+                return this;
+            },
+            json: function (data) {
+                responseData = data;
+                return this;
+            }
         };
 
         await handler(mockReq, mockRes);

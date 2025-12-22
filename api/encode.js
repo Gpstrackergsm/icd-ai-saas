@@ -70,18 +70,18 @@ const ICD10_MAPPING = {
   'acute st elevation myocardial infarction': { code: 'I21.3', description: 'ST elevation (STEMI) myocardial infarction of unspecified site' },
   'acute non-st elevation myocardial infarction': { code: 'I21.4', description: 'Non-ST elevation (NSTEMI) myocardial infarction' },
   'chest pain': { code: 'R07.9', description: 'Chest pain, unspecified' },
-  
+
   // LEVEL 4 ENHANCEMENTS: GI Bleeding
   'gastrointestinal bleeding': { code: 'K92.2', description: 'Gastrointestinal hemorrhage, unspecified' },
   'upper gastrointestinal hemorrhage': { code: 'K92.0', description: 'Hematemesis' },
   'lower gastrointestinal hemorrhage': { code: 'K92.1', description: 'Melena' },
   'acute blood loss anemia': { code: 'D62', description: 'Acute posthemorrhagic anemia' },
-  
+
   // LEVEL 4 ENHANCEMENTS: Trauma/Fractures
   'femur fracture': { code: 'S72.90XA', description: 'Unspecified fracture of unspecified femur, initial encounter' },
   'trauma': { code: 'T14.90', description: 'Injury, unspecified' },
   'fall': { code: 'W19.XXXA', description: 'Unspecified fall, initial encounter' },
-  
+
   // LEVEL 4 ENHANCEMENTS: Septic shock (hospital-acquired)
   'septic shock hospital-acquired': { code: 'R65.21', description: 'Severe sepsis with septic shock' },
   'residual weakness from prior cva': { code: 'I69.3', description: 'Sequelae of cerebral infarction' },
@@ -156,50 +156,50 @@ const detectPOAStatus = (text, diagnosisPhrase) => {
 
 const detectAdmissionReason = (text) => {
   const lower = text.toLowerCase();
-  
+
   // Pattern 1: "admitted for [diagnosis]"
   const admittedForMatch = lower.match(/admitted for ([^.;]+)/i);
   if (admittedForMatch) {
     return admittedForMatch[1].trim();
   }
-  
+
   // Pattern 2: "admitted with [diagnosis]"
   const admittedWithMatch = lower.match(/admitted with ([^.;]+)/i);
   if (admittedWithMatch) {
     return admittedWithMatch[1].trim();
   }
-  
+
   // Pattern 3: "admission for [diagnosis]"
   const admissionForMatch = lower.match(/admission for ([^.;]+)/i);
   if (admissionForMatch) {
     return admissionForMatch[1].trim();
   }
-  
+
   return null;
 };
 
 const determinePrincipalDiagnosis = (codes, text) => {
   const eligibleForPDX = codes.filter(c => c.poa !== 'N');
-  
+
   if (eligibleForPDX.length === 0) {
-    return { 
-      decision: 'AUTO_QUERY', 
+    return {
+      decision: 'AUTO_QUERY',
       reason: 'No eligible PDX candidates (all codes are hospital-acquired)',
       pdx: null
     };
   }
-  
+
   if (eligibleForPDX.length === 1) {
-    return { 
-      pdx: eligibleForPDX[0].code, 
+    return {
+      pdx: eligibleForPDX[0].code,
       decision: 'PASS_THROUGH',
       justification: 'Single eligible code'
     };
   }
-  
+
   const admissionReason = detectAdmissionReason(text);
   const pdxResult = applySequencingRules(eligibleForPDX, admissionReason, text);
-  
+
   return pdxResult;
 };
 
@@ -212,7 +212,7 @@ const applySequencingRules = (codes, admissionReason, text) => {
       justification: 'Sepsis documented as admission reason per ICD-10-CM guidelines'
     };
   }
-  
+
   const respFailureCode = codes.find(c => c.code.startsWith('J96'));
   if (respFailureCode && respFailureCode.poa === 'Y' && admissionReason && admissionReason.includes('respiratory failure')) {
     return {
@@ -221,7 +221,7 @@ const applySequencingRules = (codes, admissionReason, text) => {
       justification: 'Respiratory failure documented as admission reason'
     };
   }
-  
+
   const diabeticComboCode = codes.find(c => c.code.startsWith('E11.6') || c.code.startsWith('E11.4'));
   if (diabeticComboCode && admissionReason && (admissionReason.includes('diabetic') || admissionReason.includes('foot ulcer'))) {
     return {
@@ -230,7 +230,7 @@ const applySequencingRules = (codes, admissionReason, text) => {
       justification: 'Diabetic complication documented as admission reason'
     };
   }
-  
+
   const poaYCodes = codes.filter(c => c.poa === 'Y');
   if (poaYCodes.length === 1) {
     return {
@@ -239,7 +239,7 @@ const applySequencingRules = (codes, admissionReason, text) => {
       justification: 'Only POA=Y code eligible for PDX'
     };
   }
-  
+
   if (poaYCodes.length > 0) {
     return {
       pdx: poaYCodes[0].code,
@@ -247,7 +247,7 @@ const applySequencingRules = (codes, admissionReason, text) => {
       justification: 'First documented POA=Y diagnosis'
     };
   }
-  
+
   return {
     pdx: null,
     decision: 'AUTO_QUERY',
@@ -260,6 +260,224 @@ const assignCodeRoles = (codes, pdxCode) => {
     ...c,
     role: c.code === pdxCode ? 'PRIMARY' : 'SECONDARY'
   }));
+};
+
+
+// ============================================================================
+// LEVEL 5: DENIAL SIMULATION & DEFENSIBILITY SCORE AUTHORITY
+// v1.5-level5: Adds audit metadata WITHOUT changing LEVEL 0-4 behavior
+// ============================================================================
+
+// Helper: Split text into sentences
+const splitSentences = (text) => {
+  return text.split(/[.!?]+/).map(s => s.trim()).filter(s => s.length > 0);
+};
+
+// Helper: Find sentence containing diagnosis term
+const findDiagnosisSentence = (text, diagnosisTerm) => {
+  const sentences = splitSentences(text);
+  const lower = diagnosisTerm.toLowerCase();
+
+  for (const sentence of sentences) {
+    if (sentence.toLowerCase().includes(lower)) {
+      return sentence;
+    }
+  }
+  return null;
+};
+
+// Helper: Extract snippet around term (max 25 words)
+const extractSnippet = (sentence, term, maxWords = 25) => {
+  if (!sentence) return null;
+
+  const words = sentence.split(/\s+/);
+  if (words.length <= maxWords) {
+    return sentence;
+  }
+
+  // Find term position and create window around it
+  const lowerWords = words.map(w => w.toLowerCase());
+  const lowerTerm = term.toLowerCase();
+
+  let termIndex = -1;
+  for (let i = 0; i < lowerWords.length; i++) {
+    if (lowerWords.slice(i, i + lowerTerm.split(/\s+/).length).join(' ').includes(lowerTerm)) {
+      termIndex = i;
+      break;
+    }
+  }
+
+  if (termIndex === -1) {
+    return words.slice(0, maxWords).join(' ');
+  }
+
+  const start = Math.max(0, termIndex - Math.floor(maxWords / 2));
+  const end = Math.min(words.length, start + maxWords);
+
+  return words.slice(start, end).join(' ');
+};
+
+// Helper: Compute defensibility score
+const computeDefensibility = (code, anchors, poa, linkage, text) => {
+  let score = 100;
+  let anchorStrength = 'STRONG';
+
+  // Check for weak documentation phrases
+  const weakPhrases = ['possible', 'rule out', 'concern for', 'suspected', 'likely'];
+  if (weakPhrases.some(phrase => text.toLowerCase().includes(phrase))) {
+    score -= 40;
+    anchorStrength = 'WEAK';
+  }
+
+  // Check anchor quality
+  if (!anchors || anchors.length === 0) {
+    score -= 30;
+    anchorStrength = 'WEAK';
+  } else if (anchors.length === 1) {
+    score -= 15;
+    if (anchorStrength !== 'WEAK') anchorStrength = 'MODERATE';
+  }
+
+  // POA=U penalty
+  if (poa === 'U') {
+    score -= 10;
+  }
+
+  // UNLINKED penalty (mild)
+  if (linkage === 'UNLINKED') {
+    score -= 5;
+  }
+
+  // Adjust anchor strength based on score
+  if (score >= 75) anchorStrength = 'STRONG';
+  else if (score >= 50) anchorStrength = 'MODERATE';
+  else anchorStrength = 'WEAK';
+
+  return {
+    score: Math.max(0, Math.min(100, score)),
+    anchorStrength
+  };
+};
+
+// Helper: Compute denial risk score (updated to handle linkage correctly)
+const computeDenialRisk = (code, description, defensibility, poa, linkageStatus, text) => {
+  let riskScore = 0;
+  const reasons = [];
+  const mitigations = [];
+
+  // A) Specificity Gaps
+  if (code === 'A41.9' && (text.includes('culture') || text.includes('MRSA') || text.includes('E. coli'))) {
+    riskScore += 25;  // Increased from 15 to reach MEDIUM tier
+    reasons.push('Organism unspecified (A41.9) when culture results may be documented');
+    mitigations.push('If organism documented, use specific code (e.g., A41.01 for MRSA sepsis)');
+  }
+
+  if (code === 'J18.9' && (text.includes('pneumococcal') || text.includes('staph') || text.includes('viral'))) {
+    riskScore += 15;  // Increased from 10
+    reasons.push('Pneumonia organism unspecified when pathogen may be documented');
+    mitigations.push('Capture organism specificity if documented (e.g., J13 for pneumococcal)');
+  }
+
+  if (code === 'N18.9') {
+    riskScore += 20;
+    reasons.push('CKD stage not specified - high audit scrutiny');
+    mitigations.push('Document CKD stage (1-5) based on GFR if available');
+  }
+
+  // B) Linkage Strength (only for multi-code cases)
+  if (linkageStatus === 'LINKED') {
+    riskScore -= 15; // Reduces risk for explicitly linked diagnoses
+  } else if (linkageStatus === 'UNLINKED') {
+    // Only penalize if truly multiple unlinked codes
+    riskScore += 20;
+    reasons.push('Multiple diagnoses without documented linkage');
+    mitigations.push('Ensure each diagnosis is independently documented');
+  }
+  // SINGLE_CODE status gets no penalty/bonus
+
+  // C) POA Complexity
+  if (poa === 'N') {
+    riskScore += 20;
+    reasons.push('Hospital-acquired condition - HAC program scrutiny');
+    mitigations.push('Ensure POA=N is correct and documented as developing after admission');
+  } else if (poa === 'U') {
+    if (code.startsWith('A41') || code.startsWith('J96') || code.startsWith('I21')) {
+      riskScore += 15;
+      reasons.push('POA unknown for major diagnosis - auditors may question timing');
+      mitigations.push('Document explicit admission timing for major diagnoses');
+    }
+  }
+
+  // D) High-Scrutiny Diagnoses
+  if (code === 'R65.20' || code === 'R65.21') {
+    riskScore += 40;  // Increased to ensure MEDIUM tier even with LINKED reduction (-15)
+    reasons.push('Severe sepsis/septic shock - always reviewed by payers');
+    mitigations.push('Ensure explicit provider documentation of severe sepsis');
+  }
+
+  if (code === 'J96.01') {
+    riskScore += 15;  // Increased from 10
+    reasons.push('Acute respiratory failure - high DRG impact, frequently audited');
+    mitigations.push('Ensure ARF explicitly documented, not inferred from ABG');
+  }
+
+  if (code === 'N17.9') {
+    riskScore += 10;
+    reasons.push('Acute kidney injury - HAC and frequency scrutiny');
+    mitigations.push('Document AKI with baseline creatinine if available');
+  }
+
+  if (code === 'D62') {
+    // Significantly reduce risk if linked to bleeding or bleeding mentioned
+    if (linkageStatus === 'LINKED' || text.toLowerCase().includes('bleeding')) {
+      // Linked to bleeding - strongly reduce risk
+      riskScore -= 10;
+    } else {
+      // D62 without bleeding documentation
+      riskScore += 15;
+      reasons.push('Acute blood loss anemia - requires clear bleeding linkage');
+      mitigations.push('Ensure anemia explicitly linked to documented bleeding source');
+    }
+  }
+
+  // E) Documentation Anchor Quality
+  if (defensibility.anchorStrength === 'WEAK') {
+    riskScore += 25;
+    reasons.push('Weak documentation anchors - diagnosis phrasing unclear or ambiguous');
+    mitigations.push('Request provider clarification of diagnosis status');
+  } else if (defensibility.anchorStrength === 'MODERATE') {
+    riskScore += 10;
+    reasons.push('Moderate documentation quality - could be stronger');
+    mitigations.push('Verify diagnosis appears in final assessment');
+  }
+
+  // Clamp score
+  riskScore = Math.max(0, Math.min(100, riskScore));
+
+  // Determine tier (balanced thresholds)
+  let tier = 'LOW';
+  if (riskScore >= 50) tier = 'HIGH';
+  else if (riskScore >= 25) tier = 'MEDIUM';  // Adjusted to 25
+
+  return {
+    score: riskScore,
+    tier,
+    reasons,
+    mitigations
+  };
+};
+
+// Helper: Build evidence packet
+const buildEvidencePacket = (code, description, diagnosisSentence, poaPhrase, linkagePhrase, sequencingJustification, ruleTrace) => {
+  return {
+    ruleTrace: ruleTrace || [],
+    docContext: {
+      diagnosisSentence: diagnosisSentence || 'Not found',
+      poaPhrase: poaPhrase || 'N/A',
+      linkagePhrase: linkagePhrase || 'N/A'
+    },
+    sequencingRationale: sequencingJustification || 'N/A'
+  };
 };
 
 module.exports = async function handler(req, res) {
@@ -434,7 +652,7 @@ module.exports = async function handler(req, res) {
     // LEVEL 4: ADDITIONAL DIAGNOSIS DETECTION (MI, GI BLEEDING, TRAUMA)
     // Must run BEFORE AUTO_EXCLUDE check
     // ========================================================================
-    
+
     // MI/Chest Pain (explicit only)
     if ((lower.includes('myocardial infarction') || lower.includes('acute mi')) && !isNegated('myocardial infarction')) {
       if (lower.includes('stemi')) {
@@ -445,7 +663,7 @@ module.exports = async function handler(req, res) {
         detectedDiagnoses.push('acute myocardial infarction');
       }
     }
-    
+
     if (lower.includes('chest pain') && !isNegated('chest pain')) {
       detectedDiagnoses.push('chest pain');
     }
@@ -454,7 +672,7 @@ module.exports = async function handler(req, res) {
     if ((lower.match(/gastrointestinal bleeding|gi bleeding|gi bleed/) || lower.includes('gastrointestinal hemorrhage')) && !isNegated('bleeding')) {
       detectedDiagnoses.push('gastrointestinal bleeding');
     }
-    
+
     // Acute blood loss anemia (explicit only)
     if (lower.match(/acute blood loss anemia|blood loss anemia/) && !isNegated('anemia')) {
       detectedDiagnoses.push('acute blood loss anemia');
@@ -464,11 +682,11 @@ module.exports = async function handler(req, res) {
     if ((lower.includes('femur fracture') || lower.match(/fracture of femur|fractured femur/)) && !isNegated('fracture')) {
       detectedDiagnoses.push('femur fracture');
     }
-    
+
     if (lower.match(/\btrauma\b|traumatic injury/) && !isNegated('trauma')) {
       detectedDiagnoses.push('trauma');
     }
-    
+
     if (lower.includes('fall') && !isNegated('fall')) {
       detectedDiagnoses.push('fall');
     }
@@ -631,10 +849,10 @@ module.exports = async function handler(req, res) {
     let principalDiagnosis = null;
     let sequencingJustification = '';
     let level4DecisionState = 'AUTO_CODE';
-    
+
     if (codes.length > 0) {
       const pdxResult = determinePrincipalDiagnosis(codes, text);
-      
+
       if (pdxResult.decision === 'AUTO_QUERY') {
         // LEVEL 4 AUTO_QUERY: Cannot determine PDX
         // For now, continue with codes but note in debug
@@ -654,6 +872,114 @@ module.exports = async function handler(req, res) {
         codes = assignCodeRoles(codes, principalDiagnosis);
       }
     }
+
+    // ========================================================================
+    // LEVEL 5: BUILD AUDITPLUS OBJECT (Denial Simulation & Defensibility)
+    // ========================================================================
+    const auditPlus = {
+      encounterSummary: {
+        totalRiskScore: 0,
+        riskTier: 'LOW',
+        topDenialReasons: [],
+        recommendedActions: []
+      },
+      perCodeAnalysis: []
+    };
+
+    for (const codeObj of codes) {
+      const diagnosisTerm = detectedDiagnoses.find(d => {
+        const mapping = ICD10_MAPPING[d.toLowerCase()];
+        return mapping && (
+          (mapping.code && mapping.code === codeObj.code) ||
+          (mapping.codes && mapping.codes.includes(codeObj.code))
+        );
+      }) || codeObj.description;
+
+      // Extract documentation anchors
+      const diagnosisSentence = findDiagnosisSentence(text, diagnosisTerm);
+      const poaPhrase = codeObj.poaPhrase || null;
+      const linkagePhrase = linkPhrase || null;
+
+      const anchors = [];
+      if (diagnosisSentence) {
+        anchors.push(extractSnippet(diagnosisSentence, diagnosisTerm, 25));
+      }
+      if (poaPhrase && !anchors.includes(poaPhrase)) {
+        anchors.push(extractSnippet(poaPhrase, diagnosisTerm, 25));
+      }
+
+      // Compute defensibility
+      const defensibility = computeDefensibility(
+        codeObj.code,
+        anchors.filter(a => a),
+        codeObj.poa,
+        hasLinkedCodes ? 'LINKED' : 'UNLINKED',
+        text
+      );
+
+      // Determine linkage status for this code
+      const linkageStatus = codes.length === 1 ? 'SINGLE_CODE' : (hasLinkedCodes ? 'LINKED' : 'UNLINKED');
+
+      // Compute denial risk
+      const denialRisk = computeDenialRisk(
+        codeObj.code,
+        codeObj.description,
+        defensibility,
+        codeObj.poa,
+        linkageStatus,
+        text
+      );
+
+      // Build evidence packet
+      const evidencePacket = buildEvidencePacket(
+        codeObj.code,
+        codeObj.description,
+        diagnosisSentence,
+        poaPhrase,
+        linkagePhrase,
+        sequencingJustification,
+        [
+          'LEVEL 0: Explicit diagnosis detected',
+          `LEVEL 1: Code assigned (${codeObj.code})`,
+          `LEVEL 2: Mapped to ${codeObj.description}`,
+          `LEVEL 3: POA status = ${codeObj.poa}`,
+          `LEVEL 4: Role = ${codeObj.role || 'N/A'}, PDX = ${principalDiagnosis}`
+        ]
+      );
+
+      auditPlus.perCodeAnalysis.push({
+        code: codeObj.code,
+        description: codeObj.description,
+        role: codeObj.role || 'N/A',
+        denialSimulation: {
+          riskScore: denialRisk.score,
+          riskTier: denialRisk.tier,
+          denialReasons: denialRisk.reasons,
+          recommendedMitigations: denialRisk.mitigations
+        },
+        defensibility: {
+          defensibilityScore: defensibility.score,
+          anchorStrength: defensibility.anchorStrength,
+          anchors: anchors.filter(a => a)
+        },
+        evidencePacket
+      });
+
+      // Aggregate encounter-level risk
+      auditPlus.encounterSummary.totalRiskScore += denialRisk.score;
+      auditPlus.encounterSummary.topDenialReasons.push(...denialRisk.reasons);
+      auditPlus.encounterSummary.recommendedActions.push(...denialRisk.mitigations);
+    }
+
+    // Compute encounter tier
+    const avgRisk = codes.length > 0 ? auditPlus.encounterSummary.totalRiskScore / codes.length : 0;
+    if (avgRisk >= 60) auditPlus.encounterSummary.riskTier = 'HIGH';
+    else if (avgRisk >= 30) auditPlus.encounterSummary.riskTier = 'MEDIUM';
+    else auditPlus.encounterSummary.riskTier = 'LOW';
+
+    // Deduplicate reasons and actions
+    auditPlus.encounterSummary.topDenialReasons = [...new Set(auditPlus.encounterSummary.topDenialReasons)].slice(0, 5);
+    auditPlus.encounterSummary.recommendedActions = [...new Set(auditPlus.encounterSummary.recommendedActions)].slice(0, 5);
 
 
     // ========================================================================
@@ -832,8 +1158,9 @@ module.exports = async function handler(req, res) {
         warnings: [],
         validationErrors: [autoCodeBlock],
         validationChanges: { removed: [], added: [] },
+        auditPlus,  // LEVEL 5: Denial simulation & defensibility metadata
         _debug: {
-          apiVersion: 'v1.4-level4',  // LEVEL 4: Principal Diagnosis & Sequencing
+          apiVersion: 'v1.5-level5',  // LEVEL 5: Denial Simulation & Defensibility Score
           decisionState: level4DecisionState === 'AUTO_SEQUENCE' || level4DecisionState === 'PASS_THROUGH' ? (hasLinkedCodes ? 'AUTO_SEQUENCE (LINKED)' : level4DecisionState) : (hasLinkedCodes ? 'AUTO_CODE (LINKED)' : 'AUTO_CODE'),
           principalDiagnosis: principalDiagnosis,  // LEVEL 4: PDX code
           sequencingJustification: sequencingJustification,  // LEVEL 4: Why this PDX

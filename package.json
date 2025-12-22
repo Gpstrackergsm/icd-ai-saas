@@ -2,6 +2,7 @@
   "name": "icd-ai-saas",
   "version": "1.4.0",
   "scripts": {
+    "build": "echo 'No build step required for serverless functions'",
     "test": "npm run test:frozen",
     "test:frozen": "npm run test:level0 && npm run test:level1 && npm run test:level2 && npm run test:level3 && npm run test:level4:guard",
     "test:level0": "node run_level0_tests.js",
