@@ -308,12 +308,21 @@
         const isAutoQuery = result.validationErrors?.length > 0 &&
           result.validationErrors[0].includes('AUDIT DECISION — QUERY REQUIRED');
 
-        // For AUTO_EXCLUDE, AUTO_CODE, or AUTO_QUERY: Show ONLY the audit decision
+        // 🔐 HARD STOP GUARD: For AUTO_EXCLUDE, AUTO_CODE, or AUTO_QUERY
+        // Show ONLY the audit decision - no other UI may render
         if (isAutoExclude || isAutoCode || isAutoQuery) {
           const auditDiv = document.createElement('div');
           auditDiv.innerHTML = result.validationErrors[0];
           content.appendChild(auditDiv);
-        } else if (result.validationErrors?.length) {
+
+          // TERMINAL - Add to DOM and stop execution
+          itemContainer.appendChild(content);
+          encodeResults.appendChild(itemContainer);
+          return; // 🚨 CRITICAL: Nothing else may render
+        }
+
+        // Legacy validation errors UI (not audit decisions)
+        if (result.validationErrors?.length) {
           const errDiv = document.createElement('div');
           errDiv.className = 'mt-6 mb-6';
           errDiv.innerHTML = `
@@ -352,13 +361,13 @@
           content.appendChild(errDiv);
         }
 
-        // Only show "no codes" message if not AUTO_EXCLUDE, AUTO_CODE, or AUTO_QUERY
-        if (!isAutoExclude && !isAutoCode && !isAutoQuery && !result.primary && (!result.secondary || !result.secondary.length)) {
+        // Show "no codes" message if truly no codes
+        if (!result.primary && (!result.secondary || !result.secondary.length)) {
           const noCodesDiv = document.createElement('div');
           noCodesDiv.className = 'p-3 bg-amber-50 text-amber-700 rounded-md border border-amber-200 text-sm';
           noCodesDiv.textContent = 'No codes were generated for this scenario.';
           content.appendChild(noCodesDiv);
-        } else if (!isAutoExclude) {
+        } else {
           const createCard = (code, type) => {
             const isPrimary = type === 'Primary';
             const colorClass = isPrimary ? 'border-medical-500' : 'border-slate-300';
