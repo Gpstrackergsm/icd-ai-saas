@@ -1,4 +1,3 @@
-```javascript
 const { verifyToken, extractTokenFromHeader } = require('../../lib/auth/jwt');
 const { findUserById, sanitizeUser } = require('../../lib/auth/users');
 
