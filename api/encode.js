@@ -65,13 +65,47 @@ module.exports = async function handler(req, res) {
     const lower = text.toLowerCase();
     const detectedDiagnoses = [];
 
-    // Renal diagnoses
-    if ((lower.includes('acute kidney injury') || lower.match(/\baki\b/)) && !isNegated('acute kidney injury') && !isNegated('aki')) {
-      if (lower.includes('acute kidney injury')) {
-        detectedDiagnoses.push('acute kidney injury');
-      } else {
-        detectedDiagnoses.push('aki');
+    // Sepsis (check first for proper sequencing as primary)
+    if (lower.includes('severe sepsis') && !isNegated('sepsis')) {
+      detectedDiagnoses.push('severe sepsis');
+    } else if (lower.includes('sepsis') && !isNegated('sepsis')) {
+      detectedDiagnoses.push('sepsis');
+    }
+
+    // Check for sepsis source
+    if (lower.includes('pneumonia') && !isNegated('pneumonia')) {
+      if (!detectedDiagnoses.includes('pneumonia')) {
+        detectedDiagnoses.push('pneumonia');
       }
+    }
+
+    // Respiratory
+    if (lower.includes('acute respiratory failure') && !isNegated('acute respiratory failure')) {
+      if (lower.includes('with hypoxia')) {
+        detectedDiagnoses.push('acute respiratory failure with hypoxia');
+      } else {
+        detectedDiagnoses.push('acute respiratory failure');
+      }
+    }
+
+    // Renal diagnoses
+    // Check for AKI/acute renal failure/acute kidney failure
+    const akiPatterns = [
+      'acute kidney injury',
+      'acute renal failure',
+      'acute kidney failure'
+    ];
+
+    for (const pattern of akiPatterns) {
+      if (lower.includes(pattern) && !isNegated(pattern)) {
+        detectedDiagnoses.push('acute kidney injury');
+        break; // Only add once
+      }
+    }
+
+    // Also check for AKI abbreviation
+    if (lower.match(/\baki\b/) && !isNegated('aki') && !detectedDiagnoses.includes('acute kidney injury')) {
+      detectedDiagnoses.push('aki');
     }
 
     // Check for CKD with stage
@@ -92,20 +126,6 @@ module.exports = async function handler(req, res) {
         detectedDiagnoses.push('acute respiratory failure with hypoxia');
       } else {
         detectedDiagnoses.push('acute respiratory failure');
-      }
-    }
-
-    // Sepsis (check for severity)
-    if (lower.includes('severe sepsis') && !isNegated('sepsis')) {
-      detectedDiagnoses.push('severe sepsis');
-    } else if (lower.includes('sepsis') && !isNegated('sepsis')) {
-      detectedDiagnoses.push('sepsis');
-    }
-
-    // Check for sepsis source
-    if (lower.includes('pneumonia') && !isNegated('pneumonia')) {
-      if (!detectedDiagnoses.includes('pneumonia')) {
-        detectedDiagnoses.push('pneumonia');
       }
     }
 
