@@ -216,8 +216,13 @@ const POA_NO_PHRASES = [
   'on day 3',
   'on day 4',
   'on day 5',
+  'on day 6',
+  'on day 7',
+  'on day 8',
+  'on day 9',
   'later developed',
-  'subsequently developed'
+  'subsequently developed',
+  'developed'  // General "developed" - check last for specificity
 ];
 
 // RULE_OUT: Diagnostic uncertainty requiring exclusion
@@ -226,7 +231,10 @@ const RULE_OUT_PHRASES = [
   'r/o',
   'ruled out',
   'to rule out',
-  'ruling out'
+  'ruling out',
+  'workup for',  // Diagnostic workup implies uncertainty
+  'evaluating for',
+  'evaluation for'
 ];
 
 // NEGATION: Explicit negation of diagnosis (HIGHEST PRIORITY)
