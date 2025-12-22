@@ -1202,45 +1202,62 @@ module.exports = async function handler(req, res) {
     const hasCKD = detectedDiagnoses.some(d => d.toLowerCase().includes('chronic kidney disease'));
 
     if (hasDiabetes && hasCKD) {
-      // Use intent classifier to detect MANIFESTATION intent
-      const sentences = splitIntoSentences(text);
-      let manifestationDetected = false;
+      // Check full narrative for manifestation language
+      // This catches cases like: "CKD stage 4 secondary to diabetes" or "CKD due to diabetes"
+      const lower = text.toLowerCase();
+      const hasManifestationKeywords = (
+        (lower.includes('ckd') || lower.includes('chronic kidney disease') || lower.includes('kidney disease')) &&
+        (lower.includes('diabetes') || lower.includes('dm'))
+      );
 
-      for (const sentence of sentences) {
-        const lower = sentence.toLowerCase();
-        // Only check sentences containing both diabetes and CKD keywords
-        if ((lower.includes('diabetes') || lower.includes('dm')) && (lower.includes('ckd') || lower.includes('chronic kidney disease') || lower.includes('kidney disease'))) {
+      if (hasManifestationKeywords) {
+        // Use intent classifier to detect MANIFESTATION intent anywhere in text
+        const sentences = splitIntoSentences(text);
+        let manifestationDetected = false;
+
+        for (const sentence of sentences) {
           const intents = classifyIntent(sentence);
           const hasManifest = intents.some(i => i.intent === CLINICAL_INTENT.MANIFESTATION);
 
           if (hasManifest) {
-            manifestationDetected = true;
-            break;
+            // Verify this sentence mentions CKD or diabetes
+            const sentLower = sentence.toLowerCase();
+            if ((sentLower.includes('ckd') || sentLower.includes('kidney') || sentLower.includes('renal')) ||
+              (sentLower.includes('diabetes') || sentLower.includes('dm'))) {
+              manifestationDetected = true;
+              break;
+            }
           }
         }
-      }
 
-      if (manifestationDetected) {
-        // MANDATORY: Apply ICD-10-CM combination rule
-        // Replace unlinked codes with linked combination code
+        if (manifestationDetected) {
+          // MANDATORY: Apply ICD-10-CM combination rule
+          // Replace unlinked codes with linked combination code
 
-        // Remove E11.9 and individual CKD codes
-        detectedDiagnoses = detectedDiagnoses.filter(d =>
-          !d.toLowerCase().includes('type 2 diabetes') ||
-          d.toLowerCase().includes('diabetic')
-        );
+          // Remove E11.9 and individual CKD codes from detection list
+          detectedDiagnoses = detectedDiagnoses.filter(d => {
+            const dLower = d.toLowerCase();
+            // Keep diabetic complications, remove plain "type 2 diabetes"
+            if (dLower === 'type 2 diabetes') return false;
+            // Keep CKD for stage info, but will replace with combination
+            return true;
+          });
 
-        // Determine CKD stage for combination code
-        const ckdStage3 = text.match(/ckd stage 3|chronic kidney disease stage 3|stage 3 ckd/i);
-        const ckdStage4 = text.match(/ckd stage 4|chronic kidney disease stage 4|stage 4 ckd/i);
+          // Determine CKD stage for combination code
+          const ckdStage3 = text.match(/ckd stage 3|chronic kidney disease stage 3|stage 3 ckd|stage 3 chronic kidney disease/i);
+          const ckdStage4 = text.match(/ckd stage 4|chronic kidney disease stage 4|stage 4 ckd|stage 4 chronic kidney disease/i);
 
-        if (ckdStage4) {
-          detectedDiagnoses.push('diabetic chronic kidney disease stage 4');
-        } else if (ckdStage3) {
-          detectedDiagnoses.push('diabetic chronic kidney disease stage 3');
+          // Remove standalone CKD codes
+          detectedDiagnoses = detectedDiagnoses.filter(d => !d.toLowerCase().includes('chronic kidney disease'));
+
+          if (ckdStage4) {
+            detectedDiagnoses.push('diabetic chronic kidney disease stage 4');
+          } else if (ckdStage3) {
+            detectedDiagnoses.push('diabetic chronic kidney disease stage 3');
+          }
+
+          console.warn('[MANIFESTATION LINK] Diabetes + CKD manifestation detected - forcing E11.22 combination code');
         }
-
-        console.warn('[MANIFESTATION LINK] Diabetes + CKD manifestation detected - forcing E11.22 combination code');
       }
     }
 
