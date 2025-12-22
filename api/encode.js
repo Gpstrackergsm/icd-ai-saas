@@ -672,8 +672,42 @@ module.exports = async function handler(req, res) {
         detectedDiagnoses.push('chronic kidney disease stage 4');
       }
     } else if (lower.match(/chronic kidney disease|ckd/) && !isNegated('chronic kidney disease') && !isNegated('ckd')) {
-      // CKD without stage
-      detectedDiagnoses.push('chronic kidney disease');
+      // CRITICAL FIX: CKD without stage - CHECK for stage elsewhere in narrative BEFORE triggering query
+      // Look for patterns like "currently at Stage 4", "Stage 3 CKD", "CKD 4", etc.
+      const stagePatterns = [
+        /stage\s*[1-5]/i,
+        /(stage|stg)\.?\s*[1-5]/i,
+        /\b(ckd|chronic kidney disease)\s*[1-5]\b/i,
+        /\b[1-5]\s*(ckd|chronic kidney disease)\b/i
+      ];
+
+      let foundStage = null;
+      for (const pattern of stagePatterns) {
+        const match = text.match(pattern);
+        if (match) {
+          // Extract the stage number
+          const stageMatch = match[0].match(/[1-5]/);
+          if (stageMatch) {
+            foundStage = stageMatch[0];
+            break;
+          }
+        }
+      }
+
+      if (foundStage) {
+        // Stage was found elsewhere in narrative - use staged variant
+        if (foundStage === '3') {
+          detectedDiagnoses.push('chronic kidney disease stage 3');
+        } else if (foundStage === '4') {
+          detectedDiagnoses.push('chronic kidney disease stage 4');
+        } else {
+          // Stages 1, 2, 5 not in mapping - trigger query
+          detectedDiagnoses.push('chronic kidney disease');
+        }
+      } else {
+        // No stage found anywhere - trigger query
+        detectedDiagnoses.push('chronic kidney disease');
+      }
     }
 
     // Respiratory
