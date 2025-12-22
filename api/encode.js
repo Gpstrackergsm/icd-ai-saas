@@ -71,6 +71,7 @@ const ICD10_MAPPING = {
 
 // ============================================================================
 // LEVEL 3: POA (Present on Admission) DETECTION (CONTEXT-AWARE)
+// v1.3.1-level3-fix: Expanded pattern coverage
 // ============================================================================
 const detectPOAStatus = (text, diagnosisPhrase) => {
   const lower = text.toLowerCase();
@@ -94,6 +95,8 @@ const detectPOAStatus = (text, diagnosisPhrase) => {
     /admitted (with|for)/i,
     /(on|at) admission/i,
     /(on|upon) arrival/i,
+    /arrived with/i,  // NEW: L3-fix
+    /present (on admission|at presentation)/i,  // NEW: L3-fix
     /present on admission/i
   ];
 
@@ -106,8 +109,12 @@ const detectPOAStatus = (text, diagnosisPhrase) => {
   // POA = N patterns (Hospital-acquired) - Check in context
   const poaNPatterns = [
     /developed after admission/i,
+    /occurred after admission/i,  // NEW: L3-fix
+    /developed during hospitalization/i,  // NEW: L3-fix
+    /hospital-acquired/i,  // NEW: L3-fix
     /hospital course/i,
     /post-admission/i,
+    /post admission/i,  // NEW: L3-fix (without hyphen)
     /on day [2-9]/i,
     /developed.*later/i,
     /developed/i  // General "developed" in context
@@ -148,7 +155,8 @@ module.exports = async function handler(req, res) {
     // ========================================================================
     const lower = text.toLowerCase();
     const detectedDiagnoses = [];
-
+    let codes = [];  // LEVEL 3: Changed to 'let' for deduplication
+    const queries = [];
     // Sepsis (check first for proper sequencing as primary)
     if (lower.includes('severe sepsis') && !isNegated('sepsis')) {
       detectedDiagnoses.push('severe sepsis');
@@ -351,10 +359,8 @@ module.exports = async function handler(req, res) {
     }
 
     // ========================================================================
-    // LEVEL 2: CODE MAPPING AND LINKAGE TRACKING
+    // LEVEL 2: DIAGNOSIS-TO-CODE MAPPING
     // ========================================================================
-    const codes = [];
-    const queries = [];
     let hasLinkedCodes = false;
     let linkPhrase = null;
 
@@ -412,6 +418,22 @@ module.exports = async function handler(req, res) {
         }
       }
     }
+
+    // ========================================================================
+    // LEVEL 3: CODE DEDUPLICATION (v1.3.1-level3-fix)
+    // Remove duplicate codes while preserving first occurrence's POA status
+    // ========================================================================
+    const seenCodes = new Set();
+    const deduplicatedCodes = [];
+
+    for (const codeObj of codes) {
+      if (!seenCodes.has(codeObj.code)) {
+        seenCodes.add(codeObj.code);
+        deduplicatedCodes.push(codeObj);
+      }
+    }
+
+    codes = deduplicatedCodes;
 
     // ========================================================================
     // LEVEL 1: AUTO_QUERY (Missing Required Specificity)
@@ -590,10 +612,10 @@ module.exports = async function handler(req, res) {
         validationErrors: [autoCodeBlock],
         validationChanges: { removed: [], added: [] },
         _debug: {
-          apiVersion: 'v1.3-level3',  // LEVEL 3
+          apiVersion: 'v1.3.1-level3-fix',  // LEVEL 3 FIX: Expanded POA patterns + deduplication
           decisionState: hasLinkedCodes ? 'AUTO_CODE (LINKED)' : 'AUTO_CODE',
           diagnosesDetected: detectedDiagnoses,
-          codesAssigned: codes,  // Now includes POA status
+          codesAssigned: codes,  // Now includes POA status and deduplicated
           linkageStatus: hasLinkedCodes ? 'LINKED' : 'UNLINKED',
           poaStatus: {  // LEVEL 3: POA tracking
             allY: codes.every(c => c.poa === 'Y'),
