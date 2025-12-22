@@ -1,5 +1,5 @@
-// LEVEL 2: ICD-10-CM Causal Linking & Causality Authority Engine
-// Builds ABOVE frozen LEVEL 0 (AUTO_EXCLUDE) and LEVEL 1 (AUTO_CODE)
+// LEVEL 3: ICD-10-CM Temporal Logic & POA Authority Engine
+// Builds ABOVE frozen LEVEL 0 (AUTO_EXCLUDE), LEVEL 1 (AUTO_CODE), and LEVEL 2 (Causal Linking)
 
 const lookupDetail = require('../lib/icd-dictionary.js').lookupDetail;
 
@@ -67,6 +67,60 @@ const ICD10_MAPPING = {
   // Stroke
   'residual weakness from prior cva': { code: 'I69.3', description: 'Sequelae of cerebral infarction' },
   'history of cva': { code: 'Z86.73', description: 'Personal history of transient ischemic attack (TIA), and cerebral infarction without residual deficits' }
+};
+
+// ============================================================================
+// LEVEL 3: POA (Present on Admission) DETECTION (CONTEXT-AWARE)
+// ============================================================================
+const detectPOAStatus = (text, diagnosisPhrase) => {
+  const lower = text.toLowerCase();
+  const diagLower = diagnosisPhrase.toLowerCase();
+
+  // Find the context (sentence/clause) containing this diagnosis
+  // Split by sentence boundaries
+  const sentences = lower.split(/[.;]\s*/);
+  let diagnosisContext = lower; // Default to full text
+
+  // Find the sentence containing this diagnosis
+  for (const sentence of sentences) {
+    if (sentence.includes(diagLower)) {
+      diagnosisContext = sentence;
+      break;
+    }
+  }
+
+  // POA = Y patterns (Present on admission) - Check in context
+  const poaYPatterns = [
+    /admitted (with|for)/i,
+    /(on|at) admission/i,
+    /(on|upon) arrival/i,
+    /present on admission/i
+  ];
+
+  for (const pattern of poaYPatterns) {
+    if (pattern.test(diagnosisContext)) {
+      return { status: 'Y', phrase: 'present on admission' };
+    }
+  }
+
+  // POA = N patterns (Hospital-acquired) - Check in context
+  const poaNPatterns = [
+    /developed after admission/i,
+    /hospital course/i,
+    /post-admission/i,
+    /on day [2-9]/i,
+    /developed.*later/i,
+    /developed/i  // General "developed" in context
+  ];
+
+  for (const pattern of poaNPatterns) {
+    if (pattern.test(diagnosisContext)) {
+      return { status: 'N', phrase: 'hospital-acquired' };
+    }
+  }
+
+  // Default: POA = U (Unknown - timing not specified)
+  return { status: 'U', phrase: null };
 };
 
 module.exports = async function handler(req, res) {
@@ -172,6 +226,9 @@ module.exports = async function handler(req, res) {
       } else {
         detectedDiagnoses.push('acute respiratory failure');
       }
+    } else if (lower.includes('respiratory failure') && !isNegated('respiratory failure')) {
+      // LEVEL 3: Handle "respiratory failure" without "acute"
+      detectedDiagnoses.push('acute respiratory failure');
     }
 
     // LEVEL 2: Sepsis complicated by shock (LINKED)
@@ -218,6 +275,9 @@ module.exports = async function handler(req, res) {
     // Heart Failure
     if (lower.includes('acute on chronic systolic heart failure') && !isNegated('heart failure')) {
       detectedDiagnoses.push('acute on chronic systolic heart failure');
+    } else if (lower.includes('congestive heart failure') && !isNegated('heart failure')) {
+      // LEVEL 3: Congestive heart failure
+      detectedDiagnoses.push('heart failure');
     } else if (lower.includes('heart failure') && !isNegated('heart failure')) {
       detectedDiagnoses.push('heart failure');
     }
@@ -315,9 +375,14 @@ module.exports = async function handler(req, res) {
       } else if (mapping.codes) {
         // Multiple codes (e.g., severe sepsis, respiratory failure due to pneumonia)
         for (let i = 0; i < mapping.codes.length; i++) {
+          // LEVEL 3: Detect POA status for this diagnosis
+          const poaResult = detectPOAStatus(text, diagnosis);
+
           codes.push({
             code: mapping.codes[i],
-            description: mapping.descriptions[i]
+            description: mapping.descriptions[i],
+            poa: poaResult.status,  // LEVEL 3: POA status
+            poaJustification: poaResult.phrase  // LEVEL 3: POA phrase
           });
         }
         // Track linkage
@@ -329,9 +394,14 @@ module.exports = async function handler(req, res) {
         }
       } else if (mapping.code) {
         // Single code
+        // LEVEL 3: Detect POA status for this diagnosis
+        const poaResult = detectPOAStatus(text, diagnosis);
+
         codes.push({
           code: mapping.code,
-          description: mapping.description
+          description: mapping.description,
+          poa: poaResult.status,  // LEVEL 3: POA status
+          poaJustification: poaResult.phrase  // LEVEL 3: POA phrase
         });
         // Track linkage
         if (mapping.linked) {
@@ -515,16 +585,22 @@ module.exports = async function handler(req, res) {
       data: {
         text,
         primary: codes[0]?.code || null,
-        secondary: codes.slice(1).map(c => ({ code: c.code, description: c.description })),
+        secondary: codes.slice(1).map(c => ({ code: c.code, description: c.description, poa: c.poa })),
         warnings: [],
         validationErrors: [autoCodeBlock],
         validationChanges: { removed: [], added: [] },
         _debug: {
-          apiVersion: 'v1.2-level2',
+          apiVersion: 'v1.3-level3',  // LEVEL 3
           decisionState: hasLinkedCodes ? 'AUTO_CODE (LINKED)' : 'AUTO_CODE',
           diagnosesDetected: detectedDiagnoses,
-          codesAssigned: codes,
+          codesAssigned: codes,  // Now includes POA status
           linkageStatus: hasLinkedCodes ? 'LINKED' : 'UNLINKED',
+          poaStatus: {  // LEVEL 3: POA tracking
+            allY: codes.every(c => c.poa === 'Y'),
+            allN: codes.every(c => c.poa === 'N'),
+            allU: codes.every(c => c.poa === 'U'),
+            mixed: !codes.every(c => c.poa === codes[0]?.poa)
+          },
           timestamp: new Date().toISOString()
         }
       }
