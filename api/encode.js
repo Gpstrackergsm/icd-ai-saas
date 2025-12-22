@@ -150,6 +150,51 @@ const detectPOAStatus = (text, diagnosisPhrase) => {
 };
 
 // ============================================================================
+// EXPLICIT PROVIDER DIAGNOSIS DETECTION (CRITICAL FIX)
+// Detects diagnoses documented in structured sections BEFORE exclusion rules
+// ============================================================================
+const detectExplicitProviderDiagnosis = (text) => {
+  // Patterns for diagnosis sections (order matters - most specific first)
+  const diagnosisSections = [
+    { pattern: /Diagnosis:\s*([^\n.;?]+)/i, section: 'Diagnosis' },
+    { pattern: /Assessment:\s*([^\n.;?]+)/i, section: 'Assessment' },
+    { pattern: /Impression:\s*([^\n.;?]+)/i, section: 'Impression' },
+    { pattern: /Dx:\s*([^\n.;?]+)/i, section: 'Dx' },
+    { pattern: /Assessment\s*&\s*Plan:\s*([^\n.;?]+)/i, section: 'Assessment & Plan' },
+    { pattern: /A\/P:\s*([^\n.;?]+)/i, section: 'A/P' }
+  ];
+
+  for (const { pattern, section } of diagnosisSections) {
+    const match = text.match(pattern);
+    if (match && match[1].trim().length > 0) {
+      const diagnosisText = match[1].trim();
+
+      // Exclude if it's a negation or query phrase
+      const isNegation = /^(no |rule out|r\/o|ruled out|denies|without)/i.test(diagnosisText);
+      const isPossible = /^(possible|suspected|probable|likely)/i.test(diagnosisText);
+
+      // Check if there's a ? immediately after this match
+      const matchEnd = match.index + match[0].length;
+      const hasQuery = text.charAt(matchEnd) === '?';
+
+      if (!isNegation && !isPossible && !hasQuery) {
+        return {
+          hasExplicitDiagnosis: true,
+          diagnosisText: diagnosisText,
+          section: section
+        };
+      }
+    }
+  }
+
+  return {
+    hasExplicitDiagnosis: false,
+    diagnosisText: null,
+    section: null
+  };
+};
+
+// ============================================================================
 // LEVEL 4: PRINCIPAL DIAGNOSIS & SEQUENCING AUTHORITY
 // v1.4-level4: Determines PDX and sequences codes per ICD-10-CM Guidelines
 // ============================================================================
@@ -494,10 +539,45 @@ module.exports = async function handler(req, res) {
 
     // ========================================================================
     // LEVEL 0: NEGATION DETECTION (FROZEN - DO NOT MODIFY)
+    // CRITICAL FIX: Enhanced to detect negations in explicit diagnosis sections
     // ========================================================================
     const isNegated = (term) => {
+      // Check 1: General pattern matching (original logic)
       const pattern = new RegExp(`(no|without|den(ies|ied)|negative for|ruled out|absence of|did not (diagnose|document)|not diagnosed)\\s+(documented\\s+)?(diagnosis of\\s+)?[^.]*?\\b${term}\\b`, 'i');
-      return pattern.test(text);
+      if (pattern.test(text)) {
+        return true;
+      }
+
+      // Check 2: Explicit diagnosis sections with negations/queries
+      const diagnosisSections = [
+        /Diagnosis:\s*([^\n.;?]+)/i,  // Capture up to ?, period, semicolon, or newline
+        /Assessment:\s*([^\n.;?]+)/i,
+        /Impression:\s*([^\n.;?]+)/i,
+        /Dx:\s*([^\n.;?]+)/i
+      ];
+
+      for (const sectionPattern of diagnosisSections) {
+        const match = text.match(sectionPattern);
+        if (match && match[1]) {
+          const diagnosisText = match[1].trim().toLowerCase();
+          const termLower = term.toLowerCase();
+
+          // If this section contains the term AND has negation/query markers
+          if (diagnosisText.includes(termLower)) {
+            const hasNegation = /^(no |rule out|r\/o|ruled out|denies|without|possible|suspected|probable|likely)/i.test(match[1].trim());
+
+            // Also check if there's a ? immediately after this match
+            const matchEnd = match.index + match[0].length;
+            const hasQuery = text.charAt(matchEnd) === '?';
+
+            if (hasNegation || hasQuery) {
+              return true;  // Term appears in negated/queried section
+            }
+          }
+        }
+      }
+
+      return false;
     };
 
     // ========================================================================
@@ -698,8 +778,13 @@ module.exports = async function handler(req, res) {
 
     // ========================================================================
     // LEVEL 0: AUTO_EXCLUDE (FROZEN - ALWAYS WINS)
+    // CRITICAL FIX: Check for explicit provider diagnosis FIRST
     // ========================================================================
-    if (detectedDiagnoses.length === 0) {
+
+    // Detect explicit provider diagnosis from structured sections
+    const explicitDiagnosis = detectExplicitProviderDiagnosis(text);
+
+    if (detectedDiagnoses.length === 0 && !explicitDiagnosis.hasExplicitDiagnosis) {
       const auditDecisionBlock = `
           <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-md">
               <div class="flex items-start gap-3">
@@ -764,6 +849,37 @@ module.exports = async function handler(req, res) {
           }
         }
       });
+    } else if (explicitDiagnosis.hasExplicitDiagnosis && detectedDiagnoses.length === 0) {
+      // CRITICAL PATH: Explicit diagnosis exists but wasn't detected by pattern matching
+      // Try to add it to detectedDiagnoses for normal processing
+      console.warn('[AUDIT] Explicit diagnosis found but not auto-detected:', explicitDiagnosis.diagnosisText);
+
+      // Attempt fuzzy match against ICD10_MAPPING (normalize text)
+      const normalizedDiag = explicitDiagnosis.diagnosisText.toLowerCase().trim();
+      let foundMapping = false;
+
+      // Direct match
+      if (ICD10_MAPPING[normalizedDiag]) {
+        detectedDiagnoses.push(normalizedDiag);
+        foundMapping = true;
+      } else {
+        // Partial match attempt (e.g., "Strep throat" -> "sepsis")
+        for (const [key, mapping] of Object.entries(ICD10_MAPPING)) {
+          if (normalizedDiag.includes(key) || key.includes(normalizedDiag)) {
+            detectedDiagnoses.push(key);
+            foundMapping = true;
+            break;
+          }
+        }
+      }
+
+      // If still no match, log warning but DO NOT AUTO_EXCLUDE
+      // Let it fall through to normal processing (will likely trigger AUTO_QUERY)
+      if (!foundMapping) {
+        console.warn('[AUDIT] Explicit diagnosis not in ICD10_MAPPING:', explicitDiagnosis.diagnosisText);
+        console.warn('[AUDIT] Section:', explicitDiagnosis.section);
+        // Continue to normal processing - may trigger AUTO_QUERY or other logic
+      }
     }
 
     // ========================================================================
