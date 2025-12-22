@@ -271,6 +271,23 @@ const HISTORY_PHRASES = [
 ];
 
 /**
+ * Helper: Check if phrase exists with word boundaries
+ * Prevents false positives (e.g., "no" matching "noted")
+ */
+const phraseMatchesWithBoundaries = (text, phrase) => {
+  const words = phrase.split(/\s+/);
+  if (words.length === 1) {
+    // Single word - use word boundary regex
+    const pattern = new RegExp(`\\b${words[0]}\\b`, 'i');
+    return pattern.test(text);
+  } else {
+    // Multi-word phrase - exact match with word boundaries
+    const pattern = new RegExp(`\\b${phrase}\\b`, 'i');
+    return pattern.test(text);
+  }
+};
+
+/**
  * classifyIntent: Deterministic intent classifier
  * @param {string} sentence - Clinical sentence to classify
  * @param {string} diagnosisTerm - Diagnosis term being evaluated
@@ -280,23 +297,23 @@ const classifyIntent = (sentence, diagnosisTerm = null) => {
   const lower = sentence.toLowerCase();
   const results = [];
 
-  // Priority 1: NEGATION (always check first)
+  // Priority 1: NEGATION (always check first) - USE WORD BOUNDARIES
   for (const phrase of NEGATION_PHRASES) {
-    if (lower.includes(phrase)) {
+    if (phraseMatchesWithBoundaries(lower, phrase)) {
       results.push({ intent: CLINICAL_INTENT.NEGATION, phrase, priority: 1 });
     }
   }
 
-  // Priority 1: RULE_OUT
+  // Priority 1: RULE_OUT - USE WORD BOUNDARIES
   for (const phrase of RULE_OUT_PHRASES) {
-    if (lower.includes(phrase)) {
+    if (phraseMatchesWithBoundaries(lower, phrase)) {
       results.push({ intent: CLINICAL_INTENT.RULE_OUT, phrase, priority: 1 });
     }
   }
 
-  // Priority 1: POSSIBLE
+  // Priority 1: POSSIBLE - USE WORD BOUNDARIES
   for (const phrase of POSSIBLE_PHRASES) {
-    if (lower.includes(phrase)) {
+    if (phraseMatchesWithBoundaries(lower, phrase)) {
       results.push({ intent: CLINICAL_INTENT.POSSIBLE, phrase, priority: 1 });
     }
   }
@@ -306,37 +323,37 @@ const classifyIntent = (sentence, diagnosisTerm = null) => {
     results.push({ intent: CLINICAL_INTENT.QUERY, phrase: '?', priority: 1 });
   }
 
-  // Priority 2: CAUSAL_LINK
+  // Priority 2: CAUSAL_LINK - can use contains for multi-word phrases
   for (const phrase of CAUSAL_LINK_PHRASES) {
     if (lower.includes(phrase)) {
       results.push({ intent: CLINICAL_INTENT.CAUSAL_LINK, phrase, priority: 2 });
     }
   }
 
-  // Priority 2: MANIFESTATION
+  // Priority 2: MANIFESTATION - can use contains for multi-word phrases
   for (const phrase of MANIFESTATION_PHRASES) {
     if (lower.includes(phrase)) {
       results.push({ intent: CLINICAL_INTENT.MANIFESTATION, phrase, priority: 2 });
     }
   }
 
-  // Priority 3: POA_YES
+  // Priority 3: POA_YES - can use contains for multi-word phrases
   for (const phrase of POA_YES_PHRASES) {
     if (lower.includes(phrase)) {
       results.push({ intent: CLINICAL_INTENT.POA_YES, phrase, priority: 3 });
     }
   }
 
-  // Priority 3: POA_NO
+  // Priority 3: POA_NO - can use contains for multi-word phrases
   for (const phrase of POA_NO_PHRASES) {
     if (lower.includes(phrase)) {
       results.push({ intent: CLINICAL_INTENT.POA_NO, phrase, priority: 3 });
     }
   }
 
-  // Priority 4: HISTORY
+  // Priority 4: HISTORY - USE WORD BOUNDARIES for single words
   for (const phrase of HISTORY_PHRASES) {
-    if (lower.includes(phrase)) {
+    if (phraseMatchesWithBoundaries(lower, phrase)) {
       results.push({ intent: CLINICAL_INTENT.HISTORY, phrase, priority: 4 });
     }
   }
