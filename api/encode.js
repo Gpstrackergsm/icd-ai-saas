@@ -33,6 +33,9 @@ const ICD10_MAPPING = {
   'severe sepsis': { codes: ['A41.9', 'R65.20'], descriptions: ['Sepsis, unspecified organism', 'Severe sepsis without septic shock'], linked: true },
   'pneumonia': { code: 'J18.9', description: 'Pneumonia, unspecified organism' },
 
+  // Strep throat / Pharyngitis
+  'streptococcal pharyngitis': { code: 'J02.0', description: 'Streptococcal pharyngitis' },
+
   // LEVEL 2: Sepsis complicated by shock (LINKED)
   'sepsis complicated by septic shock': {
     codes: ['A41.9', 'R65.21'],
@@ -86,6 +89,37 @@ const ICD10_MAPPING = {
   'septic shock hospital-acquired': { code: 'R65.21', description: 'Severe sepsis with septic shock' },
   'residual weakness from prior cva': { code: 'I69.3', description: 'Sequelae of cerebral infarction' },
   'history of cva': { code: 'Z86.73', description: 'Personal history of transient ischemic attack (TIA), and cerebral infarction without residual deficits' }
+};
+
+// ============================================================================
+// SYNONYM NORMALIZATION MAP (CRITICAL FOR EXPLICIT DIAGNOSIS OVERRIDE)
+// Maps colloquial/abbreviated diagnosis terms to ICD10_MAPPING keys
+// ============================================================================
+const DIAGNOSIS_SYNONYMS = {
+  // Strep throat variants
+  'strep throat': 'streptococcal pharyngitis',
+  'strep pharyngitis': 'streptococcal pharyngitis',
+  'group a strep throat': 'streptococcal pharyngitis',
+  'grou p a streptococcal pharyngitis': 'streptococcal pharyngitis',
+
+  // UTI variants  
+  'uti': 'urinary tract infection',
+  'urinary infection': 'urinary tract infection',
+  'bladder infection': 'urinary tract infection',
+
+  // Pneumonia variants
+  'pna': 'pneumonia',
+  'lung infection': 'pneumonia',
+
+  // Common abbreviations
+  'mi': 'acute myocardial infarction',
+  'arf': 'acute respiratory failure',
+  'chf': 'heart failure',
+  'copd': 'chronic obstructive pulmonary disease',
+
+  // Other common terms
+  'kidney failure': 'acute kidney injury',
+  'renal failure': 'acute kidney injury'
 };
 
 // ============================================================================
@@ -855,15 +889,21 @@ module.exports = async function handler(req, res) {
       console.warn('[AUDIT] Explicit diagnosis found but not auto-detected:', explicitDiagnosis.diagnosisText);
 
       // Attempt fuzzy match against ICD10_MAPPING (normalize text)
-      const normalizedDiag = explicitDiagnosis.diagnosisText.toLowerCase().trim();
+      let normalizedDiag = explicitDiagnosis.diagnosisText.toLowerCase().trim();
       let foundMapping = false;
 
-      // Direct match
+      // Step 1: Check synonym map first
+      if (DIAGNOSIS_SYNONYMS[normalizedDiag]) {
+        normalizedDiag = DIAGNOSIS_SYNONYMS[normalizedDiag];
+        console.warn('[AUDIT] Normalized via synonym map:', explicitDiagnosis.diagnosisText, '->', normalizedDiag);
+      }
+
+      // Step 2: Direct match in ICD10_MAPPING
       if (ICD10_MAPPING[normalizedDiag]) {
         detectedDiagnoses.push(normalizedDiag);
         foundMapping = true;
       } else {
-        // Partial match attempt (e.g., "Strep throat" -> "sepsis")
+        // Step 3: Partial match attempt (e.g., "Strep throat" -> "sepsis")
         for (const [key, mapping] of Object.entries(ICD10_MAPPING)) {
           if (normalizedDiag.includes(key) || key.includes(normalizedDiag)) {
             detectedDiagnoses.push(key);
