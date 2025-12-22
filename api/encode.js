@@ -130,6 +130,119 @@ const detectPOAStatus = (text, diagnosisPhrase) => {
   return { status: 'U', phrase: null };
 };
 
+// ============================================================================
+// LEVEL 4: PRINCIPAL DIAGNOSIS & SEQUENCING AUTHORITY
+// v1.4-level4: Determines PDX and sequences codes per ICD-10-CM Guidelines
+// ============================================================================
+
+const detectAdmissionReason = (text) => {
+  const lower = text.toLowerCase();
+  
+  // Pattern 1: "admitted for [diagnosis]"
+  const admittedForMatch = lower.match(/admitted for ([^.;]+)/i);
+  if (admittedForMatch) {
+    return admittedForMatch[1].trim();
+  }
+  
+  // Pattern 2: "admitted with [diagnosis]"
+  const admittedWithMatch = lower.match(/admitted with ([^.;]+)/i);
+  if (admittedWithMatch) {
+    return admittedWithMatch[1].trim();
+  }
+  
+  // Pattern 3: "admission for [diagnosis]"
+  const admissionForMatch = lower.match(/admission for ([^.;]+)/i);
+  if (admissionForMatch) {
+    return admissionForMatch[1].trim();
+  }
+  
+  return null;
+};
+
+const determinePrincipalDiagnosis = (codes, text) => {
+  const eligibleForPDX = codes.filter(c => c.poa !== 'N');
+  
+  if (eligibleForPDX.length === 0) {
+    return { 
+      decision: 'AUTO_QUERY', 
+      reason: 'No eligible PDX candidates (all codes are hospital-acquired)',
+      pdx: null
+    };
+  }
+  
+  if (eligibleForPDX.length === 1) {
+    return { 
+      pdx: eligibleForPDX[0].code, 
+      decision: 'PASS_THROUGH',
+      justification: 'Single eligible code'
+    };
+  }
+  
+  const admissionReason = detectAdmissionReason(text);
+  const pdxResult = applySequencingRules(eligibleForPDX, admissionReason, text);
+  
+  return pdxResult;
+};
+
+const applySequencingRules = (codes, admissionReason, text) => {
+  const sepsisCode = codes.find(c => c.code.startsWith('A41'));
+  if (sepsisCode && admissionReason && (admissionReason.includes('sepsis') || admissionReason.includes('septic'))) {
+    return {
+      pdx: sepsisCode.code,
+      decision: 'AUTO_SEQUENCE',
+      justification: 'Sepsis documented as admission reason per ICD-10-CM guidelines'
+    };
+  }
+  
+  const respFailureCode = codes.find(c => c.code.startsWith('J96'));
+  if (respFailureCode && respFailureCode.poa === 'Y' && admissionReason && admissionReason.includes('respiratory failure')) {
+    return {
+      pdx: respFailureCode.code,
+      decision: 'AUTO_SEQUENCE',
+      justification: 'Respiratory failure documented as admission reason'
+    };
+  }
+  
+  const diabeticComboCode = codes.find(c => c.code.startsWith('E11.6') || c.code.startsWith('E11.4'));
+  if (diabeticComboCode && admissionReason && (admissionReason.includes('diabetic') || admissionReason.includes('foot ulcer'))) {
+    return {
+      pdx: diabeticComboCode.code,
+      decision: 'AUTO_SEQUENCE',
+      justification: 'Diabetic complication documented as admission reason'
+    };
+  }
+  
+  const poaYCodes = codes.filter(c => c.poa === 'Y');
+  if (poaYCodes.length === 1) {
+    return {
+      pdx: poaYCodes[0].code,
+      decision: 'AUTO_SEQUENCE',
+      justification: 'Only POA=Y code eligible for PDX'
+    };
+  }
+  
+  if (poaYCodes.length > 0) {
+    return {
+      pdx: poaYCodes[0].code,
+      decision: 'AUTO_SEQUENCE',
+      justification: 'First documented POA=Y diagnosis'
+    };
+  }
+  
+  return {
+    pdx: null,
+    decision: 'AUTO_QUERY',
+    reason: 'Unable to determine principal diagnosis from documentation'
+  };
+};
+
+const assignCodeRoles = (codes, pdxCode) => {
+  return codes.map(c => ({
+    ...c,
+    role: c.code === pdxCode ? 'PRIMARY' : 'SECONDARY'
+  }));
+};
+
 module.exports = async function handler(req, res) {
   try {
     if (req.method !== 'POST') {
@@ -436,6 +549,37 @@ module.exports = async function handler(req, res) {
     codes = deduplicatedCodes;
 
     // ========================================================================
+    // LEVEL 4: PRINCIPAL DIAGNOSIS DETERMINATION & SEQUENCING
+    // ========================================================================
+    let principalDiagnosis = null;
+    let sequencingJustification = '';
+    let level4DecisionState = 'AUTO_CODE';
+    
+    if (codes.length > 0) {
+      const pdxResult = determinePrincipalDiagnosis(codes, text);
+      
+      if (pdxResult.decision === 'AUTO_QUERY') {
+        // LEVEL 4 AUTO_QUERY: Cannot determine PDX
+        // For now, continue with codes but note in debug
+        level4DecisionState = 'AUTO_QUERY';
+        sequencingJustification = pdxResult.reason || 'Unable to determine principal diagnosis';
+      } else if (pdxResult.decision === 'PASS_THROUGH') {
+        // Single code, no sequencing needed
+        principalDiagnosis = pdxResult.pdx;
+        sequencingJustification = pdxResult.justification;
+        level4DecisionState = 'PASS_THROUGH';
+        codes = assignCodeRoles(codes, principalDiagnosis);
+      } else {
+        // AUTO_SEQUENCE: PDX determined
+        principalDiagnosis = pdxResult.pdx;
+        sequencingJustification = pdxResult.justification;
+        level4DecisionState = 'AUTO_SEQUENCE';
+        codes = assignCodeRoles(codes, principalDiagnosis);
+      }
+    }
+
+
+    // ========================================================================
     // LEVEL 1: AUTO_QUERY (Missing Required Specificity)
     // ========================================================================
     if (queries.length > 0) {
@@ -612,8 +756,10 @@ module.exports = async function handler(req, res) {
         validationErrors: [autoCodeBlock],
         validationChanges: { removed: [], added: [] },
         _debug: {
-          apiVersion: 'v1.3.1-level3-fix',  // LEVEL 3 FIX: Expanded POA patterns + deduplication
-          decisionState: hasLinkedCodes ? 'AUTO_CODE (LINKED)' : 'AUTO_CODE',
+          apiVersion: 'v1.4-level4',  // LEVEL 4: Principal Diagnosis & Sequencing
+          decisionState: level4DecisionState === 'AUTO_SEQUENCE' || level4DecisionState === 'PASS_THROUGH' ? (hasLinkedCodes ? 'AUTO_SEQUENCE (LINKED)' : level4DecisionState) : (hasLinkedCodes ? 'AUTO_CODE (LINKED)' : 'AUTO_CODE'),
+          principalDiagnosis: principalDiagnosis,  // LEVEL 4: PDX code
+          sequencingJustification: sequencingJustification,  // LEVEL 4: Why this PDX
           diagnosesDetected: detectedDiagnoses,
           codesAssigned: codes,  // Now includes POA status and deduplicated
           linkageStatus: hasLinkedCodes ? 'LINKED' : 'UNLINKED',
