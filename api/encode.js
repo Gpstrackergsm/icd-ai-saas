@@ -123,6 +123,234 @@ const DIAGNOSIS_SYNONYMS = {
 };
 
 // ============================================================================
+// CLOSED INTENT SYSTEM - FINITE SEMANTIC CLASSIFICATION
+// Maps finite clinical phrases to immutable semantic intents
+// NO fuzzy matching | NO probabilities | FAIL SAFE on unknown
+// ============================================================================
+
+/**
+ * CLINICAL_INTENT: Closed enum of semantic intents (IMMUTABLE)
+ * NO new intents allowed without architectural approval
+ */
+const CLINICAL_INTENT = {
+  // Causal relationships
+  CAUSAL_LINK: 'CAUSAL_LINK',              // "due to", "secondary to"
+  MANIFESTATION: 'MANIFESTATION',           // "manifestation of", "complication of"
+
+  // Temporal/POA classification
+  POA_YES: 'POA_YES',                      // "on admission", "admitted with"
+  POA_NO: 'POA_NO',                        // "hospital-acquired", "developed after"
+  POA_UNKNOWN: 'POA_UNKNOWN',              // No temporal markers
+
+  // Clinical status
+  ACUTE: 'ACUTE',                          // "acute", "sudden onset"
+  CHRONIC: 'CHRONIC',                      // "chronic", "longstanding"
+  EXACERBATION: 'EXACERBATION',           // "acute on chronic"
+
+  // Diagnostic certainty  
+  CONFIRMED: 'CONFIRMED',                  // "Diagnosis:", "Impression:"
+  RULE_OUT: 'RULE_OUT',                   // "rule out", "r/o"
+  QUERY: 'QUERY',                         // Ends with "?"
+  POSSIBLE: 'POSSIBLE',                   // "possible", "probable"
+
+  // History/sequelae
+  HISTORY: 'HISTORY',                     // "history of", "past"
+  SEQUELA: 'SEQUELA',                     // "residual", "late effect"
+
+  // Negation (highest priority)
+  NEGATION: 'NEGATION'                    // "no", "denies", "without"
+};
+
+/**
+ * PHRASE DICTIONARIES (EXHAUSTIVE)
+ * Every clinical phrase MUST map to exactly ONE intent
+ * New phrases expand dictionaries, NEVER create new intents
+ */
+
+// CAUSAL_LINK: Indicates causal relationship between conditions
+const CAUSAL_LINK_PHRASES = [
+  'due to',
+  'secondary to',
+  'caused by',
+  'related to',
+  'associated with',
+  'resulting from',
+  'consequent to',
+  'stemming from',
+  'as a result of',
+  'as a consequence of'
+];
+
+// MANIFESTATION: Indicates complication or manifestation
+const MANIFESTATION_PHRASES = [
+  'manifestation of',
+  'manifesting as',
+  'complication of',
+  'complicated by',
+  'with complication',
+  'with manifestation'
+];
+
+// POA_YES: Present on admission
+const POA_YES_PHRASES = [
+  'on admission',
+  'at admission',
+  'admitted with',
+  'admitted for',
+  'present on admission',
+  'on arrival',
+  'at presentation',
+  'presented with',
+  'arrived with'
+];
+
+// POA_NO: Hospital-acquired
+const POA_NO_PHRASES = [
+  'developed after admission',
+  'hospital-acquired',
+  'hospital course',
+  'developed during hospitalization',
+  'occurred after admission',
+  'post-admission',
+  'on day 2',
+  'on day 3',
+  'on day 4',
+  'on day 5',
+  'later developed',
+  'subsequently developed'
+];
+
+// RULE_OUT: Diagnostic uncertainty requiring exclusion
+const RULE_OUT_PHRASES = [
+  'rule out',
+  'r/o',
+  'ruled out',
+  'to rule out',
+  'ruling out'
+];
+
+// NEGATION: Explicit negation of diagnosis (HIGHEST PRIORITY)
+const NEGATION_PHRASES = [
+  'no',
+  'without',
+  'denies',
+  'denied',
+  'negative for',
+  'absence of',
+  'did not',
+  'not diagnosed',
+  'not documented'
+];
+
+// POSSIBLE: Probable/suspected diagnosis (exclude)
+const POSSIBLE_PHRASES = [
+  'possible',
+  'probable',
+  'likely',
+  'suspected',
+  'suspicion of',
+  'concern for'
+];
+
+// HISTORY: Past medical history only
+const HISTORY_PHRASES = [
+  'history of',
+  'past',
+  'previous',
+  'prior',
+  'former',
+  'old'
+];
+
+/**
+ * classifyIntent: Deterministic intent classifier
+ * @param {string} sentence - Clinical sentence to classify
+ * @param {string} diagnosisTerm - Diagnosis term being evaluated
+ * @returns {Array} Array of {intent, phrase, priority} objects
+ */
+const classifyIntent = (sentence, diagnosisTerm = null) => {
+  const lower = sentence.toLowerCase();
+  const results = [];
+
+  // Priority 1: NEGATION (always check first)
+  for (const phrase of NEGATION_PHRASES) {
+    if (lower.includes(phrase)) {
+      results.push({ intent: CLINICAL_INTENT.NEGATION, phrase, priority: 1 });
+    }
+  }
+
+  // Priority 1: RULE_OUT
+  for (const phrase of RULE_OUT_PHRASES) {
+    if (lower.includes(phrase)) {
+      results.push({ intent: CLINICAL_INTENT.RULE_OUT, phrase, priority: 1 });
+    }
+  }
+
+  // Priority 1: POSSIBLE
+  for (const phrase of POSSIBLE_PHRASES) {
+    if (lower.includes(phrase)) {
+      results.push({ intent: CLINICAL_INTENT.POSSIBLE, phrase, priority: 1 });
+    }
+  }
+
+  // Priority 1: QUERY (ends with ?)
+  if (sentence.trim().endsWith('?')) {
+    results.push({ intent: CLINICAL_INTENT.QUERY, phrase: '?', priority: 1 });
+  }
+
+  // Priority 2: CAUSAL_LINK
+  for (const phrase of CAUSAL_LINK_PHRASES) {
+    if (lower.includes(phrase)) {
+      results.push({ intent: CLINICAL_INTENT.CAUSAL_LINK, phrase, priority: 2 });
+    }
+  }
+
+  // Priority 2: MANIFESTATION
+  for (const phrase of MANIFESTATION_PHRASES) {
+    if (lower.includes(phrase)) {
+      results.push({ intent: CLINICAL_INTENT.MANIFESTATION, phrase, priority: 2 });
+    }
+  }
+
+  // Priority 3: POA_YES
+  for (const phrase of POA_YES_PHRASES) {
+    if (lower.includes(phrase)) {
+      results.push({ intent: CLINICAL_INTENT.POA_YES, phrase, priority: 3 });
+    }
+  }
+
+  // Priority 3: POA_NO
+  for (const phrase of POA_NO_PHRASES) {
+    if (lower.includes(phrase)) {
+      results.push({ intent: CLINICAL_INTENT.POA_NO, phrase, priority: 3 });
+    }
+  }
+
+  // Priority 4: HISTORY
+  for (const phrase of HISTORY_PHRASES) {
+    if (lower.includes(phrase)) {
+      results.push({ intent: CLINICAL_INTENT.HISTORY, phrase, priority: 4 });
+    }
+  }
+
+  // Default: No intent matched
+  if (results.length === 0) {
+    results.push({ intent: CLINICAL_INTENT.POA_UNKNOWN, phrase: null, priority: 5 });
+  }
+
+  return results;
+};
+
+/**
+ * Sentence splitter helper
+ * Splits narrative into sentences for intent classification
+ */
+const splitIntoSentences = (text) => {
+  // Split by period, semicolon, or newline
+  return text.split(/[.;\n]+/).map(s => s.trim()).filter(s => s.length > 0);
+};
+
+// ============================================================================
 // LEVEL 3: POA (Present on Admission) DETECTION (CONTEXT-AWARE)
 // v1.3.1-level3-fix: Expanded pattern coverage
 // ============================================================================
