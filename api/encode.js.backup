@@ -450,6 +450,53 @@ module.exports = async function handler(req, res) {
                           <p class="leading-relaxed">
                               Per ICD-10-CM Official Guidelines, diagnoses may not be inferred from laboratory 
 
+    // LEVEL 4 ENHANCEMENTS: MI/Chest Pain
+    if (lower.includes('acute myocardial infarction') && !isNegated('myocardial infarction')) {
+      if (lower.includes('stemi')) {
+        detectedDiagnoses.push('acute ST elevation myocardial infarction');
+      } else if (lower.includes('nstemi')) {
+        detectedDiagnoses.push('acute non-ST elevation myocardial infarction');
+      } else {
+        detectedDiagnoses.push('acute myocardial infarction');
+      }
+    } else if (lower.match(/myocardial infarction|\\bmi\\b/) && !isNegated('myocardial infarction')) {
+      detectedDiagnoses.push('acute myocardial infarction');
+    }
+    
+    if (lower.includes('chest pain') && !isNegated('chest pain')) {
+      detectedDiagnoses.push('chest pain');
+    }
+
+    // LEVEL 4 ENHANCEMENTS: GI Bleeding
+    if (lower.match(/gastrointestinal bleeding|gi bleeding/) && !isNegated('bleeding')) {
+      detectedDiagnoses.push('gastrointestinal bleeding');
+    } else if (lower.includes('upper gi bleed') && !isNegated('bleeding')) {
+      detectedDiagnoses.push('upper gastrointestinal hemorrhage');
+    } else if (lower.includes('lower gi bleed') && !isNegated('bleeding')) {
+      detectedDiagnoses.push('lower gastrointestinal hemorrhage');
+    }
+    
+    // LEVEL 4 ENHANCEMENTS: Acute blood loss anemia
+    if (lower.match(/acute blood loss anemia|blood loss anemia/) && !isNegated('anemia')) {
+      detectedDiagnoses.push('acute blood loss anemia');
+    }
+
+    // LEVEL 4 ENHANCEMENTS: Trauma/Fractures
+    if (lower.includes('femur fracture') && !isNegated('fracture')) {
+      detectedDiagnoses.push('femur fracture');
+    } else if (lower.match(/fracture of femur|fractured femur/) && !isNegated('fracture')) {
+      detectedDiagnoses.push('femur fracture');
+    }
+    
+    if (lower.match(/trauma|traumatic injury/) && !isNegated('trauma')) {
+      detectedDiagnoses.push('trauma');
+    }
+    
+    if (lower.includes('fall') && !isNegated('fall')) {
+      detectedDiagnoses.push('fall');
+    }
+
+    // LEVEL 4 ENHANCEMENTS: Septic shock (hospital-acquired)
     if (lower.match(/septic shock developed|shock developed/) && lower.match(/after admission|during hospitalization/)) {
       detectedDiagnoses.push('septic shock hospital-acquired');
     }
@@ -475,6 +522,53 @@ module.exports = async function handler(req, res) {
               </div>
           </div>
 
+    // LEVEL 4 ENHANCEMENTS: MI/Chest Pain
+    if (lower.includes('acute myocardial infarction') && !isNegated('myocardial infarction')) {
+      if (lower.includes('stemi')) {
+        detectedDiagnoses.push('acute ST elevation myocardial infarction');
+      } else if (lower.includes('nstemi')) {
+        detectedDiagnoses.push('acute non-ST elevation myocardial infarction');
+      } else {
+        detectedDiagnoses.push('acute myocardial infarction');
+      }
+    } else if (lower.match(/myocardial infarction|\\bmi\\b/) && !isNegated('myocardial infarction')) {
+      detectedDiagnoses.push('acute myocardial infarction');
+    }
+    
+    if (lower.includes('chest pain') && !isNegated('chest pain')) {
+      detectedDiagnoses.push('chest pain');
+    }
+
+    // LEVEL 4 ENHANCEMENTS: GI Bleeding
+    if (lower.match(/gastrointestinal bleeding|gi bleeding/) && !isNegated('bleeding')) {
+      detectedDiagnoses.push('gastrointestinal bleeding');
+    } else if (lower.includes('upper gi bleed') && !isNegated('bleeding')) {
+      detectedDiagnoses.push('upper gastrointestinal hemorrhage');
+    } else if (lower.includes('lower gi bleed') && !isNegated('bleeding')) {
+      detectedDiagnoses.push('lower gastrointestinal hemorrhage');
+    }
+    
+    // LEVEL 4 ENHANCEMENTS: Acute blood loss anemia
+    if (lower.match(/acute blood loss anemia|blood loss anemia/) && !isNegated('anemia')) {
+      detectedDiagnoses.push('acute blood loss anemia');
+    }
+
+    // LEVEL 4 ENHANCEMENTS: Trauma/Fractures
+    if (lower.includes('femur fracture') && !isNegated('fracture')) {
+      detectedDiagnoses.push('femur fracture');
+    } else if (lower.match(/fracture of femur|fractured femur/) && !isNegated('fracture')) {
+      detectedDiagnoses.push('femur fracture');
+    }
+    
+    if (lower.match(/trauma|traumatic injury/) && !isNegated('trauma')) {
+      detectedDiagnoses.push('trauma');
+    }
+    
+    if (lower.includes('fall') && !isNegated('fall')) {
+      detectedDiagnoses.push('fall');
+    }
+
+    // LEVEL 4 ENHANCEMENTS: Septic shock (hospital-acquired)
     if (lower.match(/septic shock developed|shock developed/) && lower.match(/after admission|during hospitalization/)) {
       detectedDiagnoses.push('septic shock hospital-acquired');
     }

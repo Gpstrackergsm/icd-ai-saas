@@ -1,0 +1,226 @@
+// LEVEL 4 Test Suite - Principal Diagnosis & Sequencing Authority
+// 8 required test cases
+
+const handler = require('./api/encode.js');
+
+const LEVEL4_TESTS = [
+    // L4-01: Sepsis with Organ Dysfunction
+    {
+        id: 'L4-01',
+        narrative: 'Admitted for sepsis with acute renal failure.',
+        expectedPDX: 'A41.9',
+        expectedCodes: ['A41.9', 'N17.9'],
+        expectedRoles: ['PRIMARY', 'SECONDARY'],
+        expectedPOA: ['Y', 'Y'],
+        description: 'Sepsis admission with organ dysfunction - sepsis is PDX'
+    },
+
+    // L4-02: Pneumonia + Respiratory Failure (Both POA=Y)
+    {
+        id: 'L4-02',
+        narrative: 'Admitted with pneumonia and acute respiratory failure.',
+        expectedPDX: 'J96.01',  // Respiratory failure is admission reason
+        expectedCodes: ['J18.9', 'J96.01'],
+        expectedRoles: ['PRIMARY', 'SECONDARY'],
+        expectedPOA: ['Y', 'Y'],
+        description: 'Pneumonia + respiratory failure - resp failure PDX when both POA=Y'
+    },
+
+    // L4-03: Pneumonia → Respiratory Failure Later
+    {
+        id: 'L4-03',
+        narrative: 'Admitted for pneumonia. Respiratory failure developed on day 3.',
+        expectedPDX: 'J18.9',  // Pneumonia is PDX (POA=Y), resp failure POA=N cannot be PDX
+        expectedCodes: ['J18.9', 'J96.01'],
+        expectedRoles: ['PRIMARY', 'SECONDARY'],
+        expectedPOA: ['Y', 'N'],
+        description: 'Pneumonia PDX, resp failure POA=N must be secondary'
+    },
+
+    // L4-04: Diabetic Foot Ulcer
+    {
+        id: 'L4-04',
+        narrative: 'Admitted for diabetic foot ulcer.',
+        expectedPDX: 'E11.621',
+        expectedCodes: ['E11.621'],
+        expectedRoles: ['PRIMARY'],
+        expectedPOA: ['Y'],
+        description: 'Diabetic complication admission - combo code is PDX'
+    },
+
+    // L4-05: CHF + AKI Later
+    {
+        id: 'L4-05',
+        narrative: 'Admitted for congestive heart failure. Acute kidney injury developed later.',
+        expectedPDX: null,  // CHF requires specificity (AUTO_QUERY from LEVEL 1)
+        expectedCodes: [],  // LEVEL 1 AUTO_QUERY blocks coding
+        expectedDecision: 'AUTO_QUERY',
+        description: 'CHF requires specificity - LEVEL 1 AUTO_QUERY'
+    },
+
+    // L4-06: Single Code (PASS_THROUGH)
+    {
+        id: 'L4-06',
+        narrative: 'Admitted with acute respiratory failure with hypoxia.',
+        expectedPDX: 'J96.01',
+        expectedCodes: ['J96.01'],
+        expectedRoles: ['PRIMARY'],
+        expectedPOA: ['Y'],
+        expectedDecision: 'PASS_THROUGH',
+        description: 'Single code - PASS_THROUGH (no sequencing needed)'
+    },
+
+    // L4-07: Mixed POA - PDX must be POA=Y
+    {
+        id: 'L4-07',
+        narrative: 'Admitted for pneumonia. Acute kidney injury developed during hospitalization.',
+        expectedPDX: 'J18.9',  // Pneumonia (POA=Y) is PDX
+        expectedCodes: ['J18.9', 'N17.9'],
+        expectedRoles: ['PRIMARY', 'SECONDARY'],
+        expectedPOA: ['Y', 'N'],
+        description: 'Mixed POA - only POA=Y can be PDX'
+    },
+
+    // L4-08: Sepsis + Septic Shock
+    {
+        id: 'L4-08',
+        narrative: 'Admitted for sepsis complicated by septic shock.',
+        expectedPDX: 'A41.9',  // Sepsis is PDX, shock is secondary
+        expectedCodes: ['A41.9', 'R65.21'],
+        expectedRoles: ['PRIMARY', 'SECONDARY'],
+        expectedPOA: ['Y', 'Y'],
+        description: 'Septic shock - A41.x is PDX, R65.21 secondary'
+    }
+];
+
+async function runLevel4Tests() {
+    console.log('╔════════════════════════════════════════════════════════════════════╗');
+    console.log('║    LEVEL 4 TEST SUITE - Principal Diagnosis & Sequencing          ║');
+    console.log('╚════════════════════════════════════════════════════════════════════╝\\n');
+
+    let passed = 0;
+    let failed = 0;
+    const failures = [];
+
+    for (const test of LEVEL4_TESTS) {
+        const mockReq = {
+            method: 'POST',
+            body: { text: test.narrative }
+        };
+
+        let responseData = null;
+        const mockRes = {
+            status: function (code) {
+                this.statusCode = code;
+                return this;
+            },
+            json: function (data) {
+                responseData = data;
+                return this;
+            }
+        };
+
+        await handler(mockReq, mockRes);
+
+        const actualCodes = [
+            responseData.data?.primary,
+            ...(responseData.data?.secondary?.map(c => c.code) || [])
+        ].filter(Boolean);
+
+        const actualPDX = responseData.data?._debug?.principalDiagnosis;
+        const actualRoles = responseData.data?._debug?.codesAssigned?.map(c => c.role) || [];
+        const actualPOA = responseData.data?._debug?.codesAssigned?.map(c => c.poa) || [];
+        const actualDecision = responseData.data?._debug?.decisionState;
+
+        // Check if test expects AUTO_QUERY
+        if (test.expectedDecision === 'AUTO_QUERY') {
+            const testPassed = actualDecision && actualDecision.includes('AUTO_QUERY');
+
+            console.log(`\\n${'='.repeat(70)}`);
+            console.log(`${test.id}: ${test.description}`);
+            console.log('='.repeat(70));
+            console.log(`Narrative: ${test.narrative}`);
+            console.log(`Expected: AUTO_QUERY`);
+            console.log(`Actual: ${actualDecision}`);
+            console.log(`Result: ${testPassed ? '✅ PASS' : '❌ FAIL'}`);
+
+            if (testPassed) {
+                passed++;
+            } else {
+                failed++;
+                failures.push({ id: test.id, reason: 'Expected AUTO_QUERY' });
+            }
+            continue;
+        }
+
+        // Regular tests
+        const pdxMatch = actualPDX === test.expectedPDX;
+        const codesMatch = test.expectedCodes.every((expectedCode, idx) =>
+            actualCodes[idx]?.startsWith(expectedCode)
+        );
+        const rolesMatch = test.expectedRoles && actualRoles.length > 0 ?
+            test.expectedRoles.every((expectedRole, idx) => actualRoles[idx] === expectedRole) :
+            true;
+
+        const testPassed = pdxMatch && codesMatch && rolesMatch;
+
+        console.log(`\\n${'='.repeat(70)}`);
+        console.log(`${test.id}: ${test.description}`);
+        console.log('='.repeat(70));
+        console.log(`Narrative: ${test.narrative}`);
+        console.log(` `);
+        console.log(`Expected PDX: ${test.expectedPDX}`);
+        console.log(`Actual PDX:   ${actualPDX}`);
+        console.log(``);
+        console.log(`Expected Codes: ${test.expectedCodes.join(' + ')}`);
+        console.log(`Actual Codes:   ${actualCodes.join(' + ')}`);
+        console.log(``);
+        if (test.expectedRoles) {
+            console.log(`Expected Roles: ${test.expectedRoles.join(' + ')}`);
+            console.log(`Actual Roles:   ${actualRoles.join(' + ')}`);
+        }
+        console.log(``);
+        console.log(`Result: ${testPassed ? '✅ PASS' : '❌ FAIL'}`);
+
+        if (testPassed) {
+            passed++;
+        } else {
+            failed++;
+            failures.push({
+                id: test.id,
+                expectedPDX: test.expectedPDX,
+                actualPDX: actualPDX,
+                expectedCodes: test.expectedCodes,
+                actualCodes: actualCodes
+            });
+        }
+    }
+
+    console.log('\\n' + '═'.repeat(70));
+    console.log('LEVEL 4 TEST SUITE SUMMARY');
+    console.log('═'.repeat(70));
+    console.log(`Total Cases:    ${LEVEL4_TESTS.length}`);
+    console.log(`✅ Passed:      ${passed}`);
+    console.log(`❌ Failed:      ${failed}`);
+    console.log(`Pass Rate:      ${((passed / LEVEL4_TESTS.length) * 100).toFixed(1)}%`);
+    console.log('');
+
+    if (failed === 0) {
+        console.log('🎉 ALL LEVEL 4 TESTS PASSED - 100% ACCURACY');
+        console.log('');
+        console.log('✅ PDX determination verified');
+        console.log('✅ Sequencing rules working correctly');
+        console.log('✅ Code roles assigned properly');
+    } else {
+        console.log(`⚠️  ${failed} test(s) failed - review needed`);
+        console.log('');
+        console.log('Failed Cases:');
+        failures.forEach(f => {
+            console.log(`  ${f.id}: PDX Expected ${f.expectedPDX}, Got ${f.actualPDX}`);
+        });
+    }
+
+    console.log('═'.repeat(70));
+}
+
+runLevel4Tests().catch(console.error);

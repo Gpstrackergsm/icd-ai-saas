@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-9DPX4FW21M"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+    gtag('config', 'G-9DPX4FW21M', { 'debug_mode': true });
+  </script>
+  <title>ICD-10-CM Encoder - App</title>
+  <meta name="description" content="Secure, AI-powered ICD-10-CM encoding workspace.">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="canonical" href="https://www.icd-10-cm.online/app.html" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- FontAwesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            medical: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-slate-50 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded-lg bg-medical-600 flex items-center justify-center text-white">
+            <i class="fa-solid fa-laptop-medical"></i>
+          </div>
+          <span class="text-xl font-bold text-slate-900 tracking-tight">ICD Audit Engine</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <div class="hidden sm:flex flex-col items-end">
+            <span id="userEmail" class="text-sm font-medium text-slate-900"></span>
+            <span class="text-xs text-green-600 font-semibold">• Online</span>
+          </div>
+          <button id="logoutBtn"
+            class="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+            title="Logout">
+            <i class="fa-solid fa-right-from-bracket text-lg"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main
+    class="flex-grow max-w-[1920px] mx-auto px-4 sm:px-6 lg:px-8 py-4 w-full gap-6 grid grid-cols-1 lg:grid-cols-2 h-[calc(100vh-4rem)] overflow-hidden">
+
+    <!-- Bottom Section: Inputs (Now LEFT) -->
+    <div class="h-full flex flex-col order-1 lg:order-1 min-h-0">
+
+      <!-- Encoder Panel -->
+      <section class="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden h-full flex flex-col">
+        <div class="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center shrink-0">
+          <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-keyboard text-medical-500"></i> Clinical Scenario
+          </h2>
+          <span class="text-xs font-medium px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800">
+            Secure Mode
+          </span>
+        </div>
+
+        <div class="p-4 flex-grow flex flex-col min-h-0" id="encodePanel">
+          <!-- Dynamic Form Builder Container will be inserted here by JS -->
+
+          <div class="flex-grow flex flex-col">
+            <label for="narrative" class="block text-sm font-semibold text-slate-700 mb-2 shrink-0">
+              Generated Clinical Narrative
+              <span class="text-xs font-normal text-slate-500 ml-1">(Editable)</span>
+            </label>
+            <div class="relative flex-grow flex flex-col">
+              <textarea id="narrative" name="narrative"
+                class="w-full flex-grow px-4 py-3 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-medical-500 focus:border-transparent outline-none transition-all resize-none font-mono text-sm leading-relaxed"
+                placeholder="Describe the patient encounter or use the builder above..."></textarea>
+              <div class="absolute bottom-3 right-3 text-xs text-slate-400 pointer-events-none">
+                AI Ready
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 flex items-center gap-4">
+            <button id="encodeBtn"
+              class="flex-1 bg-medical-600 hover:bg-medical-700 text-white font-bold py-3 px-6 rounded-lg shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all flex items-center justify-center gap-2">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> Encode Scenario
+            </button>
+          </div>
+
+          <div id="encodeStatus" class="mt-4 text-center text-sm font-medium min-h-[20px] text-slate-500"></div>
+
+        </div>
+      </section>
+
+      <!-- Batch Upload Panel REMOVED -->
+
+    </div>
+
+    <!-- Top Section: Results (Now RIGHT) -->
+    <div class="h-full flex flex-col order-2 lg:order-2 min-h-0">
+      <div class="h-full">
+        <section class="bg-white rounded-xl shadow-lg border border-slate-100 overflow-hidden flex flex-col h-full">
+          <div class="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center shrink-0">
+            <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
+              <i class="fa-solid fa-list-check text-medical-500"></i> Results
+            </h2>
+            <button id="copyEncodeBtn" disabled
+              class="text-xs font-medium text-medical-600 hover:text-medical-700 disabled:text-slate-400 flex items-center gap-1">
+              <i class="fa-regular fa-copy"></i> Copy All
+            </button>
+          </div>
+
+          <div id="encodeResults" class="p-4 overflow-y-auto space-y-4 bg-slate-50/50 flex-grow min-h-[300px]">
+            <!-- Results populated here -->
+            <div class="text-center py-10 text-slate-400">
+              <i class="fa-solid fa-clipboard-list text-4xl mb-3 opacity-20"></i>
+              <p class="text-sm">Codes will appear here</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+      // Authentication Logic
+      (async function checkAuth() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          window.location.href = '/';
+          return;
+        }
+
+        try {
+          const response = await fetch('/api/auth/verify', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+
+          if (!response.ok) {
+            throw new Error('Invalid token');
+          }
+
+          const data = await response.json();
+          document.getElementById('userEmail').textContent = data.user.email;
+        } catch (error) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          window.location.href = '/';
+        }
+      })();
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = '/';
+    });
+
+    // --- FORM BUILDER LOGIC REMOVED ---
+
+    // DOM Elements
+    const encodePanel = document.getElementById('encodePanel');
+    const narrativeInput = document.getElementById('narrative');
+    const encodeBtn = document.getElementById('encodeBtn');
+    const copyEncodeBtn = document.getElementById('copyEncodeBtn');
+    const encodeStatus = document.getElementById('encodeStatus');
+    const encodeResults = document.getElementById('encodeResults');
+
+    if (encodeBtn) {
+      encodeBtn.addEventListener('click', performEncode);
+    }
+
+    // --- ENCODER LOGIC ---
+    async function performEncode() {
+      // Scroll to top immediately to show results panel
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      const text = narrativeInput.value.trim();
+
+      // visual loading state
+      encodeResults.innerHTML = `
+        <div class="animate-pulse space-y-4 p-4">
+            <div class="h-8 bg-slate-200 rounded w-1/3 mb-4"></div>
+            <div class="h-32 bg-slate-100 rounded-lg border border-slate-200"></div>
+            <div class="h-24 bg-slate-100 rounded-lg border border-slate-200"></div>
+            <div class="h-24 bg-slate-100 rounded-lg border border-slate-200"></div>
+        </div>
+      `;
+
+      encodeStatus.textContent = '';
+      copyEncodeBtn.disabled = true;
+
+      if (!text) {
+        encodeStatus.innerHTML = '<span class="text-amber-500"><i class="fa-solid fa-triangle-exclamation"></i> Please enter a clinical narrative.</span>';
+        encodeResults.innerHTML = '';
+        return;
+      }
+
+      // Toggle GA4 event
+      if (typeof gtag === 'function') {
+        gtag('event', 'icd_search', {
+          search_term: text,
+          source: 'icd_engine'
+        });
+        console.log('GA4 Event Fired: icd_search', { search_term: text, source: 'icd_engine' });
+      }
+
+      encodeBtn.disabled = true;
+      encodeBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processing...';
+
+      const lines = text.split(/\r?\n/).filter(l => l.trim());
+      const isBatch = lines.length > 1 && lines.every(l => /^\d+[\.\)\s]/.test(l.trim()));
+
+      try {
+        const token = localStorage.getItem('token');
+        const payloadBody = isBatch ? { items: lines.map(l => l.replace(/^\d+[\.\)\s]\s*/, '').trim()) } : { text };
+
+        const response = await fetch('/api/encode', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+          body: JSON.stringify(payloadBody)
+        });
+
+        if (!response.ok) throw new Error('Encoding failed.');
+        const data = await response.json();
+        const finalData = data.data || data;
+
+        lastEncoded = finalData;
+        renderEncodeResults(finalData);
+        const count = Array.isArray(finalData) ? finalData.length : 1;
+        encodeStatus.innerHTML = `<span class="text-green-600 font-bold"><i class="fa-solid fa-check"></i> ${count} case(s) processed successfully.</span>`;
+
+      } catch (err) {
+        encodeStatus.innerHTML = `<span class="text-red-500 font-bold"><i class="fa-solid fa-circle-xmark"></i> ${err.message}</span>`;
+      } finally {
+        encodeBtn.disabled = false;
+        encodeBtn.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Encode Scenario';
+      }
+    }
+
+    let lastEncoded = null;
+
+    function renderEncodeResults(payload) {
+      encodeResults.innerHTML = '';
+      const results = Array.isArray(payload) ? payload : [payload];
+
+      if (!results.length) {
+        encodeResults.innerHTML = '<div class="text-center py-8 text-slate-400">No results found.</div>';
+        return;
+      }
+
+      results.forEach((result, index) => {
+        const itemContainer = document.createElement('div');
+        itemContainer.className = 'bg-white rounded-lg shadow-sm border border-slate-200 overflow-hidden mb-6 animate-[fadeIn_0.5s_ease-out]';
+
+        if (results.length > 1) {
+          const header = document.createElement('div');
+          header.className = 'bg-slate-50 px-4 py-3 border-b border-slate-200 font-medium text-slate-700 text-sm';
+          header.textContent = `Case #${index + 1}: ${result.text.substring(0, 60)}${result.text.length > 60 ? '...' : ''}`;
+          itemContainer.appendChild(header);
+        }
+
+        const content = document.createElement('div');
+        content.className = 'p-4 space-y-3';
+
+        if (result.validationErrors?.length) {
+          const errDiv = document.createElement('div');
+          errDiv.className = 'mt-6 mb-6';
+          errDiv.innerHTML = `
+                <!-- Global Header -->
+                <div class="mb-4">
+                    <div class="flex items-center gap-2 mb-1">
+                        <i class="fa-solid fa-gavel text-xl text-slate-800"></i> 
+                        <span class="block font-bold text-sm text-slate-800 uppercase tracking-wide leading-none">CLINICAL COMPLIANCE CONTROL</span>
+                    </div>
+                    <div class="text-xs text-slate-500 font-medium ml-7 mb-3">Blocking errors detected by automated audit rules.</div>
+                    
+                    <!-- State Banner -->
+                    <div class="flex items-center gap-2 bg-[#FEE2E2] border border-[#DC2626] text-[#7F1D1D] rounded-md px-3 py-2 shadow-sm animate-pulse">
+                        <i class="fa-solid fa-shield-halved text-sm"></i> 
+                        <span class="font-bold text-xs uppercase tracking-wide">COMPLIANCE GATE — ${result.validationErrors.length} item(s) pending resolution</span>
+                    </div>
+                </div>
+
+                <!-- Render rich HTML cards directly -->
+                <div class="space-y-4">
+                    ${result.validationErrors.map(e => e).join('')}
+                </div>
+
+                <!-- Footer -->
+                <div class="mt-4 pt-6 text-center border-t border-slate-100">
+                    <div class="inline-flex items-center gap-2 px-5 py-2 bg-slate-100 border border-slate-200 rounded-full text-xs font-bold text-slate-600 uppercase tracking-widest ">
+                        <i class="fa-solid fa-lock"></i>
+                        SYSTEM LOCKED — Pending audit resolution
+                    </div>
+                    <div class="mt-3 flex items-center justify-center gap-2 text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+                        <i class="fa-solid fa-circle-check text-green-500"></i>
+                        System ready for coding once all items are cleared.
+                    </div>
+                </div>
+            `;
+          content.appendChild(errDiv);
+        }
+
+        if (!result.primary && (!result.secondary || !result.secondary.length)) {
+          const noCodesDiv = document.createElement('div');
+          noCodesDiv.className = 'p-3 bg-amber-50 text-amber-700 rounded-md border border-amber-200 text-sm';
+          noCodesDiv.textContent = 'No codes were generated for this scenario.';
+          content.appendChild(noCodesDiv);
+        } else {
+          const createCard = (code, type) => {
+            const isPrimary = type === 'Primary';
+            const colorClass = isPrimary ? 'border-medical-500' : 'border-slate-300';
+            const bgClass = isPrimary ? 'bg-white' : 'bg-slate-50';
+            const badgeClass = isPrimary ? 'bg-medical-100 text-medical-800' : 'bg-slate-200 text-slate-700';
+
+            return `
+                    <div class="border-l-4 ${colorClass} ${bgClass} rounded-r-md p-3 shadow-sm hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-1 gap-2">
+                            <div class="flex flex-wrap items-center gap-2">
+                                <span class="text-xs font-bold uppercase tracking-wider ${badgeClass} px-2 py-0.5 rounded">${type}</span>
+                                ${(code.annotations || []).map(a => `<span class="text-xs font-bold bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded border border-indigo-200">${a}</span>`).join('')}
+                            </div>
+                            <span class="font-mono text-lg font-bold text-slate-900 shrink-0">${code.code}</span>
+                        </div>
+                        <div class="text-sm text-slate-800 font-medium mb-1">${code.description || 'No description'}</div>
+                        <div class="text-xs text-slate-500 italic border-t border-slate-100 pt-1 mt-1">
+                           <div class="flex flex-wrap justify-between gap-2">
+                                <span><i class="fa-solid fa-info-circle mr-1"></i> ${code.rationale}</span>
+                                ${(code.references || []).length ? `<span class="text-slate-400" title="Reference"><i class="fa-solid fa-book-medical"></i> ${code.references.join(', ')}</span>` : ''}
+                           </div>
+                        </div>
+                    </div>
+                 `;
+          };
+
+          if (result.primary) {
+            const el = document.createElement('div');
+            el.innerHTML = createCard(result.primary, 'Primary');
+            content.appendChild(el.firstChild.nextSibling || el.firstChild);
+          }
+          if (result.secondary) {
+            result.secondary.forEach(code => {
+              const el = document.createElement('div');
+              el.innerHTML = createCard(code, 'Secondary');
+              content.appendChild(el.firstChild.nextSibling || el.firstChild);
+            });
+          }
+        }
+
+        itemContainer.appendChild(content);
+        encodeResults.appendChild(itemContainer);
+      });
+
+      copyEncodeBtn.disabled = false;
+    }
+
+    // Confirm Encode Button Listener
+    if (encodeBtn) {
+      encodeBtn.addEventListener('click', performEncode);
+    } else {
+      console.error('Encode button not found!');
+    }
+
+    // Copy Logic
+    const copyBtn = document.getElementById('copyEncodeBtn');
+    if (copyBtn) {
+      copyBtn.addEventListener('click', async () => {
+        if (!lastEncoded) return;
+        const results = Array.isArray(lastEncoded) ? lastEncoded : [lastEncoded];
+        const lines = [];
+
+        results.forEach((res, idx) => {
+          if (results.length > 1) lines.push(`Case ${idx + 1}: ${res.text} `);
+          if (res.primary) lines.push(`Primary: ${res.primary.code} - ${res.primary.label || res.primary.description} `);
+          if (res.secondary && res.secondary.length) {
+            res.secondary.forEach(c => lines.push(`Secondary: ${c.code} - ${c.label || c.description} `));
+          }
+          lines.push('');
+        });
+
+        try {
+          await navigator.clipboard.writeText(lines.join('\n'));
+          const originalText = copyBtn.innerHTML;
+          copyBtn.innerHTML = '<i class="fa-solid fa-check"></i> Copied!';
+          setTimeout(() => {
+            copyBtn.innerHTML = '<i class="fa-regular fa-copy"></i> Copy All';
+          }, 2000);
+        } catch (e) {
+          console.error(e);
+        }
+      });
+    }
+
+
+    // --- BATCH LOGIC REMOVED ---
+
+    // Global Event Delegation for Validation Buttons
+    document.addEventListener('click', (e) => {
+      const target = e.target.closest('button[data-action]');
+
+      // Handle Modal Close
+      if (e.target.closest('#closeModalBtn') || e.target.id === 'modalBackdrop') {
+        document.getElementById('auditModal').classList.add('hidden');
+        return;
+      }
+
+      if (!target) return;
+
+      const action = target.getAttribute('data-action');
+      const ruleId = target.getAttribute('data-rule-id');
+
+      if (action === 'fix') {
+        const narrative = document.getElementById('narrative');
+        if (narrative) {
+          narrative.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          narrative.focus();
+          narrative.classList.add('ring-4', 'ring-red-200');
+          setTimeout(() => narrative.classList.remove('ring-4', 'ring-red-200'), 1000);
+        }
+      } else if (action === 'view') {
+        const desc = target.getAttribute('data-rule-desc');
+        const modal = document.getElementById('auditModal');
+        document.getElementById('modalTitle').textContent = `AUDIT RULE: ${ruleId}`;
+        document.getElementById('modalDesc').textContent = desc;
+        modal.classList.remove('hidden');
+      }
+    });
+
+  </script>
+
+  <!-- Premium Centered Modal -->
+  <div id="auditModal" class="fixed inset-0 z-50 hidden relative" aria-labelledby="modal-title" role="dialog"
+    aria-modal="true">
+
+    <!-- Backdrop -->
+    <div class="fixed inset-0 bg-slate-900/60 transition-opacity backdrop-blur-[2px]" id="modalBackdrop"></div>
+
+    <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+      <div class="flex min-h-full items-center justify-center p-4 text-center sm:p-0">
+        <!-- Modal Panel -->
+        <div
+          class="relative transform overflow-hidden rounded-xl bg-white text-left shadow-2xl transition-all sm:my-8 sm:w-full sm:max-w-lg border border-slate-200">
+
+          <div class="bg-white px-6 pb-6 pt-6">
+            <div class="sm:flex sm:items-start gap-4">
+              <div
+                class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-50 sm:mx-0 sm:h-10 sm:w-10 border border-red-100">
+                <i class="fa-solid fa-scale-balanced text-red-600 text-sm"></i>
+              </div>
+              <div class="mt-3 text-center sm:ml-0 sm:mt-0 sm:text-left w-full">
+                <h3 class="text-base font-bold leading-6 text-slate-900 uppercase tracking-wide" id="modalTitle">Audit
+                  Rule</h3>
+                <div class="mt-3">
+                  <p class="text-sm text-slate-600 bg-slate-50 p-4 rounded-lg border border-slate-100 leading-relaxed font-medium"
+                    id="modalDesc">
+                    Loading...
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bg-slate-50 px-6 py-3 sm:flex sm:flex-row-reverse border-t border-slate-100">
+            <button type="button" id="closeModalBtn"
+              class="inline-flex w-full justify-center rounded-lg bg-slate-800 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-slate-900 sm:ml-3 sm:w-auto uppercase tracking-wider transition-colors">
+              Close Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
