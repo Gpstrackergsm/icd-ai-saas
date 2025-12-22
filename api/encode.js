@@ -17,7 +17,7 @@ module.exports = async function handler(req, res) {
 
     // Simple negation detection
     const isNegated = (term) => {
-      const pattern = new RegExp(`(no|without|denies|negative for|ruled out|absence of)\\s+(documented\\s+)?(diagnosis of\\s+)?[^.]*?${term}`, 'i');
+      const pattern = new RegExp(`(no|without|den(ies|ied)|negative for|ruled out|absence of|did not (diagnose|document)|not diagnosed)\\s+(documented\\s+)?(diagnosis of\\s+)?[^.]*?\\b${term}\\b`, 'i');
       return pattern.test(text);
     };
 
