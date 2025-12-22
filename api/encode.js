@@ -352,59 +352,37 @@ const splitIntoSentences = (text) => {
 
 // ============================================================================
 // LEVEL 3: POA (Present on Admission) DETECTION (CONTEXT-AWARE)
-// v1.3.1-level3-fix: Expanded pattern coverage
+// v2.0: Refactored to use CLINICAL_INTENT closed intent system
 // ============================================================================
 const detectPOAStatus = (text, diagnosisPhrase) => {
   const lower = text.toLowerCase();
   const diagLower = diagnosisPhrase.toLowerCase();
 
   // Find the context (sentence/clause) containing this diagnosis
-  // Split by sentence boundaries
-  const sentences = lower.split(/[.;]\s*/);
+  const sentences = splitIntoSentences(text);
   let diagnosisContext = lower; // Default to full text
 
   // Find the sentence containing this diagnosis
   for (const sentence of sentences) {
-    if (sentence.includes(diagLower)) {
+    if (sentence.toLowerCase().includes(diagLower)) {
       diagnosisContext = sentence;
       break;
     }
   }
 
-  // POA = Y patterns (Present on admission) - Check in context
-  const poaYPatterns = [
-    /admitted (with|for)/i,
-    /(on|at) admission/i,
-    /(on|upon) arrival/i,
-    /arrived with/i,  // NEW: L3-fix
-    /present (on admission|at presentation)/i,  // NEW: L3-fix
-    /present on admission/i
-  ];
+  // Use intent classifier for deterministic POA detection
+  const intents = classifyIntent(diagnosisContext, diagnosisPhrase);
 
-  for (const pattern of poaYPatterns) {
-    if (pattern.test(diagnosisContext)) {
-      return { status: 'Y', phrase: 'present on admission' };
-    }
+  // Check for POA_YES intent
+  const poaYes = intents.find(i => i.intent === CLINICAL_INTENT.POA_YES);
+  if (poaYes) {
+    return { status: 'Y', phrase: poaYes.phrase };
   }
 
-  // POA = N patterns (Hospital-acquired) - Check in context
-  const poaNPatterns = [
-    /developed after admission/i,
-    /occurred after admission/i,  // NEW: L3-fix
-    /developed during hospitalization/i,  // NEW: L3-fix
-    /hospital-acquired/i,  // NEW: L3-fix
-    /hospital course/i,
-    /post-admission/i,
-    /post admission/i,  // NEW: L3-fix (without hyphen)
-    /on day [2-9]/i,
-    /developed.*later/i,
-    /developed/i  // General "developed" in context
-  ];
-
-  for (const pattern of poaNPatterns) {
-    if (pattern.test(diagnosisContext)) {
-      return { status: 'N', phrase: 'hospital-acquired' };
-    }
+  // Check for POA_NO intent
+  const poaNo = intents.find(i => i.intent === CLINICAL_INTENT.POA_NO);
+  if (poaNo) {
+    return { status: 'N', phrase: poaNo.phrase };
   }
 
   // Default: POA = U (Unknown - timing not specified)
@@ -801,41 +779,32 @@ module.exports = async function handler(req, res) {
 
     // ========================================================================
     // LEVEL 0: NEGATION DETECTION (FROZEN - DO NOT MODIFY)
-    // CRITICAL FIX: Enhanced to detect negations in explicit diagnosis sections
+    // v2.0: Refactored to use CLINICAL_INTENT closed intent system
     // ========================================================================
     const isNegated = (term) => {
-      // Check 1: General pattern matching (original logic)
-      const pattern = new RegExp(`(no|without|den(ies|ied)|negative for|ruled out|absence of|did not (diagnose|document)|not diagnosed)\\s+(documented\\s+)?(diagnosis of\\s+)?[^.]*?\\b${term}\\b`, 'i');
-      if (pattern.test(text)) {
-        return true;
-      }
+      // Split narrative into sentences for context-aware detection
+      const sentences = splitIntoSentences(text);
 
-      // Check 2: Explicit diagnosis sections with negations/queries
-      const diagnosisSections = [
-        /Diagnosis:\s*([^\n.;?]+)/i,  // Capture up to ?, period, semicolon, or newline
-        /Assessment:\s*([^\n.;?]+)/i,
-        /Impression:\s*([^\n.;?]+)/i,
-        /Dx:\s*([^\n.;?]+)/i
-      ];
+      for (const sentence of sentences) {
+        const lower = sentence.toLowerCase();
+        const termLower = term.toLowerCase();
 
-      for (const sectionPattern of diagnosisSections) {
-        const match = text.match(sectionPattern);
-        if (match && match[1]) {
-          const diagnosisText = match[1].trim().toLowerCase();
-          const termLower = term.toLowerCase();
+        // Only check sentences containing the term
+        if (!lower.includes(termLower)) {
+          continue;
+        }
 
-          // If this section contains the term AND has negation/query markers
-          if (diagnosisText.includes(termLower)) {
-            const hasNegation = /^(no |rule out|r\/o|ruled out|denies|without|possible|suspected|probable|likely)/i.test(match[1].trim());
+        // Use intent classifier for deterministic negation detection
+        const intents = classifyIntent(sentence, term);
 
-            // Also check if there's a ? immediately after this match
-            const matchEnd = match.index + match[0].length;
-            const hasQuery = text.charAt(matchEnd) === '?';
+        // Check for exclusion intents (NEGATION, RULE_OUT, POSSIBLE, QUERY)
+        const hasNegation = intents.some(i => i.intent === CLINICAL_INTENT.NEGATION);
+        const hasRuleOut = intents.some(i => i.intent === CLINICAL_INTENT.RULE_OUT);
+        const hasPossible = intents.some(i => i.intent === CLINICAL_INTENT.POSSIBLE);
+        const hasQuery = intents.some(i => i.intent === CLINICAL_INTENT.QUERY);
 
-            if (hasNegation || hasQuery) {
-              return true;  // Term appears in negated/queried section
-            }
-          }
+        if (hasNegation || hasRuleOut || hasPossible || hasQuery) {
+          return true;  // Term is negated/excluded
         }
       }
 
