@@ -1,5 +1,5 @@
-const { findUserByEmail, verifyPassword, updateLastLogin, sanitizeUser } = require('../../dist/lib/auth/users.js');
-const { generateToken } = require('../../dist/lib/auth/jwt.js');
+const { findUserByEmail, verifyPassword, updateLastLogin, sanitizeUser } = require('../../lib/auth/users');
+const { generateToken } = require('../../lib/auth/jwt');
 
 module.exports = async function handler(req, res) {
     if (req.method !== 'POST') {
