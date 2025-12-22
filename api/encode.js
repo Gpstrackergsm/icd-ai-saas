@@ -429,6 +429,55 @@ module.exports = async function handler(req, res) {
       detectedDiagnoses.push('residual weakness from prior cva');
     }
 
+
+    // ========================================================================
+    // LEVEL 4: ADDITIONAL DIAGNOSIS DETECTION (MI, GI BLEEDING, TRAUMA)
+    // Must run BEFORE AUTO_EXCLUDE check
+    // ========================================================================
+    
+    // MI/Chest Pain (explicit only)
+    if ((lower.includes('myocardial infarction') || lower.includes('acute mi')) && !isNegated('myocardial infarction')) {
+      if (lower.includes('stemi')) {
+        detectedDiagnoses.push('acute ST elevation myocardial infarction');
+      } else if (lower.includes('nstemi')) {
+        detectedDiagnoses.push('acute non-ST elevation myocardial infarction');
+      } else {
+        detectedDiagnoses.push('acute myocardial infarction');
+      }
+    }
+    
+    if (lower.includes('chest pain') && !isNegated('chest pain')) {
+      detectedDiagnoses.push('chest pain');
+    }
+
+    // GI Bleeding (explicit only)
+    if ((lower.match(/gastrointestinal bleeding|gi bleeding|gi bleed/) || lower.includes('gastrointestinal hemorrhage')) && !isNegated('bleeding')) {
+      detectedDiagnoses.push('gastrointestinal bleeding');
+    }
+    
+    // Acute blood loss anemia (explicit only)
+    if (lower.match(/acute blood loss anemia|blood loss anemia/) && !isNegated('anemia')) {
+      detectedDiagnoses.push('acute blood loss anemia');
+    }
+
+    // Trauma/Fractures (explicit only)
+    if ((lower.includes('femur fracture') || lower.match(/fracture of femur|fractured femur/)) && !isNegated('fracture')) {
+      detectedDiagnoses.push('femur fracture');
+    }
+    
+    if (lower.match(/\btrauma\b|traumatic injury/) && !isNegated('trauma')) {
+      detectedDiagnoses.push('trauma');
+    }
+    
+    if (lower.includes('fall') && !isNegated('fall')) {
+      detectedDiagnoses.push('fall');
+    }
+
+    // Septic shock hospital-acquired (explicit only)
+    if (lower.match(/septic shock developed|shock developed/) && lower.match(/after admission|during hospitalization/)) {
+      detectedDiagnoses.push('septic shock hospital-acquired');
+    }
+
     // ========================================================================
     // LEVEL 0: AUTO_EXCLUDE (FROZEN - ALWAYS WINS)
     // ========================================================================
