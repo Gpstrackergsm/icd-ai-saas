@@ -222,11 +222,11 @@ module.exports = async function handler(req, res) {
       detectedDiagnoses.push('heart failure');
     }
 
-    // Stroke
-    if (lower.match(/residual.*weakness.*prior.*cva|residual.*weakness.*stroke/) && !isNegated('cva')) {
-      detectedDiagnoses.push('residual weakness from prior cva');
-    } else if (lower.match(/history of.*cva.*no residual/) && !isNegated('cva')) {
+    // Stroke - check for "no residual" FIRST
+    if (lower.match(/history of.*(cva|stroke)/) && lower.match(/no residual/) && !isNegated('cva')) {
       detectedDiagnoses.push('history of cva');
+    } else if (lower.match(/residual.*(weakness|deficit)/) && (lower.includes('stroke') || lower.includes('cva')) && !isNegated('cva')) {
+      detectedDiagnoses.push('residual weakness from prior cva');
     }
 
     // ========================================================================
