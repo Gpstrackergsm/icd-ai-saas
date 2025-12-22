@@ -57,6 +57,20 @@ const ICD10_MAPPING = {
   'diabetic peripheral angiopathy': { code: 'E11.51', description: 'Type 2 diabetes mellitus with diabetic peripheral angiopathy without gangrene', linked: true },
   'diabetic hyperglycemia': { code: 'E11.65', description: 'Type 2 diabetes mellitus with hyperglycemia', linked: true },
 
+  // Diabetes + CKD: Combination codes (MANIFESTATION linking)
+  'diabetic chronic kidney disease stage 3': {
+    codes: ['E11.22', 'N18.30'],
+    descriptions: ['Type 2 diabetes mellitus with diabetic chronic kidney disease', 'Chronic kidney disease, stage 3 unspecified'],
+    linked: true,
+    linkPhrase: 'manifestation of'
+  },
+  'diabetic chronic kidney disease stage 4': {
+    codes: ['E11.22', 'N18.4'],
+    descriptions: ['Type 2 diabetes mellitus with diabetic chronic kidney disease', 'Chronic kidney disease, stage 4 (severe)'],
+    linked: true,
+    linkPhrase: 'manifestation of'
+  },
+
   // Diabetes - Unlinked
   'type 2 diabetes': { code: 'E11.9', description: 'Type 2 diabetes mellitus without complications' },
   'foot ulcer': { code: 'L97.', description: 'Non-pressure chronic ulcer of lower limb' },
@@ -840,7 +854,7 @@ module.exports = async function handler(req, res) {
     // LEVEL 1: DIAGNOSIS DETECTION (EXPLICIT ONLY)
     // ========================================================================
     const lower = text.toLowerCase();
-    const detectedDiagnoses = [];
+    let detectedDiagnoses = [];  // Changed to 'let' for manifestation linking
     let codes = [];  // LEVEL 3: Changed to 'let' for deduplication
     const queries = [];
     // Sepsis (check first for proper sequencing as primary)
@@ -1175,6 +1189,58 @@ module.exports = async function handler(req, res) {
         console.warn('[AUDIT] Explicit diagnosis not in ICD10_MAPPING:', explicitDiagnosis.diagnosisText);
         console.warn('[AUDIT] Section:', explicitDiagnosis.section);
         // Continue to normal processing - may trigger AUTO_QUERY or other logic
+      }
+    }
+
+    // ========================================================================
+    // LEVEL 2: DIABETES + CKD MANIFESTATION LINKING (DETERMINISTIC)
+    // Detects explicit manifestation language and forces combination code
+    // ========================================================================
+
+    // Check if we have both diabetes and CKD detected
+    const hasDiabetes = detectedDiagnoses.some(d => d.toLowerCase().includes('diabetes'));
+    const hasCKD = detectedDiagnoses.some(d => d.toLowerCase().includes('chronic kidney disease'));
+
+    if (hasDiabetes && hasCKD) {
+      // Use intent classifier to detect MANIFESTATION intent
+      const sentences = splitIntoSentences(text);
+      let manifestationDetected = false;
+
+      for (const sentence of sentences) {
+        const lower = sentence.toLowerCase();
+        // Only check sentences containing both diabetes and CKD keywords
+        if ((lower.includes('diabetes') || lower.includes('dm')) && (lower.includes('ckd') || lower.includes('chronic kidney disease') || lower.includes('kidney disease'))) {
+          const intents = classifyIntent(sentence);
+          const hasManifest = intents.some(i => i.intent === CLINICAL_INTENT.MANIFESTATION);
+
+          if (hasManifest) {
+            manifestationDetected = true;
+            break;
+          }
+        }
+      }
+
+      if (manifestationDetected) {
+        // MANDATORY: Apply ICD-10-CM combination rule
+        // Replace unlinked codes with linked combination code
+
+        // Remove E11.9 and individual CKD codes
+        detectedDiagnoses = detectedDiagnoses.filter(d =>
+          !d.toLowerCase().includes('type 2 diabetes') ||
+          d.toLowerCase().includes('diabetic')
+        );
+
+        // Determine CKD stage for combination code
+        const ckdStage3 = text.match(/ckd stage 3|chronic kidney disease stage 3|stage 3 ckd/i);
+        const ckdStage4 = text.match(/ckd stage 4|chronic kidney disease stage 4|stage 4 ckd/i);
+
+        if (ckdStage4) {
+          detectedDiagnoses.push('diabetic chronic kidney disease stage 4');
+        } else if (ckdStage3) {
+          detectedDiagnoses.push('diabetic chronic kidney disease stage 3');
+        }
+
+        console.warn('[MANIFESTATION LINK] Diabetes + CKD manifestation detected - forcing E11.22 combination code');
       }
     }
 
