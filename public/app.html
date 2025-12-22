@@ -298,12 +298,18 @@
         const content = document.createElement('div');
         content.className = 'p-4 space-y-3';
 
-        // Check if AUTO_EXCLUDE decision
-        const isAutoExclude = result.validationErrors?.length > 0 && 
-                             result.validationErrors[0].includes('AUDIT DECISION — AUTO EXCLUDE');
+        // Check decision state from debug info
+        const isAutoExclude = result.validationErrors?.length > 0 &&
+          result.validationErrors[0].includes('AUDIT DECISION — AUTO EXCLUDE');
 
-        if (isAutoExclude) {
-          // AUTO_EXCLUDE: Show ONLY audit decision, hide all forbidden UI
+        const isAutoCode = result.validationErrors?.length > 0 &&
+          result.validationErrors[0].includes('AUDIT DECISION — AUTO CODE');
+
+        const isAutoQuery = result.validationErrors?.length > 0 &&
+          result.validationErrors[0].includes('AUDIT DECISION — QUERY REQUIRED');
+
+        // For AUTO_EXCLUDE, AUTO_CODE, or AUTO_QUERY: Show ONLY the audit decision
+        if (isAutoExclude || isAutoCode || isAutoQuery) {
           const auditDiv = document.createElement('div');
           auditDiv.innerHTML = result.validationErrors[0];
           content.appendChild(auditDiv);
@@ -346,7 +352,8 @@
           content.appendChild(errDiv);
         }
 
-        if (!isAutoExclude && !result.primary && (!result.secondary || !result.secondary.length)) {
+        // Only show "no codes" message if not AUTO_EXCLUDE, AUTO_CODE, or AUTO_QUERY
+        if (!isAutoExclude && !isAutoCode && !isAutoQuery && !result.primary && (!result.secondary || !result.secondary.length)) {
           const noCodesDiv = document.createElement('div');
           noCodesDiv.className = 'p-3 bg-amber-50 text-amber-700 rounded-md border border-amber-200 text-sm';
           noCodesDiv.textContent = 'No codes were generated for this scenario.';
