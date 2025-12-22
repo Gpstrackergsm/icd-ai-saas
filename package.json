@@ -1,24 +1,15 @@
 {
   "name": "icd-ai-saas",
-  "version": "2.1.2",
-  "private": true,
+  "version": "1.4.0",
   "scripts": {
-    "build": "rm -rf dist && tsc && mkdir -p dist && cp -R data dist/data",
-    "dev": "ts-node src/index.ts",
-    "start": "node dist/index.js",
-    "test": "tsc && node dist/__tests__/medicalEngine.test.js"
-  },
-  "dependencies": {
-    "@supabase/supabase-js": "^2.86.1",
-    "bcryptjs": "^2.4.3",
-    "jsonwebtoken": "^9.0.2",
-    "uuid": "^9.0.0",
-    "typescript": "^5.4.5"
-  },
-  "devDependencies": {
-    "@types/bcryptjs": "^2.4.6",
-    "@types/jsonwebtoken": "^9.0.10",
-    "@types/uuid": "^10.0.0",
-    "ts-node": "^10.9.2"
+    "test": "npm run test:frozen",
+    "test:frozen": "npm run test:level0 && npm run test:level1 && npm run test:level2 && npm run test:level3 && npm run test:level4:guard",
+    "test:level0": "node run_level0_tests.js",
+    "test:level1": "node run_level1_tests.js",
+    "test:level2": "node run_level2_certification.js",
+    "test:level3": "node run_level3_tests.js",
+    "test:level4": "node run_level4_tests.js",
+    "test:level4:guard": "node test_frozen_level4_guard.js",
+    "verify:frozen": "echo '🔒 Verifying all frozen levels...' && npm run test:frozen && echo '✅ All frozen levels verified'"
   }
 }
