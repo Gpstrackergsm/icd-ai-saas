@@ -1274,6 +1274,7 @@ module.exports = async function handler(req, res) {
           primary: finalExclude.primary,
           secondary: finalExclude.secondary,
           primaryDescription: finalExclude.primaryDescription,
+          primaryPOA: finalExclude.primaryPOA || 'Y',  // Ensure POA is set
           warnings: [],
           validationErrors: finalExclude.derivedByMarketRule && finalExclude.primary ? [
             `<div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-md">
