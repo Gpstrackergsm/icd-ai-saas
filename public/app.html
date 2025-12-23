@@ -383,6 +383,13 @@
           content.appendChild(errDiv);
         }
 
+        // UAE Market Override Success Message (rendered separately, doesn't trigger compliance gate)
+        if (result.uaeSuccessMessage) {
+          const uaeDiv = document.createElement('div');
+          uaeDiv.innerHTML = result.uaeSuccessMessage;
+          content.appendChild(uaeDiv.firstChild || uaeDiv);
+        }
+
         // Show "no codes" message if truly no codes
         if (!result.primary && (!result.secondary || !result.secondary.length)) {
           const noCodesDiv = document.createElement('div');
