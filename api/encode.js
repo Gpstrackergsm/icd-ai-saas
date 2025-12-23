@@ -1217,7 +1217,13 @@ module.exports = async function handler(req, res) {
 
         for (const sentence of sentences) {
           const intents = classifyIntent(sentence);
-          const hasManifest = intents.some(i => i.intent === CLINICAL_INTENT.MANIFESTATION);
+          // Accept BOTH manifestation AND causal link intents
+          // "due to", "secondary to" = CAUSAL_LINK
+          // "manifestation of" = MANIFESTATION
+          const hasManifest = intents.some(i =>
+            i.intent === CLINICAL_INTENT.MANIFESTATION ||
+            i.intent === CLINICAL_INTENT.CAUSAL_LINK
+          );
 
           if (hasManifest) {
             // Verify this sentence mentions CKD or diabetes
