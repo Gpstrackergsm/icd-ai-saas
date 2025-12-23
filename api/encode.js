@@ -20,6 +20,14 @@ const ICD10_MAPPING = {
   'acute respiratory failure': { code: 'J96.01', description: 'Acute respiratory failure with hypoxia' },
   'acute respiratory failure with hypoxia': { code: 'J96.01', description: 'Acute respiratory failure with hypoxia' },
 
+  // COPD + Respiratory Failure: Combination codes (MANIFESTATION linking)  
+  'copd with acute exacerbation and respiratory failure': {
+    codes: ['J44.1', 'J96.01'],
+    descriptions: ['Chronic obstructive pulmonary disease with (acute) exacerbation', 'Acute respiratory failure with hypoxia'],
+    linked: true,
+    linkPhrase: 'due to'
+  },
+
   // LEVEL 2: Respiratory failure due to pneumonia (LINKED)
   'acute respiratory failure due to pneumonia': {
     codes: ['J96.01', 'J18.9'],
@@ -27,6 +35,11 @@ const ICD10_MAPPING = {
     linked: true,
     linkPhrase: 'due to'
   },
+
+  // COPD
+  'copd': { code: 'J44.9', description: 'Chronic obstructive pulmonary disease, unspecified' },
+  'copd exacerbation': { code: 'J44.1', description: 'Chronic obstructive pulmonary disease with (acute) exacerbation' },
+  'chronic obstructive pulmonary disease': { code: 'J44.9', description: 'Chronic obstructive pulmonary disease, unspecified' },
 
   // Sepsis
   'sepsis': { code: 'A41.9', description: 'Sepsis, unspecified organism' },
@@ -1030,6 +1043,13 @@ module.exports = async function handler(req, res) {
       }
     }
 
+    // COPD
+    if (lower.includes('copd exacerbation') && !isNegated('copd')) {
+      detectedDiagnoses.push('copd exacerbation');
+    } else if ((lower.includes('copd') || lower.includes('chronic obstructive pulmonary disease')) && !isNegated('copd')) {
+      detectedDiagnoses.push('copd');
+    }
+
     // Heart Failure
     if (lower.includes('acute on chronic systolic heart failure') && !isNegated('heart failure')) {
       detectedDiagnoses.push('acute on chronic systolic heart failure');
@@ -1283,6 +1303,66 @@ module.exports = async function handler(req, res) {
         }
       }
     }
+
+    // ========================================================================
+    // LEVEL 2: COPD + RESPIRATORY FAILURE MANIFESTATION LINKING (DETERMINISTIC)
+    // Detects explicit causal language and forces combination code
+    // ========================================================================
+
+    // Check if we have both COPD and respiratory failure detected
+    const hasCOPD = detectedDiagnoses.some(d => d.toLowerCase().includes('copd') || d.toLowerCase().includes('chronic obstructive'));
+    const hasRespiratoryFailure = detectedDiagnoses.some(d => d.toLowerCase().includes('respiratory failure'));
+
+    if (hasCOPD && hasRespiratoryFailure) {
+      // Check full narrative for manifestation/causal language
+      const lower = text.toLowerCase();
+      const hasCOPDKeywords = (lower.includes('copd') || lower.includes('chronic obstructive'));
+      const hasRespFailureKeywords = (lower.includes('respiratory failure') || lower.includes('arf'));
+
+      if (hasCOPDKeywords && hasRespFailureKeywords) {
+        // Use intent classifier to detect MANIFESTATION or CAUSAL_LINK intent
+        const sentences = splitIntoSentences(text);
+        let manifestationDetected = false;
+
+        for (const sentence of sentences) {
+          const intents = classifyIntent(sentence);
+          const hasManifest = intents.some(i =>
+            i.intent === CLINICAL_INTENT.MANIFESTATION ||
+            i.intent === CLINICAL_INTENT.CAUSAL_LINK
+          );
+
+          if (hasManifest) {
+            // Verify this sentence mentions COPD or respiratory failure
+            const sentLower = sentence.toLowerCase();
+            if ((sentLower.includes('copd') || sentLower.includes('chronic obstructive') || sentLower.includes('respiratory failure') || sentLower.includes('arf'))) {
+              manifestationDetected = true;
+              break;
+            }
+          }
+        }
+
+        if (manifestationDetected) {
+          // MANDATORY: Apply ICD-10-CM combination rule
+          // Remove unlinked codes and replace with linked combination code
+
+          // Remove standalone COPD and respiratory failure codes
+          detectedDiagnoses = detectedDiagnoses.filter(d => {
+            const dLower = d.toLowerCase();
+            // Remove plain respiratory failure
+            if (dLower.includes('respiratory failure') && !dLower.includes('copd')) return false;
+            // Remove standalone COPD
+            if ((dLower.includes('copd') || dLower.includes('chronic obstructive')) && !dLower.includes('respiratory failure')) return false;
+            return true;
+          });
+
+          // Add the combination code
+          detectedDiagnoses.push('copd with acute exacerbation and respiratory failure');
+
+          console.warn('[MANIFESTATION LINK] COPD + respiratory failure manifestation detected - forcing J44.1 combination code');
+        }
+      }
+    }
+
 
     // ========================================================================
     // LEVEL 2: DIAGNOSIS-TO-CODE MAPPING
