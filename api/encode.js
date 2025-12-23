@@ -1182,8 +1182,11 @@ module.exports = async function handler(req, res) {
       detectedDiagnoses.push('fall');
     }
 
-    // Septic shock hospital-acquired (explicit only)
-    if (lower.match(/septic shock developed|shock developed/) && lower.match(/after admission|during hospitalization/)) {
+    // Septic shock hospital-acquired (robust detection)
+    // Uses word boundaries, negation check, and specific septic shock matching
+    if (/\bseptic shock\b.*\b(developed|occurred|noted)\b/.test(lower) &&
+      /\b(after admission|during hospitalization|hospital[- ]acquired)\b/.test(lower) &&
+      !isNegated('septic shock')) {
       detectedDiagnoses.push('septic shock hospital-acquired');
     }
 
@@ -1213,9 +1216,7 @@ module.exports = async function handler(req, res) {
                           <p class="leading-relaxed">
                               Per ICD-10-CM Official Guidelines, diagnoses may not be inferred from laboratory 
 
-    if (lower.match(/septic shock developed|shock developed/) && lower.match(/after admission|during hospitalization/)) {
-      detectedDiagnoses.push('septic shock hospital-acquired');
-    }
+    // Robust septic shock detection (duplicate removed - already handled above)
                               values, monitoring, or risk discussion alone.
                           </p>
                       </div>
@@ -1311,7 +1312,7 @@ module.exports = async function handler(req, res) {
     if (hasDiabetes && hasCKD) {
       // First check for implicit "with" pattern  
       const hasImplicitWith = /diabetes\s+with\s+(ckd|chronic kidney disease)/i.test(text);
-      
+
       if (hasImplicitWith) {
         const hasCKDStage3 = detectedDiagnoses.some(d => d.toLowerCase().includes('chronic kidney disease stage 3'));
         const hasCKDStage4 = detectedDiagnoses.some(d => d.toLowerCase().includes('chronic kidney disease stage 4'));
@@ -1326,71 +1327,71 @@ module.exports = async function handler(req, res) {
         }
         console.warn('[IMPLICIT LINK] Diabetes WITH CKD detected - forcing E11.22');
       } else {
-      // Explicit manifestation check
-      // Check full narrative for manifestation language
-      // This catches cases like: "CKD stage 4 secondary to diabetes" or "CKD due to diabetes"
-      const lower = text.toLowerCase();
-      const hasManifestationKeywords = (
-        (lower.includes('ckd') || lower.includes('chronic kidney disease') || lower.includes('kidney disease')) &&
-        (lower.includes('diabetes') || lower.includes('dm'))
-      );
+        // Explicit manifestation check
+        // Check full narrative for manifestation language
+        // This catches cases like: "CKD stage 4 secondary to diabetes" or "CKD due to diabetes"
+        const lower = text.toLowerCase();
+        const hasManifestationKeywords = (
+          (lower.includes('ckd') || lower.includes('chronic kidney disease') || lower.includes('kidney disease')) &&
+          (lower.includes('diabetes') || lower.includes('dm'))
+        );
 
-      if (hasManifestationKeywords) {
-        // Use intent classifier to detect MANIFESTATION intent anywhere in text
-        const sentences = splitIntoSentences(text);
-        let manifestationDetected = false;
+        if (hasManifestationKeywords) {
+          // Use intent classifier to detect MANIFESTATION intent anywhere in text
+          const sentences = splitIntoSentences(text);
+          let manifestationDetected = false;
 
-        for (const sentence of sentences) {
-          const intents = classifyIntent(sentence);
-          // Accept BOTH manifestation AND causal link intents
-          // "due to", "secondary to" = CAUSAL_LINK
-          // "manifestation of" = MANIFESTATION
-          const hasManifest = intents.some(i =>
-            i.intent === CLINICAL_INTENT.MANIFESTATION ||
-            i.intent === CLINICAL_INTENT.CAUSAL_LINK
-          );
+          for (const sentence of sentences) {
+            const intents = classifyIntent(sentence);
+            // Accept BOTH manifestation AND causal link intents
+            // "due to", "secondary to" = CAUSAL_LINK
+            // "manifestation of" = MANIFESTATION
+            const hasManifest = intents.some(i =>
+              i.intent === CLINICAL_INTENT.MANIFESTATION ||
+              i.intent === CLINICAL_INTENT.CAUSAL_LINK
+            );
 
-          if (hasManifest) {
-            // Verify this sentence mentions CKD or diabetes
-            const sentLower = sentence.toLowerCase();
-            if ((sentLower.includes('ckd') || sentLower.includes('kidney') || sentLower.includes('renal')) ||
-              (sentLower.includes('diabetes') || sentLower.includes('dm'))) {
-              manifestationDetected = true;
-              break;
+            if (hasManifest) {
+              // Verify this sentence mentions CKD or diabetes
+              const sentLower = sentence.toLowerCase();
+              if ((sentLower.includes('ckd') || sentLower.includes('kidney') || sentLower.includes('renal')) ||
+                (sentLower.includes('diabetes') || sentLower.includes('dm'))) {
+                manifestationDetected = true;
+                break;
+              }
             }
           }
-        }
 
-        if (manifestationDetected) {
-          // MANDATORY: Apply ICD-10-CM combination rule
-          // Replace unlinked codes with linked combination code
+          if (manifestationDetected) {
+            // MANDATORY: Apply ICD-10-CM combination rule
+            // Replace unlinked codes with linked combination code
 
-          // Remove E11.9 and individual CKD codes from detection list
-          detectedDiagnoses = detectedDiagnoses.filter(d => {
-            const dLower = d.toLowerCase();
-            // Keep diabetic complications, remove plain "type 2 diabetes"
-            if (dLower === 'type 2 diabetes') return false;
-            // Keep CKD for stage info, but will replace with combination
-            return true;
-          });
+            // Remove E11.9 and individual CKD codes from detection list
+            detectedDiagnoses = detectedDiagnoses.filter(d => {
+              const dLower = d.toLowerCase();
+              // Keep diabetic complications, remove plain "type 2 diabetes"
+              if (dLower === 'type 2 diabetes') return false;
+              // Keep CKD for stage info, but will replace with combination
+              return true;
+            });
 
-          // CRITICAL FIX: Check what CKD stage is in detectedDiagnoses array (already detected by CKD logic)
-          // instead of re-parsing text (which might miss patterns like "currently at Stage 4")
-          const hasCKDStage3 = detectedDiagnoses.some(d => d.toLowerCase().includes('chronic kidney disease stage 3'));
-          const hasCKDStage4 = detectedDiagnoses.some(d => d.toLowerCase().includes('chronic kidney disease stage 4'));
+            // CRITICAL FIX: Check what CKD stage is in detectedDiagnoses array (already detected by CKD logic)
+            // instead of re-parsing text (which might miss patterns like "currently at Stage 4")
+            const hasCKDStage3 = detectedDiagnoses.some(d => d.toLowerCase().includes('chronic kidney disease stage 3'));
+            const hasCKDStage4 = detectedDiagnoses.some(d => d.toLowerCase().includes('chronic kidney disease stage 4'));
 
-          // Remove standalone CKD codes
-          detectedDiagnoses = detectedDiagnoses.filter(d => !d.toLowerCase().includes('chronic kidney disease'));
+            // Remove standalone CKD codes
+            detectedDiagnoses = detectedDiagnoses.filter(d => !d.toLowerCase().includes('chronic kidney disease'));
 
-          if (hasCKDStage4) {
-            detectedDiagnoses.push('diabetic chronic kidney disease stage 4');
-          } else if (hasCKDStage3) {
-            detectedDiagnoses.push('diabetic chronic kidney disease stage 3');
+            if (hasCKDStage4) {
+              detectedDiagnoses.push('diabetic chronic kidney disease stage 4');
+            } else if (hasCKDStage3) {
+              detectedDiagnoses.push('diabetic chronic kidney disease stage 3');
+            }
+
+            console.warn('[MANIFESTATION LINK] Diabetes + CKD manifestation detected - forcing E11.22 combination code');
           }
-
-          console.warn('[MANIFESTATION LINK] Diabetes + CKD manifestation detected - forcing E11.22 combination code');
         }
-      }
       }  // Close implicit vs explicit check
     }
 
