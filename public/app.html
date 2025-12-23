@@ -466,6 +466,28 @@
           }
         }
 
+        // Add Export XML button for UAE market (normal results path)
+        const marketSelect = document.querySelector('select');
+        const selectedMarket = marketSelect ? marketSelect.value : '';
+        if (selectedMarket.includes('UAE') || selectedMarket.includes('Daman')) {
+          const exportBtnDiv = document.createElement('div');
+          exportBtnDiv.className = 'mt-6 pt-6 border-t-2 border-slate-200';
+          exportBtnDiv.innerHTML = `
+            <button class="export-xml-btn w-full px-4 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-lg font-bold transition-all flex items-center justify-center gap-3 shadow-lg hover:shadow-xl transform hover:scale-[1.02]">
+              <i class="fa-solid fa-file-export text-xl"></i>
+              <span class="text-lg">Export XML Claim (UAE)</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          `;
+          content.appendChild(exportBtnDiv);
+
+          const btn = exportBtnDiv.querySelector('.export-xml-btn');
+          btn.addEventListener('click', () => {
+            if (!window.uaeClaimEditor) { window.uaeClaimEditor = new UAEClaimEditor(); }
+            window.uaeClaimEditor.open(result);
+          });
+        }
+
         itemContainer.appendChild(content);
         encodeResults.appendChild(itemContainer);
       });
