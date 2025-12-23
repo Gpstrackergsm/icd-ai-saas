@@ -1254,9 +1254,11 @@ module.exports = async function handler(req, res) {
         validationErrors: [auditDecisionBlock],
         validationChanges: { removed: [], added: [] },
         decisionState: 'AUTO_EXCLUDE',
+        detectedDiagnoses: detectedDiagnoses,  // Pass explicit diagnoses for UAE multi-source handling
         _debug: {
           apiVersion: 'v1.1-level1',
           decisionState: 'AUTO_EXCLUDE',
+          detectedDiagnoses: detectedDiagnoses,
           timestamp: new Date().toISOString()
         }
       };
