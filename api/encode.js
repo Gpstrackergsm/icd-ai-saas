@@ -845,6 +845,21 @@ module.exports = async function handler(req, res) {
         if (hasNegation || hasRuleOut || hasPossible || hasQuery) {
           return true;  // Term is negated/excluded
         }
+
+        // CRITICAL FIX: HISTORY intent handling
+        // "history of diabetes" = past condition (don't code)
+        // "long history of diabetes" = chronic active condition (DO code)
+        const hasHistory = intents.some(i => i.intent === CLINICAL_INTENT.HISTORY);
+        if (hasHistory) {
+          // Check if this is "long history" context (chronic, still active)
+          const isLongHistory = /long history|chronic history|longstanding|ongoing/i.test(sentence);
+
+          if (!isLongHistory) {
+            // Plain "history of" = past resolved condition
+            return true;
+          }
+          // If "long history", continue - not negated (active chronic condition)
+        }
       }
 
       return false;
