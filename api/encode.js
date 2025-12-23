@@ -1952,6 +1952,37 @@ module.exports = async function handler(req, res) {
       text
     });
 
+    // Generate UAE success block if market override happened in AUTO_CODE path
+    let uaeAutoCodeBlock = null;
+    if (finalResult.derivedByMarketRule && finalResult.primary) {
+      uaeAutoCodeBlock = `
+        <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-md mb-4">
+            <div class="flex items-start gap-3">
+                <i class="fa-solid fa-check-circle text-green-600 text-xl mt-1"></i>
+                <div class="flex-1">
+                    <h3 class="font-bold text-green-900 text-sm uppercase tracking-wide mb-2">
+                        AUTO CODE — UAE MARKET OVERRIDE
+                    </h3>
+                    <div class="text-sm text-green-800 space-y-2 mb-3">
+                        <p class="leading-relaxed">${finalResult.marketNote}</p>
+                        <p class="leading-relaxed text-xs">${finalResult.ruleReference}</p>
+                    </div>
+                    <div class="bg-green-100 border border-green-200 rounded p-2 mb-3">
+                        <p class="text-xs font-semibold text-green-900 mb-1">CODES ASSIGNED</p>
+                        <p class="text-xs text-green-800"><strong>PRIMARY:</strong> ${finalResult.primary.code} — ${finalResult.primary.description}</p>
+                        ${finalResult.secondary && finalResult.secondary.length > 0 ?
+          `<p class="text-xs text-green-800 mt-1"><strong>SECONDARY:</strong></p>
+                           ${finalResult.secondary.map(s => `<p class="text-xs text-green-800 ml-4">• ${s.code} — ${s.description}</p>`).join('')}`
+          : ''}
+                    </div>
+                    <div class="border-t border-green-200 pt-2">
+                        <p class="text-xs text-green-600 italic">Market: UAE (Daman/Shafafiya) | Procedure-supported diagnosis</p>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+    }
+
     // Use final result (may be overridden)
     return res.status(200).json({
       success: true,
@@ -1962,7 +1993,8 @@ module.exports = async function handler(req, res) {
         primaryDescription: finalResult.primaryDescription,
         primaryPOA: finalResult.primaryPOA,
         warnings: [],
-        validationErrors: [autoCodeBlock],
+        validationErrors: uaeAutoCodeBlock ? [] : [autoCodeBlock],  // Empty if UAE override
+        uaeSuccessMessage: uaeAutoCodeBlock,  // New field for UAE override display
         validationChanges: { removed: [], added: [] },
         auditPlus,
         marketProfile: finalResult.marketProfile,
