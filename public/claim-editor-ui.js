@@ -109,19 +109,19 @@ class UAEClaimEditor {
 
         return {
             patient: {
-                emiratesID: '',
-                memberID: '',
-                birthDate: '',
-                gender: '',
-                name: ''
+                emiratesID: '784-1234-1234567-1',
+                memberID: 'INS123456789',
+                birthDate: '15/06/1985',
+                gender: 'M',
+                name: 'Ahmed Mohammed Ali'
             },
             provider: {
-                senderID: '',
-                clinicianID: '',
-                clinicianName: ''
+                senderID: 'FAC-12345',
+                clinicianID: 'DOC-67890',
+                clinicianName: 'Dr. Fatima Hassan'
             },
             financial: {
-                net: 0,
+                net: 350.50,
                 currency: 'AED'
             },
             encounterType: '1', // Default: Outpatient
@@ -135,9 +135,11 @@ class UAEClaimEditor {
         const diagnoses = [];
 
         if (result.primary) {
+            const primaryCode = typeof result.primary === 'object' ? result.primary.code : result.primary;
+            const primaryDesc = typeof result.primary === 'object' ? result.primary.description : (result.primaryDescription || 'Primary diagnosis');
             diagnoses.push({
-                code: result.primary,
-                description: result.primaryDescription || 'Primary diagnosis',
+                code: primaryCode,
+                description: primaryDesc,
                 sequence: 1,
                 type: 'principal'
             });
@@ -145,9 +147,11 @@ class UAEClaimEditor {
 
         if (result.secondary && Array.isArray(result.secondary)) {
             result.secondary.forEach((sec, index) => {
+                const secCode = typeof sec === 'object' ? sec.code : sec;
+                const secDesc = typeof sec === 'object' ? sec.description : 'Secondary diagnosis';
                 diagnoses.push({
-                    code: sec.code || sec,
-                    description: sec.description || 'Secondary diagnosis',
+                    code: secCode,
+                    description: secDesc,
                     sequence: index + 2,
                     type: 'secondary'
                 });
