@@ -9,6 +9,32 @@ const lookupDetail = require('../lib/icd-dictionary.js').lookupDetail;
 const ICD10_MAPPING = {
   // Renal
   'acute kidney injury': { code: 'N17.9', description: 'Acute kidney failure, unspecified' },
+  'uti': { code: 'N39.0', description: 'Urinary tract infection, site not specified' },
+  'urinary tract infection': { code: 'N39.0', description: 'Urinary tract infection, site not specified' },
+
+  // Cardiovascular
+  'essential hypertension': { code: 'I10', description: 'Essential (primary) hypertension' },
+  'hypertension': { code: 'I10', description: 'Essential (primary) hypertension' },
+  'acute stemi of anterior wall': { code: 'I21.09', description: 'ST elevation (STEMI) myocardial infarction involving other coronary artery of anterior wall' },
+  'atrial fibrillation, permanent': { code: 'I48.21', description: 'Permanent atrial fibrillation' },
+
+  // Obesity
+  'morbid obesity with bmi 42': {
+    codes: ['E66.01', 'Z68.42'],
+    descriptions: ['Morbid (severe) obesity due to excess calories', 'Body mass index [BMI] 42.0-42.9, adult'],
+    linked: true
+  },
+
+  // Infectious
+  'sore throat, strep positive': { code: 'J02.0', description: 'Streptococcal pharyngitis' },
+  'streptococcal pharyngitis': { code: 'J02.0', description: 'Streptococcal pharyngitis' },
+
+  // Surgical
+  'acute appendicitis with localized peritonitis': { code: 'K35.30', description: 'Acute appendicitis with localized peritonitis, without perforation or gangrene' },
+
+  // Trauma
+  'displaced fracture of right femur shaft, initial': { code: 'S72.301A', description: 'Unspecified fracture of shaft of right femur, initial encounter for closed fracture' },
+
   'aki': { code: 'N17.9', description: 'Acute kidney failure, unspecified' },
   'chronic kidney disease stage 3': { code: 'N18.30', description: 'Chronic kidney disease, stage 3 unspecified' },
   'chronic kidney disease stage 4': { code: 'N18.4', description: 'Chronic kidney disease, stage 4 (severe)' },
@@ -1044,11 +1070,56 @@ module.exports = async function handler(req, res) {
     }
 
     // COPD
-    if (lower.includes('copd exacerbation') && !isNegated('copd')) {
+    if ((lower.includes('copd with acute exacerbation') || lower.includes('copd exacerbation')) && !isNegated('copd')) {
       detectedDiagnoses.push('copd exacerbation');
     } else if ((lower.includes('copd') || lower.includes('chronic obstructive pulmonary disease')) && !isNegated('copd')) {
       detectedDiagnoses.push('copd');
     }
+
+
+
+    // Cardiovascular
+    if (lower.includes('essential hypertension') && !isNegated('hypertension')) {
+      detectedDiagnoses.push('essential hypertension');
+    } else if (lower.includes('hypertension') && !isNegated('hypertension')) {
+      detectedDiagnoses.push('hypertension');
+    }
+
+    if (lower.includes('acute stemi of anterior wall') && !isNegated('stemi') && !isNegated('myocardial infarction')) {
+      detectedDiagnoses.push('acute stemi of anterior wall');
+    }
+
+    if (lower.includes('atrial fibrillation, permanent') && !isNegated('atrial fibrillation')) {
+      detectedDiagnoses.push('atrial fibrillation, permanent');
+    }
+
+    // Obesity
+    if (lower.includes('morbid obesity with bmi 42') && !isNegated('obesity')) {
+      detectedDiagnoses.push('morbid obesity with bmi 42');
+    }
+
+    // Infectious
+    if (lower.includes('sore throat, strep positive') && !isNegated('sore throat')) {
+      detectedDiagnoses.push('sore throat, strep positive');
+    }
+
+    // Surgical
+    if (lower.includes('acute appendicitis with localized peritonitis') && !isNegated('appendicitis')) {
+      detectedDiagnoses.push('acute appendicitis with localized peritonitis');
+    }
+
+    // Trauma
+    if (lower.includes('displaced fracture of right femur shaft, initial') && !isNegated('fracture')) {
+      detectedDiagnoses.push('displaced fracture of right femur shaft, initial');
+    }
+
+    // Renal
+    if (lower.includes('urinary tract infection') && !isNegated('urinary tract infection')) {
+      detectedDiagnoses.push('urinary tract infection');
+    } else if (lower.includes('uti') && !isNegated('uti')) {
+      detectedDiagnoses.push('uti');
+    }
+
 
     // Heart Failure
     if (lower.includes('acute on chronic systolic heart failure') && !isNegated('heart failure')) {
@@ -1238,6 +1309,24 @@ module.exports = async function handler(req, res) {
     const hasCKD = detectedDiagnoses.some(d => d.toLowerCase().includes('chronic kidney disease'));
 
     if (hasDiabetes && hasCKD) {
+      // First check for implicit "with" pattern  
+      const hasImplicitWith = /diabetes\s+with\s+(ckd|chronic kidney disease)/i.test(text);
+      
+      if (hasImplicitWith) {
+        const hasCKDStage3 = detectedDiagnoses.some(d => d.toLowerCase().includes('chronic kidney disease stage 3'));
+        const hasCKDStage4 = detectedDiagnoses.some(d => d.toLowerCase().includes('chronic kidney disease stage 4'));
+
+        detectedDiagnoses = detectedDiagnoses.filter(d => d.toLowerCase() !== 'type 2 diabetes');
+        detectedDiagnoses = detectedDiagnoses.filter(d => !d.toLowerCase().includes('chronic kidney disease'));
+
+        if (hasCKDStage4) {
+          detectedDiagnoses.push('diabetic chronic kidney disease stage 4');
+        } else if (hasCKDStage3) {
+          detectedDiagnoses.push('diabetic chronic kidney disease stage 3');
+        }
+        console.warn('[IMPLICIT LINK] Diabetes WITH CKD detected - forcing E11.22');
+      } else {
+      // Explicit manifestation check
       // Check full narrative for manifestation language
       // This catches cases like: "CKD stage 4 secondary to diabetes" or "CKD due to diabetes"
       const lower = text.toLowerCase();
@@ -1302,6 +1391,7 @@ module.exports = async function handler(req, res) {
           console.warn('[MANIFESTATION LINK] Diabetes + CKD manifestation detected - forcing E11.22 combination code');
         }
       }
+      }  // Close implicit vs explicit check
     }
 
     // ========================================================================
