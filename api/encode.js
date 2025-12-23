@@ -1238,20 +1238,52 @@ module.exports = async function handler(req, res) {
           </div>
       `;
 
+      // ========================================================================
+      // MARKET JURISDICTION ADAPTER (Auto-Exclude Path)
+      // UAE mode may derive diagnoses from procedures
+      // ========================================================================
+
+      const { applyMarketAdapter: applyAdapter2 } = require('../lib/market/adapter.js');
+
+      const marketProfile2 = req.body.marketProfile || 'USA';
+
+      const coreExclude = {
+        primary: null,
+        secondary: [],
+        queries: [],
+        validationErrors: [auditDecisionBlock],
+        validationChanges: { removed: [], added: [] },
+        decisionState: 'AUTO_EXCLUDE',
+        _debug: {
+          apiVersion: 'v1.1-level1',
+          decisionState: 'AUTO_EXCLUDE',
+          timestamp: new Date().toISOString()
+        }
+      };
+
+      const finalExclude = applyAdapter2({
+        marketProfile: marketProfile2,
+        coreDecision: coreExclude,
+        text
+      });
+
       return res.status(200).json({
         success: true,
         data: {
           text,
-          primary: null,
-          secondary: [],
+          primary: finalExclude.primary,
+          secondary: finalExclude.secondary,
+          primaryDescription: finalExclude.primaryDescription,
           warnings: [],
-          validationErrors: [auditDecisionBlock],
+          validationErrors: finalExclude.primary ? [] : [auditDecisionBlock],
           validationChanges: { removed: [], added: [] },
-          _debug: {
-            apiVersion: 'v1.1-level1',
-            decisionState: 'AUTO_EXCLUDE',
-            timestamp: new Date().toISOString()
-          }
+          marketProfile: finalExclude.marketProfile,
+          marketRuleApplied: finalExclude.marketRuleApplied,
+          derivedByMarketRule: finalExclude.derivedByMarketRule,
+          marketNote: finalExclude.marketNote,
+          ruleReference: finalExclude.ruleReference,
+          derivationDetails: finalExclude.derivationDetails,
+          _debug: finalExclude._debug
         }
       });
     } else if (explicitDiagnosis.hasExplicitDiagnosis && detectedDiagnoses.length === 0) {
@@ -1831,32 +1863,71 @@ module.exports = async function handler(req, res) {
       }
     }
 
+    // ========================================================================
+    // MARKET JURISDICTION ADAPTER (Post-Engine Layer)
+    // Core engine has decided (Levels 0-5). Market adapter may override.
+    // ========================================================================
+
+    const { applyMarketAdapter } = require('../lib/market/adapter.js');
+
+    // Get market profile from request (default to USA)
+    const marketProfile = req.body.marketProfile || 'USA';
+
+    // Build core engine result
+    const coreEngineResult = {
+      primary: codes[0]?.code || null,
+      primaryDescription: codes[0]?.description || null,
+      primaryPOA: codes[0]?.poa || null,
+      secondary: codes.slice(1).map(c => ({ code: c.code, description: c.description, poa: c.poa })),
+      queries: [],
+      validationErrors: [autoCodeBlock],
+      validationChanges: { removed: [], added: [] },
+      decisionState: level4DecisionState === 'AUTO_SEQUENCE' || level4DecisionState === 'PASS_THROUGH' ? (hasLinkedCodes ? 'AUTO_SEQUENCE (LINKED)' : level4DecisionState) : (hasLinkedCodes ? 'AUTO_CODE (LINKED)' : 'AUTO_CODE'),
+      _debug: {
+        apiVersion: 'v1.5-level5',
+        decisionState: level4DecisionState === 'AUTO_SEQUENCE' || level4DecisionState === 'PASS_THROUGH' ? (hasLinkedCodes ? 'AUTO_SEQUENCE (LINKED)' : level4DecisionState) : (hasLinkedCodes ? 'AUTO_CODE (LINKED)' : 'AUTO_CODE'),
+        principalDiagnosis: principalDiagnosis,
+        sequencingJustification: sequencingJustification,
+        diagnosesDetected: detectedDiagnoses,
+        codesAssigned: codes,
+        linkageStatus: hasLinkedCodes ? 'LINKED' : 'UNLINKED',
+        poaStatus: {
+          allY: codes.every(c => c.poa === 'Y'),
+          allN: codes.every(c => c.poa === 'N'),
+          allU: codes.every(c => c.poa === 'U'),
+          mixed: !codes.every(c => c.poa === codes[0]?.poa)
+        },
+        timestamp: new Date().toISOString()
+      }
+    };
+
+    // Apply market adapter (may override decision)
+    const finalResult = applyMarketAdapter({
+      marketProfile,
+      coreDecision: coreEngineResult,
+      text
+    });
+
+    // Use final result (may be overridden)
     return res.status(200).json({
       success: true,
       data: {
         text,
-        primary: codes[0]?.code || null,
-        secondary: codes.slice(1).map(c => ({ code: c.code, description: c.description, poa: c.poa })),
+        primary: finalResult.primary,
+        secondary: finalResult.secondary,
+        primaryDescription: finalResult.primaryDescription,
+        primaryPOA: finalResult.primaryPOA,
         warnings: [],
         validationErrors: [autoCodeBlock],
         validationChanges: { removed: [], added: [] },
-        auditPlus,  // LEVEL 5: Denial simulation & defensibility metadata
-        _debug: {
-          apiVersion: 'v1.5-level5',  // LEVEL 5: Denial Simulation & Defensibility Score
-          decisionState: level4DecisionState === 'AUTO_SEQUENCE' || level4DecisionState === 'PASS_THROUGH' ? (hasLinkedCodes ? 'AUTO_SEQUENCE (LINKED)' : level4DecisionState) : (hasLinkedCodes ? 'AUTO_CODE (LINKED)' : 'AUTO_CODE'),
-          principalDiagnosis: principalDiagnosis,  // LEVEL 4: PDX code
-          sequencingJustification: sequencingJustification,  // LEVEL 4: Why this PDX
-          diagnosesDetected: detectedDiagnoses,
-          codesAssigned: codes,  // Now includes POA status and deduplicated
-          linkageStatus: hasLinkedCodes ? 'LINKED' : 'UNLINKED',
-          poaStatus: {  // LEVEL 3: POA tracking
-            allY: codes.every(c => c.poa === 'Y'),
-            allN: codes.every(c => c.poa === 'N'),
-            allU: codes.every(c => c.poa === 'U'),
-            mixed: !codes.every(c => c.poa === codes[0]?.poa)
-          },
-          timestamp: new Date().toISOString()
-        }
+        auditPlus,
+        marketProfile: finalResult.marketProfile,
+        marketRuleApplied: finalResult.marketRuleApplied,
+        derivedByMarketRule: finalResult.derivedByMarketRule,
+        marketNote: finalResult.marketNote,
+        ruleReference: finalResult.ruleReference,
+        derivationDetails: finalResult.derivationDetails,
+        _debug: finalResult._debug
       }
     });
 
