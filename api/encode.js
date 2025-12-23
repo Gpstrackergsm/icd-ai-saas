@@ -1275,7 +1275,29 @@ module.exports = async function handler(req, res) {
           secondary: finalExclude.secondary,
           primaryDescription: finalExclude.primaryDescription,
           warnings: [],
-          validationErrors: finalExclude.primary ? [] : [auditDecisionBlock],
+          validationErrors: finalExclude.derivedByMarketRule && finalExclude.primary ? [
+            `<div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-md">
+                <div class="flex items-start gap-3">
+                    <i class="fa-solid fa-check-circle text-green-600 text-xl mt-1"></i>
+                    <div class="flex-1">
+                        <h3 class="font-bold text-green-900 text-sm uppercase tracking-wide mb-2">
+                            AUTO CODE — UAE MARKET OVERRIDE
+                        </h3>
+                        <div class="text-sm text-green-800 space-y-2 mb-3">
+                            <p class="leading-relaxed">${finalExclude.marketNote}</p>
+                            <p class="leading-relaxed text-xs">${finalExclude.ruleReference}</p>
+                        </div>
+                        <div class="bg-green-100 border border-green-200 rounded p-2 mb-3">
+                            <p class="text-xs font-semibold text-green-900 mb-1">CODE ASSIGNED</p>
+                            <p class="text-xs text-green-800">• <strong>${finalExclude.primary}</strong> — ${finalExclude.primaryDescription}</p>
+                        </div>
+                        <div class="border-t border-green-200 pt-2">
+                            <p class="text-xs text-green-600 italic">Market: UAE (Daman/Shafafiya) | Procedure-supported diagnosis</p>
+                        </div>
+                    </div>
+                </div>
+            </div>`
+          ] : (finalExclude.primary ? [] : [auditDecisionBlock]),
           validationChanges: { removed: [], added: [] },
           marketProfile: finalExclude.marketProfile,
           marketRuleApplied: finalExclude.marketRuleApplied,
