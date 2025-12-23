@@ -50,6 +50,11 @@
       }
     }
   </script>
+
+  <!-- UAE Claim Editor Scripts -->
+  <script src="/lib/uae-validator.js"></script>
+  <script src="/lib/xml-generator.js"></script>
+  <script src="/public/claim-editor-ui.js"></script>
 </head>
 
 <body class="bg-slate-50 font-sans text-slate-800 antialiased min-h-screen flex flex-col">
@@ -336,6 +341,30 @@
           const auditDiv = document.createElement('div');
           auditDiv.innerHTML = result.validationErrors[0];
           content.appendChild(auditDiv);
+
+          // Add Export XML button for UAE market
+          if (result.marketProfile?.region === 'UAE' && (isAutoCode || result.uaeSuccessMessage)) {
+            const exportBtnDiv = document.createElement('div');
+            exportBtnDiv.className = 'mt-4 pt-4 border-t border-slate-200';
+            exportBtnDiv.innerHTML = `
+              <button class="export-xml-btn w-full px-4 py-3 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white rounded-lg font-semibold transition-all flex items-center justify-center gap-2 shadow-lg hover:shadow-xl">
+                <i class="fa-solid fa-file-export text-lg"></i>
+                <span>Export XML Claim (UAE)</span>
+                <i class="fa-solid fa-arrow-right text-sm"></i>
+              </button>
+            `;
+            content.appendChild(exportBtnDiv);
+
+            // Add click handler
+            exportBtnDiv.querySelector('.export-xml-btn').addEventListener('click', () => {
+              // Initialize editor if not exists
+              if (!window.uaeClaimEditor) {
+                window.uaeClaimEditor = new UAEClaimEditor();
+              }
+              // Open with current result
+              window.uaeClaimEditor.open(result);
+            });
+          }
 
           // TERMINAL - Add to DOM and stop execution
           itemContainer.appendChild(content);
