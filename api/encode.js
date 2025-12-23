@@ -1271,10 +1271,10 @@ module.exports = async function handler(req, res) {
         success: true,
         data: {
           text,
-          primary: finalExclude.primary,
+          primary: finalExclude.primary,  // Now an object with {code, description, poa, rationale, references}
           secondary: finalExclude.secondary,
-          primaryDescription: finalExclude.primaryDescription,
-          primaryPOA: finalExclude.primaryPOA || 'Y',  // Ensure POA is set
+          primaryDescription: finalExclude.primary?.description || finalExclude.primaryDescription,
+          primaryPOA: finalExclude.primary?.poa || finalExclude.primaryPOA || 'Y',
           warnings: [],
           validationErrors: finalExclude.derivedByMarketRule && finalExclude.primary ? [
             `<div class="bg-green-50 border-l-4 border-green-500 p-4 rounded-r-md">
@@ -1290,7 +1290,7 @@ module.exports = async function handler(req, res) {
                         </div>
                         <div class="bg-green-100 border border-green-200 rounded p-2 mb-3">
                             <p class="text-xs font-semibold text-green-900 mb-1">CODE ASSIGNED</p>
-                            <p class="text-xs text-green-800">• <strong>${finalExclude.primary}</strong> — ${finalExclude.primaryDescription}</p>
+                            <p class="text-xs text-green-800">• <strong>${finalExclude.primary.code}</strong> — ${finalExclude.primary.description}</p>
                         </div>
                         <div class="border-t border-green-200 pt-2">
                             <p class="text-xs text-green-600 italic">Market: UAE (Daman/Shafafiya) | Procedure-supported diagnosis</p>
