@@ -1236,11 +1236,6 @@ module.exports = async function handler(req, res) {
                   </div>
               </div>
           </div>
-
-    if (lower.match(/septic shock developed|shock developed/) && lower.match(/after admission|during hospitalization/)) {
-      detectedDiagnoses.push('septic shock hospital-acquired');
-    }
-
       `;
 
       return res.status(200).json({
