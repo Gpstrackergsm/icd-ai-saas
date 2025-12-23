@@ -1215,8 +1215,6 @@ module.exports = async function handler(req, res) {
                           </p>
                           <p class="leading-relaxed">
                               Per ICD-10-CM Official Guidelines, diagnoses may not be inferred from laboratory 
-
-    // Robust septic shock detection (duplicate removed - already handled above)
                               values, monitoring, or risk discussion alone.
                           </p>
                       </div>
