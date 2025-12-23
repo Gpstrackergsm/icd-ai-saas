@@ -342,8 +342,8 @@
           auditDiv.innerHTML = result.validationErrors[0];
           content.appendChild(auditDiv);
 
-          // Add Export XML button for UAE market
-          if (result.marketProfile?.region === 'UAE' && (isAutoCode || result.uaeSuccessMessage)) {
+          // Add Export XML button for AUTO_CODE path (simplified condition)
+          if (isAutoCode) {
             const exportBtnDiv = document.createElement('div');
             exportBtnDiv.className = 'mt-4 pt-4 border-t border-slate-200';
             exportBtnDiv.innerHTML = `
