@@ -890,11 +890,26 @@ module.exports = async function handler(req, res) {
         // "long history of diabetes" = chronic active condition (DO code)
         const hasHistory = intents.some(i => i.intent === CLINICAL_INTENT.HISTORY);
         if (hasHistory) {
+          // EXCEPTION: Chronic conditions are ALWAYS active even with "history of"
+          const chronicConditions = [
+            'hypertension', 'diabetes', 'copd', 'ckd', 'chronic kidney disease',
+            'heart failure', 'atrial fibrillation', 'asthma'
+          ];
+          const isChronicCondition = chronicConditions.some(chronic =>
+            termLower.includes(chronic)
+          );
+
+          if (isChronicCondition) {
+            // "history of hypertension" = active chronic condition (DO code)
+            // Don't negate
+            continue;
+          }
+
           // Check if this is "long history" context (chronic, still active)
           const isLongHistory = /long history|chronic history|longstanding|ongoing/i.test(sentence);
 
           if (!isLongHistory) {
-            // Plain "history of" = past resolved condition
+            // Plain "history of" for non-chronic = past resolved condition
             return true;
           }
           // If "long history", continue - not negated (active chronic condition)
