@@ -945,6 +945,7 @@ module.exports = async function handler(req, res) {
         }
       }
 
+
       if (foundStage) {
         // Stage was found elsewhere in narrative - use staged variant
         if (foundStage === '3') {
@@ -1264,16 +1265,17 @@ module.exports = async function handler(req, res) {
             return true;
           });
 
-          // Determine CKD stage for combination code
-          const ckdStage3 = text.match(/ckd stage 3|chronic kidney disease stage 3|stage 3 ckd|stage 3 chronic kidney disease/i);
-          const ckdStage4 = text.match(/ckd stage 4|chronic kidney disease stage 4|stage 4 ckd|stage 4 chronic kidney disease/i);
+          // CRITICAL FIX: Check what CKD stage is in detectedDiagnoses array (already detected by CKD logic)
+          // instead of re-parsing text (which might miss patterns like "currently at Stage 4")
+          const hasCKDStage3 = detectedDiagnoses.some(d => d.toLowerCase().includes('chronic kidney disease stage 3'));
+          const hasCKDStage4 = detectedDiagnoses.some(d => d.toLowerCase().includes('chronic kidney disease stage 4'));
 
           // Remove standalone CKD codes
           detectedDiagnoses = detectedDiagnoses.filter(d => !d.toLowerCase().includes('chronic kidney disease'));
 
-          if (ckdStage4) {
+          if (hasCKDStage4) {
             detectedDiagnoses.push('diabetic chronic kidney disease stage 4');
-          } else if (ckdStage3) {
+          } else if (hasCKDStage3) {
             detectedDiagnoses.push('diabetic chronic kidney disease stage 3');
           }
 
