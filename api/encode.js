@@ -1228,7 +1228,8 @@ module.exports = async function handler(req, res) {
       return res.json({
         primary: uaeResult.primary,
         secondary: uaeResult.secondary,
-        auditDecision: uaeResult.auditDecision,
+        validationErrors: uaeResult.validationErrors,
+        decisionState: uaeResult.decisionState,
         marketProfile: marketProfile2,
         uaeOverride: true
       });
