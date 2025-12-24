@@ -1208,11 +1208,33 @@ module.exports = async function handler(req, res) {
     // ========================================================================
     // LEVEL 0: AUTO_EXCLUDE (FROZEN - ALWAYS WINS)
     // CRITICAL FIX: Check for explicit provider diagnosis FIRST
+    // UAE MARKET OVERRIDE: Check if UAE rules provide a diagnosis
     // ========================================================================
 
     // Detect explicit provider diagnosis from structured sections
     const explicitDiagnosis = detectExplicitProviderDiagnosis(text);
 
+    // ========================================================================
+    // UAE MARKET OVERRIDE LAYER
+    // Check if UAE market rules allow diagnosis inference
+    // ========================================================================
+    const uaeRules = require('../lib/uae-market-rules.js');
+    const marketProfile2 = req.body.marketProfile || 'USA';
+    const uaeOverride = uaeRules.checkUAEOverride(text, marketProfile2);
+
+    // If UAE override applies, return AUTO CODE instead of AUTO EXCLUDE
+    if (uaeOverride) {
+      const uaeResult = uaeRules.formatUAEAutoCode(uaeOverride);
+      return res.json({
+        primary: uaeResult.primary,
+        secondary: uaeResult.secondary,
+        auditDecision: uaeResult.auditDecision,
+        marketProfile: marketProfile2,
+        uaeOverride: true
+      });
+    }
+
+    // Otherwise, proceed with standard AUTO EXCLUDE logic
     if (detectedDiagnoses.length === 0 && !explicitDiagnosis.hasExplicitDiagnosis) {
       const auditDecisionBlock = `
           <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded-r-md">
