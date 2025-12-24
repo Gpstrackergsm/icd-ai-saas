@@ -1219,7 +1219,7 @@ module.exports = async function handler(req, res) {
     // Check if UAE market rules allow diagnosis inference
     // ========================================================================
     const uaeRules = require('../lib/uae-market-rules.js');
-    const marketProfile2 = req.body.marketProfile || 'USA';
+    const marketProfile2 = req.body.marketProfile || 'UAE';
     const uaeOverride = uaeRules.checkUAEOverride(text, marketProfile2);
 
     // If UAE override applies, return AUTO CODE instead of AUTO EXCLUDE
@@ -1283,7 +1283,7 @@ module.exports = async function handler(req, res) {
 
       const { applyMarketAdapter: applyAdapter2 } = require('../lib/market/adapter.js');
 
-      const marketProfile2 = req.body.marketProfile || 'USA';
+      const marketProfile2 = req.body.marketProfile || 'UAE';
 
       const coreExclude = {
         primary: null,
@@ -1938,7 +1938,7 @@ module.exports = async function handler(req, res) {
     const { applyMarketAdapter } = require('../lib/market/adapter.js');
 
     // Get market profile from request (default to USA)
-    const marketProfile = req.body.marketProfile || 'USA';
+    const marketProfile = req.body.marketProfile || 'UAE';
 
     // Build core engine result
     const coreEngineResult = {
