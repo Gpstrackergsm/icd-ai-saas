@@ -358,11 +358,11 @@
             // Add click handler
             exportBtnDiv.querySelector('.export-xml-btn').addEventListener('click', () => {
               // Initialize editor if not exists
-              if (!window.uaeClaimEditor) {
+              if (!window.UAEClaimEditor) {
                 window.uaeClaimEditor = new UAEClaimEditor();
               }
               // Open with current result
-              window.uaeClaimEditor.open(result);
+              window.UAEClaimEditor.openEditor(result);
             });
           }
 
@@ -483,8 +483,8 @@
 
           const btn = exportBtnDiv.querySelector('.export-xml-btn');
           btn.addEventListener('click', () => {
-            if (!window.uaeClaimEditor) { window.uaeClaimEditor = new UAEClaimEditor(); }
-            window.uaeClaimEditor.open(result);
+            if (!window.UAEClaimEditor) { window.UAEClaimEditor = new UAEClaimEditor(); }
+            window.UAEClaimEditor.openEditor(result);
           });
         }
 
