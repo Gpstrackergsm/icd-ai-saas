@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-9DPX4FW21M"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-9DPX4FW21M');
+    </script>
+    <title>Deterministic ICD-10-CM Audit Engine for HCC Validation & RADV Defense | BALLEY LTD</title>
+    <meta name="description"
+        content="Second-pass audit layer for coding & audit firms. Deterministic HCC validation, RADV defense, and reviewer consistency without replacing coders.">
+
+    <link rel="icon" type="image/png" href="https://www.icd-10-cm.online/favicon.png">
+
+    <!-- SEO: Canonical & JSON-LD -->
+    <link rel="canonical" href="https://www.icd-10-cm.online/" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Organization",
+          "@id": "https://www.icd-10-cm.online/#organization",
+          "name": "BALLEY LTD",
+          "url": "https://www.icd-10-cm.online/",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.icd-10-cm.online/favicon.png",
+            "width": 512,
+            "height": 512
+          },
+          "image": "https://www.icd-10-cm.online/favicon.png",
+          "sameAs": [
+            "https://www.linkedin.com/company/balley-ltd",
+            "https://www.crunchbase.com/organization/balley-ltd", 
+            "https://twitter.com/balley_ltd",
+            "https://github.com/balley-ltd"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "Gsmkhalid@msn.com",
+            "contactType": "customer support",
+            "areaServed": "US",
+            "availableLanguage": "English"
+          },
+          "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "GB" 
+          },
+          "knowsAbout": ["ICD-10-CM Audit", "HCC Validation", "RADV Defense", "Medical Coding Compliance"]
+        },
+        {
+          "@type": "SoftwareApplication",
+          "@id": "https://www.icd-10-cm.online/#software",
+          "name": "ICD Audit Engine",
+          "url": "https://www.icd-10-cm.online/",
+          "applicationCategory": "MedicalApplication",
+          "operatingSystem": "Cloud-based",
+          "description": "Deterministic ICD-10-CM audit engine for HCC validation and RADV defense with explainable compliance decisions.",
+          "author": { "@id": "https://www.icd-10-cm.online/#organization" }
+        },
+        {
+          "@type": "WebSite",
+          "@id": "https://www.icd-10-cm.online/#website",
+          "url": "https://www.icd-10-cm.online/",
+          "name": "ICD Audit Engine",
+          "publisher": { "@id": "https://www.icd-10-cm.online/#organization" }
+        }
+      ]
+    }
+    </script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        audit: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            800: '#0c4a6e',
+                            900: '#082f49',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(203, 213, 225, 0.5);
+        }
+
+        .hero-gradient {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+
+<body class="font-sans text-slate-800 antialiased selection:bg-audit-500 selection:text-white">
+
+    <!-- Header -->
+    <nav class="fixed w-full z-40 glass-nav transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center gap-3 cursor-pointer" onclick="window.scrollTo(0,0)">
+                    <div
+                        class="w-10 h-10 bg-audit-700 rounded-lg flex items-center justify-center text-white shadow-lg">
+                        <i class="fa-solid fa-shield-halved text-xl"></i>
+                    </div>
+                    <span class="font-bold text-xl tracking-tight text-slate-900">ICD Audit Engine</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="/" class="text-audit-600 font-bold transition-colors">Home</a>
+                    <a href="for-audit-firms.html"
+                        class="text-slate-600 hover:text-audit-600 font-medium transition-colors">For Audit Firms</a>
+                    <a href="icd-audit-engine.html"
+                        class="text-slate-600 hover:text-audit-600 font-medium transition-colors">Product</a>
+                    <a href="demo.html"
+                        class="text-slate-600 hover:text-audit-600 font-medium transition-colors">Demo</a>
+                    <a href="about.html"
+                        class="text-slate-600 hover:text-audit-600 font-medium transition-colors">About</a>
+                    <a href="contact.html"
+                        class="bg-audit-700 hover:bg-audit-800 text-white px-5 py-2.5 rounded-lg font-medium transition-all shadow-lg transform hover:-translate-y-0.5 text-sm">Discuss
+                        Integration</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button class="text-slate-600 hover:text-slate-900">
+                        <i class="fa-solid fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden hero-gradient">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-0 left-1/4 w-96 h-96 bg-blue-500 rounded-full filter blur-3xl"></div>
+            <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-indigo-500 rounded-full filter blur-3xl"></div>
+        </div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+            <h1 class="text-4xl lg:text-6xl font-bold text-white tracking-tight mb-6 leading-tight max-w-5xl mx-auto">
+                Deterministic ICD-10-CM Audit Engine<br>
+                <span class="text-blue-300">for HCC Validation & RADV Defense</span>
+            </h1>
+
+            <p class="text-lg lg:text-xl text-slate-300 mb-10 max-w-4xl mx-auto leading-relaxed">
+                A second-pass audit layer that standardizes coding decisions,<br>
+                reduces unsupported HCCs, and protects you from RADV risk —<br>
+                <span class="text-white font-semibold">without replacing reviewers or changing workflows.</span>
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
+                <a href="contact.html"
+                    class="w-full sm:w-auto px-8 py-4 bg-white hover:bg-slate-50 text-audit-800 font-bold rounded-lg shadow-xl transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                    Discuss Audit Integration
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+                <a href="contact.html?action=pilot"
+                    class="w-full sm:w-auto px-8 py-4 bg-slate-800 hover:bg-slate-700 text-white font-semibold rounded-lg border border-slate-600 transition-all transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                    Request a Pilot
+                    <i class="fa-solid fa-flask"></i>
+                </a>
+            </div>
+
+            <div class="mb-8">
+                <a href="demo.html"
+                    class="inline-flex items-center gap-2 text-slate-300 hover:text-white font-medium transition-colors">
+                    <i class="fa-solid fa-play-circle"></i>
+                    View Audit Demo
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+            </div>
+
+            <p class="text-slate-400 text-sm font-medium">
+                <i class="fa-solid fa-shield text-blue-400 mr-2"></i> Enterprise B2B Solution &nbsp; | &nbsp;
+                <i class="fa-solid fa-file-contract text-blue-400 mr-2"></i> Batch + API Integration
+            </p>
+        </div>
+    </section>
+
+    <!-- Trust Clarifier -->
+    <div class="bg-slate-50 border-y border-slate-200">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+            <h2 class="text-2xl lg:text-3xl font-bold text-slate-900 mb-4">This is not autonomous coding.</h2>
+            <p class="text-lg text-slate-600 max-w-3xl mx-auto">
+                This is an <span class="font-semibold text-slate-900">explainable compliance engine</span> designed
+                for audit organizations operating at scale.
+            </p>
+        </div>
+    </div>
+
+    <!-- Workflow -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">Built to Fit Into Mature Audit
+                    Operations</h2>
+                <p class="text-slate-600 max-w-3xl mx-auto">We validate decisions already made — enforcing ICD-10-CM
+                    and HCC rules consistently, every time.</p>
+            </div>
+
+            <!-- Workflow Diagram -->
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 mb-8">
+                <div class="bg-slate-100 px-6 py-4 rounded-lg border border-slate-200 text-center min-w-[180px]">
+                    <div class="text-3xl mb-2">📄</div>
+                    <p class="font-semibold text-slate-900">Provider<br>Documentation</p>
+                </div>
+                <div class="text-slate-400 text-2xl rotate-90 md:rotate-0">→</div>
+                <div class="bg-slate-100 px-6 py-4 rounded-lg border border-slate-200 text-center min-w-[180px]">
+                    <div class="text-3xl mb-2">👤</div>
+                    <p class="font-semibold text-slate-900">Human<br>Coding</p>
+                </div>
+                <div class="text-slate-400 text-2xl rotate-90 md:rotate-0">→</div>
+                <div class="bg-slate-100 px-6 py-4 rounded-lg border border-slate-200 text-center min-w-[180px]">
+                    <div class="text-3xl mb-2">🔍</div>
+                    <p class="font-semibold text-slate-900">Human Audit /<br>Review</p>
+                </div>
+                <div class="text-slate-400 text-2xl rotate-90 md:rotate-0">→</div>
+                <div
+                    class="bg-audit-50 px-6 py-4 rounded-lg border-2 border-audit-500 text-center min-w-[180px] shadow-lg">
+                    <div class="text-3xl mb-2">🛡️</div>
+                    <p class="font-bold text-audit-900">ICD Audit Engine<br>(2nd Pass)</p>
+                </div>
+                <div class="text-slate-400 text-2xl rotate-90 md:rotate-0">→</div>
+                <div class="bg-slate-100 px-6 py-4 rounded-lg border border-slate-200 text-center min-w-[180px]">
+                    <div class="text-3xl mb-2">✅</div>
+                    <p class="font-semibold text-slate-900">Client Delivery /<br>MA Plan / CMS</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- What We Do / What We Don't -->
+    <section class="py-24 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">What We Do — and What We Don't</h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- What We Do -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
+                            <i class="fa-solid fa-check-circle text-green-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-slate-900">What We Do</h3>
+                    </div>
+                    <ul class="space-y-3 text-slate-700">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-green-600 mt-1"></i>
+                            <span>Validate ICD-10-CM & HCC logic using deterministic rules</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-green-600 mt-1"></i>
+                            <span>Enforce official guidelines (not probabilities)</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-green-600 mt-1"></i>
+                            <span>Flag unsupported or inconsistent diagnoses</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-green-600 mt-1"></i>
+                            <span>Produce PASS / FAIL decisions with audit-ready reasoning</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-check text-green-600 mt-1"></i>
+                            <span>Standardize reviewer decisions at scale</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- What We Don't Do -->
+                <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+                    <div class="flex items-center gap-3 mb-6">
+                        <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
+                            <i class="fa-solid fa-times-circle text-red-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-slate-900">What We Don't Do</h3>
+                    </div>
+                    <ul class="space-y-3 text-slate-700">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-times text-red-600 mt-1"></i>
+                            <span>We do not auto-code</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-times text-red-600 mt-1"></i>
+                            <span>We do not replace coders or auditors</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-times text-red-600 mt-1"></i>
+                            <span>We do not inflate RAF scores</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-times text-red-600 mt-1"></i>
+                            <span>We do not operate as a black box</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Built For -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">Designed for Coding & Audit
+                    Organizations</h2>
+                <p class="text-lg text-slate-600 max-w-3xl mx-auto">This platform is purpose-built for organizations
+                    with audit responsibility and RADV exposure.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+                <div class="bg-audit-50 p-8 rounded-2xl border border-audit-200">
+                    <div class="w-14 h-14 bg-audit-600 rounded-xl flex items-center justify-center text-white mb-6">
+                        <i class="fa-solid fa-building text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Target Organizations</h3>
+                    <ul class="space-y-2 text-slate-700">
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-check text-audit-600"></i>
+                            <span>Coding & Audit Firms</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-check text-audit-600"></i>
+                            <span>Risk Adjustment Vendors</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-check text-audit-600"></i>
+                            <span>RCM Platforms with audit responsibility</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-check text-audit-600"></i>
+                            <span>Organizations exposed to RADV audits</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bg-slate-50 p-8 rounded-2xl border border-slate-200">
+                    <div class="w-14 h-14 bg-red-100 rounded-xl flex items-center justify-center text-red-600 mb-6">
+                        <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Core Problems We Solve</h3>
+                    <ul class="space-y-2 text-slate-700">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-exclamation-circle text-red-600 mt-1"></i>
+                            <span>Reviewer-to-reviewer inconsistency</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-exclamation-circle text-red-600 mt-1"></i>
+                            <span>Over-conservative vs over-aggressive coding</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-exclamation-circle text-red-600 mt-1"></i>
+                            <span>Unsupported HCCs passing internal QA</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-exclamation-circle text-red-600 mt-1"></i>
+                            <span>Lack of explainable audit trails during RADV</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Capabilities -->
+    <section class="py-24 bg-slate-900 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl lg:text-4xl font-bold mb-4">Key Capabilities</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                    <div class="w-12 h-12 bg-audit-600 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-gears text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Deterministic Rule Engine</h3>
+                    <p class="text-slate-400 text-sm">ICD-10-CM and HCC logic enforced as rules, not predictions.</p>
+                </div>
+
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                    <div class="w-12 h-12 bg-audit-600 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-clipboard-list text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Explainable Decisions</h3>
+                    <p class="text-slate-400 text-sm">Every outcome includes triggered guideline, missing evidence, and
+                        audit-ready reasoning.</p>
+                </div>
+
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                    <div class="w-12 h-12 bg-audit-600 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-shield-halved text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">Second-Pass Validation</h3>
+                    <p class="text-slate-400 text-sm">Works after human review, before results leave your organization.
+                    </p>
+                </div>
+
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700">
+                    <div class="w-12 h-12 bg-audit-600 rounded-lg flex items-center justify-center mb-4">
+                        <i class="fa-solid fa-file-contract text-xl"></i>
+                    </div>
+                    <h3 class="text-lg font-bold mb-2">RADV-Ready Output</h3>
+                    <p class="text-slate-400 text-sm">Structured reasoning designed for retrospective audits and
+                        compliance review.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Positioning Statement -->
+    <div class="bg-audit-700 text-white">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+            <p class="text-2xl lg:text-3xl font-bold leading-relaxed">
+                We don't help you code faster.<br>
+                We help you make the same defensible decision — <span class="text-blue-200">every time — at
+                    scale.</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Pilot Section -->
+    <section class="py-24 bg-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl lg:text-4xl font-bold text-slate-900 mb-4">Start With a Low-Risk Pilot</h2>
+                <p class="text-lg text-slate-600">Test the engine on your highest-risk domains before full
+                    integration.</p>
+            </div>
+
+            <div class="bg-slate-50 rounded-2xl p-8 border border-slate-200">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div>
+                        <h3 class="font-bold text-slate-900 mb-4 text-lg">Pilot Structure:</h3>
+                        <ul class="space-y-3 text-slate-700">
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-calendar text-audit-600 mt-1"></i>
+                                <span><strong>30–60 days</strong></span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-file-medical text-audit-600 mt-1"></i>
+                                <span><strong>Limited chart volume</strong></span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-check-circle text-audit-600 mt-1"></i>
+                                <span><strong>No workflow disruption</strong></span>
+                            </li>
+                            <li class="flex items-start gap-2">
+                                <i class="fa-solid fa-bullseye text-audit-600 mt-1"></i>
+                                <span><strong>Focus on high-risk domains:</strong> Diabetes, Sepsis, CHF, CKD</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <h3 class="font-bold text-slate-900 mb-4 text-lg">Expected Outcome:</h3>
+                        <p class="text-slate-700 mb-4">Clear insight into:</p>
+                        <ul class="space-y-2 text-slate-700">
+                            <li class="flex items-center gap-2">
+                                <i class="fa-solid fa-chart-line text-green-600"></i>
+                                <span>Decision consistency</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fa-solid fa-exclamation-triangle text-yellow-600"></i>
+                                <span>Unsupported diagnosis exposure</span>
+                            </li>
+                            <li class="flex items-center gap-2">
+                                <i class="fa-solid fa-shield-alt text-audit-600"></i>
+                                <span>Audit defensibility</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="text-center pt-6 border-t border-slate-200">
+                    <a href="contact.html?action=pilot"
+                        class="inline-block px-8 py-4 bg-audit-700 hover:bg-audit-800 text-white font-bold rounded-lg shadow-lg transition-all transform hover:-translate-y-1">
+                        Request a Pilot Conversation
+                        <i class="fa-solid fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Closing -->
+    <section class="py-20 bg-slate-900 text-white">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-xl lg:text-2xl mb-6 leading-relaxed text-slate-300">
+                In an environment where CMS audits decisions years later,<br>
+                <span class="text-white font-semibold">explainability and consistency matter more than
+                    automation.</span>
+            </p>
+            <p class="text-lg text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                This platform exists to be your <span class="text-blue-300 font-semibold">audit logic firewall</span>
+                —<br>
+                protecting your organization, your clients, and your reputation.
+            </p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div>
+                    <div class="flex items-center gap-2 mb-4">
+                        <div class="w-8 h-8 bg-audit-700 rounded-lg flex items-center justify-center text-white">
+                            <i class="fa-solid fa-shield-halved"></i>
+                        </div>
+                        <span class="font-bold text-white">ICD Audit Engine</span>
+                    </div>
+                    <p class="text-sm">Deterministic ICD-10-CM audit for enterprise organizations.</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-3">Product</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="for-audit-firms.html" class="hover:text-white transition-colors">For Audit
+                                Firms</a></li>
+                        <li><a href="icd-audit-engine.html" class="hover:text-white transition-colors">Platform</a>
+                        </li>
+                        <li><a href="pricing.html" class="hover:text-white transition-colors">Pricing</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-3">Company</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="about.html" class="hover:text-white transition-colors">About</a></li>
+                        <li><a href="contact.html" class="hover:text-white transition-colors">Contact</a></li>
+                        <li><a href="blog/what-is-icd-audit-engine.html"
+                                class="hover:text-white transition-colors">Blog</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold text-white mb-3">Legal</h4>
+                    <ul class="space-y-2 text-sm">
+                        <li><a href="privacy.html" class="hover:text-white transition-colors">Privacy Policy</a></li>
+                        <li><a href="terms.html" class="hover:text-white transition-colors">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-slate-800 pt-8 text-center">
+                <p class="text-sm">&copy; 2024 BALLEY LTD. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
