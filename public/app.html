@@ -345,6 +345,47 @@
 
           // Add Export XML button for AUTO_CODE path (simplified condition)
           if (isAutoCode) {
+            // ===================================================================
+            // RENDER DIAGNOSIS CODES FOR AUTO CODE (UAE)
+            // ===================================================================
+            if (result.primary) {
+              const primaryDiv = document.createElement('div');
+              primaryDiv.className = 'mt-4 p-4 bg-emerald-50 border-l-4 border-emerald-500 rounded-r';
+              primaryDiv.innerHTML = `
+                <div class="flex items-start gap-3">
+                  <div class="text-emerald-600 text-2xl font-bold">1°</div>
+                  <div class="flex-1">
+                    <div class="text-xs font-semibold text-emerald-900 uppercase tracking-wide mb-1">PRIMARY</div>
+                    <div class="font-bold text-lg text-slate-900">${result.primary.code}</div>
+                    <div class="text-sm text-slate-700 mt-1">${result.primary.description || 'Streptococcal pharyngitis'}</div>
+                    ${result.primary.reason ? `<div class="text-xs text-emerald-700 mt-2"><i class="fa-solid fa-info-circle mr-1"></i>${result.primary.reason}</div>` : ''}
+                  </div>
+                </div>
+              `;
+              content.appendChild(primaryDiv);
+            }
+
+            // Render secondary diagnoses if any
+            if (result.secondary && result.secondary.length > 0) {
+              result.secondary.forEach((sec, idx) => {
+                const secDiv = document.createElement('div');
+                secDiv.className = 'mt-3 p-4 bg-blue-50 border-l-4 border-blue-400 rounded-r';
+                secDiv.innerHTML = `
+                  <div class="flex items-start gap-3">
+                    <div class="text-blue-600 text-xl font-bold">2°</div>
+                    <div class="flex-1">
+                      <div class="text-xs font-semibold text-blue-900 uppercase tracking-wide mb-1">SECONDARY</div>
+                      <div class="font-bold text-lg text-slate-900">${sec.code}</div>
+                      <div class="text-sm text-slate-700 mt-1">${sec.description}</div>
+                      ${sec.reason ? `<div class="text-xs text-blue-700 mt-2"><i class="fa-solid fa-info-circle mr-1"></i>${sec.reason}</div>` : ''}
+                    </div>
+                  </div>
+                `;
+                content.appendChild(secDiv);
+              });
+            }
+
+            // Export button
             const exportBtnDiv = document.createElement('div');
             exportBtnDiv.className = 'mt-4 pt-4 border-t border-slate-200';
             exportBtnDiv.innerHTML = `
