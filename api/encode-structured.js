@@ -61,6 +61,85 @@ function buildParserOutputFromText(text) {
     const lower = text.toLowerCase();
     // Extract provider-documented diagnoses (explicit terms only)
     const diagnoses = [];
+    const procedures = [];
+
+    // === SURGICAL & HERNIA TERMS ===
+    if (lower.match(/\b(inguinal hernia|groin hernia)\b/)) {
+        if (lower.includes('strangulated')) {
+            diagnoses.push('strangulated inguinal hernia');
+        } else if (lower.includes('incarcerated')) {
+            diagnoses.push('incarcerated inguinal hernia');
+        } else {
+            diagnoses.push('inguinal hernia');
+        }
+    }
+    if (lower.match(/\b(umbilical hernia|periumbilical hernia)\b/)) {
+        diagnoses.push('umbilical hernia');
+    }
+    if (lower.match(/\b(femoral hernia)\b/)) {
+        diagnoses.push('femoral hernia');
+    }
+    if (lower.match(/\b(ventral hernia|incisional hernia)\b/)) {
+        diagnoses.push('ventral hernia');
+    }
+
+    // Hernia repair procedures
+    if (lower.match(/\b(hernia repair|herniorrhaphy|herniotomy)\b/)) {
+        if (lower.includes('laparoscopic')) {
+            procedures.push('laparoscopic hernia repair');
+        } else if (lower.includes('open')) {
+            procedures.push('open hernia repair');
+        } else {
+            procedures.push('hernia repair');
+        }
+    }
+    if (lower.includes('mesh')) {
+        procedures.push('mesh placement');
+    }
+    if (lower.match(/\b(emergency surgery|emergent|urgent surgery)\b/)) {
+        procedures.push('emergency surgical intervention');
+    }
+
+    // === CARDIOLOGY ===
+    if (lower.match(/\b(chest pain|angina)\b/)) {
+        diagnoses.push('chest pain');
+    }
+    if (lower.match(/\b(myocardial infarction|mi|heart attack)\b/)) {
+        diagnoses.push('myocardial infarction');
+    }
+    if (lower.match(/\bheart failure\b/)) {
+        diagnoses.push('heart failure');
+    }
+
+    // === RESPIRATORY ===
+    if (lower.match(/\b(pneumonia)\b/)) {
+        diagnoses.push('pneumonia');
+    }
+    if (lower.match(/\b(copd|chronic obstructive)\b/)) {
+        diagnoses.push('COPD');
+    }
+    if (lower.match(/\b(asthma)\b/)) {
+        diagnoses.push('asthma');
+    }
+
+    // === DIABETES ===
+    if (lower.match(/\b(diabetes|diabetic)\b/)) {
+        if (lower.includes('type 1')) {
+            diagnoses.push('type 1 diabetes');
+        } else if (lower.includes('type 2')) {
+            diagnoses.push('type 2 diabetes');
+        } else {
+            diagnoses.push('diabetes');
+        }
+    }
+
+    // === TRAUMA/INJURY ===
+    if (lower.match(/\b(fracture|broken bone)\b/)) {
+        diagnoses.push('fracture');
+    }
+    if (lower.match(/\b(laceration|cut|wound)\b/)) {
+        diagnoses.push('laceration');
+    }
     // Renal terms
     if (lower.includes('acute kidney injury') || lower.match(/\baki\b/)) {
         diagnoses.push('acute kidney injury');
@@ -110,6 +189,9 @@ function buildParserOutputFromText(text) {
     if (lower.includes('iv fluid') || lower.includes('intravenous fluid')) {
         medications.push('IV fluids');
     }
+    if (lower.includes('antibiotic')) {
+        medications.push('antibiotics');
+    }
     if (medications.length > 0) {
         treatments.medications = medications;
     }
@@ -117,7 +199,7 @@ function buildParserOutputFromText(text) {
         providerTerms: {
             diagnoses,
             symptoms: [],
-            procedures: []
+            procedures
         },
         vitalSigns: {},
         labValues,
