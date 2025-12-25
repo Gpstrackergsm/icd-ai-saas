@@ -29,8 +29,32 @@ const ICD10_MAPPING = {
   'sore throat, strep positive': { code: 'J02.0', description: 'Streptococcal pharyngitis' },
   'streptococcal pharyngitis': { code: 'J02.0', description: 'Streptococcal pharyngitis' },
 
+  // Surgical - Hernias
+  'inguinal hernia': { code: 'K40.90', description: 'Unilateral inguinal hernia, without obstruction or gangrene, not specified as recurrent' },
+  'strangulated inguinal hernia': { code: 'K40.30', description: 'Unilateral inguinal hernia, with obstruction, without gangrene, not specified as recurrent' },
+  'incarcerated inguinal hernia': { code: 'K40.30', description: 'Unilateral inguinal hernia, with obstruction, without gangrene, not specified as recurrent' },
+  'umbilical hernia': { code: 'K42.9', description: 'Umbilical hernia without obstruction or gangrene' },
+  'femoral hernia': { code: 'K41.90', description: 'Unilateral femoral hernia, without obstruction or gangrene, not specified as recurrent' },
+  'ventral hernia': { code: 'K43.9', description: 'Ventral hernia without obstruction or gangrene' },
+  'incisional hernia': { code: 'K43.2', description: 'Incisional hernia without obstruction or gangrene' },
+
+  // Surgical Procedures (for reference - not diagnosis codes)
+  'hernia repair': { code: null, query: 'Procedure code - refer to CPT' },
+  'laparoscopic hernia repair': { code: null, query: 'Procedure code - refer to CPT' },
+  'mesh placement': { code: null, query: 'Procedure code - refer to CPT' },
+
   // Surgical
   'acute appendicitis with localized peritonitis': { code: 'K35.30', description: 'Acute appendicitis with localized peritonitis, without perforation or gangrene' },
+
+  // Trauma
+  'displaced fracture of right femur shaft, initial': { code: 'S72.301A', description: 'Unspecified fracture of shaft of right femur, initial encounter for closed fracture' },
+  'fracture': { code: 'S72.90XA', description: 'Unspecified fracture of unspecified femur, initial encounter' },
+  'laceration': { code: 'S01.90XA', description: 'Unspecified open wound of unspecified part of head, initial encounter' },
+
+  // Cardiovascular  
+  'chest pain': { code: 'R07.9', description: 'Chest pain, unspecified' },
+  'myocardial infarction': { code: 'I21.9', description: 'Acute myocardial infarction, unspecified' },
+  'heart failure': { code: null, query: 'Please specify: acute vs chronic AND systolic vs diastolic vs combined' },
 
   // Trauma
   'displaced fracture of right femur shaft, initial': { code: 'S72.301A', description: 'Unspecified fracture of shaft of right femur, initial encounter for closed fracture' },
