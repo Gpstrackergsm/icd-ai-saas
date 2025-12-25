@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Denial Recovery - Falcon Coding</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="icon" type="image/png" href="/falcon-logo.png">
+    <style>
+        .slide-panel {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .slide-panel.active {
+            transform: translateX(0);
+        }
+
+        .gradient-primary {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+        }
+
+        .gradient-success {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+        }
+
+        .gradient-warning {
+            background: linear-gradient(135deg, #d97706 0%, #f59e0b 100%);
+        }
+
+        .gradient-danger {
+            background: linear-gradient(135deg, #dc2626 0%, #ef4444 100%);
+        }
+
+        .score-excellent {
+            color: #059669;
+            font-weight: 600;
+        }
+
+        .score-good {
+            color: #3b82f6;
+            font-weight: 600;
+        }
+
+        .score-fair {
+            color: #d97706;
+            font-weight: 600;
+        }
+
+        .score-poor {
+            color: #dc2626;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <img src="/falcon-logo.png" alt="Falcon Coding" class="h-10">
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">Denial Recovery</h1>
+                        <p class="text-sm text-gray-500">AI-Powered Insurance Appeal Management</p>
+                    </div>
+                </div>
+                <a href="/index.html" class="text-blue-600 hover:text-blue-800">
+                    <i class="fas fa-home mr-2"></i> Back to Home
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Section 1: Revenue at Risk Overview -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <!-- Total Denied Amount -->
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-red-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Total Denied Amount</p>
+                        <p class="text-3xl font-bold text-gray-900 mt-2">450,000 <span class="text-lg">AED</span></p>
+                        <p class="text-xs text-gray-500 mt-1">47 active claims</p>
+                    </div>
+                    <div class="bg-red-100 rounded-full p-4">
+                        <i class="fas fa-exclamation-triangle text-2xl text-red-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Potential Recovery -->
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-green-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Potential Recovery</p>
+                        <p class="text-3xl font-bold text-gray-900 mt-2">320,000 <span class="text-lg">AED</span></p>
+                        <p class="text-xs text-green-600 mt-1">71% recoverable</p>
+                    </div>
+                    <div class="bg-green-100 rounded-full p-4">
+                        <i class="fas fa-chart-line text-2xl text-green-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Success Rate -->
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-blue-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Success Rate</p>
+                        <p class="text-3xl font-bold text-gray-900 mt-2">71<span class="text-lg">%</span></p>
+                        <p class="text-xs text-gray-500 mt-1">82 won / 115 total</p>
+                    </div>
+                    <div class="bg-blue-100 rounded-full p-4">
+                        <i class="fas fa-trophy text-2xl text-blue-600"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top Rejecting Payer -->
+            <div class="bg-white rounded-lg shadow-md p-6 border-l-4 border-gray-500">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Top Rejecting Payer</p>
+                        <p class="text-2xl font-bold text-gray-900 mt-2">Daman</p>
+                        <p class="text-xs text-gray-500 mt-1">23 denials (49%)</p>
+                    </div>
+                    <div class="bg-gray-100 rounded-full p-4">
+                        <i class="fas fa-building text-2xl text-gray-600"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Denial Inbox -->
+        <div class="bg-white rounded-lg shadow-md mb-8">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-bold text-gray-900">
+                        <i class="fas fa-inbox mr-2 text-blue-600"></i>
+                        Denial Inbox
+                    </h2>
+                    <div class="flex space-x-3">
+                        <input type="text" placeholder="Search claims..."
+                            class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        <select class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                            <option>All Payers</option>
+                            <option>Daman</option>
+                            <option>Neuron</option>
+                            <option>SAICO</option>
+                            <option>AXA</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Claim ID</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Payer</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Rejection Reason</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Falcon Score</th>
+                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="denialTableBody" class="bg-white divide-y divide-gray-200">
+                        <!-- Dynamic content will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="px-6 py-4 border-t border-gray-200 bg-gray-50">
+                <div class="flex items-center justify-between">
+                    <p class="text-sm text-gray-700">Showing <span class="font-medium">1-10</span> of <span
+                            class="font-medium">47</span> claims</p>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100">Previous</button>
+                        <button class="px-3 py-1 bg-blue-600 text-white rounded">1</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100">2</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100">3</button>
+                        <button class="px-3 py-1 border border-gray-300 rounded hover:bg-gray-100">Next</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 4: Root Cause Analytics -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Pie Chart: Why are we being rejected? -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">
+                    <i class="fas fa-chart-pie mr-2 text-blue-600"></i>
+                    Rejection Reasons
+                </h3>
+                <canvas id="rejectionReasonsChart"></canvas>
+            </div>
+
+            <!-- Bar Chart: Denials by Department -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-4">
+                    <i class="fas fa-chart-bar mr-2 text-blue-600"></i>
+                    Denials by Department
+                </h3>
+                <canvas id="departmentChart"></canvas>
+            </div>
+        </div>
+    </main>
+
+    <!-- Section 3: AI Appeal Generator (Slide Panel) -->
+    <div id="appealPanel"
+        class="slide-panel fixed top-0 right-0 h-full w-full lg:w-2/3 bg-white shadow-2xl z-50 overflow-y-auto">
+        <div class="sticky top-0 bg-gradient-primary text-white px-6 py-4 flex items-center justify-between z-10">
+            <div>
+                <h2 class="text-2xl font-bold">AI Appeal Generator</h2>
+                <p class="text-blue-100 text-sm">Clinical Evidence + Coding Rules → Professional Rebuttal</p>
+            </div>
+            <button onclick="closeAppealPanel()" class="text-white hover:text-blue-200">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+        </div>
+
+        <div class="p-6 space-y-6">
+            <!-- Claim Info -->
+            <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-sm text-gray-600">Claim ID</p>
+                        <p class="font-bold" id="panelClaimId">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Payer</p>
+                        <p class="font-bold" id="panelPayer">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Rejection Reason</p>
+                        <p class="font-bold" id="panelReason">-</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Falcon Score</p>
+                        <p class="font-bold" id="panelScore">-</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Clinical Evidence Mapping -->
+            <div class="border border-gray-200 rounded-lg p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                    <i class="fas fa-microscope mr-2 text-green-600"></i>
+                    Clinical Evidence Mapping
+                </h3>
+                <div class="bg-gray-50 rounded p-4 mb-4">
+                    <p class="text-sm text-gray-600 mb-2">Source: Doctor's Clinical Notes</p>
+                    <div class="space-y-2">
+                        <div class="bg-white border-l-4 border-green-500 p-3 rounded">
+                            <p class="text-sm"><span class="font-semibold text-green-700">Key Finding:</span> "Acute
+                                inflammation noted with significant pain on palpation"</p>
+                        </div>
+                        <div class="bg-white border-l-4 border-green-500 p-3 rounded">
+                            <p class="text-sm"><span class="font-semibold text-green-700">Supporting Evidence:</span>
+                                "Patient unable to bear weight, requires immediate intervention"</p>
+                        </div>
+                        <div class="bg-white border-l-4 border-green-500 p-3 rounded">
+                            <p class="text-sm"><span class="font-semibold text-green-700">Clinical Justification:</span>
+                                "Given severity of symptoms and documented pathology, procedure was medically necessary"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coding Rule Reference -->
+            <div class="border border-gray-200 rounded-lg p-6">
+                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
+                    <i class="fas fa-book mr-2 text-blue-600"></i>
+                    ICD-10-CM Coding Rule Reference
+                </h3>
+                <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded">
+                    <p class="font-semibold text-blue-900 mb-2">Official Guideline: Section I.A.15</p>
+                    <p class="text-sm text-gray-700">"Documentation of complications of care should be coded to the
+                        highest degree of specificity. When clinical documentation supports medical necessity, the
+                        procedure code assignment follows the documented diagnosis."</p>
+                    <a href="#" class="text-blue-600 hover:underline text-sm mt-2 inline-block">
+                        <i class="fas fa-external-link-alt mr-1"></i>
+                        View Official ICD-10-CM Guidelines
+                    </a>
+                </div>
+            </div>
+
+            <!-- The Rebuttal Letter -->
+            <div class="border border-gray-200 rounded-lg p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-bold text-gray-900 flex items-center">
+                        <i class="fas fa-file-alt mr-2 text-purple-600"></i>
+                        Professional Rebuttal Letter
+                    </h3>
+                    <div class="flex space-x-2">
+                        <button class="px-3 py-1 bg-gray-200 rounded hover:bg-gray-300 text-sm">
+                            <i class="fas fa-language mr-1"></i> EN
+                        </button>
+                        <button class="px-3 py-1 bg-white border border-gray-300 rounded hover:bg-gray-100 text-sm">
+                            <i class="fas fa-language mr-1"></i> AR
+                        </button>
+                    </div>
+                </div>
+
+                <textarea id="rebuttalText" rows="12"
+                    class="w-full p-4 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-sm">Dear Claims Review Team,
+
+Re: Appeal for Claim ID CLM-2024-00123 - Medical Necessity Denial
+
+We respectfully request reconsideration of the denial for the above-referenced claim. Our clinical documentation clearly supports the medical necessity of the intervention.
+
+CLINICAL EVIDENCE:
+The treating physician documented acute inflammation with significant pain on palpation. The patient was unable to bear weight and required immediate intervention. These findings are consistent with the diagnosis coded.
+
+CODING JUSTIFICATION:
+Per ICD-10-CM Official Guidelines Section I.A.15, "When clinical documentation supports medical necessity, the procedure code assignment follows the documented diagnosis." Our documentation meets this standard.
+
+SUPPORTING DOCUMENTATION:
+- Clinical notes showing acute pathology
+- Evidence of failed conservative management
+- Documentation of medical necessity
+
+We have attached the complete medical record for your review. Based on this evidence, we respectfully request approval of this claim.
+
+Sincerely,
+Falcon Coding Medical Audit Team</textarea>
+
+                <div class="flex space-x-3 mt-4">
+                    <button onclick="copyRebuttal()"
+                        class="flex-1 bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                        <i class="fas fa-copy mr-2"></i> Copy to Clipboard
+                    </button>
+                    <button class="flex-1 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                        <i class="fas fa-download mr-2"></i> Download PDF
+                    </button>
+                    <button class="flex-1 bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700">
+                        <i class="fas fa-envelope mr-2"></i> Email to Payer
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div id="panelOverlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden" onclick="closeAppealPanel()"></div>
+
+    <script src="/js/denial-recovery.js"></script>
+</body>
+
+</html>
