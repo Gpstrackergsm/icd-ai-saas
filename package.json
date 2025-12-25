@@ -12,6 +12,7 @@
     "test:level4": "node run_level4_tests.js",
     "test:level4:guard": "node test_frozen_level4_guard.js",
     "test:level5:guard": "node test_frozen_level5_guard.js",
+    "test:uae-cert": "node test/uae_audit_certification_suite.js",
     "verify:frozen": "echo '🔒 Verifying all frozen levels...' && npm run test:frozen && echo '✅ All frozen levels verified'"
   },
   "dependencies": {

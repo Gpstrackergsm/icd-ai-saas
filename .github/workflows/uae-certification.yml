@@ -1,0 +1,31 @@
+name: UAE Audit Certification
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  uae-certification:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '20'
+    
+    - name: Install dependencies
+      run: npm install
+    
+    - name: Run UAE Audit Certification Suite
+      run: npm run test:uae-cert
+      
+    - name: Block on Failure
+      if: failure()
+      run: |
+        echo "❌ UAE CERTIFICATION FAILED - DEPLOYMENT BLOCKED"
+        exit 1
