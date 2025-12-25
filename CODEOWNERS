@@ -1,0 +1,20 @@
+# UAE Engine - Code Owners
+# 
+# CRITICAL: Any changes to UAE logic require explicit approval
+# These files control UAE-specific medical coding rules
+# Changes MUST pass 100/100 certification suite
+
+# UAE Market Rules - Core Logic
+/lib/uae-market-rules.js @khalidaitelmaati
+/lib/uae/ @khalidaitelmaati
+
+# Feature Flags (if UAE flags added)
+/lib/uae/featureFlags.js @khalidaitelmaati
+/lib/uae/testOverrideRules.js @khalidaitelmaati
+
+# Certification Suite (Protected)
+/test/uae_audit_certification_suite.js @khalidaitelmaati
+/test/test_uae_cert_prod_replay.js @khalidaitelmaati
+
+# GitHub Workflows (Gate Protection)
+/.github/workflows/uae-certification.yml @khalidaitelmaati

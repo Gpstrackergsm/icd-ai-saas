@@ -1,0 +1,31 @@
+name: UAE Drift Protection
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'lib/uae-market-rules.js'
+      - 'lib/uae/**'
+      - 'lib/uae/featureFlags.js'
+      - 'lib/uae/testOverrideRules.js'
+
+jobs:
+  uae-drift-detection:
+    name: UAE Logic Change Detected - Certification Required
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Detect UAE Changes
+      run: |
+        echo "╔═══════════════════════════════════════════════════════════════╗"
+        echo "║ ⚠️  UAE LOGIC CHANGE DETECTED                                  ║"
+        echo "║ Certification suite WILL RUN automatically                     ║"
+        echo "║ Modified files:                                                 ║"
+        echo "╚═══════════════════════════════════════════════════════════════╝"
+        git diff --name-only origin/main...HEAD | grep -E "(uae-market-rules|lib/uae)" || true
+        echo ""
+        echo "UAE Certification will run in parallel job."
+        echo "100/100 PASS required for merge."

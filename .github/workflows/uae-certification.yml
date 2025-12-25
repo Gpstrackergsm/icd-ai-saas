@@ -1,4 +1,4 @@
-name: UAE Audit Certification
+name: UAE Audit Certification (MANDATORY GATE)
 
 on:
   push:
@@ -8,10 +8,12 @@ on:
 
 jobs:
   uae-certification:
+    name: UAE Certification Suite (100/100 Required)
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v3
     
     - name: Setup Node.js
       uses: actions/setup-node@v3
@@ -24,8 +26,20 @@ jobs:
     - name: Run UAE Audit Certification Suite
       run: npm run test:uae-cert
       
-    - name: Block on Failure
+    - name: Hard Gate - Block on Failure
       if: failure()
       run: |
-        echo "❌ UAE CERTIFICATION FAILED - DEPLOYMENT BLOCKED"
+        echo "╔═══════════════════════════════════════════════════════════════╗"
+        echo "║ ❌ UAE CERTIFICATION FAILED                                    ║"
+        echo "║ MERGE BLOCKED - DEPLOYMENT BLOCKED                             ║"
+        echo "║ Fix all failures before proceeding                             ║"
+        echo "╚═══════════════════════════════════════════════════════════════╝"
         exit 1
+        
+    - name: Success Confirmation
+      if: success()
+      run: |
+        echo "╔═══════════════════════════════════════════════════════════════╗"
+        echo "║ ✅ UAE CERTIFICATION PASSED (100/100)                          ║"
+        echo "║ MERGE ALLOWED - DEPLOYMENT ALLOWED                             ║"
+        echo "╚═══════════════════════════════════════════════════════════════╝"
