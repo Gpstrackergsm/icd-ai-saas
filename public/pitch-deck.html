@@ -65,13 +65,21 @@
             right: 20px;
         }
 
-        /* High-quality image rendering */
+        /* Optimize image rendering for UI screenshots */
         img {
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
-            image-rendering: high-quality;
+            image-rendering: auto;
+            -ms-interpolation-mode: bicubic;
             max-width: 100%;
             height: auto;
+            display: block;
+        }
+
+        /* Ensure images look sharp on retina displays */
+        @media (-webkit-min-device-pixel-ratio: 2),
+        (min-resolution: 192dpi) {
+            img {
+                image-rendering: -webkit-optimize-contrast;
+            }
         }
     </style>
 </head>
