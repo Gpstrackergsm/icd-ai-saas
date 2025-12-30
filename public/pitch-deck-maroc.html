@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Falcon Coding - Pitch Deck Maroc</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f172a;
+            color: #fff;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #059669 100%);
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .header .tagline {
+            font-size: 1.5rem;
+            color: #fbbf24;
+            margin-bottom: 5px;
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .section {
+            max-width: 1200px;
+            margin: 60px auto;
+            padding: 40px 20px;
+        }
+
+        .section-number {
+            font-size: 3rem;
+            color: #fbbf24;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .section-subtitle {
+            font-size: 1.5rem;
+            color: #94a3b8;
+            margin-bottom: 30px;
+        }
+
+        .section-description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #cbd5e1;
+            margin-bottom: 40px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            padding: 30px;
+            border-radius: 16px;
+            border: 2px solid #334155;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #94a3b8;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #fbbf24;
+            margin-bottom: 10px;
+        }
+
+        .stat-description {
+            font-size: 1rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 40px 0;
+        }
+
+        .comparison-box {
+            background: #1e293b;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            border: 3px solid;
+        }
+
+        .comparison-box.human {
+            border-color: #dc2626;
+        }
+
+        .comparison-box.ai {
+            border-color: #059669;
+        }
+
+        .comparison-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .comparison-box.human .comparison-title {
+            color: #dc2626;
+        }
+
+        .comparison-box.ai .comparison-title {
+            color: #059669;
+        }
+
+        .comparison-detail {
+            font-size: 1.1rem;
+            margin: 20px 0;
+            color: #cbd5e1;
+        }
+
+        .comparison-price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-top: 20px;
+        }
+
+        .comparison-box.human .comparison-price {
+            color: #dc2626;
+        }
+
+        .comparison-box.ai .comparison-price {
+            color: #059669;
+        }
+
+        .difference-banner {
+            background: linear-gradient(135deg, #059669 0%, #10b981 100%);
+            padding: 30px;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .difference-banner h3 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+
+        .feature-box {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 16px;
+            border-left: 4px solid #fbbf24;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #fbbf24;
+        }
+
+        .feature-description {
+            font-size: 1rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .workflow-step {
+            background: #1e293b;
+            padding: 30px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3b82f6;
+        }
+
+        .workflow-number {
+            font-size: 2rem;
+            color: #3b82f6;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .workflow-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .workflow-description {
+            font-size: 1.1rem;
+            color: #cbd5e1;
+            line-height: 1.6;
+        }
+
+        .workflow-description ul {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+
+        .workflow-description li {
+            margin: 8px 0;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #1e3a8a 0%, #059669 100%);
+            padding: 60px 20px;
+            text-align: center;
+            margin-top: 60px;
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #fbbf24;
+            color: #000;
+            padding: 20px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-top: 20px;
+            transition: transform 0.3s;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+        }
+
+        .image-placeholder {
+            width: 100%;
+            height: 400px;
+            background: #1e293b;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            font-size: 1.2rem;
+            margin: 30px 0;
+            border: 2px dashed #334155;
+        }
+
+        .warning-box {
+            background: #451a03;
+            border: 2px solid #f59e0b;
+            padding: 30px;
+            border-radius: 16px;
+            margin: 30px 0;
+        }
+
+        .warning-box h4 {
+            color: #fbbf24;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .warning-box p {
+            color: #fde68a;
+            line-height: 1.6;
+        }
+
+        footer {
+            background: #0f172a;
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid #334155;
+        }
+
+        footer a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <div class="header">
+        <h1>Falcon Coding</h1>
+        <div class="tagline">Intelligence des Revenus Souveraine</div>
+        <div class="subtitle">The Sovereign Revenue Intelligence</div>
+        <div style="margin-top: 20px; font-size: 1.1rem;">Dossier de Preuve de Concept et Valeur Ajoutée | Detailed
+            Pitch Deck</div>
+    </div>
+
+    <!-- Section 01: Le Problème Financier -->
+    <div class="section">
+        <div class="section-number">01</div>
+        <div class="section-title">Le Problème Financier</div>
+        <div class="section-subtitle">La Crise des Refus au Maroc</div>
+        <div class="section-subtitle" style="color: #94a3b8;">The Crisis</div>
+
+        <div class="section-description">
+            Les hôpitaux marocains ne sont pas que des établissements de soins, ce sont des entités financières
+            complexes qui perdent leur liquidité à cause des procédures des compagnies d'assurance.
+        </div>
+
+        <div class="image-placeholder">
+            <span>📊 Tableau de Bord de Récupération des Refus</span>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-label">La Réalité en Chiffres</div>
+                <div class="stat-number">850,000</div>
+                <div class="stat-description">
+                    <strong>dirhams actuellement en attente</strong><br>
+                    à cause d'erreurs simples de codage
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">L'Hémorragie Cachée</div>
+                <div class="stat-number">38%</div>
+                <div class="stat-description">
+                    <strong>taux de refus CNSS/CNOPS</strong><br>
+                    pour des raisons techniques, pas médicales
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-label">Récupération Perdue</div>
+                <div class="stat-number">600,000</div>
+                <div class="stat-description">
+                    <strong>dirhams récupérables</strong><br>
+                    avec un taux de succès de 71% via recours intelligent
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 02: Le Codage Médical -->
+    <div class="section">
+        <div class="section-number">02</div>
+        <div class="section-title">Le Codage Médical</div>
+        <div class="section-subtitle">Où Sont Perdus les Dirhams?</div>
+        <div class="section-subtitle" style="color: #94a3b8;">The Coding Gap</div>
+
+        <div class="section-description">
+            Le codage médical est la "colonne vertébrale" de l'hôpital : si le cas n'est pas décrit avec précision
+            programmatique, il n'y aura pas de paiement.
+        </div>
+
+        <div class="comparison">
+            <div class="comparison-box human">
+                <div class="comparison-title">Codeur Humain</div>
+                <div class="comparison-detail">
+                    <strong>Diagnostic:</strong><br><br>
+                    "فتق إربي"<br>
+                    "Hernie inguinale simple"<br>
+                    Simple Inguinal Hernia
+                </div>
+                <div class="comparison-price">5,000 MAD</div>
+                <div style="margin-top: 10px; color: #94a3b8;">valeur de la réclamation</div>
+            </div>
+
+            <div class="comparison-box ai">
+                <div class="comparison-title">Falcon Coding AI</div>
+                <div class="comparison-detail">
+                    <strong>Texte clinique:</strong><br><br>
+                    "irreducible mass, severe tenderness"<br><br>
+                    <strong>K40.30 - فتق مخنوق</strong><br>
+                    Hernie Étranglée | Strangulated Hernia
+                </div>
+                <div class="comparison-price">11,200 MAD</div>
+                <div style="margin-top: 10px; color: #94a3b8;">valeur de la réclamation</div>
+            </div>
+        </div>
+
+        <div class="difference-banner">
+            <h3>+6,200 MAD</h3>
+            <p style="font-size: 1.2rem;">La différence sur un seul cas</p>
+            <p style="margin-top: 10px;">Couvre le coût du système pendant des mois</p>
+        </div>
+    </div>
+
+    <!-- Section 03: Souveraineté et Confidentialité -->
+    <div class="section">
+        <div class="section-number">03</div>
+        <div class="section-title">Souveraineté et Confidentialité</div>
+        <div class="section-subtitle">Intelligence Artificielle Autonome</div>
+        <div class="section-subtitle" style="color: #94a3b8;">Offline AI - No Internet Required</div>
+
+        <div class="section-description">
+            C'est le pilier technique de notre projet qui le distingue de toute solution cloud
+        </div>
+
+        <div class="feature-grid">
+            <div class="feature-box">
+                <div class="feature-icon">🔒</div>
+                <div class="feature-title">Autonomie Complète</div>
+                <div class="feature-description">
+                    Le système fonctionne entièrement <strong>Offline</strong> au sein des serveurs de l'hôpital
+                </div>
+                <div
+                    style="margin-top: 15px; padding: 10px; background: rgba(59, 130, 246, 0.1); border-radius: 8px; color: #3b82f6;">
+                    No Internet Required
+                </div>
+            </div>
+
+            <div class="feature-box">
+                <div class="feature-icon">🛡️</div>
+                <div class="feature-title">Sécurité Souveraine</div>
+                <div class="feature-description">
+                    Les données des patients ne touchent jamais Internet, conformité à 100% avec les lois de protection
+                    des données
+                </div>
+                <div
+                    style="margin-top: 15px; padding: 10px; background: rgba(5, 150, 105, 0.1); border-radius: 8px; color: #059669;">
+                    100% Compliant
+                </div>
+            </div>
+
+            <div class="feature-box">
+                <div class="feature-icon">⚙️</div>
+                <div class="feature-title">Moteur Interne</div>
+                <div class="feature-description">
+                    Algorithmes propriétaires qui comprennent la terminologie médicale sans ChatGPT API
+                </div>
+                <div
+                    style="margin-top: 15px; padding: 10px; background: rgba(251, 191, 36, 0.1); border-radius: 8px; color: #fbbf24;">
+                    Proprietary Engine
+                </div>
+            </div>
+        </div>
+
+        <div class="warning-box">
+            <h4>⚡ Pourquoi Est-Ce Important?</h4>
+            <p>
+                Nous n'utilisons PAS d'interfaces de programmation externes comme ChatGPT API. Nous avons construit un
+                moteur propriétaire qui fonctionne au sein de l'infrastructure de l'hôpital, ce qui signifie que les
+                données des patients restent protégées à 100% et ne quittent jamais les serveurs locaux.
+            </p>
+        </div>
+    </div>
+
+    <!-- Section 04: Parcours Utilisateur -->
+    <div class="section">
+        <div class="section-number">04</div>
+        <div class="section-title">Parcours Utilisateur</div>
+        <div class="section-subtitle" style="color: #94a3b8;">The Workflow Logic</div>
+
+        <div class="workflow-step">
+            <div class="workflow-number">1</div>
+            <div class="workflow-title">Analyse Clinique</div>
+            <div class="workflow-description">
+                Saisie du texte en français ou anglais, et le système extrait les codes chirurgicaux et diagnostiques
+                avec une précision maximale.
+            </div>
+            <div class="image-placeholder" style="height: 250px; margin-top: 20px;">
+                <span>📋 Scénario Clinique</span>
+            </div>
+        </div>
+
+        <div class="workflow-step">
+            <div class="workflow-number">2</div>
+            <div class="workflow-title">Audit Financier et Technique</div>
+            <div class="workflow-description">
+                <ul>
+                    <li>Vérification des numéros d'identité marocains (CNIE) et licences médicales</li>
+                    <li>Identification de l'organisme payeur (CNSS/CNOPS/AMO) et application automatique de ses règles
+                        spécifiques</li>
+                </ul>
+            </div>
+            <div class="image-placeholder" style="height: 250px; margin-top: 20px;">
+                <span>✏️ Éditeur de Réclamation</span>
+            </div>
+        </div>
+
+        <div class="workflow-step">
+            <div class="workflow-number">3</div>
+            <div class="workflow-title">Export Final</div>
+            <div class="workflow-description">
+                Génération d'un fichier XML parfaitement conforme aux normes des plateformes CNSS et CNOPS en un seul
+                clic.
+            </div>
+        </div>
+
+        <div class="workflow-step">
+            <div class="workflow-number">4</div>
+            <div class="workflow-title">Récupération des Refus</div>
+            <div class="workflow-description">
+                Système intelligent qui analyse la raison du refus et génère une lettre de recours (Appeal) étayée par
+                des preuves médicales.
+            </div>
+        </div>
+    </div>
+
+    <!-- Section Finale: Pourquoi Falcon Coding -->
+    <div class="section">
+        <div class="section-title" style="text-align: center;">Conclusion</div>
+        <div class="section-subtitle" style="text-align: center;">Pourquoi Falcon Coding?</div>
+        <div class="section-subtitle" style="color: #94a3b8; text-align: center;">Why Choose Us?</div>
+
+        <div class="feature-grid" style="margin-top: 50px;">
+            <div class="feature-box">
+                <div class="feature-icon">💰</div>
+                <div class="feature-title">Moteur de Revenus</div>
+                <div class="feature-description">
+                    Augmente la valeur des réclamations et récupère les refus avec un taux de succès de 71%
+                </div>
+            </div>
+
+            <div class="feature-box">
+                <div class="feature-icon">🛡️</div>
+                <div class="feature-title">Bouclier Juridique</div>
+                <div class="feature-description">
+                    Garantit la sécurité des données à 100% grâce à la technologie Offline
+                </div>
+            </div>
+
+            <div class="feature-box">
+                <div class="feature-icon">✅</div>
+                <div class="feature-title">Conformité Gouvernementale</div>
+                <div class="feature-description">
+                    Prêt à fonctionner immédiatement avec les plateformes CNSS, CNOPS et AMO
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+        <div class="cta-title">Commencez Gratuitement Maintenant</div>
+        <div style="font-size: 1.2rem; margin: 20px 0;">Programme pilote spécial pour les hôpitaux marocains</div>
+        <a href="https://www.icd-10-cm.online/app.html" class="cta-button">Essayer Maintenant Gratuitement</a>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div style="font-size: 1.5rem; margin-bottom: 20px; font-weight: 700;">Falcon Coding</div>
+        <div style="font-size: 1.1rem; margin-bottom: 20px; color: #94a3b8;">
+            The Sovereign Revenue Intelligence | ذكاء الإيرادات السيادي
+        </div>
+        <div style="margin: 20px 0;">
+            <a href="https://www.linkedin.com/in/khalid-ait-el-maati-545a76332" style="font-size: 1.1rem;">LinkedIn</a>
+        </div>
+        <div style="color: #64748b; margin-top: 20px;">© 2025 Falcon Coding. Tous droits réservés.</div>
+    </footer>
+</body>
+
+</html>
